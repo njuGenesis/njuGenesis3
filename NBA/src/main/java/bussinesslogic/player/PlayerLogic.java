@@ -2404,7 +2404,10 @@ public class PlayerLogic implements PlayerInfoService{
 		return res;
 	}
 	
-	//自动测试需要的方法
+	
+	
+	//=================================================================================================
+	//---------------------------------------------自动测试需要的方法
 	public PlayerDataPO[] sort(final String orderName,boolean isASC,PlayerDataPO[] orgin,final boolean isAVG) {
 		// TODO Auto-generated method stub
 		//p.setOrder(orderName, isASC);

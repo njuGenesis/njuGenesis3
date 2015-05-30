@@ -1,6 +1,7 @@
 package data.po.playerData;
 
 public class PlayerDataSeason_Avg_Basic {
+	String name;
 	int id;//超键
 	String season;
 	String team;
@@ -27,6 +28,12 @@ public class PlayerDataSeason_Avg_Basic {
 	String pts;//得分
 	String win;//胜场
 	String lose;//负场
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getId() {
 		return id;
 	}

@@ -1,6 +1,7 @@
 package data.po.playerData;
 
 public class PlayerDataPlayOff_Ad_Shoot {
+	String name;
 	int id;
 	String season;
 	String team;
@@ -23,6 +24,13 @@ public class PlayerDataPlayOff_Ad_Shoot {
 	String far_per;
 	String trueshootper;//真实命中率
 	String shooteff;//投篮效率
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getId() {
 		return id;
 	}

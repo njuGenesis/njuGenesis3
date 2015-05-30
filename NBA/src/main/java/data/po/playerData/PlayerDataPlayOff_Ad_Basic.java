@@ -1,6 +1,7 @@
 package data.po.playerData;
 
 public class PlayerDataPlayOff_Ad_Basic {
+	String name;
 	int id;
 	String season;
 	String team;
@@ -21,6 +22,13 @@ public class PlayerDataPlayOff_Ad_Basic {
 	String strshoot;//扣篮
 	String kda;// 2/3+1
 	String berej;//被冒
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getId() {
 		return id;
 	}
