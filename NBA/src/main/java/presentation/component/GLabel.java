@@ -21,6 +21,8 @@ public class GLabel extends JLabel{
 	private BufferedImage sbi;
 	private int number;
 	public TeamDataPO po = null;
+	private BgPanel panel;
+	private boolean isSelected;
 	/**
 	 * 
 	 */
@@ -87,6 +89,18 @@ public class GLabel extends JLabel{
 		this.setBounds(location.x, location.y, size.x, size.y);
 		this.setVisible(visible);
 		this.setFont(new java.awt.Font("微软雅黑", bord, wordSize));
+		if(container != null){
+			container.add(this);
+		}
+	}
+	
+	public GLabel(String message, Point location, Point size, Container container, boolean visible, int bord, int wordSize
+			, BgPanel panel){
+		this.setText(message);
+		this.setBounds(location.x, location.y, size.x, size.y);
+		this.setVisible(visible);
+		this.setFont(new java.awt.Font("微软雅黑", bord, wordSize));
+		this.panel = panel;
 		if(container != null){
 			container.add(this);
 		}
