@@ -29,9 +29,11 @@ public class DataBaseLink // 数据库连接
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
+			if (!con.isClosed()){
+				
+			}
 
-				System.out.println("success");
+				//System.out.println("success");
 
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
