@@ -1,13 +1,11 @@
 package presentation.mainui;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import presentation.component.BgPanel;
@@ -19,23 +17,34 @@ import presentation.contenui.UIUtil;
 public class WebFrame extends GFrame{
 
 	private static final long serialVersionUID = 1L;
-	private GLabel title, bg, menuPanel, menuButton;
-	private GLabel hot, player, team, match, stats;
+	private GLabel title, bg;
 	public static WebFrame frame;
 	private Vector<WebLabel> labelVector = new Vector<WebLabel>();
 	private Vector<BgPanel> panelVector = new Vector<BgPanel>();
-	private int a = 0, b = 255, c = 125;
+	private int a = 251, b = 251, c = 251;
+	
+	private GLabel menuPanel, menuTitle, menuLabel;
+	private GLabel[] menuButton = new GLabel[6];
+	private GLabel[] menuButtonIcon = new GLabel[menuButton.length];
+	
+	private Color menuPanelColor = new Color(192, 27, 44);
+	private Color menuTitleColor = new Color(238, 34, 57);
+	private Color menuLabelColor = new Color(222, 35, 56);
+	private Color menuButtonColor = new Color(215, 36, 55);
+	private Color menuButtonIconColor = new Color(199, 32, 49);
+	private Color labelColor = new Color(242, 224, 224);
 	
 	public static void main(String[] args) {
 		new WebFrame();
 	}
 
 	public WebFrame(){
-		this.setSize(1000, 700);
+		this.setSize(1250, 700);
 		this.setVisible(true);
 		this.setMiddle();
 		this.setLayout(null);
-		init();
+		menuInit();
+		bgInit();
 		MouseAdapter mouseListener = new MouseAdapter(){
 
 			int xOld = 0;
@@ -62,20 +71,25 @@ public class WebFrame extends GFrame{
 		frame = this;
 	}
 	
-	private void init(){
-		title = new GLabel("NBA", new Point(0, 0), new Point(this.getWidth(), 35), this, true, 0 , 15);
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
-		title.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-		title.setOpaque(true);
+	private void menuInit(){
+		menuPanel = new GLabel("", new Point(0, 30), new Point(250, 670), this, true);
+		menuPanel.setBackground(menuPanelColor);
+		menuPanel.setOpaque(true);
 		
-		title.addMouseListener(new MouseAdapter() {
+		menuLabel = new GLabel("", new Point(0, 0), new Point(1250, 30), this, true, 1, 20);
+		menuLabel.setBackground(menuLabelColor);
+		menuLabel.setOpaque(true);
+		
+		menuTitle = new GLabel("NBA", new Point(0, 0), new Point(250, 105), menuPanel, true, 1, 30);
+		menuTitle.setBackground(menuTitleColor);
+		menuTitle.setForeground(UIUtil.bgWhite);
+		menuTitle.setHorizontalAlignment(JLabel.CENTER);
+		menuTitle.setOpaque(true);
+		menuTitle.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e){
 				BgPanel panel = new BgPanel("");
-				panel.setBounds(0, 60, 1000, 640);
+				panel.setBounds(0, 0, 1000, 670);
 				panel.setBackground(new Color(a%255, b%255, c%255));
-				panel.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 				frame.setPanel(panel, "Player");
 				a+=10;
 				b = 2*a;
@@ -83,178 +97,59 @@ public class WebFrame extends GFrame{
 			}
 		});
 		
-		menuButton = new GLabel("目录", new Point(15, 8), new Point(35, 20), title, true, 0, 15);
-		menuButton.setBackground(UIUtil.nbaBlue);
-		menuButton.setForeground(UIUtil.bgWhite);
-		menuButton.setBorder(BorderFactory.createLineBorder(UIUtil.bgWhite, 1));
-		menuButton.setOpaque(true);
-		menuButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e){
-				menuButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(labelVector.size() == 0){
-					menuPanel.setLocation(0, 35);
-					if(menuPanel.isVisible()){
-						menuPanel.setVisible(false);
-					}else{
-						menuPanel.setVisible(true);
-					}
-				}else{
-					menuPanel.setLocation(0, 60);
-					if(menuPanel.isVisible()){
-						menuPanel.setVisible(false);
-					}else{
-						menuPanel.setVisible(true);
-					}
-				}
-			}
-		});
+		for(int i=0;i<menuButton.length;i++){
+			menuButton[i] = new GLabel("", new Point(0, 105+(80+2)*i), new Point(250, 80), menuPanel, true, 1, 15);
+			menuButton[i].setBackground(menuButtonColor);
+			menuButton[i].setForeground(UIUtil.bgWhite);
+			menuButton[i].setHorizontalAlignment(JLabel.CENTER);
+			menuButton[i].setOpaque(true);
+			
+			menuButtonIcon[i] = new GLabel("", new Point(0, 0), new Point(90, 80), menuButton[i], true, 1, 40);
+			menuButtonIcon[i].setBackground(menuButtonIconColor);
+			menuButtonIcon[i].setForeground(UIUtil.bgWhite);
+			menuButtonIcon[i].setHorizontalAlignment(JLabel.CENTER);
+			menuButtonIcon[i].setOpaque(true);
+		}
+		menuButton[0].setText("热点");menuButtonIcon[0].setText("☀︎︎");
+		menuButton[1].setText("球员");menuButtonIcon[1].setText("♂");
+		menuButton[2].setText("球队");menuButtonIcon[2].setText("♗");
+		menuButton[3].setText("比赛");menuButtonIcon[3].setText("⚔︎︎");
+		menuButton[4].setText("统计");menuButtonIcon[4].setText("⧲︎︎");
+		menuButton[5].setText("分析");menuButtonIcon[5].setText("✍");
+		//this.add(menuPanel, new Integer(Integer.MAX_VALUE));
 		
 		
-		menuPanel = new GLabel("", new Point(0, 35), new Point(200, 665), this, false);
-		menuPanel.setBackground(UIUtil.tableGrey);
-		menuPanel.setOpaque(true);
-		this.add(menuPanel, new Integer(Integer.MAX_VALUE));
-		
-		bg = new GLabel("", new Point(0, 35), new Point(1000, 700),  this, true);
-		bg.setBackground(UIUtil.bgWhite);
-		bg.setOpaque(true);
-		
-		menuInit();
 	}
 	
-	private void menuInit(){
-		Point size = new Point(200, 35);
-		Point location = new Point(0, 10);
-		
-		hot = new GLabel("热点", location, size, menuPanel, true, 0, 20);
-		hot.setForeground(Color.BLACK);
-		hot.setHorizontalAlignment(JLabel.CENTER);
-		hot.setBackground(menuPanel.getBackground());
-		hot.setOpaque(true);
-		hot.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e){
-				hot.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				hot.setForeground(UIUtil.bgWhite);
-				hot.setBackground(UIUtil.bgGrey);
-			}
-			@Override
-			public void mouseExited(MouseEvent e){
-				hot.setBackground(menuPanel.getBackground());
-				hot.setForeground(Color.BLACK);
-			}
-		});
-		
-		player = new GLabel("球员", new Point(location.x, location.y+size.y), size, menuPanel, true, 0, 20);
-		player.setForeground(Color.BLACK);
-		player.setHorizontalAlignment(JLabel.CENTER);
-		player.setBackground(menuPanel.getBackground());
-		player.setOpaque(true);
-		player.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e){
-				player.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				player.setForeground(UIUtil.bgWhite);
-				player.setBackground(UIUtil.bgGrey);
-			}
-			@Override
-			public void mouseExited(MouseEvent e){
-				player.setBackground(menuPanel.getBackground());
-				player.setForeground(Color.BLACK);
-			}
-		});
-		
-		team = new GLabel("球队", new Point(location.x, location.y+2*size.y), size, menuPanel, true, 0, 20);
-		team.setForeground(Color.BLACK);
-		team.setHorizontalAlignment(JLabel.CENTER);
-		team.setBackground(menuPanel.getBackground());
-		team.setOpaque(true);
-		team.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e){
-				team.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				team.setForeground(UIUtil.bgWhite);
-				team.setBackground(UIUtil.bgGrey);
-			}
-			@Override
-			public void mouseExited(MouseEvent e){
-				team.setBackground(menuPanel.getBackground());
-				team.setForeground(Color.BLACK);
-			}
-		});
-		
-		match = new GLabel("比赛", new Point(location.x, location.y+3*size.y), size, menuPanel, true, 0, 20);
-		match.setForeground(Color.BLACK);
-		match.setHorizontalAlignment(JLabel.CENTER);
-		match.setBackground(menuPanel.getBackground());
-		match.setOpaque(true);
-		match.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e){
-				match.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				match.setForeground(UIUtil.bgWhite);
-				match.setBackground(UIUtil.bgGrey);
-			}
-			@Override
-			public void mouseExited(MouseEvent e){
-				match.setBackground(menuPanel.getBackground());
-				match.setForeground(Color.BLACK);
-			}
-		});
-
-		stats = new GLabel("统计", new Point(location.x, location.y+4*size.y), size, menuPanel, true, 0, 20);
-		stats.setForeground(Color.BLACK);
-		stats.setHorizontalAlignment(JLabel.CENTER);
-		stats.setBackground(menuPanel.getBackground());
-		stats.setOpaque(true);
-		stats.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e){
-				stats.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				stats.setForeground(UIUtil.bgWhite);
-				stats.setBackground(UIUtil.bgGrey);
-			}
-			@Override
-			public void mouseExited(MouseEvent e){
-				stats.setBackground(menuPanel.getBackground());
-				stats.setForeground(Color.BLACK);
-			}
-		});
-
+	private void bgInit(){
+		bg = new GLabel("", new Point(250, 30), new Point(1000, 670), this, true);
+		bg.setBackground(UIUtil.bgWhite);
+		bg.setOpaque(true);
 	}
 	
 	public void setPanel(BgPanel newPanel, String message){
-		menuPanel.setVisible(false);
-		bg.setVisible(false);
 		
 		for(int i=0;i<panelVector.size();i++){
 			panelVector.get(i).setVisible(false);
 		}
-		panelVector.addElement(newPanel);//System.out.println(panelVector);
-		this.add(panelVector.get(panelVector.size()-1));
+		panelVector.addElement(newPanel);
+		bg.add(panelVector.get(panelVector.size()-1));
 		
-		WebLabel gLabel = new WebLabel(" "+message, new Point(0, 0), new Point(0, 0), this, true, 0, 15, newPanel);
+		WebLabel gLabel = new WebLabel(" "+message, new Point(250+labelVector.size()*130, 0), new Point(130, 30), menuLabel, true, 0, 15, newPanel);
 		gLabel.setHorizontalAlignment(JLabel.CENTER);
-		gLabel.setBackground(UIUtil.nbaBlue);
-		gLabel.setForeground(UIUtil.bgWhite);
-		gLabel.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		gLabel.setBackground(UIUtil.bgWhite);
+		gLabel.setForeground(UIUtil.nbaRed);
+		gLabel.isSelected = true;
+		//gLabel.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 		gLabel.setOpaque(true);
 		
 		labelVector.addElement(gLabel);
-		int w = (this.getWidth())/labelVector.size();
-		for(int i = 0;i<labelVector.size();i++){
-			if(i<labelVector.size()-1){
-				labelVector.get(i).setSize(w, 25);
-				labelVector.get(i).setBackground(UIUtil.nbaBlue);
-			}else{
-				labelVector.get(i).setSize(this.getWidth()-i*w, 25);
-				labelVector.get(i).setBackground(UIUtil.nbaRed);
-			}
-			labelVector.get(i).setLocation(w*i, 35);
+		for(int i = 0;i<labelVector.size()-1;i++){
+			labelVector.get(i).setBackground(menuLabelColor);
+			labelVector.get(i).setForeground(UIUtil.bgWhite);
+			labelVector.get(i).getLabel().setForeground(UIUtil.bgWhite);
+			labelVector.get(i).isSelected = false;
+			labelVector.get(i).getLabel().setVisible(false);
 		}
 
 		this.repaint();
@@ -268,29 +163,27 @@ public class WebFrame extends GFrame{
 		return this.panelVector;
 	}
 
-	public void setLabelLocation(){
-		if(labelVector.size()!=0){
-			int w = (this.getWidth())/labelVector.size();
-			for(int i = 0;i<labelVector.size();i++){
-				if(i<labelVector.size()-1){
-					labelVector.get(i).setSize(w, 25);
-					labelVector.get(i).setBackground(UIUtil.nbaBlue);
-				}else{
-					labelVector.get(i).setSize(this.getWidth()-i*w, 25);
-					labelVector.get(i).setBackground(UIUtil.nbaRed);
+	public void setLabelLocation(boolean key){
+		if(key){
+			if(labelVector.size()!=0){
+				for(int i = 0;i<labelVector.size();i++){
+					labelVector.get(i).setLocation(250+i*130, 0);
 				}
-				labelVector.get(i).setLocation(w*i, 35);
+				labelVector.get(labelVector.size()-1).setSelected();
 			}
-
-			panelVector.get(panelVector.size()-1).setVisible(true);
 		}else{
-			if(menuPanel.isVisible()){
-				menuPanel.setLocation(0, 35);
-			}else{
-				menuPanel.setLocation(0, 60);
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setLocation(250+i*130, 0);
 			}
-			bg.setVisible(true);
 		}
 		this.repaint();
+	}
+	
+	public GLabel getmenuLabel(){
+		return menuLabel;
+	}
+	
+	public GLabel getbg(){
+		return bg;
 	}
 }

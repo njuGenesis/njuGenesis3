@@ -26,10 +26,10 @@ public class GFrame extends JFrame{
 		this.setUndecorated(true);
 		this.setLayout(null);
 		AWTUtilities.setWindowOpaque(this, false);
-		AWTUtilities.setWindowShape(this, new RoundRectangle2D.Double(  
-	            0.0D, 0.0D, this.getWidth(), this.getHeight(), 0.0D,  
-	            0.0D));
-		this.addComponentListener(new ComponentHandler());
+//		AWTUtilities.setWindowShape(this, new RoundRectangle2D.Double(  
+//	            0.0D, 0.0D, this.getWidth(), this.getHeight(), 0.0D,  
+//	            0.0D));
+//		this.addComponentListener(new ComponentHandler());
 	}
 	
 	public void setMiddle(){

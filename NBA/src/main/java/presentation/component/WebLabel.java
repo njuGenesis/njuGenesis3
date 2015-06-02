@@ -1,5 +1,6 @@
 package presentation.component;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Point;
@@ -17,6 +18,8 @@ public class WebLabel extends JLabel{
 	
 	private BgPanel panel = null;
 	private WebLabel label = null;
+	private GLabel text = null;
+	public boolean isSelected;
 
 	public WebLabel(String message, Point location, Point size, Container container, 
 			boolean visible, int bord, int wordSize, 
@@ -31,6 +34,8 @@ public class WebLabel extends JLabel{
 		if(container != null){
 			container.add(this);
 		}
+//		text = new GLabel(message, new Point(35, 0), new Point(size.x-35, size.y), this, true, bord, wordSize);
+//		text.setHorizontalAlignment(JLabel.CENTER);
 		
 		setClose();
 		setListener();
@@ -49,26 +54,34 @@ public class WebLabel extends JLabel{
 	}
 	
 	private void setClose(){
-		label = new WebLabel("X", new Point(10, 0), new Point(25, 25), true, 0, 15, null);
-		label.setForeground(UIUtil.bgWhite);
+		label = new WebLabel("✕︎", new Point(10, 0), new Point(30, 30), true, 0, 15, null);
+		label.setForeground(UIUtil.nbaRed);
 		label.setLabel(this);
 		
 		this.add(label);
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e){
-				label.setForeground(UIUtil.bgGrey);
+				label.setVisible(true);
 				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				label.setText("✖︎");
 			}
 			public void mouseExited(MouseEvent e){
-				label.setForeground(UIUtil.bgWhite);
+				label.setText("✕︎");
+				if(WebLabel.this.isSelected == false){
+					label.setVisible(false);
+				}
 			}
 			public void mousePressed(MouseEvent e){
 				WebFrame.frame.getLabel().removeElement(label.getLabel());
 				WebFrame.frame.getPanel().removeElement(label.getLabel().getPanel());
-				WebFrame.frame.remove(label.getLabel());
-				WebFrame.frame.remove(label.getLabel().getPanel());
-				WebFrame.frame.repaint();//System.out.println(WebFrame.frame.getPanel());
-				WebFrame.frame.setLabelLocation();
+				WebFrame.frame.getmenuLabel().remove(label.getLabel());
+				WebFrame.frame.getbg().remove(label.getLabel().getPanel());
+				WebFrame.frame.repaint();
+				if(WebLabel.this.isSelected){
+					WebFrame.frame.setLabelLocation(true);
+				}else{
+					WebFrame.frame.setLabelLocation(false);
+				}
 			}
 		});
 	}
@@ -79,19 +92,19 @@ public class WebLabel extends JLabel{
 			public void mouseEntered(MouseEvent e){
 				WebLabel label = (WebLabel) e.getSource();
 				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				label.label.setVisible(true);
+			}
+			@Override
+			public void mouseExited(MouseEvent e){
+				WebLabel label = (WebLabel) e.getSource();
+				if(label.isSelected == false){
+					label.label.setVisible(false);
+				}
 			}
 			@Override
 			public void mousePressed(MouseEvent e){
-				for(int i = 0;i<WebFrame.frame.getLabel().size();i++){
-					WebFrame.frame.getLabel().get(i).setBackground(UIUtil.nbaBlue);
-				}
-				for(int i = 0;i<WebFrame.frame.getPanel().size();i++){
-					WebFrame.frame.getPanel().get(i).setVisible(false);
-				}
 				WebLabel label = (WebLabel) e.getSource();
-				label.setBackground(UIUtil.nbaRed);
-				label.getPanel().setVisible(true);
-				//title.setText(label.getText());
+				label.setSelected();
 			}
 		});
 	}
@@ -107,4 +120,24 @@ public class WebLabel extends JLabel{
 	public WebLabel getLabel(){
 		return this.label;
 	}
+	
+	public void setSelected(){
+		for(int i = 0;i<WebFrame.frame.getLabel().size();i++){
+			WebFrame.frame.getLabel().get(i).setBackground(WebFrame.frame.getmenuLabel().getBackground());
+			WebFrame.frame.getLabel().get(i).setForeground(UIUtil.bgWhite);
+			WebFrame.frame.getLabel().get(i).isSelected = false;
+			WebFrame.frame.getLabel().get(i).label.setVisible(false);
+			WebFrame.frame.getLabel().get(i).label.setForeground(UIUtil.bgWhite);
+		}
+		for(int i = 0;i<WebFrame.frame.getPanel().size();i++){
+			WebFrame.frame.getPanel().get(i).setVisible(false);
+		}
+		this.setBackground(UIUtil.bgWhite);
+		this.setForeground(UIUtil.nbaRed);
+		this.isSelected = true;
+		this.label.setVisible(true);
+		this.label.setForeground(UIUtil.nbaRed);
+		this.getPanel().setVisible(true);
+	}
+
 }
