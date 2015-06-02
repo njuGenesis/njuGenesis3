@@ -46,7 +46,6 @@ public class TestCrawlerByJsoup {
 	}
 	public void test(){
 		Document doc = null;
-		int temp = -1;
 		String url = "http://www.stat-nba.com/team/stat_box_team.php?team=CHI&season=2014&col=pts&order=1&isseason=1";
 		try{
 			doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").get();

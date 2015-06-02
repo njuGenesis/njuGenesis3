@@ -36,6 +36,7 @@ public class PlayerLogic implements PlayerInfoService{
 	playerpath = 	player;
 	matchpath = match;
 	}
+	//--------------------------迭代三舍弃功能
 	public void analysData(String filepath,String season,String matchPath) {
 		// TODO Auto-generated method stub
 		PlayerList.clear();
@@ -544,6 +545,7 @@ public class PlayerLogic implements PlayerInfoService{
 		//
 		//p.addInfo(AllInfo);
 	}
+	//---------------------------迭代三舍弃功能end
 	
 	public PlayerDataPO getInfo(String name,String season) {
 		// TODO Auto-generated method stub

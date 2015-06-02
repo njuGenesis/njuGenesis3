@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import data.po.playerData.PlayerDataPlayOff_Ad_Basic;
 import data.po.playerData.PlayerDataPlayOff_Ad_Shoot;
@@ -272,6 +273,278 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 						+")");
 				operation("alter table p_p_ad_s add primary key(id, season,team)");
 				System.out.println("initialize Player Table end");
+	}
+	
+	public PlayerDataSeason_Avg_Basic sets_a_b(ResultSet rs){
+		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
+		try{
+		res.setName(rs.getString("name"));
+		res.setId(rs.getInt("id"));
+		res.setSeason(rs.getString("season"));
+		res.setTeam(rs.getString("team"));
+		res.setGp(rs.getString("gp"));
+		res.setGs(rs.getString("gs"));
+		res.setTime(rs.getString("time"));
+		res.setShootper(rs.getString("shootper"));
+		res.setShoot_in(rs.getString("shoot_in"));
+		res.setShoot_all(rs.getString("shoot_all"));
+		res.setThper(rs.getString("thper"));
+		res.setTh_in(rs.getString("th_in"));
+		res.setTh_all(rs.getString("th_all"));
+		res.setFtper(rs.getString("ftper"));
+		res.setFt_in(rs.getString("ft_in"));
+		res.setFt_all(rs.getString("ft_all"));
+		res.setBackbound(rs.getString("backbound"));
+		res.setOffb(rs.getString("offb"));
+		res.setDefb(rs.getString("defb"));
+		res.setAssist(rs.getString("assist"));
+		res.setSteal(rs.getString("steal"));
+		res.setRejection(rs.getString("rejection"));
+		res.setMiss(rs.getString("miss"));
+		res.setFoul(rs.getString("foul"));
+		res.setPts(rs.getString("pts"));
+		res.setWin(rs.getString("win"));
+		res.setLose(rs.getString("lose"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public PlayerDataSeason_Tot_Basic sets_t_b(ResultSet rs){
+		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
+		try{
+		res.setName(rs.getString("name"));
+		res.setId(rs.getInt("id"));
+		res.setSeason(rs.getString("season"));
+		res.setTeam(rs.getString("team"));
+		res.setGp(rs.getString("gp"));
+		res.setGs(rs.getString("gs"));
+		res.setTime(rs.getString("time"));
+		res.setShootper(rs.getString("shootper"));
+		res.setShoot_in(rs.getString("shoot_in"));
+		res.setShoot_all(rs.getString("shoot_all"));
+		res.setThper(rs.getString("thper"));
+		res.setTh_in(rs.getString("th_in"));
+		res.setTh_all(rs.getString("th_all"));
+		res.setFtper(rs.getString("ftper"));
+		res.setFt_in(rs.getString("ft_in"));
+		res.setFt_all(rs.getString("ft_all"));
+		res.setBackbound(rs.getString("backbound"));
+		res.setOffb(rs.getString("offb"));
+		res.setDefb(rs.getString("defb"));
+		res.setAssist(rs.getString("assist"));
+		res.setSteal(rs.getString("steal"));
+		res.setRejection(rs.getString("rejection"));
+		res.setMiss(rs.getString("miss"));
+		res.setFoul(rs.getString("foul"));
+		res.setPts(rs.getString("pts"));
+		res.setWin(rs.getString("win"));
+		res.setLose(rs.getString("lose"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public PlayerDataPlayOff_Avg_Basic setp_a_b(ResultSet rs){
+		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
+		try{
+		res.setName(rs.getString("name"));
+		res.setId(rs.getInt("id"));
+		res.setSeason(rs.getString("season"));
+		res.setTeam(rs.getString("team"));
+		res.setGp(rs.getString("gp"));		
+		res.setTime(rs.getString("time"));
+		res.setShootper(rs.getString("shootper"));
+		res.setShoot_in(rs.getString("shoot_in"));
+		res.setShoot_all(rs.getString("shoot_all"));
+		res.setThper(rs.getString("thper"));
+		res.setTh_in(rs.getString("th_in"));
+		res.setTh_all(rs.getString("th_all"));
+		res.setFtper(rs.getString("ftper"));
+		res.setFt_in(rs.getString("ft_in"));
+		res.setFt_all(rs.getString("ft_all"));
+		res.setBackbound(rs.getString("backbound"));
+		res.setOffb(rs.getString("offb"));
+		res.setDefb(rs.getString("defb"));
+		res.setAssist(rs.getString("assist"));
+		res.setSteal(rs.getString("steal"));
+		res.setRejection(rs.getString("rejection"));
+		res.setMiss(rs.getString("miss"));
+		res.setFoul(rs.getString("foul"));
+		res.setPts(rs.getString("pts"));
+		res.setWin(rs.getString("win"));
+		res.setLose(rs.getString("lose"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public PlayerDataPlayOff_Tot_Basic setp_t_b(ResultSet rs){
+		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
+		try{
+		res.setName(rs.getString("name"));
+		res.setId(rs.getInt("id"));
+		res.setSeason(rs.getString("season"));
+		res.setTeam(rs.getString("team"));
+		res.setGp(rs.getString("gp"));		
+		res.setTime(rs.getString("time"));
+		res.setShootper(rs.getString("shootper"));
+		res.setShoot_in(rs.getString("shoot_in"));
+		res.setShoot_all(rs.getString("shoot_all"));
+		res.setThper(rs.getString("thper"));
+		res.setTh_in(rs.getString("th_in"));
+		res.setTh_all(rs.getString("th_all"));
+		res.setFtper(rs.getString("ftper"));
+		res.setFt_in(rs.getString("ft_in"));
+		res.setFt_all(rs.getString("ft_all"));
+		res.setBackbound(rs.getString("backbound"));
+		res.setOffb(rs.getString("offb"));
+		res.setDefb(rs.getString("defb"));
+		res.setAssist(rs.getString("assist"));
+		res.setSteal(rs.getString("steal"));
+		res.setRejection(rs.getString("rejection"));
+		res.setMiss(rs.getString("miss"));
+		res.setFoul(rs.getString("foul"));
+		res.setPts(rs.getString("pts"));
+		res.setWin(rs.getString("win"));
+		res.setLose(rs.getString("lose"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	public PlayerDataSeason_Ad_Basic sets_ad_b(ResultSet rs){
+		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
+		try{
+		res.setName(rs.getString("name"));
+		res.setId(rs.getInt("id"));
+		res.setSeason(rs.getString("season"));
+		res.setTeam(rs.getString("team"));
+		res.setBackeff(rs.getString("backeff"));
+		res.setOffbeff(rs.getString("offbeff"));
+		res.setDefbeff(rs.getString("defbeff"));
+		res.setAssisteff(rs.getString("assisteff"));
+		res.setStealeff(rs.getString("stealeff"));
+		res.setRejeff(rs.getString("rejeff"));
+		res.setMisseff(rs.getString("misseff"));
+		res.setUseeff(rs.getString("useeff"));
+		res.setOffeff(rs.getString("offeff"));
+		res.setDefeff(rs.getString("defeff"));
+		res.setWs(rs.getString("ws"));
+		res.setOffws(rs.getString("offws"));
+		res.setDefws(rs.getString("defws"));
+		res.setPer(rs.getString("per"));
+		res.setStrshoot(rs.getString("strshoot"));
+		res.setKda(rs.getString("kda"));
+		res.setBerej(rs.getString("berej"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public PlayerDataPlayOff_Ad_Basic setp_ad_b(ResultSet rs){
+		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
+		try{
+		res.setName(rs.getString("name"));
+		res.setId(rs.getInt("id"));
+		res.setSeason(rs.getString("season"));
+		res.setTeam(rs.getString("team"));
+		res.setBackeff(rs.getString("backeff"));
+		res.setOffbeff(rs.getString("offbeff"));
+		res.setDefbeff(rs.getString("defbeff"));
+		res.setAssisteff(rs.getString("assisteff"));
+		res.setStealeff(rs.getString("stealeff"));
+		res.setRejeff(rs.getString("rejeff"));
+		res.setMisseff(rs.getString("misseff"));
+		res.setUseeff(rs.getString("useeff"));
+		res.setOffeff(rs.getString("offeff"));
+		res.setDefeff(rs.getString("defeff"));
+		res.setWs(rs.getString("ws"));
+		res.setOffws(rs.getString("offws"));
+		res.setDefws(rs.getString("defws"));
+		res.setPer(rs.getString("per"));
+		res.setStrshoot(rs.getString("strshoot"));
+		res.setKda(rs.getString("kda"));
+		res.setBerej(rs.getString("berej"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	public PlayerDataSeason_Ad_Shoot sets_ad_s(ResultSet rs){
+		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
+		try{
+			res.setName(rs.getString("name"));
+			res.setId(rs.getInt("id"));
+			res.setSeason(rs.getString("season"));
+			res.setTeam(rs.getString("team"));
+			res.setShootdis(rs.getString("shootdis"));
+			res.setBshootper(rs.getString("bshootper"));
+			res.setBshoot_in(rs.getString("bshoot_in"));
+			res.setBshoot_all(rs.getString("bshoot_all"));
+			res.setB_per(rs.getString("b_per"));
+			res.setCloseshootper(rs.getString("closeshootper"));
+			res.setCloseshoot_in(rs.getString("closeshoot_in"));
+			res.setCloseshoot_all(rs.getString("closeshoot_all"));
+			res.setClose_per(rs.getString("close_per"));
+			res.setMidshootper(rs.getString("midshootper"));
+			res.setMidshoot_in(rs.getString("midshoot_in"));
+			res.setMidshoot_all(rs.getString("midshoot_all"));
+			res.setMid_per(rs.getString("mid_per"));
+			res.setFarshootper(rs.getString("farshootper"));
+			res.setFarshoot_in(rs.getString("farshoot_in"));
+			res.setFarshoot_all(rs.getString("farshoot_all"));
+			res.setFar_per(rs.getString("far_per"));
+			res.setTrueshootper(rs.getString("trueshootper"));
+			res.setShooteff(rs.getString("shooteff"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public PlayerDataPlayOff_Ad_Shoot setp_ad_s(ResultSet rs){
+		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
+		try{
+			res.setName(rs.getString("name"));
+			res.setId(rs.getInt("id"));
+			res.setSeason(rs.getString("season"));
+			res.setTeam(rs.getString("team"));
+			res.setShootdis(rs.getString("shootdis"));
+			res.setBshootper(rs.getString("bshootper"));
+			res.setBshoot_in(rs.getString("bshoot_in"));
+			res.setBshoot_all(rs.getString("bshoot_all"));
+			res.setB_per(rs.getString("b_per"));
+			res.setCloseshootper(rs.getString("closeshootper"));
+			res.setCloseshoot_in(rs.getString("closeshoot_in"));
+			res.setCloseshoot_all(rs.getString("closeshoot_all"));
+			res.setClose_per(rs.getString("close_per"));
+			res.setMidshootper(rs.getString("midshootper"));
+			res.setMidshoot_in(rs.getString("midshoot_in"));
+			res.setMidshoot_all(rs.getString("midshoot_all"));
+			res.setMid_per(rs.getString("mid_per"));
+			res.setFarshootper(rs.getString("farshootper"));
+			res.setFarshoot_in(rs.getString("farshoot_in"));
+			res.setFarshoot_all(rs.getString("farshoot_all"));
+			res.setFar_per(rs.getString("far_per"));
+			res.setTrueshootper(rs.getString("trueshootper"));
+			res.setShooteff(rs.getString("shooteff"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
 	}
 	
 	@Override
@@ -604,13 +877,15 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		return res;
 	}
 
 	@Override
-	public PlayerDataSeason_Avg_Basic gets_a_b(int id) throws RemoteException {
+	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id) throws RemoteException {
 		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Avg_Basic> temp = new ArrayList<PlayerDataSeason_Avg_Basic>();
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -621,50 +896,27 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'");
-
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setGp(rs.getString("gp"));
-			res.setGs(rs.getString("gs"));
-			res.setTime(rs.getString("time"));
-			res.setShootper(rs.getString("shootper"));
-			res.setShoot_in(rs.getString("shoot_in"));
-			res.setShoot_all(rs.getString("shoot_all"));
-			res.setThper(rs.getString("thper"));
-			res.setTh_in(rs.getString("th_in"));
-			res.setTh_all(rs.getString("th_all"));
-			res.setFtper(rs.getString("ftper"));
-			res.setFt_in(rs.getString("ft_in"));
-			res.setFt_all(rs.getString("ft_all"));
-			res.setBackbound(rs.getString("backbound"));
-			res.setOffb(rs.getString("offb"));
-			res.setDefb(rs.getString("defb"));
-			res.setAssist(rs.getString("assist"));
-			res.setSteal(rs.getString("steal"));
-			res.setRejection(rs.getString("rejection"));
-			res.setMiss(rs.getString("miss"));
-			res.setFoul(rs.getString("foul"));
-			res.setPts(rs.getString("pts"));
-			res.setWin(rs.getString("win"));
-			res.setLose(rs.getString("lose"));
-			
+			while(rs.next()){
+				res = sets_a_b(rs);
+				temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 	
 		
 	}
 
 	@Override
-	public PlayerDataSeason_Tot_Basic gets_t_b(int id) throws RemoteException {
+	public ArrayList<PlayerDataSeason_Tot_Basic> gets_t_b(int id) throws RemoteException {
 		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Tot_Basic> temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
 		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -675,49 +927,25 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_t_b where id = '"+id+"'");
-
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setGp(rs.getString("gp"));
-			res.setGs(rs.getString("gs"));
-			res.setTime(rs.getString("time"));
-			res.setShootper(rs.getString("shootper"));
-			res.setShoot_in(rs.getString("shoot_in"));
-			res.setShoot_all(rs.getString("shoot_all"));
-			res.setThper(rs.getString("thper"));
-			res.setTh_in(rs.getString("th_in"));
-			res.setTh_all(rs.getString("th_all"));
-			res.setFtper(rs.getString("ftper"));
-			res.setFt_in(rs.getString("ft_in"));
-			res.setFt_all(rs.getString("ft_all"));
-			res.setBackbound(rs.getString("backbound"));
-			res.setOffb(rs.getString("offb"));
-			res.setDefb(rs.getString("defb"));
-			res.setAssist(rs.getString("assist"));
-			res.setSteal(rs.getString("steal"));
-			res.setRejection(rs.getString("rejection"));
-			res.setMiss(rs.getString("miss"));
-			res.setFoul(rs.getString("foul"));
-			res.setPts(rs.getString("pts"));
-			res.setWin(rs.getString("win"));
-			res.setLose(rs.getString("lose"));
-			
+			while(rs.next()){
+			res = sets_t_b(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 	}
 
 	@Override
-	public PlayerDataSeason_Ad_Basic gets_ad_b(int id) throws RemoteException {
+	public ArrayList<PlayerDataSeason_Ad_Basic> gets_ad_b(int id) throws RemoteException {
 		// TODO Auto-generated method stub
-
+		ArrayList<PlayerDataSeason_Ad_Basic> temp = new ArrayList<PlayerDataSeason_Ad_Basic>();
 		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -728,44 +956,26 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_b where id = '"+id+"'");
-			
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setBackeff(rs.getString("backeff"));
-			res.setOffbeff(rs.getString("offbeff"));
-			res.setDefbeff(rs.getString("defbeff"));
-			res.setAssisteff(rs.getString("assisteff"));
-			res.setStealeff(rs.getString("stealeff"));
-			res.setRejeff(rs.getString("rejeff"));
-			res.setMisseff(rs.getString("misseff"));
-			res.setUseeff(rs.getString("useeff"));
-			res.setOffeff(rs.getString("offeff"));
-			res.setDefeff(rs.getString("defeff"));
-			res.setWs(rs.getString("ws"));
-			res.setOffws(rs.getString("offws"));
-			res.setDefws(rs.getString("defws"));
-			res.setPer(rs.getString("per"));
-			res.setStrshoot(rs.getString("strshoot"));
-			res.setKda(rs.getString("kda"));
-			res.setBerej(rs.getString("berej"));
-			
+			while(rs.next()){
+			res = sets_ad_b(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 		
 	}
 
 	@Override
-	public PlayerDataSeason_Ad_Shoot gets_ad_s(int id) throws RemoteException {
+	public ArrayList<PlayerDataSeason_Ad_Shoot> gets_ad_s(int id) throws RemoteException {
 		// TODO Auto-generated method stub
-
+		ArrayList<PlayerDataSeason_Ad_Shoot> temp = new ArrayList<PlayerDataSeason_Ad_Shoot>();
 		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -776,44 +986,25 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_s where id = '"+id+"'");
-			
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setShootdis(rs.getString("shootdis"));
-			res.setBshootper(rs.getString("bshootper"));
-			res.setBshoot_in(rs.getString("bshoot_in"));
-			res.setBshoot_all(rs.getString("bshoot_all"));
-			res.setB_per(rs.getString("b_per"));
-			res.setCloseshootper(rs.getString("closeshootper"));
-			res.setCloseshoot_in(rs.getString("closeshoot_in"));
-			res.setCloseshoot_all(rs.getString("closeshoot_all"));
-			res.setClose_per(rs.getString("close_per"));
-			res.setMidshootper(rs.getString("midshootper"));
-			res.setMidshoot_in(rs.getString("midshoot_in"));
-			res.setMidshoot_all(rs.getString("midshoot_all"));
-			res.setMid_per(rs.getString("mid_per"));
-			res.setFarshootper(rs.getString("farshootper"));
-			res.setFarshoot_in(rs.getString("farshoot_in"));
-			res.setFarshoot_all(rs.getString("farshoot_all"));
-			res.setFar_per(rs.getString("far_per"));
-			res.setTrueshootper(rs.getString("trueshootper"));
-			res.setShooteff(rs.getString("shooteff"));
-			
+			while(rs.next()){
+			res = sets_ad_s(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 	}
 
 	@Override
-	public PlayerDataPlayOff_Avg_Basic getp_a_b(int id) throws RemoteException {
+	public ArrayList<PlayerDataPlayOff_Avg_Basic> getp_a_b(int id) throws RemoteException {
 		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Avg_Basic> temp = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
 		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -824,47 +1015,25 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_a_b where id = '"+id+"'");
-
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setGp(rs.getString("gp"));
-			res.setTime(rs.getString("time"));
-			res.setShootper(rs.getString("shootper"));
-			res.setShoot_in(rs.getString("shoot_in"));
-			res.setShoot_all(rs.getString("shoot_all"));
-			res.setThper(rs.getString("thper"));
-			res.setTh_in(rs.getString("th_in"));
-			res.setTh_all(rs.getString("th_all"));
-			res.setFtper(rs.getString("ftper"));
-			res.setFt_in(rs.getString("ft_in"));
-			res.setFt_all(rs.getString("ft_all"));
-			res.setBackbound(rs.getString("backbound"));
-			res.setOffb(rs.getString("offb"));
-			res.setDefb(rs.getString("defb"));
-			res.setAssist(rs.getString("assist"));
-			res.setSteal(rs.getString("steal"));
-			res.setRejection(rs.getString("rejection"));
-			res.setMiss(rs.getString("miss"));
-			res.setFoul(rs.getString("foul"));
-			res.setPts(rs.getString("pts"));
-			res.setWin(rs.getString("win"));
-			res.setLose(rs.getString("lose"));
-			
+			while(rs.next()){
+			res = setp_a_b(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 	}
 
 	@Override
-	public PlayerDataPlayOff_Tot_Basic getp_t_b(int id) throws RemoteException {
+	public ArrayList<PlayerDataPlayOff_Tot_Basic> getp_t_b(int id) throws RemoteException {
 		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Tot_Basic> temp = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
 		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -875,47 +1044,25 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_t_b where id = '"+id+"'");
-
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setGp(rs.getString("gp"));
-			res.setTime(rs.getString("time"));
-			res.setShootper(rs.getString("shootper"));
-			res.setShoot_in(rs.getString("shoot_in"));
-			res.setShoot_all(rs.getString("shoot_all"));
-			res.setThper(rs.getString("thper"));
-			res.setTh_in(rs.getString("th_in"));
-			res.setTh_all(rs.getString("th_all"));
-			res.setFtper(rs.getString("ftper"));
-			res.setFt_in(rs.getString("ft_in"));
-			res.setFt_all(rs.getString("ft_all"));
-			res.setBackbound(rs.getString("backbound"));
-			res.setOffb(rs.getString("offb"));
-			res.setDefb(rs.getString("defb"));
-			res.setAssist(rs.getString("assist"));
-			res.setSteal(rs.getString("steal"));
-			res.setRejection(rs.getString("rejection"));
-			res.setMiss(rs.getString("miss"));
-			res.setFoul(rs.getString("foul"));
-			res.setPts(rs.getString("pts"));
-			res.setWin(rs.getString("win"));
-			res.setLose(rs.getString("lose"));
-			
+			while(rs.next()){
+			res = setp_t_b(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 	}
 
 	@Override
-	public PlayerDataPlayOff_Ad_Basic getp_ad_b(int id) throws RemoteException {
+	public ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id) throws RemoteException {
 		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Ad_Basic> temp = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
 		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -926,42 +1073,25 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_b where id = '"+id+"'");
-			
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setBackeff(rs.getString("backeff"));
-			res.setOffbeff(rs.getString("offbeff"));
-			res.setDefbeff(rs.getString("defbeff"));
-			res.setAssisteff(rs.getString("assisteff"));
-			res.setStealeff(rs.getString("stealeff"));
-			res.setRejeff(rs.getString("rejeff"));
-			res.setMisseff(rs.getString("misseff"));
-			res.setUseeff(rs.getString("useeff"));
-			res.setOffeff(rs.getString("offeff"));
-			res.setDefeff(rs.getString("defeff"));
-			res.setWs(rs.getString("ws"));
-			res.setOffws(rs.getString("offws"));
-			res.setDefws(rs.getString("defws"));
-			res.setPer(rs.getString("per"));
-			res.setStrshoot(rs.getString("strshoot"));
-			res.setKda(rs.getString("kda"));
-			res.setBerej(rs.getString("berej"));
-			
+			while(rs.next()){
+			res = setp_ad_b(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
 	}
 
 	@Override
-	public PlayerDataPlayOff_Ad_Shoot getp_ad_s(int id) throws RemoteException {
+	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getp_ad_s(int id) throws RemoteException {
 		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Ad_Shoot> temp = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
 		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -972,39 +1102,254 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_s where id = '"+id+"'");
-			
-			res.setName(rs.getString("name"));
-			res.setId(rs.getInt("id"));
-			res.setSeason(rs.getString("season"));
-			res.setTeam(rs.getString("team"));
-			res.setShootdis(rs.getString("shootdis"));
-			res.setBshootper(rs.getString("bshootper"));
-			res.setBshoot_in(rs.getString("bshoot_in"));
-			res.setBshoot_all(rs.getString("bshoot_all"));
-			res.setB_per(rs.getString("b_per"));
-			res.setCloseshootper(rs.getString("closeshootper"));
-			res.setCloseshoot_in(rs.getString("closeshoot_in"));
-			res.setCloseshoot_all(rs.getString("closeshoot_all"));
-			res.setClose_per(rs.getString("close_per"));
-			res.setMidshootper(rs.getString("midshootper"));
-			res.setMidshoot_in(rs.getString("midshoot_in"));
-			res.setMidshoot_all(rs.getString("midshoot_all"));
-			res.setMid_per(rs.getString("mid_per"));
-			res.setFarshootper(rs.getString("farshootper"));
-			res.setFarshoot_in(rs.getString("farshoot_in"));
-			res.setFarshoot_all(rs.getString("farshoot_all"));
-			res.setFar_per(rs.getString("far_per"));
-			res.setTrueshootper(rs.getString("trueshootper"));
-			res.setShooteff(rs.getString("shooteff"));
-			
+			while(rs.next()){
+			res = setp_ad_s(rs);
+			temp.add(res);
+			}
 			con.close();
 
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return res;
+		return temp;
+	}
+   
+	@Override
+	public ArrayList<PlayerDataSeason_Avg_Basic> getAlls_a_b(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Avg_Basic> temp = new ArrayList<PlayerDataSeason_Avg_Basic>();
+		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed())
+
+				System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where season = '"+season+"'");
+			while(rs.next()){
+				res = sets_a_b(rs);
+				temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	
+		
 	}
 
+	@Override
+	public ArrayList<PlayerDataSeason_Tot_Basic> getAlls_t_b(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Tot_Basic> temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
+		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_t_b where season = '"+season+"'");
+			while(rs.next()){
+			res = sets_t_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+
+	@Override
+	public ArrayList<PlayerDataSeason_Ad_Basic> getAlls_ad_b(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Ad_Basic> temp = new ArrayList<PlayerDataSeason_Ad_Basic>();
+		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_ad_b where season = '"+season+"'");
+			while(rs.next()){
+			res = sets_ad_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+		
+	}
+
+	@Override
+	public ArrayList<PlayerDataSeason_Ad_Shoot> getAlls_ad_s(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Ad_Shoot> temp = new ArrayList<PlayerDataSeason_Ad_Shoot>();
+		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_ad_s where season = '"+season+"'");
+			while(rs.next()){
+			res = sets_ad_s(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+
+	@Override
+	public ArrayList<PlayerDataPlayOff_Avg_Basic> getAllp_a_b(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Avg_Basic> temp = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
+		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_a_b where season = '"+season+"'");
+			while(rs.next()){
+			res = setp_a_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+
+	@Override
+	public ArrayList<PlayerDataPlayOff_Tot_Basic> getAllp_t_b(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Tot_Basic> temp = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
+		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_t_b where season = '"+season+"'");
+			while(rs.next()){
+			res = setp_t_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+
+	@Override
+	public ArrayList<PlayerDataPlayOff_Ad_Basic> getAllp_ad_b(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Ad_Basic> temp = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
+		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_ad_b where season = '"+season+"'");
+			while(rs.next()){
+			res = setp_ad_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+
+	@Override
+	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getAllp_ad_s(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Ad_Shoot> temp = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
+		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_ad_s where season = '"+season+"'");
+			while(rs.next()){
+			res = setp_ad_s(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	
 }
