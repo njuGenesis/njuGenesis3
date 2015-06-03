@@ -56,7 +56,6 @@ public class HotUI extends BgPanel implements Runnable{
 			hotPanel.refreshUI();
 		}else{
 //			this.remove(text);
-			this.remove(bluePanel);
 			this.remove(titleLabel);
 			this.remove(rightBt);
 			
@@ -121,118 +120,118 @@ public class HotUI extends BgPanel implements Runnable{
 	}
 
 	public void run(){
-		switch(runType){
-		case back:
-			
-			if(hotPanel != null){
-				this.remove(hotPanel);
-				hotPanel = null;
-			}
-			
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x++;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-
-			rightBt.setVisible(false);
-//			text.setIcon(HotspotUtil.welcome);
-//			text.setVisible(true);
-			this.repaint();
-			break;
-
-		case playerfast:
-//			text.setVisible(false);
-
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x--;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-			hotPanel = new HotPlayerProgressPanel();
-			this.add(hotPanel);
-			rightBt.setVisible(true);
-			
-			this.repaint();
-			break;
-
-		case playerseason:
-//			text.setVisible(false);
-
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x--;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-			hotPanel = new HotPlayerSeasonPanel();
-			this.add(hotPanel);
-			rightBt.setVisible(true);
-			
-			this.repaint();
-			break;
-
-		case playertoday:
-//			text.setVisible(false);
-
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x--;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-			
-			hotPanel = new HotPlayerTodayPanel();
-			this.add(hotPanel);
-			rightBt.setVisible(true);
-			
-			this.repaint();
-			break;
-
-		case teamseason:
-//			text.setVisible(false);
-
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x--;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-
-			hotPanel = new HotTeamSeasonPanel();
-			this.add(hotPanel);
-			rightBt.setVisible(true);
-			
-			this.repaint();
-			break;
-		}
+//		switch(runType){
+//		case back:
+//			
+//			if(hotPanel != null){
+//				this.remove(hotPanel);
+//				hotPanel = null;
+//			}
+//			
+//			for(int i=0;i<600;i++){
+//				int x = bluePanel.getX();
+//				x++;
+//				bluePanel.setLocation(x, bluePanel.getY());
+//
+//				this.repaint();
+//
+//				try{
+//					Thread.sleep(1);
+//				}catch(Exception ex){}
+//			}
+//
+//			rightBt.setVisible(false);
+////			text.setIcon(HotspotUtil.welcome);
+////			text.setVisible(true);
+//			this.repaint();
+//			break;
+//
+//		case playerfast:
+////			text.setVisible(false);
+//
+//			for(int i=0;i<600;i++){
+//				int x = bluePanel.getX();
+//				x--;
+//				bluePanel.setLocation(x, bluePanel.getY());
+//
+//				this.repaint();
+//
+//				try{
+//					Thread.sleep(1);
+//				}catch(Exception ex){}
+//			}
+//			hotPanel = new HotPlayerProgressPanel();
+//			this.add(hotPanel);
+//			rightBt.setVisible(true);
+//			
+//			this.repaint();
+//			break;
+//
+//		case playerseason:
+////			text.setVisible(false);
+//
+//			for(int i=0;i<600;i++){
+//				int x = bluePanel.getX();
+//				x--;
+//				bluePanel.setLocation(x, bluePanel.getY());
+//
+//				this.repaint();
+//
+//				try{
+//					Thread.sleep(1);
+//				}catch(Exception ex){}
+//			}
+//			hotPanel = new HotPlayerSeasonPanel();
+//			this.add(hotPanel);
+//			rightBt.setVisible(true);
+//			
+//			this.repaint();
+//			break;
+//
+//		case playertoday:
+////			text.setVisible(false);
+//
+//			for(int i=0;i<600;i++){
+//				int x = bluePanel.getX();
+//				x--;
+//				bluePanel.setLocation(x, bluePanel.getY());
+//
+//				this.repaint();
+//
+//				try{
+//					Thread.sleep(1);
+//				}catch(Exception ex){}
+//			}
+//			
+//			hotPanel = new HotPlayerTodayPanel();
+//			this.add(hotPanel);
+//			rightBt.setVisible(true);
+//			
+//			this.repaint();
+//			break;
+//
+//		case teamseason:
+////			text.setVisible(false);
+//
+//			for(int i=0;i<600;i++){
+//				int x = bluePanel.getX();
+//				x--;
+//				bluePanel.setLocation(x, bluePanel.getY());
+//
+//				this.repaint();
+//
+//				try{
+//					Thread.sleep(1);
+//				}catch(Exception ex){}
+//			}
+//
+//			hotPanel = new HotTeamSeasonPanel();
+//			this.add(hotPanel);
+//			rightBt.setVisible(true);
+//			
+//			this.repaint();
+//			break;
+//		}
 
 	}
 
