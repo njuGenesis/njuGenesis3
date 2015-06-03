@@ -1,7 +1,16 @@
 package crawler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -41,8 +50,7 @@ public class TestCrawlerByJsoup {
 //			e.printStackTrace();
 //		}
 	    TestCrawlerByJsoup  t = new TestCrawlerByJsoup();
-	    t.initializePlayerDetail(1,1);
-		t.initializePlayerSeason(1,1);
+	   t. getHotPlayer();
 	}
 	public void test(){
 		Document doc = null;
@@ -788,5 +796,53 @@ public class TestCrawlerByJsoup {
 		writeDB_P_ad_b();
 		writeDB_P_ad_s();
 		System.out.println("initialize player playoff end");
+	}
+
+	public void getHotPlayer(){
+		URL url;  
+        StringBuffer sb = new StringBuffer();  
+        String line = null;  
+        try {  
+            url = new URL(  
+            "http://china.nba.com/wap/static/data/league/dailyplayerleader_points.json");  
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+            InputStream is = conn.getInputStream();  
+            BufferedReader buffer = new BufferedReader(  
+                    new InputStreamReader(is));  
+            while ((line = buffer.readLine()) != null) {  
+                sb.append(line);  
+            }  
+           
+            String json = sb.substring(sb.indexOf("["), sb.indexOf("]") + 1);
+//            json = json.replaceAll(":\\{", ":[\\{");
+//            json = json.replaceAll("\\},\"teamProfile\"", "\\}],\"teamProfile\"");
+//            json = json.replaceAll("\\},\"rank\"", "\\}],\"rank\"");
+            System.out.println(json);
+          //  System.out.println(sb.substring(sb.indexOf("playerProfile"),sb.indexOf("teamProfile")+1));
+            JSONArray js  = new JSONArray(json);
+           // String json = sb.substring(sb.indexOf("{"), sb.indexOf("}") + 1);
+            for(int i = 0;i<js.length();i++){
+            	
+            	Object pprofile = js.getJSONObject(i).get("playerProfile");
+            	JSONObject parr = new JSONObject(pprofile.toString());
+            	System.out.println(parr.getString("displayName"));
+            	System.out.println(parr.getString("jerseyNo"));
+            	System.out.println(parr.getString("position"));
+            	
+            	Object tprofile = js.getJSONObject(i).get("teamProfile");
+            	JSONObject tarr = new JSONObject(tprofile.toString());
+            	System.out.println(tarr.getString("city"));
+            	System.out.println(tarr.getString("name"));
+            	
+            	System.out.println(js.getJSONObject(i).getString("rank"));
+            	System.out.println(js.getJSONObject(i).getString("value"));
+            	System.out.println();
+            }
+            
+        } catch (MalformedURLException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } 
 	}
 }
