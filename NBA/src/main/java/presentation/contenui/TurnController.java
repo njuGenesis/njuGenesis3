@@ -27,13 +27,14 @@ public class TurnController {
 		case PLAYER:newPanel = new PlayerUI();break;
 		case MATCH:newPanel = new MatchUI("img/Framebg/Match.png");break;
 		case STATS:newPanel = new StatsUI("img/Framebg/Stats.png");break;
+		case ANALYSIS:newPanel = new StatsUI("img/Framebg/Stats.png");break;
 		}
-		newPanel.setBounds(15, 50, 1000, 650);
+		newPanel.setBounds(0, 0, 1000, 670);
 		newPanel.setVisible(false);
 		return newPanel;
 	}
-	
-//	public 
+
+	//	public 
 	
 	public BgPanel turnToTeamDetials(String shortName){
 		BgPanel newPanel = new TeamDetials(shortName);

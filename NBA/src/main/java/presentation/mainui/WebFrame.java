@@ -1,6 +1,7 @@
 package presentation.mainui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,12 +13,14 @@ import presentation.component.BgPanel;
 import presentation.component.GFrame;
 import presentation.component.GLabel;
 import presentation.component.WebLabel;
+import presentation.contenui.PanelKind;
+import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 
 public class WebFrame extends GFrame{
 
 	private static final long serialVersionUID = 1L;
-	private GLabel title, bg;
+	private GLabel title, bg, close;
 	public static WebFrame frame;
 	private Vector<WebLabel> labelVector = new Vector<WebLabel>();
 	private Vector<BgPanel> panelVector = new Vector<BgPanel>();
@@ -34,6 +37,8 @@ public class WebFrame extends GFrame{
 	private Color menuButtonIconColor = new Color(199, 32, 49);
 	private Color labelColor = new Color(242, 224, 224);
 	
+	private TurnController turnController;
+	
 	public static void main(String[] args) {
 		new WebFrame();
 	}
@@ -43,6 +48,9 @@ public class WebFrame extends GFrame{
 		this.setVisible(true);
 		this.setMiddle();
 		this.setLayout(null);
+		
+		turnController = new TurnController();
+		
 		menuInit();
 		bgInit();
 		MouseAdapter mouseListener = new MouseAdapter(){
@@ -97,28 +105,88 @@ public class WebFrame extends GFrame{
 			}
 		});
 		
+		String buttonInfo[] = {"热点", "球员", "球队", "比赛", "统计", "分析"};
+		String buttonIconInfo[] = {"☀︎︎", "♂", "♗", "⚔︎︎", "⧲︎︎", "✍"};
+		
 		for(int i=0;i<menuButton.length;i++){
 			menuButton[i] = new GLabel("", new Point(0, 105+(80+2)*i), new Point(250, 80), menuPanel, true, 1, 15);
 			menuButton[i].setBackground(menuButtonColor);
 			menuButton[i].setForeground(UIUtil.bgWhite);
 			menuButton[i].setHorizontalAlignment(JLabel.CENTER);
 			menuButton[i].setOpaque(true);
+			menuButton[i].setText(buttonInfo[i]);
 			
 			menuButtonIcon[i] = new GLabel("", new Point(0, 0), new Point(90, 80), menuButton[i], true, 1, 40);
 			menuButtonIcon[i].setBackground(menuButtonIconColor);
 			menuButtonIcon[i].setForeground(UIUtil.bgWhite);
 			menuButtonIcon[i].setHorizontalAlignment(JLabel.CENTER);
 			menuButtonIcon[i].setOpaque(true);
+			menuButtonIcon[i].setText(buttonIconInfo[i]);
+			
+			menuButton[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e){
+					GLabel label = (GLabel) e.getSource();
+					label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}
+			});
 		}
-		menuButton[0].setText("热点");menuButtonIcon[0].setText("☀︎︎");
-		menuButton[1].setText("球员");menuButtonIcon[1].setText("♂");
-		menuButton[2].setText("球队");menuButtonIcon[2].setText("♗");
-		menuButton[3].setText("比赛");menuButtonIcon[3].setText("⚔︎︎");
-		menuButton[4].setText("统计");menuButtonIcon[4].setText("⧲︎︎");
-		menuButton[5].setText("分析");menuButtonIcon[5].setText("✍");
 		//this.add(menuPanel, new Integer(Integer.MAX_VALUE));
+		menuButton[0].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				GLabel label = (GLabel) e.getSource();
+				WebFrame.this.setPanel(turnController.turn(PanelKind.HOT), label.getText());
+			}
+		});
+		menuButton[1].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				GLabel label = (GLabel) e.getSource();
+				WebFrame.this.setPanel(turnController.turn(PanelKind.PLAYER), label.getText());
+			}
+		});
+		menuButton[2].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				GLabel label = (GLabel) e.getSource();
+				WebFrame.this.setPanel(turnController.turn(PanelKind.TEAM), label.getText());
+			}
+		});
+		menuButton[3].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				GLabel label = (GLabel) e.getSource();
+				WebFrame.this.setPanel(turnController.turn(PanelKind.MATCH), label.getText());
+			}
+		});
+		menuButton[4].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				GLabel label = (GLabel) e.getSource();
+				WebFrame.this.setPanel(turnController.turn(PanelKind.STATS), label.getText());
+			}
+		});
+		menuButton[5].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				GLabel label = (GLabel) e.getSource();
+				WebFrame.this.setPanel(turnController.turn(PanelKind.STATS), label.getText());
+			}
+		});
 		
-		
+		close = new GLabel("⦿", new Point(0, 105+(80+2)*(menuButton.length)-2), new Point(250, this.getHeight()-30-(105+(80+2)*(menuButton.length))), menuPanel, true, 1, 50);
+		close.setForeground(UIUtil.bgWhite);
+		close.setHorizontalAlignment(JLabel.CENTER);
+		close.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e){
+				close.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mousePressed(MouseEvent e){
+				WebFrame.this.dispose();
+			}
+		});
 	}
 	
 	private void bgInit(){
@@ -133,6 +201,7 @@ public class WebFrame extends GFrame{
 			panelVector.get(i).setVisible(false);
 		}
 		panelVector.addElement(newPanel);
+		newPanel.setVisible(true);
 		bg.add(panelVector.get(panelVector.size()-1));
 		
 		WebLabel gLabel = new WebLabel(" "+message, new Point(250+labelVector.size()*130, 0), new Point(130, 30), menuLabel, true, 0, 15, newPanel);

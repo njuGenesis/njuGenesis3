@@ -3,8 +3,9 @@ package presentation.contenui;
 public enum PanelKind {
 
 	HOT,
-	TEAM,
 	PLAYER,
+	TEAM,
 	MATCH,
 	STATS,
+	ANALYSIS
 }

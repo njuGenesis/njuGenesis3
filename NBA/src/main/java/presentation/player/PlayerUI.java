@@ -41,6 +41,7 @@ import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.hotspot.SelectLabel;
 import presentation.mainui.StartUI;
+import presentation.mainui.WebTable;
 
 public class PlayerUI extends BgPanel{
 	
@@ -50,7 +51,7 @@ public class PlayerUI extends BgPanel{
 	private SelectLabel letter[];
 	private PlayerLogic playerLogic = new PlayerLogic();
 	private TeamLogic teamLogic = new TeamLogic();
-	private StyleTable table;
+	private WebTable table;
 	private StyleScrollPane scrollPane;
 	private JComboBox<String> comboBoxTeam, comboBoxPosition;
 	private JTextField search;
@@ -64,17 +65,15 @@ public class PlayerUI extends BgPanel{
 	public PlayerUI() {
 		super(file);
 
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
+//		try {
+//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//		        if ("Nimbus".equals(info.getName())) {
+//		            UIManager.setLookAndFeel(info.getClassName());
+//		            break;
+//		        }
+//		    }
+//		} catch (Exception e) {}
 		
-		this.setSize(1000, 650);
-		this.setLocation(15, 50);
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
 		
@@ -316,12 +315,28 @@ public class PlayerUI extends BgPanel{
 			data.addElement(vector);
 		}
 		
-		table = new StyleTable();
-		scrollPane = new StyleScrollPane(table);
-		table.tableSetting(table, header, data, scrollPane, new Rectangle(40, 200, 920, 440));
-		table.setSort();
-		tableSetting(table);
-		this.add(scrollPane);
+//		table = new StyleTable();
+//		scrollPane = new StyleScrollPane(table);
+//		table.tableSetting(table, header, data, scrollPane, new Rectangle(40, 200, 920, 440));
+//		table.setSort();
+//		tableSetting(table);
+//		this.add(scrollPane);
+		
+		String h[] = {"姓名","球队","位置","号码","身高","体重","生日","球龄"};
+		Object[][] d = new Object[playList.length][h.length];
+		for(int i=0;i<playList.length;i++){
+			PlayerDataPO p = playList[i];
+			d[i][0] = p.getName()==null?"a":p.getName();
+			d[i][1] = TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName()==null?"a":TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName();
+			d[i][2] = p.getPosition()==null?"a":p.getPosition();
+			d[i][3] = p.getNumber()==null?"a":p.getNumber();
+			d[i][4] = p.getHeight()==null?"a":p.getHeight();
+			d[i][5] = p.getWeight();
+			d[i][6] = p.getBirth()==null?"a":p.getBirth();
+			d[i][7] = p.getExp();
+		}
+		table = new WebTable(h, d, new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		this.add(table);
 	}
 	
 	@Override
