@@ -15,7 +15,9 @@ public class PlayerLogic_db {
 		res = pdb.getdetail(id);
 		return res;
 	}
-
+	public int getIDbyName(String name,String team)throws RemoteException{
+		return pdb.getIDbyName(name,team);
+	}
 	// ----------获得单个球员的所有数据
 	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id)
 			throws RemoteException {

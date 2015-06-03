@@ -1351,5 +1351,31 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
+	public int getIDbyName(String name,String team) throws RemoteException{
+		// TODO Auto-generated method stub
+		int res = 0;
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_detail where name = '"+name+"' and team = '"+team+"'");
+			while(rs.next()){
+			res = rs.getInt("id");
+			
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+		return res;
+	}
 	
 }
