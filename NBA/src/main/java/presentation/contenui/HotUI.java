@@ -14,13 +14,10 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.hotspot.HotPlayerProgressPanel;
-import presentation.hotspot.HotPlayerSeasonPanel;
-import presentation.hotspot.HotPlayerTodayPanel;
-import presentation.hotspot.HotTeamSeasonPanel;
 import presentation.hotspot.HotspotUtil;
+import presentation.mainui.WebFrame;
 
-public class HotUI extends BgPanel implements Runnable{
+public class HotUI extends BgPanel{
 
 	/**
 	 * 
@@ -40,8 +37,8 @@ public class HotUI extends BgPanel implements Runnable{
 
 	private BgPanel hotPanel;
 	
-	private RunType runType;
-
+	private TurnController controller = new TurnController();
+	
 	enum RunType{
 		teamseason,
 		playertoday,
@@ -84,6 +81,7 @@ public class HotUI extends BgPanel implements Runnable{
 
 	}
 	
+	//----------初始化页面----------
 	private void init(){
 
 		titleLabel = new JLabel();
@@ -92,10 +90,6 @@ public class HotUI extends BgPanel implements Runnable{
 		titleLabel.addMouseMotionListener(new StatsListener());
 		titleLabel.addMouseListener(new StatsListener());
 		this.add(titleLabel);
-
-//		rightBt = new GLabel(HotspotUtil.titleBt, new Point(633-15, 310), new Point(16, 30), bluePanel, false);
-//		rightBt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//		rightBt.addMouseListener(new BackListener());
 		
 		this.repaint();
 	}
@@ -119,121 +113,7 @@ public class HotUI extends BgPanel implements Runnable{
 		return p.contains(x, y);
 	}
 
-	public void run(){
-//		switch(runType){
-//		case back:
-//			
-//			if(hotPanel != null){
-//				this.remove(hotPanel);
-//				hotPanel = null;
-//			}
-//			
-//			for(int i=0;i<600;i++){
-//				int x = bluePanel.getX();
-//				x++;
-//				bluePanel.setLocation(x, bluePanel.getY());
-//
-//				this.repaint();
-//
-//				try{
-//					Thread.sleep(1);
-//				}catch(Exception ex){}
-//			}
-//
-//			rightBt.setVisible(false);
-////			text.setIcon(HotspotUtil.welcome);
-////			text.setVisible(true);
-//			this.repaint();
-//			break;
-//
-//		case playerfast:
-////			text.setVisible(false);
-//
-//			for(int i=0;i<600;i++){
-//				int x = bluePanel.getX();
-//				x--;
-//				bluePanel.setLocation(x, bluePanel.getY());
-//
-//				this.repaint();
-//
-//				try{
-//					Thread.sleep(1);
-//				}catch(Exception ex){}
-//			}
-//			hotPanel = new HotPlayerProgressPanel();
-//			this.add(hotPanel);
-//			rightBt.setVisible(true);
-//			
-//			this.repaint();
-//			break;
-//
-//		case playerseason:
-////			text.setVisible(false);
-//
-//			for(int i=0;i<600;i++){
-//				int x = bluePanel.getX();
-//				x--;
-//				bluePanel.setLocation(x, bluePanel.getY());
-//
-//				this.repaint();
-//
-//				try{
-//					Thread.sleep(1);
-//				}catch(Exception ex){}
-//			}
-//			hotPanel = new HotPlayerSeasonPanel();
-//			this.add(hotPanel);
-//			rightBt.setVisible(true);
-//			
-//			this.repaint();
-//			break;
-//
-//		case playertoday:
-////			text.setVisible(false);
-//
-//			for(int i=0;i<600;i++){
-//				int x = bluePanel.getX();
-//				x--;
-//				bluePanel.setLocation(x, bluePanel.getY());
-//
-//				this.repaint();
-//
-//				try{
-//					Thread.sleep(1);
-//				}catch(Exception ex){}
-//			}
-//			
-//			hotPanel = new HotPlayerTodayPanel();
-//			this.add(hotPanel);
-//			rightBt.setVisible(true);
-//			
-//			this.repaint();
-//			break;
-//
-//		case teamseason:
-////			text.setVisible(false);
-//
-//			for(int i=0;i<600;i++){
-//				int x = bluePanel.getX();
-//				x--;
-//				bluePanel.setLocation(x, bluePanel.getY());
-//
-//				this.repaint();
-//
-//				try{
-//					Thread.sleep(1);
-//				}catch(Exception ex){}
-//			}
-//
-//			hotPanel = new HotTeamSeasonPanel();
-//			this.add(hotPanel);
-//			rightBt.setVisible(true);
-//			
-//			this.repaint();
-//			break;
-//		}
 
-	}
 
 
 
@@ -242,24 +122,17 @@ public class HotUI extends BgPanel implements Runnable{
 	class StatsListener implements MouseListener,MouseMotionListener{
 
 		public void mouseClicked(MouseEvent e) {
-//			Point p = e.getPoint();
-//			if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerToday)){
-//				runType = RunType.playertoday;
-//				Thread thread = new Thread(HotUI.this);
-//				thread.start();
-//			}else if(HotUI.this.checkWithJdkPolygon(p, polygonTeamSeason)){
-//				runType = RunType.teamseason;
-//				Thread thread = new Thread(HotUI.this);
-//				thread.start();
-//			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerSeason)){
-//				runType = RunType.playerseason;
-//				Thread thread = new Thread(HotUI.this);
-//				thread.start();
-//			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerFast)){
-//				runType = RunType.playerfast;
-//				Thread thread = new Thread(HotUI.this);
-//				thread.start();
-//			}
+			Point p = e.getPoint();
+			if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerToday)){
+				WebFrame.frame.setPanel(controller.turn(PanelKind.HOT_PLAYERTODAY), "当日热点球员");	
+				
+			}else if(HotUI.this.checkWithJdkPolygon(p, polygonTeamSeason)){
+				WebFrame.frame.setPanel(controller.turn(PanelKind.HOT_TEAMSEASON), "赛季热点球队");	
+			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerSeason)){
+				WebFrame.frame.setPanel(controller.turn(PanelKind.HOT_PLAYERSEASON), "赛季热点球员");	
+			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerFast)){
+				WebFrame.frame.setPanel(controller.turn(PanelKind.HOT_PLAYERPROGRESS), "进步最快球员");	
+			}
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -308,38 +181,6 @@ public class HotUI extends BgPanel implements Runnable{
 		}
 
 	}
-
-	//---------------右拉按钮监听---------------
-	class BackListener implements MouseListener{
-
-		public void mouseClicked(MouseEvent e) {
-			runType = RunType.back;
-			Thread thread = new Thread(HotUI.this);
-			thread.start();
-		}
-
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
-
 
 
 
