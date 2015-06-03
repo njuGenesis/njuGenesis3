@@ -29,17 +29,14 @@ public class HotUI extends BgPanel implements Runnable{
 
 	private static String bgStr = "img/hotspot/whitebg.jpg";
 
-	private BgPanel bluePanel;
-
 	private JLabel titleLabel;
 	private GLabel rightBt;
 	
-	private GLabel text;
 
-	private Point2D[] polygonPlayerToday = {new Point(254-78-15,79-79),new Point(325-78-15,149-79),new Point(254-78-15,220-79),new Point(184-78-15,149-79)};
-	private Point2D[] polygonTeamSeason = {new Point(148-78-15,325-79),new Point(219-78-15,395-79),new Point(148-78-15,466-79),new Point(78-78-15,395-79)};
-	private Point2D[] polygonPlayerSeason = {new Point(500-78-15,185-79),new Point(571-78-15,255-79),new Point(500-78-15,326-79),new Point(430-78-15,255-79)};
-	private Point2D[] polygonPlayerFast = {new Point(394-78-15,432-79),new Point(465-78-15,502-79),new Point(394-78-15,573-79),new Point(324-78-15,502-79)};
+	private Point2D[] polygonPlayerToday = {new Point(433,87),new Point(504,157),new Point(433,228),new Point(363,157)};
+	private Point2D[] polygonTeamSeason = {new Point(326,333),new Point(397,403),new Point(326,474),new Point(256,403)};
+	private Point2D[] polygonPlayerSeason = {new Point(679,194),new Point(750,264),new Point(679,335),new Point(609,264)};
+	private Point2D[] polygonPlayerFast = {new Point(572,440),new Point(643,510),new Point(572,581),new Point(502,510)};
 
 	private BgPanel hotPanel;
 	
@@ -58,7 +55,7 @@ public class HotUI extends BgPanel implements Runnable{
 		if(hotPanel!=null){
 			hotPanel.refreshUI();
 		}else{
-			this.remove(text);
+//			this.remove(text);
 			this.remove(bluePanel);
 			this.remove(titleLabel);
 			this.remove(rightBt);
@@ -79,36 +76,27 @@ public class HotUI extends BgPanel implements Runnable{
 		    }
 		} catch (Exception e) {}
 
-		this.setSize(1000, 650);
+		this.setSize(1000, 670);
 		this.setLocation(15, 50);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
 		
 		init();
 
 	}
 	
 	private void init(){
-		text = new GLabel(HotspotUtil.welcome,new Point(700, 120), new Point(260, 370), this, true);
-
-		bluePanel = new BgPanel("");
-		bluePanel.setSize(650, 650);
-		bluePanel.setLocation(0,0);
-		bluePanel.setOpaque(true);
-		bluePanel.setBackground(UIUtil.nbaBlue);
-		bluePanel.setLayout(null);
-		this.add(bluePanel);
 
 		titleLabel = new JLabel();
-		titleLabel.setBounds(78, 79, 494, 494);
+		titleLabel.setBounds(0, 0, 1000, 670);
 		titleLabel.setIcon(HotspotUtil.titleIcon);
 		titleLabel.addMouseMotionListener(new StatsListener());
 		titleLabel.addMouseListener(new StatsListener());
-		bluePanel.add(titleLabel);
+		this.add(titleLabel);
 
-		rightBt = new GLabel(HotspotUtil.titleBt, new Point(633-15, 310), new Point(16, 30), bluePanel, false);
-		rightBt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		rightBt.addMouseListener(new BackListener());
+//		rightBt = new GLabel(HotspotUtil.titleBt, new Point(633-15, 310), new Point(16, 30), bluePanel, false);
+//		rightBt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//		rightBt.addMouseListener(new BackListener());
 		
 		this.repaint();
 	}
@@ -154,13 +142,13 @@ public class HotUI extends BgPanel implements Runnable{
 			}
 
 			rightBt.setVisible(false);
-			text.setIcon(HotspotUtil.welcome);
-			text.setVisible(true);
+//			text.setIcon(HotspotUtil.welcome);
+//			text.setVisible(true);
 			this.repaint();
 			break;
 
 		case playerfast:
-			text.setVisible(false);
+//			text.setVisible(false);
 
 			for(int i=0;i<600;i++){
 				int x = bluePanel.getX();
@@ -181,7 +169,7 @@ public class HotUI extends BgPanel implements Runnable{
 			break;
 
 		case playerseason:
-			text.setVisible(false);
+//			text.setVisible(false);
 
 			for(int i=0;i<600;i++){
 				int x = bluePanel.getX();
@@ -202,7 +190,7 @@ public class HotUI extends BgPanel implements Runnable{
 			break;
 
 		case playertoday:
-			text.setVisible(false);
+//			text.setVisible(false);
 
 			for(int i=0;i<600;i++){
 				int x = bluePanel.getX();
@@ -224,7 +212,7 @@ public class HotUI extends BgPanel implements Runnable{
 			break;
 
 		case teamseason:
-			text.setVisible(false);
+//			text.setVisible(false);
 
 			for(int i=0;i<600;i++){
 				int x = bluePanel.getX();
@@ -255,24 +243,24 @@ public class HotUI extends BgPanel implements Runnable{
 	class StatsListener implements MouseListener,MouseMotionListener{
 
 		public void mouseClicked(MouseEvent e) {
-			Point p = e.getPoint();
-			if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerToday)){
-				runType = RunType.playertoday;
-				Thread thread = new Thread(HotUI.this);
-				thread.start();
-			}else if(HotUI.this.checkWithJdkPolygon(p, polygonTeamSeason)){
-				runType = RunType.teamseason;
-				Thread thread = new Thread(HotUI.this);
-				thread.start();
-			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerSeason)){
-				runType = RunType.playerseason;
-				Thread thread = new Thread(HotUI.this);
-				thread.start();
-			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerFast)){
-				runType = RunType.playerfast;
-				Thread thread = new Thread(HotUI.this);
-				thread.start();
-			}
+//			Point p = e.getPoint();
+//			if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerToday)){
+//				runType = RunType.playertoday;
+//				Thread thread = new Thread(HotUI.this);
+//				thread.start();
+//			}else if(HotUI.this.checkWithJdkPolygon(p, polygonTeamSeason)){
+//				runType = RunType.teamseason;
+//				Thread thread = new Thread(HotUI.this);
+//				thread.start();
+//			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerSeason)){
+//				runType = RunType.playerseason;
+//				Thread thread = new Thread(HotUI.this);
+//				thread.start();
+//			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerFast)){
+//				runType = RunType.playerfast;
+//				Thread thread = new Thread(HotUI.this);
+//				thread.start();
+//			}
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -305,23 +293,18 @@ public class HotUI extends BgPanel implements Runnable{
 			if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerToday)){
 				titleLabel.setIcon(HotspotUtil.title_playertoday);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				text.setIcon(HotspotUtil.playerToday);
 			}else if(HotUI.this.checkWithJdkPolygon(p, polygonTeamSeason)){
 				titleLabel.setIcon(HotspotUtil.title_teamseason);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				text.setIcon(HotspotUtil.teamSeason);
 			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerSeason)){
 				titleLabel.setIcon(HotspotUtil.title_playerseason);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				text.setIcon(HotspotUtil.playerSeason);
 			}else if(HotUI.this.checkWithJdkPolygon(p, polygonPlayerFast)){
 				titleLabel.setIcon(HotspotUtil.title_playerfast);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				text.setIcon(HotspotUtil.playerFast);
 			}else{
 				titleLabel.setIcon(HotspotUtil.titleIcon);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				text.setIcon(HotspotUtil.welcome);
 			}
 		}
 

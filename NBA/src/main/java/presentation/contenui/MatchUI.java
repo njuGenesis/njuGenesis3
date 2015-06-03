@@ -68,7 +68,7 @@ public class MatchUI extends BgPanel{
 		    }
 		} catch (Exception e) {}
 		
-		this.setSize(1000, 650);
+		this.setSize(1000, 670);
 		this.setLocation(15, 50);
 		this.setLayout(null);
 		this.setOpaque(false);
