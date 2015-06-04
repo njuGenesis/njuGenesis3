@@ -14,31 +14,28 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
+import presentation.mainui.WebFrame;
 import presentation.stats.PlayerStatsPanelNew;
 import presentation.stats.TeamStatsPanelNew;
 
-public class StatsUI extends BgPanel implements Runnable{
+public class StatsUI extends BgPanel{
 
 	private static final long serialVersionUID = 1L;
 
 
 	private static String bgStr = "img/hotspot/whitebg.jpg";
 
-	private BgPanel bluePanel;
 
 	private JLabel titleLabel;
-	private GLabel rightBt;
 
 	private BgPanel statsPanel;
 
-	private GLabel text;
 
+	Point2D[] polygonPlayer = {new Point(313,322),new Point(384,392),new Point(313,463),new Point(243,392)};
+	Point2D[] polygonTeam = {new Point(666,183),new Point(737,253),new Point(666,324),new Point(596,253)};
 
-	Point2D[] polygonPlayer = {new Point(163-78-15,325-149),new Point(93-78-15,395-149),new Point(163-78-15,466-149),new Point(234-78-15,395-149)};
-	Point2D[] polygonTeam = {new Point(515-78-15,185-149),new Point(445-78-15,255-149),new Point(515-78-15,326-149),new Point(586-78-15,255-149)};
-
-	private RunType runType;
-
+	private TurnController controller = new TurnController();
+	
 	enum RunType{
 		team,
 		player,
@@ -50,10 +47,7 @@ public class StatsUI extends BgPanel implements Runnable{
 		if(statsPanel!=null){
 			statsPanel.refreshUI();
 		}else{
-			this.remove(text);
-			this.remove(bluePanel);
 			this.remove(titleLabel);
-			this.remove(rightBt);
 			
 			init();
 		}
@@ -71,8 +65,6 @@ public class StatsUI extends BgPanel implements Runnable{
 		    }
 		} catch (Exception e) {}
 		
-		this.setSize(1000, 650);
-		this.setLocation(15, 50);
 		this.setLayout(null);
 		this.setOpaque(false);
 
@@ -80,27 +72,15 @@ public class StatsUI extends BgPanel implements Runnable{
 	}
 
 	private void init(){
-		text = new GLabel(StatsUtil.text_stats,new Point(700, 120), new Point(260, 370), this, true);
 
-		bluePanel = new BgPanel("");
-		bluePanel.setSize(650, 650);
-		bluePanel.setLocation(0,0);
-		bluePanel.setOpaque(true);
-		bluePanel.setBackground(UIUtil.nbaBlue);
-		bluePanel.setLayout(null);
-		this.add(bluePanel);
 
 		titleLabel = new JLabel();
-		titleLabel.setBounds(78, 149, 493, 354);
+		titleLabel.setBounds(0,0,1000,670);
 		titleLabel.setIcon(StatsUtil.title);
 		titleLabel.addMouseMotionListener(new StatsListener());
 		titleLabel.addMouseListener(new StatsListener());
-		bluePanel.add(titleLabel);
+		this.add(titleLabel);
 
-		rightBt = new GLabel(StatsUtil.rightIcon, new Point(633-15, 310), new Point(16, 30), bluePanel, false);
-		rightBt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		rightBt.addMouseListener(new BackListener());
-		
 		this.repaint();
 	}
 
@@ -124,85 +104,7 @@ public class StatsUI extends BgPanel implements Runnable{
 		return p.contains(x, y);
 	}
 
-	public void run(){
-		switch(runType){
-		case player:
-
-			text.setVisible(false);
-
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x--;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				StatsUI.this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-
-			if(statsPanel != null){
-				this.remove(statsPanel);
-			}
-			//			PlayerStatsPanel psp = new PlayerStatsPanel();
-			statsPanel = new PlayerStatsPanelNew();
-			StatsUI.this.add(statsPanel);
-			rightBt.setVisible(true);
-			StatsUI.this.repaint();
-			break;
-
-		case team:
-
-			text.setVisible(false);
-
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x--;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				StatsUI.this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-
-			if(statsPanel != null){
-				this.remove(statsPanel);
-			}
-			statsPanel = new TeamStatsPanelNew();
-			StatsUI.this.add(statsPanel);
-			rightBt.setVisible(true);
-			StatsUI.this.repaint();
-			break;
-
-		case back:
-			if(statsPanel != null){
-				this.remove(statsPanel);
-				statsPanel = null;
-			}
-			for(int i=0;i<600;i++){
-				int x = bluePanel.getX();
-				x++;
-				bluePanel.setLocation(x, bluePanel.getY());
-
-				StatsUI.this.repaint();
-
-				try{
-					Thread.sleep(1);
-				}catch(Exception ex){}
-			}
-
-			rightBt.setVisible(false);
-			text.setVisible(true);
-			StatsUI.this.repaint();
-			break;
-
-		}
-
-
-	}
+	
 
 
 	class StatsListener implements MouseListener,MouseMotionListener{
@@ -210,14 +112,9 @@ public class StatsUI extends BgPanel implements Runnable{
 		public void mouseClicked(MouseEvent e) {
 			Point p = e.getPoint();
 			if(StatsUI.this.checkWithJdkPolygon(p, polygonPlayer)){
-				runType = RunType.player;
-				Thread thread = new Thread(StatsUI.this);
-				thread.start();
+				WebFrame.frame.setPanel(controller.turn(PanelKind.STATS_PLAYER), "球员数据");	
 			}else if(StatsUI.this.checkWithJdkPolygon(p, polygonTeam)){
-				runType = RunType.team;
-				Thread thread = new Thread(StatsUI.this);
-				thread.start();
-
+				WebFrame.frame.setPanel(controller.turn(PanelKind.STATS_TEAM), "球队数据");	
 			}
 		}
 
@@ -251,48 +148,16 @@ public class StatsUI extends BgPanel implements Runnable{
 			if(StatsUI.this.checkWithJdkPolygon(p, polygonPlayer)){
 				titleLabel.setIcon(StatsUtil.title_player);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				text.setIcon(StatsUtil.text_player);
 			}else if(StatsUI.this.checkWithJdkPolygon(p, polygonTeam)){
 				titleLabel.setIcon(StatsUtil.title_team);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				text.setIcon(StatsUtil.text_team);
 			}else{
 				titleLabel.setIcon(StatsUtil.title);
 				titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				text.setIcon(StatsUtil.text_stats);
 			}
 		}
 
 	}
 
-	class BackListener implements MouseListener{
-
-		public void mouseClicked(MouseEvent e) {
-			runType = RunType.back;
-			Thread thread = new Thread(StatsUI.this);
-			thread.start();
-		}
-
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
 
 }

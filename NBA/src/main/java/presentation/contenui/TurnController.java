@@ -11,6 +11,8 @@ import presentation.mainui.StartUI;
 import presentation.match.MatchDetailPanel;
 import presentation.player.PlayerDetials;
 import presentation.player.PlayerUI;
+import presentation.stats.PlayerStatsPanelNew;
+import presentation.stats.TeamStatsPanelNew;
 import presentation.team.TeamDetials;
 import presentation.team.TeamUI;
 import bussinesslogic.match.MatchLogic;
@@ -36,6 +38,9 @@ public class TurnController {
 		case HOT_PLAYERSEASON:newPanel = new HotPlayerSeasonPanel();break;
 		case HOT_PLAYERPROGRESS:newPanel = new HotPlayerProgressPanel();break;
 		case HOT_TEAMSEASON:newPanel = new HotTeamSeasonPanel();break;
+		
+		case STATS_PLAYER:newPanel = new PlayerStatsPanelNew();break;
+		case STATS_TEAM:newPanel = new TeamStatsPanelNew();break;
 		}
 		newPanel.setBounds(0, 0, 1000, 670);
 		newPanel.setVisible(false);
