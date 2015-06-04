@@ -50,7 +50,7 @@ public class TestCrawlerByJsoup {
 //			e.printStackTrace();
 //		}
 	    TestCrawlerByJsoup  t = new TestCrawlerByJsoup();
-	   t. getHotPlayer();
+	   t.getProgressPlayer("assists");
 	}
 	public void test(){
 		Document doc = null;
@@ -798,13 +798,21 @@ public class TestCrawlerByJsoup {
 		System.out.println("initialize player playoff end");
 	}
 
-	public void getHotPlayer(){
+	public void getHotPlayerDaily(String key){
 		URL url;  
         StringBuffer sb = new StringBuffer();  
-        String line = null;  
+        String line = null; 
+        String path = "";
+        switch(key){
+        case "points":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_points.json";break;
+        case "rebounds":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_rebounds.json";break;
+        case "assists":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_assists.json";break;
+        case "blocks":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_blocks.json";break;
+        case "steals":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_steals.json";break;
+        	default:
+        }
         try {  
-            url = new URL(  
-            "http://china.nba.com/wap/static/data/league/dailyplayerleader_points.json");  
+            url = new URL(path);  
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
             InputStream is = conn.getInputStream();  
             BufferedReader buffer = new BufferedReader(  
@@ -836,6 +844,146 @@ public class TestCrawlerByJsoup {
             	
             	System.out.println(js.getJSONObject(i).getString("rank"));
             	System.out.println(js.getJSONObject(i).getString("value"));
+            	System.out.println();
+            }
+            
+        } catch (MalformedURLException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } 
+	}
+	
+	public void getHotPlayerSeason(String key){
+		URL url;  
+        StringBuffer sb = new StringBuffer();  
+        String line = null; 
+        String path = "";
+        String keyavg = "";
+        switch(key){
+        case "points":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_points_perGame.json";keyavg = "pointsPg";break;
+        case "rebounds":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_rebs_perGame.json";keyavg = "rebsPg";break;
+        case "assists":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_assists_perGame.json";keyavg = "assistsPg";break;
+        case "blocks":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_blocks_perGame.json";keyavg = "blocksPg";break;
+        case "steals":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_steals_perGame.json";keyavg = "stealsPg";break;
+        case "tppct":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_tppct_perGame.json";keyavg = "tppct";break;	
+        case "fgpct":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_fgpct_perGame.json";keyavg = "fgpct";break;
+        case "ftpct":path = "http://china.nba.com//wap/static/data/league/playerstats_5_true_ftpct_perGame.json";keyavg = "ftpct";break;
+        default:
+        }
+        try {  
+            url = new URL(path);  
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+            InputStream is = conn.getInputStream();  
+            BufferedReader buffer = new BufferedReader(  
+                    new InputStreamReader(is));  
+            while ((line = buffer.readLine()) != null) {  
+                sb.append(line);  
+            }  
+           
+            String json = sb.substring(sb.indexOf("["), sb.indexOf("]") + 1);
+//            json = json.replaceAll(":\\{", ":[\\{");
+//            json = json.replaceAll("\\},\"teamProfile\"", "\\}],\"teamProfile\"");
+//            json = json.replaceAll("\\},\"rank\"", "\\}],\"rank\"");
+            System.out.println(json);
+          //  System.out.println(sb.substring(sb.indexOf("playerProfile"),sb.indexOf("teamProfile")+1));
+            JSONArray js  = new JSONArray(json);
+           // String json = sb.substring(sb.indexOf("{"), sb.indexOf("}") + 1);
+            for(int i = 0;i<js.length();i++){
+            	System.out.println(js.getJSONObject(i).getString("rank"));
+            	
+            	Object pprofile = js.getJSONObject(i).get("playerProfile");
+            	JSONObject parr = new JSONObject(pprofile.toString());
+            	System.out.println(parr.getString("displayName"));
+            	System.out.println(parr.getString("jerseyNo"));
+            	System.out.println(parr.getString("position"));
+            	
+            	Object tprofile = js.getJSONObject(i).get("teamProfile");
+            	JSONObject tarr = new JSONObject(tprofile.toString());
+            	System.out.println(tarr.getString("city"));
+            	System.out.println(tarr.getString("name"));
+            	//"statAverage":{"assistsPg":1.2,"blocksPg":2.3,"defRebsPg":10.4,"efficiency":22.8,"fgaPg":10.706,"fgmPg":6.176,"fgpct":57.7,"foulsPg":3.5,"ftaPg":9.706,"ftmPg":4.0,"ftpct":41.2,"games":17,"gamesStarted":17,"minsPg":33.8,"offRebsPg":3.6,"pointsPg":16.4,"rebsPg":14.0,"stealsPg":1.4,"tpaPg":0.0,"tpmPg":0.0,"tppct":0.0,"turnoversPg":2.2}
+            	
+            	Object stprofile = js.getJSONObject(i).get("statAverage");
+            	JSONObject starr = new JSONObject(stprofile.toString());
+            	System.out.println(starr.getDouble(keyavg));
+            	
+            	System.out.println();
+            }
+            
+        } catch (MalformedURLException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } 
+	}
+
+	public void getProgressPlayer(String key){
+		URL url;  
+        StringBuffer sb = new StringBuffer();  
+        String line = null; 
+        String path = "http://china.nba.com/wap/static/data/league/playerwhoshot.json";
+//        switch(key){
+//        case "points":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_points.json";break;
+//        case "rebounds":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_rebounds.json";break;
+//        case "assists":path = "http://china.nba.com/wap/static/data/league/dailyplayerleader_assists.json";break;
+//        
+//        	default:
+//        }
+        JSONArray js = new JSONArray();;
+        try {  
+            url = new URL(path);  
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+            InputStream is = conn.getInputStream();  
+            BufferedReader buffer = new BufferedReader(  
+                    new InputStreamReader(is));  
+            while ((line = buffer.readLine()) != null) {  
+                sb.append(line);  
+            }  
+            
+            System.out.println(sb.toString());
+            
+            JSONObject og = new JSONObject(sb.toString());
+            JSONObject payload = og.getJSONObject("payload");
+           // System.out.println(payload.toString());
+
+            //JSONObject payload = temp.getJSONObject("");
+            JSONArray pointHotPlayers=payload.getJSONArray("pointHotPlayers");
+            JSONArray rebHotPlayers=payload.getJSONArray("reboundHotPlayers");
+            JSONArray assistHotPlayers=payload.getJSONArray("assistHotPlayers");
+          //  String pointHotPlayers = payload.getString("pointHotPlayers");
+            
+           // String rebHotPlayers = payload.getString("reboundHotPlayers");
+           // String assistHotPlayers = payload.getString("assistHotPlayers");
+            switch(key){
+            case "points":js = pointHotPlayers;break;
+            case "rebounds":js = rebHotPlayers;break;
+            case "assists":js = assistHotPlayers;break;
+            default:
+            }
+//            json = json.replaceAll(":\\{", ":[\\{");
+//            json = json.replaceAll("\\},\"teamProfile\"", "\\}],\"teamProfile\"");
+//            json = json.replaceAll("\\},\"rank\"", "\\}],\"rank\"");
+            
+          //  System.out.println(sb.substring(sb.indexOf("playerProfile"),sb.indexOf("teamProfile")+1));
+            //JSONArray js  = new JSONArray(json);
+           // String json = sb.substring(sb.indexOf("{"), sb.indexOf("}") + 1);
+            for(int i = 0;i<js.length();i++){
+            	
+            	Object pprofile = js.getJSONObject(i).get("playerProfile");
+            	JSONObject parr = new JSONObject(pprofile.toString());
+            	System.out.println(parr.getString("displayName"));
+            	System.out.println(parr.getString("jerseyNo"));
+            	System.out.println(parr.getString("position"));
+            	
+            	Object tprofile = js.getJSONObject(i).get("teamProfile");
+            	JSONObject tarr = new JSONObject(tprofile.toString());
+            	System.out.println(tarr.getString("city"));
+            	System.out.println(tarr.getString("name"));
+            	
+            	System.out.println(js.getJSONObject(i).getString("rank"));
+            	System.out.println(js.getJSONObject(i).getString("last5"));
+            	System.out.println(js.getJSONObject(i).getString("differential"));
             	System.out.println();
             }
             
