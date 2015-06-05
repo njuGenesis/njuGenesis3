@@ -57,7 +57,7 @@ public class TeamDataPO implements Serializable {
 	double ShootEff;// 投篮命中率，
 	double TPEff;// 三分命中率，
 	double FTEff;// 罚球命中率，
-	double WR;// 胜率，
+	double WR;// 胜率                                                   
 	double Off;// 进攻回合，
 	double OffPG;
 	double Def;// 防守回合，

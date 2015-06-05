@@ -121,7 +121,7 @@ rectangle = new Rectangle(14, 40, 920, 480);
 		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 		for(int i=match_PlayerPOs.size()-1;i>=0;i--){
 			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(match_PlayerPOs.get(i).getData());
+			vector.addElement(match_PlayerPOs.get(i).getDate());
 			vector.addElement(match_PlayerPOs.get(i).getOtherTeam());
 			if(match_PlayerPOs.get(i).getState().equals("")){
 				vector.addElement("非首发");
@@ -159,7 +159,7 @@ rectangle = new Rectangle(14, 40, 920, 480);
 		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 		for(int i=match_PlayerPOs.size()-1;i>=0;i--){
 			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(match_PlayerPOs.get(i).getData());
+			vector.addElement(match_PlayerPOs.get(i).getDate());
 			vector.addElement(match_PlayerPOs.get(i).getOtherTeam());
 			vector.addElement((int)match_PlayerPOs.get(i).getBankOff());
 			vector.addElement((int)match_PlayerPOs.get(i).getBankDef());

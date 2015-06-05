@@ -8,7 +8,7 @@ public class Match_PlayerPO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	String Data;
+	String Date;
 	String OtherTeam;
 	String Team;
 	String Playername;
@@ -45,12 +45,12 @@ public class Match_PlayerPO implements Serializable{
 		OtherTeam = otherTeam;
 	}
 
-	public String getData() {
-		return Data;
+	public String getDate() {
+		return Date;
 	}
 
-	public void setData(String data) {
-		Data = data;
+	public void setDate(String date) {
+		Date = date;
 	}
 	
 	public String getTeam() {
