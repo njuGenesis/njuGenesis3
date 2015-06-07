@@ -2,10 +2,13 @@ package presentation.stats;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -21,54 +24,112 @@ import presentation.component.GComboBox;
 import presentation.component.GLabel;
 import presentation.component.GTable;
 import presentation.component.StyleScrollPane;
+import presentation.contenui.StatsUtil;
 import presentation.contenui.TableUtility;
 import presentation.contenui.UIUtil;
+import presentation.mainui.WebTable;
 import assistance.NewFont;
 import bussinesslogic.player.PlayerLogic;
+import bussinesslogic.player.PlayerLogic_db;
 import data.po.PlayerDataPO;
+import data.po.playerData.PlayerDataPlayOff_Ad_Basic;
+import data.po.playerData.PlayerDataPlayOff_Ad_Shoot;
+import data.po.playerData.PlayerDataPlayOff_Avg_Basic;
+import data.po.playerData.PlayerDataPlayOff_Tot_Basic;
+import data.po.playerData.PlayerDataSeason_Ad_Basic;
+import data.po.playerData.PlayerDataSeason_Ad_Shoot;
+import data.po.playerData.PlayerDataSeason_Avg_Basic;
+import data.po.playerData.PlayerDataSeason_Tot_Basic;
 
 public class PlayerStatsPanelNew extends BgPanel{
 
-	/**
+
+	/*
+	 * 数据说明：
+	 * season的是常规赛，playoff是季后赛
+	 * avg是平均，tot是总计，ad是进阶数据
 	 * 
-	 */
+	 * */
+
+
+
 	private static final long serialVersionUID = 1L;
 	private static String bg = "";
 
 	private PlayerLogic logic = new PlayerLogic();
-
-	public GTable table;
-	public StyleScrollPane jspAll;
-	public StyleScrollPane jspAvg;
-	public StyleScrollPane jspEff;
+	private PlayerLogic_db logic_db = new PlayerLogic_db();
 
 	public JLabel title;
 
 	public JComboBox<String> position;
 	public JComboBox<String> league;
 	public JComboBox<String> season;
+	public JComboBox<String> type;  //常规赛or季后赛
 
 	public String[] positionItem = {"全部位置","后卫","前锋","中锋"}; 
 	public String[] leagueItem = {"全部联盟","东-大西洋分区","东-中央分区","东-东南分区","西-西北分区","西-太平洋分区","西-西南分区"};
 	//	public String[] statsItem = {"得分","篮板","助攻","得分/篮板/助攻","盖帽","抢断","犯规","失误","分钟","效率","投篮","三分","罚球","两双"};
-	public String[] seasonItem = {"13-14赛季","12-13赛季"};
+	public String[] seasonItem = StatsUtil.seasons;
+	public String[] typeItem = {"常规赛","季后赛"};
 
 	public JButton submit;
 
-
-	//	String[] head = {"序号","姓名","球队","参赛","先发","在场时间","得分","篮板","助攻","投篮命中率","三分命中率",
-	//			"罚球命中率","两双","进攻","防守","抢断","盖帽","失误","犯规","效率","GmSc效率",
-	//			"真实命中率","投篮效率","篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率","使用率"};
-
 	String[] header1 = {"姓名","球队","参赛","先发","在场时间","得分","篮板","助攻","两双","进攻","防守","抢断","盖帽","失误","犯规","效率"};
 	String[] header2 = {"姓名","球队","投篮%","三分%","罚球%","GmSc效率","真实命中率","投篮效率","篮板%","进攻篮板%","防守篮板%","助攻%","抢断%","盖帽%","失误%","使用%"};
+
+	String[] header_basic = {"姓名","球队","出场","首发","时间",
+			"投篮","命中","出手",
+			"三分","命中","出手",
+			"罚球","命中","出手",
+			"篮板","前场","后场",
+			"助攻","抢断","盖帽","失误","犯规",
+			"得分","胜","负",};
+
+	String[] header_basic2 = {"姓名","球队","出场","时间",   //季后赛，无首发属性
+			"投篮","命中","出手",
+			"三分","命中","出手",
+			"罚球","命中","出手",
+			"篮板","前场","后场",
+			"助攻","抢断","盖帽","失误","犯规",
+			"得分","胜","负",};
+
+	String[] header_ad_basic = {"姓名","球队",
+			"篮板%","进攻板%","防守板%",
+			"助攻%","抢断%","盖帽%","失误%","使用%",
+			"进攻效率","防守效率",
+			"WS","进攻WS","防守WS",  //胜利贡献率
+			"PER","扣篮","2/3+1","被帽",  //PER为效率
+	};
+	String[] header_ad_shoot = {"姓名","球队","出手距离",
+			"篮下命中率","命中","出手","占比",
+			"近距两分","命中","出手","占比",
+			"中距两分","命中","出手","占比",
+			"远距两分","命中","出手","占比",
+			"真实命中率","投篮效率",
+	};
+
 
 	JCheckBox all;  //总数
 	JCheckBox avg;  //场均
 	JCheckBox eff;  //效率
 
+	JCheckBox ad_eff;  //进阶数据
+	JCheckBox ad_shooteff;  //投篮进阶数据
+
+	public GTable table;
+	public StyleScrollPane jspAll;
+	public StyleScrollPane jspAvg;
+	public StyleScrollPane jspEff;
+
+
+	public WebTable allTable;
+	public WebTable avgTable;
+	public WebTable adBasicTable;
+	public WebTable adShootTable;
+
+
 	StatsFactory factory = new StatsFactory();
-	
+
 	@Override
 	public void refreshUI() {
 		this.remove(title);
@@ -88,14 +149,14 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 	public PlayerStatsPanelNew() {
 		super(bg);
-		
+
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		} catch (Exception e) {}
 
 		this.setBounds(50, 0, 950, 650);
@@ -105,7 +166,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		init();
 
 	}
-	
+
 	private void init(){
 		title = new GLabel("   球员",new Point(80-this.getX(),30),new Point(890,52),this,true,0,24);
 		title.setOpaque(true);
@@ -128,13 +189,18 @@ public class PlayerStatsPanelNew extends BgPanel{
 		season.setFont(NewFont.ComboBoxFont);
 		this.add(season);
 
+		type = new GComboBox(seasonItem);
+		type.setBounds(680-this.getX(), 100, 150, 30);
+		type.setFont(NewFont.ComboBoxFont);
+		this.add(type);
+
 		submit = UIUtil.getSelectButton();
 		submit.setBounds(820-this.getX(), 100, 150, 30);
 		submit.addMouseListener(new SubmitListener());
 		this.add(submit);
 
 		all = new JCheckBox("总数");
-		all.setBounds(740-this.getX(), 150, 70, 30);
+		all.setBounds(80-this.getX(), 150, 70, 30);
 		all.setSelected(true);
 		all.setOpaque(false);
 		all.addActionListener(new ActionListener(){
@@ -154,7 +220,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		this.add(all);
 
 		avg = new JCheckBox("场均");
-		avg.setBounds(820-this.getX(), 150, 70, 30);
+		avg.setBounds(200-this.getX(), 150, 70, 30);
 		avg.setOpaque(false);
 		avg.addActionListener(new ActionListener(){
 
@@ -173,6 +239,48 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 		});
 		this.add(avg);
+
+		ad_eff = new JCheckBox("进阶数据");
+		ad_eff.setBounds(320-this.getX(), 150, 70, 30);
+		ad_eff.setOpaque(false);
+		ad_eff.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(avg.isSelected()){
+					all.setSelected(false);
+					eff.setSelected(false);
+					jspAll.setVisible(false);
+					jspAvg.setVisible(true);
+					jspEff.setVisible(false);
+				}else{
+					avg.setSelected(true);
+				}
+			}
+
+		});
+		this.add(ad_eff);
+
+		ad_shooteff = new JCheckBox("投篮进阶");
+		ad_shooteff.setBounds(400-this.getX(), 150, 70, 30);
+		ad_shooteff.setOpaque(false);
+		ad_shooteff.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(avg.isSelected()){
+					all.setSelected(false);
+					eff.setSelected(false);
+					jspAll.setVisible(false);
+					jspAvg.setVisible(true);
+					jspEff.setVisible(false);
+				}else{
+					avg.setSelected(true);
+				}
+			}
+
+		});
+		this.add(ad_shooteff);
 
 		eff = new JCheckBox("效率");
 		eff.setBounds(900-this.getX(), 150, 70, 30);
@@ -193,7 +301,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 			}
 
 		});
-		this.add(eff);
+		//		this.add(eff);
 
 		jspAll = factory.getTablePanePlayer(getHeader1(), getAllData());
 		this.add(jspAll);
@@ -205,11 +313,31 @@ public class PlayerStatsPanelNew extends BgPanel{
 		jspEff = factory.getTablePanePlayer(getHeader2(), getEffData());
 		jspEff.setVisible(false);
 		this.add(jspEff);
-		
+
+		allTable = new WebTable(header_basic, getAllData_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		this.add(allTable);
+		avgTable = new WebTable(header_basic, getAvgData_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		avgTable.setVisible(false);
+		this.add(avgTable);
+		//		adBasicTable = new WebTable(header_basic, d, new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		//		adBasicTable.setVisible(false);
+		//		this.add(adBasicTable);
+		//		adShootTable = new WebTable(header_basic, d, new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		//		adShootTable.setVisible(false);
+		//		this.add(adShootTable);
+
+
 		this.repaint();
 	}
 
 
+	private Vector<String> getHeader(String[] h){
+		Vector<String> v = new Vector<String>();
+		for(int i=0;i<h.length;i++){
+			v.addElement(h[i]);
+		}
+		return v;
+	}
 
 	private Vector<String> getHeader1(){
 		Vector<String> v = new Vector<String>();
@@ -225,6 +353,101 @@ public class PlayerStatsPanelNew extends BgPanel{
 			v.addElement(header2[i]);
 		}
 		return v;
+	}
+
+	//获取默认条件下，总数表格内容
+	private Object[][] getAllData_default(){
+		String s = season.getSelectedItem().toString();
+
+		if(isRegular()){  //常规赛
+			ArrayList<PlayerDataSeason_Tot_Basic> temp;
+			try {
+				temp = logic_db.getAlls_t_b(s);
+			} catch (RemoteException e) {
+				temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
+				e.printStackTrace();
+			}
+			Object[][] data = new Object[temp.size()][25];
+
+			for(int i=0;i<temp.size();i++){
+				data[i][0] = temp.get(i).getName();
+				data[i][1] = temp.get(i).getTeam();
+				data[i][2] = temp.get(i).getGs();
+				data[i][3] = temp.get(i).getGp();
+				data[i][4] = temp.get(i).getTime();
+
+				data[i][5] = temp.get(i).getShootper();
+				data[i][6] = temp.get(i).getShoot_in();
+				data[i][7] = temp.get(i).getShoot_all();
+
+				data[i][8] = temp.get(i).getThper();
+				data[i][9] = temp.get(i).getTh_in();
+				data[i][10] = temp.get(i).getTh_all();
+
+				data[i][11] = temp.get(i).getFtper();
+				data[i][12] = temp.get(i).getFt_in();
+				data[i][13] = temp.get(i).getFt_all();
+
+				data[i][14] = temp.get(i).getBackbound();
+				data[i][15] = temp.get(i).getOffb();
+				data[i][16] = temp.get(i).getDefb();
+
+				data[i][17] = temp.get(i).getAssist();
+				data[i][18] = temp.get(i).getSteal();
+				data[i][19] = temp.get(i).getRejection();
+				data[i][20] = temp.get(i).getMiss();
+				data[i][21] = temp.get(i).getFoul();
+
+				data[i][22] = temp.get(i).getPts();
+				data[i][23] = temp.get(i).getWin();
+				data[i][24] = temp.get(i).getLose();
+			}
+			return data;
+
+		}else{  //季后赛
+			ArrayList<PlayerDataPlayOff_Tot_Basic> temp;
+			try {
+				temp = logic_db.getAllp_t_b(s);
+			} catch (RemoteException e) {
+				temp = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
+				e.printStackTrace();
+			}
+			Object[][] data = new Object[temp.size()][24];  //无首发属性
+
+			for(int i=0;i<temp.size();i++){
+				data[i][0] = temp.get(i).getName();
+				data[i][1] = temp.get(i).getTeam();
+				data[i][2] = temp.get(i).getGp();
+				data[i][3] = temp.get(i).getTime();
+
+				data[i][4] = temp.get(i).getShootper();
+				data[i][5] = temp.get(i).getShoot_in();
+				data[i][6] = temp.get(i).getShoot_all();
+
+				data[i][7] = temp.get(i).getThper();
+				data[i][8] = temp.get(i).getTh_in();
+				data[i][9] = temp.get(i).getTh_all();
+
+				data[i][10] = temp.get(i).getFtper();
+				data[i][11] = temp.get(i).getFt_in();
+				data[i][12] = temp.get(i).getFt_all();
+
+				data[i][13] = temp.get(i).getBackbound();
+				data[i][14] = temp.get(i).getOffb();
+				data[i][15] = temp.get(i).getDefb();
+
+				data[i][16] = temp.get(i).getAssist();
+				data[i][17] = temp.get(i).getSteal();
+				data[i][18] = temp.get(i).getRejection();
+				data[i][19] = temp.get(i).getMiss();
+				data[i][20] = temp.get(i).getFoul();
+
+				data[i][21] = temp.get(i).getPts();
+				data[i][22] = temp.get(i).getWin();
+				data[i][23] = temp.get(i).getLose();
+			}
+			return data;
+		}
 	}
 
 	private Vector<Vector<Object>> getAllData(){
@@ -262,6 +485,219 @@ public class PlayerStatsPanelNew extends BgPanel{
 		return data;
 	}
 
+
+	//获取默认条件下，场均表格内容
+	private Object[][] getAvgData_default(){
+		String s = season.getSelectedItem().toString();
+
+		if(isRegular()){  //常规赛
+			ArrayList<PlayerDataSeason_Avg_Basic> temp;
+			try {
+				temp = logic_db.getAlls_a_b(s);
+			} catch (RemoteException e) {
+				temp = new ArrayList<PlayerDataSeason_Avg_Basic>();
+				e.printStackTrace();
+			}
+			Object[][] data = new Object[temp.size()][25];
+
+			for(int i=0;i<temp.size();i++){
+				data[i][0] = temp.get(i).getName();
+				data[i][1] = temp.get(i).getTeam();
+				data[i][2] = temp.get(i).getGs();
+				data[i][3] = temp.get(i).getGp();
+				data[i][4] = temp.get(i).getTime();
+
+				data[i][5] = temp.get(i).getShootper();
+				data[i][6] = temp.get(i).getShoot_in();
+				data[i][7] = temp.get(i).getShoot_all();
+
+				data[i][8] = temp.get(i).getThper();
+				data[i][9] = temp.get(i).getTh_in();
+				data[i][10] = temp.get(i).getTh_all();
+
+				data[i][11] = temp.get(i).getFtper();
+				data[i][12] = temp.get(i).getFt_in();
+				data[i][13] = temp.get(i).getFt_all();
+
+				data[i][14] = temp.get(i).getBackbound();
+				data[i][15] = temp.get(i).getOffb();
+				data[i][16] = temp.get(i).getDefb();
+
+				data[i][17] = temp.get(i).getAssist();
+				data[i][18] = temp.get(i).getSteal();
+				data[i][19] = temp.get(i).getRejection();
+				data[i][20] = temp.get(i).getMiss();
+				data[i][21] = temp.get(i).getFoul();
+
+				data[i][22] = temp.get(i).getPts();
+				data[i][23] = temp.get(i).getWin();
+				data[i][24] = temp.get(i).getLose();
+			}
+			return data;
+
+		}else{  //季后赛
+			ArrayList<PlayerDataPlayOff_Avg_Basic> temp;
+			try {
+				temp = logic_db.getAllp_a_b(s);
+			} catch (RemoteException e) {
+				temp = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
+				e.printStackTrace();
+			}
+			Object[][] data = new Object[temp.size()][24];  //无首发属性
+
+			for(int i=0;i<temp.size();i++){
+				data[i][0] = temp.get(i).getName();
+				data[i][1] = temp.get(i).getTeam();
+				data[i][2] = temp.get(i).getGp();
+				data[i][3] = temp.get(i).getTime();
+
+				data[i][4] = temp.get(i).getShootper();
+				data[i][5] = temp.get(i).getShoot_in();
+				data[i][6] = temp.get(i).getShoot_all();
+
+				data[i][7] = temp.get(i).getThper();
+				data[i][8] = temp.get(i).getTh_in();
+				data[i][9] = temp.get(i).getTh_all();
+
+				data[i][10] = temp.get(i).getFtper();
+				data[i][11] = temp.get(i).getFt_in();
+				data[i][12] = temp.get(i).getFt_all();
+
+				data[i][13] = temp.get(i).getBackbound();
+				data[i][14] = temp.get(i).getOffb();
+				data[i][15] = temp.get(i).getDefb();
+
+				data[i][16] = temp.get(i).getAssist();
+				data[i][17] = temp.get(i).getSteal();
+				data[i][18] = temp.get(i).getRejection();
+				data[i][19] = temp.get(i).getMiss();
+				data[i][20] = temp.get(i).getFoul();
+
+				data[i][21] = temp.get(i).getPts();
+				data[i][22] = temp.get(i).getWin();
+				data[i][23] = temp.get(i).getLose();
+			}
+			return data;
+		}
+	}
+
+
+	//获取默认条件下，进阶数据表格内容
+	private Object[][] getAdEff_default(){
+		String s = season.getSelectedItem().toString();
+
+		if(isRegular()){
+			ArrayList<PlayerDataSeason_Ad_Basic> temp;
+			try {
+				temp = logic_db.getAlls_ad_b(s);
+			} catch (RemoteException e) {
+				temp = new ArrayList<PlayerDataSeason_Ad_Basic>();
+				e.printStackTrace();
+			}
+
+			Object[][] data = new Object[temp.size()][19];
+
+			for(int i=0;i<temp.size();i++){
+				data[i][0] = temp.get(i).getName();
+				data[i][1] = temp.get(i).getTeam();
+				
+				data[i][2] = temp.get(i).getBackeff();
+				data[i][3] = temp.get(i).getOffbeff();
+				data[i][4] = temp.get(i).getDefbeff();
+
+				data[i][5] = temp.get(i).getAssisteff();
+				data[i][6] = temp.get(i).getStealeff();
+				data[i][7] = temp.get(i).getRejeff();
+				data[i][8] = temp.get(i).getMisseff();
+				data[i][9] = temp.get(i).getUseeff();
+				
+				data[i][10] = temp.get(i).getOffeff();
+				data[i][11] = temp.get(i).getDefeff();
+				
+				
+				data[i][12] = temp.get(i).getWs();
+				data[i][13] = temp.get(i).getOffws();
+				data[i][14] = temp.get(i).getDefws();
+				
+				
+				data[i][15] = temp.get(i).getPer();
+				data[i][16] = temp.get(i).getStrshoot();
+
+				data[i][17] = temp.get(i).getKda();
+				data[i][18] = temp.get(i).getBerej();
+			}
+			return data;
+		}else{
+			ArrayList<PlayerDataPlayOff_Ad_Basic> temp;
+			try {
+				temp = logic_db.getAllp_ad_b(s);
+			} catch (RemoteException e) {
+				temp = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
+				e.printStackTrace();
+			}
+			Object[][] data = new Object[temp.size()][19];
+
+			for(int i=0;i<temp.size();i++){
+				data[i][0] = temp.get(i).getName();
+				data[i][1] = temp.get(i).getTeam();
+				
+				data[i][2] = temp.get(i).getBackeff();
+				data[i][3] = temp.get(i).getOffbeff();
+				data[i][4] = temp.get(i).getDefbeff();
+
+				data[i][5] = temp.get(i).getAssisteff();
+				data[i][6] = temp.get(i).getStealeff();
+				data[i][7] = temp.get(i).getRejeff();
+				data[i][8] = temp.get(i).getMisseff();
+				data[i][9] = temp.get(i).getUseeff();
+				
+				data[i][10] = temp.get(i).getOffeff();
+				data[i][11] = temp.get(i).getDefeff();
+				
+				
+				data[i][12] = temp.get(i).getWs();
+				data[i][13] = temp.get(i).getOffws();
+				data[i][14] = temp.get(i).getDefws();
+				
+				
+				data[i][15] = temp.get(i).getPer();
+				data[i][16] = temp.get(i).getStrshoot();
+
+				data[i][17] = temp.get(i).getKda();
+				data[i][18] = temp.get(i).getBerej();
+			}
+			return data;
+		}
+	}
+
+	
+//	private Object[][] getAdEffShoot_default(){
+//		String s = season.getSelectedItem().toString();
+//
+//		if(isRegular()){
+//			ArrayList<PlayerDataSeason_Ad_Shoot> temp;
+//			try {
+//				temp = logic_db.getAlls_ad_s(s);
+//			} catch (RemoteException e) {
+//				temp = new ArrayList<PlayerDataSeason_Ad_Shoot>();
+//				e.printStackTrace();
+//			}
+//		}else{
+//			ArrayList<PlayerDataPlayOff_Ad_Shoot> temp;
+//			try {
+//				temp = logic_db.getAllp_ad_s(s);
+//			} catch (RemoteException e) {
+//				temp = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
+//				e.printStackTrace();
+//			}
+//			
+//			
+//		}
+//		
+//		
+//	}
+	
+	
 	private Vector<Vector<Object>> getAvgData(){
 		String pos = position.getSelectedItem().toString();
 		String leag = league.getSelectedItem().toString();
@@ -295,6 +731,13 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}
 		return data;
 	}
+
+
+
+
+
+
+
 	private Vector<Vector<Object>> getEffData(){
 		String pos = position.getSelectedItem().toString();
 		String leag = league.getSelectedItem().toString();
@@ -329,6 +772,11 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data.add(v);
 		}
 		return data;
+	}
+
+	//判断是否为常规赛
+	private boolean isRegular(){
+		return type.getSelectedItem().toString().equals("常规赛");
 	}
 
 	private int getMinute(double d){
