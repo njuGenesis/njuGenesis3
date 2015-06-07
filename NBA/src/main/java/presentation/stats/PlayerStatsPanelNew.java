@@ -304,7 +304,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		//		this.add(eff);
 
 		jspAll = factory.getTablePanePlayer(getHeader1(), getAllData());
-		this.add(jspAll);
+//		this.add(jspAll);
 
 		jspAvg = factory.getTablePanePlayer(getHeader1(), getAvgData());
 		jspAvg.setVisible(false);
@@ -314,9 +314,9 @@ public class PlayerStatsPanelNew extends BgPanel{
 		jspEff.setVisible(false);
 		this.add(jspEff);
 
-		allTable = new WebTable(header_basic, getAllData_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		allTable = new WebTable(getBasicHeader(), getAllData_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		this.add(allTable);
-		avgTable = new WebTable(header_basic, getAvgData_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		avgTable = new WebTable(getBasicHeader(), getAvgData_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		avgTable.setVisible(false);
 		this.add(avgTable);
 		//		adBasicTable = new WebTable(header_basic, d, new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
@@ -331,12 +331,12 @@ public class PlayerStatsPanelNew extends BgPanel{
 	}
 
 
-	private Vector<String> getHeader(String[] h){
-		Vector<String> v = new Vector<String>();
-		for(int i=0;i<h.length;i++){
-			v.addElement(h[i]);
+	private String[] getBasicHeader(){
+		if(isRegular()){
+			return this.header_basic;
+		}else{
+			return this.header_basic2;
 		}
-		return v;
 	}
 
 	private Vector<String> getHeader1(){
@@ -363,11 +363,12 @@ public class PlayerStatsPanelNew extends BgPanel{
 			ArrayList<PlayerDataSeason_Tot_Basic> temp;
 			try {
 				temp = logic_db.getAlls_t_b(s);
+				System.out.println("!!!!!");
 			} catch (RemoteException e) {
 				temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
 				e.printStackTrace();
 			}
-			Object[][] data = new Object[temp.size()][25];
+			Object[][] data = new Object[temp.size()][header_basic.length];
 
 			for(int i=0;i<temp.size();i++){
 				data[i][0] = temp.get(i).getName();

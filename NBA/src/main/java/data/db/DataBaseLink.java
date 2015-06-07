@@ -10,7 +10,7 @@ import java.sql.Statement;
  */
 public class DataBaseLink // 数据库连接
 {
-	public static String ip = "192.168.239.1";
+	public static String ip = "172.26.48.141";
 //	public static String ip = "114.212.42.143";
 	public static String url = "jdbc:mysql://" + ip
 			+ ":3306/nba?useUnicode=true&characterEncoding=utf-8";
