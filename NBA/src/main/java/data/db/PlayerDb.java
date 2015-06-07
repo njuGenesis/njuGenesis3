@@ -278,7 +278,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataSeason_Avg_Basic sets_a_b(ResultSet rs){
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try{
-		res.setName(rs.getString("name"));
+		res.setName(rs.getString("name").replaceAll("?", "'"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -315,7 +315,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataSeason_Tot_Basic sets_t_b(ResultSet rs){
 		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
 		try{
-		res.setName(rs.getString("name"));
+		res.setName(rs.getString("name").replaceAll("?", "'"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -352,7 +352,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataPlayOff_Avg_Basic setp_a_b(ResultSet rs){
 		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
 		try{
-		res.setName(rs.getString("name"));
+		res.setName(rs.getString("name").replaceAll("?", "'"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -388,7 +388,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataPlayOff_Tot_Basic setp_t_b(ResultSet rs){
 		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
 		try{
-		res.setName(rs.getString("name"));
+		res.setName(rs.getString("name").replaceAll("?", "'"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -424,7 +424,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataSeason_Ad_Basic sets_ad_b(ResultSet rs){
 		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
 		try{
-		res.setName(rs.getString("name"));
+		res.setName(rs.getString("name").replaceAll("?", "'"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -455,7 +455,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataPlayOff_Ad_Basic setp_ad_b(ResultSet rs){
 		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
 		try{
-		res.setName(rs.getString("name"));
+		res.setName(rs.getString("name").replaceAll("?", "'"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -486,7 +486,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataSeason_Ad_Shoot sets_ad_s(ResultSet rs){
 		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
 		try{
-			res.setName(rs.getString("name"));
+			res.setName(rs.getString("name").replaceAll("?", "'"));
 			res.setId(rs.getInt("id"));
 			res.setSeason(rs.getString("season"));
 			res.setTeam(rs.getString("team"));
@@ -518,7 +518,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	public PlayerDataPlayOff_Ad_Shoot setp_ad_s(ResultSet rs){
 		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
 		try{
-			res.setName(rs.getString("name"));
+			res.setName(rs.getString("name").replaceAll("?", "'"));
 			res.setId(rs.getInt("id"));
 			res.setSeason(rs.getString("season"));
 			res.setTeam(rs.getString("team"));
@@ -862,7 +862,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_detail where id = '"+id+"'");
 			
-			res.setName(rs.getString("name"));
+			res.setName(rs.getString("name").replaceAll("?", "'"));
 			res.setId(rs.getInt("id"));
 			res.setPosition(rs.getString("position"));
 			res.setHeight(rs.getString("height"));
@@ -1353,6 +1353,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	}
 	public int getIDbyName(String name,String team) throws RemoteException{
 		// TODO Auto-generated method stub
+		String keyname = name.replaceAll("?", "'");
 		int res = 0;
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -1362,7 +1363,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//System.out.println("success");
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_detail where name = '"+name+"' and team = '"+team+"'");
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where name = '"+keyname+"' and team = '"+team+"'");
 			while(rs.next()){
 			res = rs.getInt("id");
 			

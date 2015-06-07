@@ -14,9 +14,9 @@ public class TempStart {
 		//pdb.initializePlayerTable();
 		pdb.clearPlayerTable();
 		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
-		t.initializePlayerDetail(80,90);
-		t.initializePlayerSeason(80,90);
-		t.initializePlayerPlayOff(80,90);
+		t.initializePlayerDetail(1,4273);
+		t.initializePlayerSeason(1,4273);
+		t.initializePlayerPlayOff(1,4273);
 	}
 	
 }

@@ -78,7 +78,7 @@ public class TestCrawlerByJsoup {
 		PlayerDetailInfo p = new PlayerDetailInfo();
 		int x = 4;
 		p.setId(i);
-		p.setName(tempInfo.get(0));
+		p.setName(tempInfo.get(0).replaceAll("'", "?"));
 		p.setPosition(tempInfo.get(1));
 		p.setHeight(tempInfo.get(2));
 		p.setWeight(tempInfo.get(3));
@@ -202,7 +202,7 @@ public class TestCrawlerByJsoup {
 	private void initializeS_a_b(String name,int i){
 		PlayerDataSeason_Avg_Basic p = new PlayerDataSeason_Avg_Basic();
 		p.setId(i);
-		p.setName(name);
+		p.setName(name.replaceAll("'", "?"));
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -236,7 +236,7 @@ public class TestCrawlerByJsoup {
 		PlayerDataSeason_Tot_Basic p = new PlayerDataSeason_Tot_Basic();
 		p.setId(i);
 		p.setName(name);
-		p.setSeason(tempInfo.get(0));
+		p.setSeason(tempInfo.get(0).replaceAll("'", "?"));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
 		p.setGs(tempInfo.get(3));
@@ -270,7 +270,7 @@ public class TestCrawlerByJsoup {
 		
 		p.setName(name);
 		p.setId(i);
-		p.setSeason(tempInfo.get(0));
+		p.setSeason(tempInfo.get(0).replaceAll("'", "?"));
 		p.setTeam(tempInfo.get(1));
 		p.setBackeff(tempInfo.get(2));
 		p.setOffbeff(tempInfo.get(3));
@@ -297,7 +297,7 @@ public class TestCrawlerByJsoup {
 		PlayerDataSeason_Ad_Shoot p = new PlayerDataSeason_Ad_Shoot();
 		p.setName(name);
 		p.setId(i);
-		p.setSeason(tempInfo.get(0));
+		p.setSeason(tempInfo.get(0).replaceAll("'", "?"));
 		p.setTeam(tempInfo.get(1));
 		p.setShootdis(tempInfo.get(2));
 		p.setBshootper(tempInfo.get(3));
@@ -496,7 +496,7 @@ public class TestCrawlerByJsoup {
 	private void initializeP_a_b(String name,int i){
 		PlayerDataPlayOff_Avg_Basic p = new PlayerDataPlayOff_Avg_Basic();
 		p.setId(i);
-		p.setName(name);
+		p.setName(name.replaceAll("'", "?"));
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -530,7 +530,7 @@ public class TestCrawlerByJsoup {
 	private void initializeP_t_b(String name,int i){
 		PlayerDataPlayOff_Tot_Basic p = new PlayerDataPlayOff_Tot_Basic();
 		p.setId(i);
-		p.setName(name);
+		p.setName(name.replaceAll("'", "?"));
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -564,7 +564,7 @@ public class TestCrawlerByJsoup {
 	private void initializeP_ad_b(String name,int i){
 		PlayerDataPlayOff_Ad_Basic p = new PlayerDataPlayOff_Ad_Basic();
 		
-		p.setName(name);
+		p.setName(name.replaceAll("'", "?"));
 		p.setId(i);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
@@ -591,7 +591,7 @@ public class TestCrawlerByJsoup {
 	//-------------装入p-ad-shoot对象
 	private void initializeP_ad_s(String name,int i){
 		PlayerDataPlayOff_Ad_Shoot p = new PlayerDataPlayOff_Ad_Shoot();
-		p.setName(name);
+		p.setName(name.replaceAll("'", "?"));
 		p.setId(i);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
