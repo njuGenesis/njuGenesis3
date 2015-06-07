@@ -5,19 +5,24 @@ public class MatchTeam {
 	String TeamShortName;
 	String playerNumber;//上场人数
 	String points; // 得分
-	String realEff;//真实命中率
+	
+	String ShootEff;// 投篮命中率
+	String Shoot; // 投球数
+	String ShootEffNumber; // 投篮命中数
+	
+	String TPShootEff;// 三分命中率
+	String TPShoot; // 三分投篮数
+	String TPShootEffNumber; // 三分命数
+	
+	String FTShootEff;// 罚球命中率
+	String FT; // 罚球数
+	String FTShootEffNumber; // 罚篮命中数
+	
 	String Bank; // 篮板
 	String BankOff; // 进攻篮板
 	String BankDef; // 防守篮板
-	String FT; // 罚球数
-	String FTShootEff;// 罚球命中率
-	String FTShootEffNumber; // 罚篮命中数
-	String Shoot; // 投球数
-	String ShootEffNumber; // 投篮命中数
-	String ShootEff;// 投篮命中率
-	String TPShoot; // 三分投篮数
-	String TPShootEffNumber; // 三分命数
-	String TPShootEff;// 三分命中率
+	String realEff;//真实命中率
+	
 	String Ass; // 助攻数
 	String Steal;// 抢断数
 	String Rejection;// 盖帽数

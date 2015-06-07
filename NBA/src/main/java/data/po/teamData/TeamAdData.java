@@ -16,12 +16,14 @@ public class TeamAdData {
 		TeamRound(team);
 		
 		team.setWinrate(team.getWinMatch()/team.getMatchNumber()); //胜率
+		team.setOtherWinrate(team.getOtherWinMatch()/team.getOtherMatchNumber());
 		
 		team.setOffEff(team.getPPG()/team.getOff());                        //进攻效率
 		team.setDefEff(team.getOtherPPG()/team.getDef());        //防守效率
 		
 		team.setOffBackBoardEff(team.getOffBackBoardPG()/(team.getOffBackBoardPG()+team.getOtherDefBackBoardPG()));//进攻篮板效率
 		team.setDefBackBoardEff(team.getDefBackBoardPG()/(team.getDefBackBoardPG()+team.getOtherOffBackBoardPG()));//防守篮板效率
+		team.setBackBoardEff(team.getDefBackBoardEff()+team.getOffBackBoardEff());
 		
 		team.setStealEff(team.getStealNumberPG()/team.getDef());  //抢断效率
 		team.setAssistEff(team.getAssitNumberPG()/team.getOff());  //助攻效率

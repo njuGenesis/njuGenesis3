@@ -1,10 +1,10 @@
 package data.po.teamData;
 
 public class TeamData_Avg_PO {
-      int id;
-      String ShortName;
-      String Season;//赛季   形式如13-14
   	  String Name;// 队名
+  	  String ShortName;
+  	  String Season;//赛季   形式如13-14
+  	  String IsSeason;
   	  String City;// 城市
       String EorW;// 东西部
    	  String Area;// 分区
@@ -18,7 +18,7 @@ public class TeamData_Avg_PO {
       double WinMatch; // 胜场数
       double Winrate;//胜率
       double PPG;//场均得分
-      int RealPlayer;//实际出场人数
+
       
       
       double ShootEff;// 投篮命中率
@@ -53,7 +53,7 @@ public class TeamData_Avg_PO {
   	 double OffBackBoardEff;// 进攻篮板效率
    	 double BackBoardEff;// 篮板效率
    	 double DefBackBoardEff;// 防守篮板效率
-  	 double StealEff;// 抢断效率，
+  	 double StealEff;// 抢断效率
      double AssistEff;// 助攻率
       
       
@@ -65,7 +65,7 @@ public class TeamData_Avg_PO {
       double OtherWinMatch; // 胜场数
       double OtherWinrate;//胜率
       double OtherPPG;//场均得分
-      int OtherRealPlayer;//实际出场人数
+
      
       
       double OtherShootEff;// 投篮命中率
@@ -91,11 +91,14 @@ public class TeamData_Avg_PO {
       double OtherRejectionPG;//场均盖帽数
       double OtherToPG;//场均失误数
       double OtherFoulPG;//场均犯规数   
-	public int getId() {
-		return id;
+
+      
+      
+	public String getIsSeason() {
+		return IsSeason;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIsSeason(String isSeason) {
+		IsSeason = isSeason;
 	}
 	public String getShortName() {
 		return ShortName;
@@ -175,12 +178,7 @@ public class TeamData_Avg_PO {
 	public void setPPG(double pPG) {
 		PPG = pPG;
 	}
-	public int getRealPlayer() {
-		return RealPlayer;
-	}
-	public void setRealPlayer(int realPlayer) {
-		RealPlayer = realPlayer;
-	}
+
 	public double getShootEff() {
 		return ShootEff;
 	}
@@ -361,12 +359,7 @@ public class TeamData_Avg_PO {
 	public void setOtherPPG(double otherPPG) {
 		OtherPPG = otherPPG;
 	}
-	public int getOtherRealPlayer() {
-		return OtherRealPlayer;
-	}
-	public void setOtherRealPlayer(int otherRealPlayer) {
-		OtherRealPlayer = otherRealPlayer;
-	}
+	
 	public double getOtherShootEff() {
 		return OtherShootEff;
 	}

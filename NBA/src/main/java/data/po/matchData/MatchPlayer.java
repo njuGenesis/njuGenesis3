@@ -2,34 +2,33 @@ package data.po.matchData;
 
 public class MatchPlayer {
 	String MatchID; 
-	String OtherTeam;
 	String Team;
 	String Playername;
 	String Time;  //在场时间
 	String points;  //得分
 	String isFirst;//是否首发
 	
-	String BankOff;   //进攻篮板
-	String BankDef;    //防守篮板
-	String Bank;    //篮板
-
+	String ShootEff;//投篮命中率
 	String Shoot;   //投球数
 	String ShootEffNumber; //投篮命中数
-	String ShootEff;//投篮命中率
 	
 	String TPShootEff;//三分命中率
 	String TPShoot; //三分投篮数
 	String TPShootEffNumber; //三分命数
-
-	String FT;   //罚球数
+	
 	String FTShootEff;//罚球命中率
+	String FT;   //罚球数
 	String FTShootEffNumber; //罚篮命中数
 	
+	String Bank;    //篮板
+	String BankOff;   //进攻篮板
+	String BankDef;    //防守篮板
+	
 	String realEff;//真实命中率
-	String To;   //失误
 	String Ass; //助攻数
 	String Steal;//抢断数
 	String Rejection;//盖帽数
+	String To;   //失误
 	String Foul;//犯规数
 	
 	
@@ -39,12 +38,6 @@ public class MatchPlayer {
 	}
 	public void setMatchID(String matchID) {
 		MatchID = matchID;
-	}
-	public String getOtherTeam() {
-		return OtherTeam;
-	}
-	public void setOtherTeam(String otherTeam) {
-		OtherTeam = otherTeam;
 	}
 	public String getTeam() {
 		return Team;
