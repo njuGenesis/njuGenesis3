@@ -1,6 +1,8 @@
 package presentation.mainui;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -9,6 +11,8 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.BorderFactory;
@@ -17,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -28,8 +33,10 @@ public class WebTable extends JLabel{
 
 	private static final long serialVersionUID = 1L;
 	private JLabel[][] content;
-	private JLabel[] header;
+	private HeaderLabel[] header;
 	private JPanel dataLabel;
+	private String[] headerData;
+	private String[][] contentData;
 	
 	private Rectangle tableRectangle;
 	
@@ -48,13 +55,24 @@ public class WebTable extends JLabel{
 		panel.setLayout(null);
 		panel.setBackground(UIUtil.nbaBlue);
 		
-		String header[] = {"a", "b", "c", "d"};
+		String header[] = {"<html>aa<br>aaas<html>", "b", "c", "d"};
 		String[][] data = new String[25][4];
 		for(int i=0;i<25;i++){
-			data[i][0] = String.valueOf(i);data[i][1] = "1";data[i][2] = "1";data[i][3] = "1";
+			data[i][0] = String.valueOf(i);data[i][1] = "1";data[i][2] = String.valueOf(i);data[i][3] = "1";
 		}
 		
 		WebTable table = new WebTable(header, data, new Rectangle(70, 70, 900, 500), panel.getBackground());
+		table.setRowBackground(0, UIUtil.nbaRed);
+		table.setColumBackground(0, UIUtil.nbaRed);
+		table.setRowForeground(0, UIUtil.nbaBlue);
+		table.setColumForeground(0, UIUtil.nbaBlue);
+		table.setRowDataCenter(0);
+		table.setColumDataCenter(0);
+		table.setHeaderBackground(UIUtil.bgGrey);
+		table.setHeaderForeground(UIUtil.bgWhite);
+		table.setRowHand(0);
+		table.setColumHand(0);
+		table.setOrder(0, Double.class);
 		
 		f.add(panel);
 		panel.add(table);
@@ -64,29 +82,54 @@ public class WebTable extends JLabel{
 	public WebTable(String[] header, Object[][] data, Rectangle r, Color background){
 		this.setBounds(r.x, r.y, r.width+18, r.height);
 		this.tableRectangle = r;
+		this.bgColor = background;
 		
 		this.colum = header.length;
 		this.row = data.length;
+		this.headerData = header;
+		this.contentData = new String[row][colum];
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.contentData[i][j] = String.valueOf(data[i][j]);
+			}
+		}
 		
-		this.bgColor = background;
-		
-		headerInit(header);
-		contentInit(data);
+		headerInit();
+		contentInit();
 		scrollInit();
+		
+		this.repaint();
 	}
 	
-	private void headerInit(String[] header){
-		this.header = new JLabel[colum];
+	public void setModel(String[] header, Object[][] data){
+		this.colum = header.length;
+		this.row = data.length;
+		this.headerData = header;
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.contentData[i][j] = String.valueOf(data[i][j]);
+			}
+		}
+		
+		headerInit();
+		contentInit();
+		scrollInit();
+		
+		this.repaint();
+	}
+	
+	private void headerInit(){
+		this.header = new HeaderLabel[colum];
 		
 		int columWeight = tableRectangle.width/colum;
 		
 		for(int i=0;i<colum;i++){
-			this.header[i] = new JLabel(header[i]);
+			this.header[i] = new HeaderLabel(headerData[i]);
 			
 			if(i<colum - 1){
-				this.header[i].setSize(columWeight, 30);
+				this.header[i].setSize(columWeight, 40);
 			}else{
-				this.header[i].setSize(tableRectangle.width-(colum-1)*columWeight, 30);
+				this.header[i].setSize(tableRectangle.width-(colum-1)*columWeight, 40);
 			}
 			
 			this.header[i].setLocation(i*columWeight, 0);
@@ -97,15 +140,18 @@ public class WebTable extends JLabel{
 			
 			this.add(this.header[i]);
 		}
+		
+		this.repaint();
 	}
 	
-	private void contentInit(Object[][] data){
+	private void contentInit(){
 		this.content = new JLabel[row][colum];
 		
 		int columWeight = tableRectangle.width/colum;
+		int columHeight = 30;
 		
 		this.dataLabel = new JPanel();
-		this.dataLabel.setBounds(0, 30, tableRectangle.width, row*30);
+		this.dataLabel.setBounds(0, header[0].getHeight(), tableRectangle.width, row*columHeight);
 		this.dataLabel.setLayout(null);
 		this.dataLabel.setPreferredSize(new Dimension(dataLabel.getWidth(), dataLabel.getHeight()));
 		this.dataLabel.revalidate();
@@ -113,7 +159,7 @@ public class WebTable extends JLabel{
 		
 		for(int i=0;i<row;i++){
 			for(int j=0;j<colum;j++){
-				this.content[i][j] = new JLabel(String.valueOf(data[i][j]));
+				this.content[i][j] = new JLabel(contentData[i][j]);
 				
 				if(i%2 != 0){
 					this.content[i][j].setBackground(new Color(190, 208, 247));
@@ -122,25 +168,27 @@ public class WebTable extends JLabel{
 				}
 				
 				if(j<colum - 1){
-					this.content[i][j].setSize(columWeight, 30);
+					this.content[i][j].setSize(columWeight, columHeight);
 				}else{
-					this.content[i][j].setSize(tableRectangle.width-(colum-1)*columWeight, 30);
+					this.content[i][j].setSize(tableRectangle.width-(colum-1)*columWeight, columHeight);
 				}
 				
-				this.content[i][j].setLocation(j*columWeight, i*30);
+				this.content[i][j].setLocation(j*columWeight, i*columHeight);
 				this.content[i][j].setOpaque(true);
 				this.content[i][j].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
 				
 				this.dataLabel.add(this.content[i][j]);
 			}
 		}
+		
+		this.repaint();
 	}
 	
 	private void scrollInit(){
 		
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.getViewport().setView(dataLabel);
-		this.scrollPane.setBounds(0, 30, tableRectangle.width+18, tableRectangle.height-30);
+		this.scrollPane.setBounds(0, header[0].getHeight(), tableRectangle.width+18, tableRectangle.height-header[0].getHeight());
 		this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		this.scrollPane.setOpaque(false);
@@ -171,17 +219,233 @@ public class WebTable extends JLabel{
         }
         
         this.add(scrollPane);
+        this.repaint();
 	}
 	
-	public void setDataCenter(int colum){
-		if(colum>=0&&colum<this.colum){
-			for(int i=0;i<row;i++){
-				this.content[i][colum].setHorizontalAlignment(JLabel.CENTER);
+	private void update(){
+//		for(int i=0;i<colum;i++){
+//			this.header[i].setText(this.headerData[i]);
+//		}
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.content[i][j].setText(this.contentData[i][j]);
 			}
 		}
 	}
+	
+/////////////////////////////////////////////////////////////////////////////
+//   							 										   //
+//							  对外接口                                      //
+//   						    										   //
+/////////////////////////////////////////////////////////////////////////////
+	//设置某一列内容居中
+	public void setColumDataCenter(int columNumber){
+		if(columNumber>=0&&columNumber<this.colum){
+			for(int i=0;i<row;i++){
+				this.content[i][columNumber].setHorizontalAlignment(JLabel.CENTER);
+			}
+		}
+	}
+	//设置某一行内容居中
+	public void setRowDataCenter(int rowNumber){
+		if(rowNumber>=0&&rowNumber<this.row){
+			for(int i=0;i<colum;i++){
+				this.content[rowNumber][i].setHorizontalAlignment(JLabel.CENTER);
+			}
+		}
+	}
+	//设置全部列内容居中
+	public void setAllDataCenter(){
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.content[i][j].setHorizontalAlignment(JLabel.CENTER);
+			}
+		}
+	}
+	//设置行宽
+	public void setRowHeight(int height){
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.content[i][j].setSize(this.content[i][j].getWidth(), height);			}
+		}
+	}
+	//设置表头宽
+	public void setHeaderHeight(int height){
+		for(int i=0;i<colum;i++){
+			this.header[i].setSize(this.header[i].getWidth(), height);
+		}
+	}
+	//设置表头背景色
+	public void setHeaderBackground(Color color){
+		for(int i=0;i<colum;i++){
+			this.header[i].setBackground(color);
+		}
+	}
+	//设置表头前景色
+	public void setHeaderForeground(Color color){
+		for(int i=0;i<colum;i++){
+			this.header[i].setForeground(color);
+		}
+	}
+	//设置行背景色
+	public void setRowBackground(int rowNumber, Color color){
+		if(rowNumber>=0&&rowNumber<this.row){
+			for(int i=0;i<colum;i++){
+				this.content[rowNumber][i].setBackground(color);
+			}
+		}
+	}
+	//设置行前景色
+	public void setRowForeground(int rowNumber, Color color){
+		if(rowNumber>=0&&rowNumber<this.row){
+			for(int i=0;i<colum;i++){
+				this.content[rowNumber][i].setForeground(color);
+			}
+		}
+	}
+	//设置列背景色
+	public void setColumBackground(int columNumber, Color color){
+		if(columNumber>=0&&columNumber<this.colum){
+			for(int i=0;i<row;i++){
+				this.content[i][columNumber].setBackground(color);
+			}
+		}
+	}
+	//设置列前景色
+	public void setColumForeground(int columNumber, Color color){
+		if(columNumber>=0&&columNumber<this.colum){
+			for(int i=0;i<row;i++){
+				this.content[i][columNumber].setForeground(color);
+			}
+		}
+	}
+	//设置某列手形监听
+	public void setColumHand(int columNumber){
+		if(columNumber>=0&&columNumber<this.colum){
+			for(int i=0;i<row;i++){
+				this.content[i][columNumber].setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		}
+	}
+	//设置某行手形监听
+	public void setRowHand(int rowNumber){
+		if(rowNumber>=0&&rowNumber<this.row){
+			for(int i=0;i<colum;i++){
+				this.content[rowNumber][i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		}
+	}
+	//get某单元格
+	public JLabel getCell(int rowNumber, int columNumber){
+		if(rowNumber>=0&&rowNumber<this.row&&columNumber>=0&&columNumber<this.colum){
+			return this.content[rowNumber][columNumber];
+		}else{
+			return null;
+		}
+	}
+	//get列
+	public JLabel[] getColum(int columNumber){
+		JLabel[] label = new JLabel[row];
+		for(int i=0;i<row;i++){
+			label[i] = this.content[i][columNumber];
+		}
+		return label;
+	}
+	//get行
+	public JLabel[] getRow(int rowNumber){
+		return this.content[rowNumber];
+	}
+	//设置某列排序(列号，类型)
+	public void setOrder(final int columNumber, final Class<?> type){
+		this.header[columNumber].setCursor(new Cursor(Cursor.HAND_CURSOR));
+		this.header[columNumber].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				HeaderLabel header = (HeaderLabel) e.getSource();
+				if(header.getOrder()!=1){
+					upOrder(columNumber, type);
+					header.setUp();
+				}else{
+					downOrder(columNumber, type);
+					header.setDown();
+				}
+			}
+		});
+	}
+	private void upOrder(int columNumber, Class<?> type){
+		if(type == Double.class){
+			for(int k=0;k<row-1;k++){
+				for(int i=0;i<row-1;i++){
+					String[] move;
+					double a = Double.valueOf(this.contentData[i][columNumber]);
+					double b = Double.valueOf(this.contentData[i+1][columNumber]);
+					if(a<b){
+						move = this.contentData[i];
+						this.contentData[i] = this.contentData[i+1];
+						this.contentData[i+1] = move;
+					}
+				}
+			}
+		}else{
+			if(type == String.class){
+				for(int k=0;k<row-1;k++){
+					for(int i=0;i<row-1;i++){
+						String[] move;
+						char a = this.contentData[i][columNumber].charAt(0);
+						char b = this.contentData[i+1][columNumber].charAt(0);
+						if(a<b){
+							move = this.contentData[i];
+							this.contentData[i] = this.contentData[i+1];
+							this.contentData[i+1] = move;
+						}
+					}
+				}
+			}
+		}
+		
+		update();
+	}
+	
+	private void downOrder(int columNumber, Class<?> type){
+		if(type == Double.class){
+			for(int k=0;k<row-1;k++){
+				for(int i=0;i<row-1;i++){
+					String[] move;
+					double a = Double.valueOf(this.contentData[i][columNumber]);
+					double b = Double.valueOf(this.contentData[i+1][columNumber]);
+					if(a>b){
+						move = this.contentData[i];
+						this.contentData[i] = this.contentData[i+1];
+						this.contentData[i+1] = move;
+					}
+				}
+			}
+		}else{
+			if(type == String.class){
+				for(int k=0;k<row-1;k++){
+					for(int i=0;i<row-1;i++){
+						String[] move;
+						char a = this.contentData[i][columNumber].charAt(0);
+						char b = this.contentData[i+1][columNumber].charAt(0);
+						if(a>b){
+							move = this.contentData[i];
+							this.contentData[i] = this.contentData[i+1];
+							this.contentData[i+1] = move;
+						}
+					}
+				}
+			}
+		}
+		
+		update();
+	}
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//																		   //
+//                         美化滚动条                                        //
+//																		   //
+/////////////////////////////////////////////////////////////////////////////
 class IScrollBarUI extends BasicScrollBarUI {
 
     private static final float ARC_NUMBER = 10.0f;
@@ -274,12 +538,12 @@ class IScrollBarUI extends BasicScrollBarUI {
 
         	 @Override
              public Dimension getPreferredSize() {//将箭头默认大小设成0
-                 return new Dimension(0, 0);
+                 return new Dimension(1, 1);
              }
               
              @Override
              public Dimension getMinimumSize() {//将箭头最小大小设成0
-                 return new Dimension(0, 0);
+                 return new Dimension(1, 1);
              }
             @Override
             public void paint(Graphics g) {
@@ -357,12 +621,12 @@ class IScrollBarUI extends BasicScrollBarUI {
 
         	 @Override
              public Dimension getPreferredSize() {//将箭头默认大小设成0
-                 return new Dimension(0, 0);
+                 return new Dimension(1, 1);
              }
               
              @Override
              public Dimension getMinimumSize() {//将箭头最小大小设成0
-                 return new Dimension(0, 0);
+                 return new Dimension(1, 1);
              }
             @Override
             public void paint(Graphics g) {
@@ -381,4 +645,25 @@ class IScrollBarUI extends BasicScrollBarUI {
             }
         };
     }
+}
+
+class HeaderLabel extends JLabel{
+	private static final long serialVersionUID = 1L;
+	private int order = 0;
+	
+	public HeaderLabel(){
+		super();
+	}
+	public HeaderLabel(String string) {
+		super(string);
+	}
+	public int getOrder(){
+		return order;
+	}
+	public void setUp(){
+		this.order = 1;
+	}
+	public void setDown(){
+		this.order = -1;
+	}
 }

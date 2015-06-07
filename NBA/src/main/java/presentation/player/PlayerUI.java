@@ -336,7 +336,9 @@ public class PlayerUI extends BgPanel{
 			d[i][7] = p.getExp();
 		}
 		table = new WebTable(h, d, new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		table.setColumDataCenter(5);
 		this.add(table);
+		this.repaint();
 	}
 	
 	@Override
