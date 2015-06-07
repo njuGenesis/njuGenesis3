@@ -76,56 +76,56 @@ public class PlayerLogic_db {
 	}
 
 	// -----------获取某一赛季的所有数据
-	ArrayList<PlayerDataPlayOff_Ad_Shoot> getAllp_ad_s(String season)
+	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getAllp_ad_s(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Ad_Shoot> res = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
 		res = pdb.getAllp_ad_s(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataPlayOff_Ad_Basic> getAllp_ad_b(String season)
+	public ArrayList<PlayerDataPlayOff_Ad_Basic> getAllp_ad_b(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Ad_Basic> res = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
 		res = pdb.getAllp_ad_b(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataPlayOff_Tot_Basic> getAllp_t_b(String season)
+	public ArrayList<PlayerDataPlayOff_Tot_Basic> getAllp_t_b(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Tot_Basic> res = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
 		res = pdb.getAllp_t_b(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataPlayOff_Avg_Basic> getAllp_a_b(String season)
+	public ArrayList<PlayerDataPlayOff_Avg_Basic> getAllp_a_b(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Avg_Basic> res = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
 		res = pdb.getAllp_a_b(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataSeason_Avg_Basic> getAlls_a_b(String season)
+	public ArrayList<PlayerDataSeason_Avg_Basic> getAlls_a_b(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Avg_Basic> res = new ArrayList<PlayerDataSeason_Avg_Basic>();
 		res = pdb.getAlls_a_b(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataSeason_Tot_Basic> getAlls_t_b(String season)
+	public ArrayList<PlayerDataSeason_Tot_Basic> getAlls_t_b(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Tot_Basic> res = new ArrayList<PlayerDataSeason_Tot_Basic>();
 		res = pdb.getAlls_t_b(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataSeason_Ad_Basic> getAlls_ad_b(String season)
+	public ArrayList<PlayerDataSeason_Ad_Basic> getAlls_ad_b(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Ad_Basic> res = new ArrayList<PlayerDataSeason_Ad_Basic>();
 		res = pdb.getAlls_ad_b(season);
 		return res;
 	}
 
-	ArrayList<PlayerDataSeason_Ad_Shoot> getAlls_ad_s(String season)
+	public ArrayList<PlayerDataSeason_Ad_Shoot> getAlls_ad_s(String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Ad_Shoot> res = new ArrayList<PlayerDataSeason_Ad_Shoot>();
 		res = pdb.getAlls_ad_s(season);
