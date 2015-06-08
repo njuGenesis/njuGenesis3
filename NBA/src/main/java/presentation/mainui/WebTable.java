@@ -27,7 +27,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import com.sun.java.swing.plaf.gtk.GTKConstants.PositionType;
 
 import presentation.component.GFrame;
 import presentation.contenui.UIUtil;
