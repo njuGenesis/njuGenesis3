@@ -50,8 +50,10 @@ public class PlayerInfo extends BgPanel{
 	private void init(){
 		assist = new TeamImageAssist();
 
-		playerPic = new GLabel("img/action/"+po.getName()+".png", new Point(276, 2), new Point(330, 525), this, true);
-		teamPic = new GLabel(assist.loadImageIcon("img/teams/"+po.getTeamName()+".svg", 150, 150), new Point(47, 42), new Point(150, 150), this, true);
+		playerPic = new GLabel("img/action/"//+po.getName()
+				+".png", new Point(276, 2), new Point(330, 525), this, true);
+		teamPic = new GLabel(""//assist.loadImageIcon("img/teams/"+po.getTeamName()+".svg", 150, 150)
+				, new Point(47, 42), new Point(150, 150), this, true);
 		teamPic.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e){
 				teamPic.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -62,24 +64,24 @@ public class PlayerInfo extends BgPanel{
 				StartUI.startUI.turn(turnController.turnToTeamDetials(teamName));
 			}
 		});
-		number = new GLabel(po.getNumber(), new Point(163, 408), new Point(200, 25), this, true, 0, 18);
-		position = new GLabel(TableUtility.getChPosition(po.getPosition())+" "+po.getPosition(), new Point(160, 438), new Point(200, 25), this, true, 0, 18);
-		height = new GLabel(po.getHeight(), new Point(718, 147), new Point(200, 25), this, true, 0, 18);
-		weight = new GLabel(String.valueOf(po.getWeight()), new Point(718, 180), new Point(200, 25), this, true, 0, 18);
-		birthday = new GLabel(po.getBirth(), new Point(718, 213), new Point(200, 25), this, true, 0, 18);
-		age = new GLabel(String.valueOf(po.getAge()), new Point(718, 244), new Point(200, 25), this, true, 0, 18);
-		exp = new GLabel(String.valueOf(po.getExp()), new Point(718, 275), new Point(200, 25), this, true, 0, 18);
-		school = new JTextArea();
-		school.setEditable(false);
-		school.setLineWrap(true);
-		school.setWrapStyleWord(true);
-		school.setBounds(747, 308, 200, 50);
-		school.setText(po.getSchool());
-		school.setFont(new Font("微软雅黑", 0, 18));
-		school.setBorder(null);
-		school.setBackground(UIUtil.bgWhite);
-		school.setOpaque(false);
-		this.add(school);
+//		number = new GLabel(po.getNumber(), new Point(163, 408), new Point(200, 25), this, true, 0, 18);
+//		position = new GLabel(TableUtility.getChPosition(po.getPosition())+" "+po.getPosition(), new Point(160, 438), new Point(200, 25), this, true, 0, 18);
+//		height = new GLabel(po.getHeight(), new Point(718, 147), new Point(200, 25), this, true, 0, 18);
+//		weight = new GLabel(String.valueOf(po.getWeight()), new Point(718, 180), new Point(200, 25), this, true, 0, 18);
+//		birthday = new GLabel(po.getBirth(), new Point(718, 213), new Point(200, 25), this, true, 0, 18);
+//		age = new GLabel(String.valueOf(po.getAge()), new Point(718, 244), new Point(200, 25), this, true, 0, 18);
+//		exp = new GLabel(String.valueOf(po.getExp()), new Point(718, 275), new Point(200, 25), this, true, 0, 18);
+//		school = new JTextArea();
+//		school.setEditable(false);
+//		school.setLineWrap(true);
+//		school.setWrapStyleWord(true);
+//		school.setBounds(747, 308, 200, 50);
+//		school.setText(po.getSchool());
+//		school.setFont(new Font("微软雅黑", 0, 18));
+//		school.setBorder(null);
+//		school.setBackground(UIUtil.bgWhite);
+//		school.setOpaque(false);
+//		this.add(school);
 	}
 	
 	@Override

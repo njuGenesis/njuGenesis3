@@ -16,7 +16,7 @@ import data.po.PlayerDataPO;
 
 public class PlayerDetials extends BgPanel{
 	private static final long serialVersionUID = 1L;
-	private GLabel title;
+	private GLabel title, border;
 	private SelectLabel tdMenu[];
 	private PlayerDataPO po;
 	private BgPanel sonPanel;
@@ -35,7 +35,7 @@ public class PlayerDetials extends BgPanel{
 		    }
 		} catch (Exception e) {}
 		
-		this.po = playerLogic.getInfo(name, playerLogic.getLatestSeason());
+		//this.po = playerLogic.getInfo(name, playerLogic.getLatestSeason());
 		this.name = name;
 		
 		this.setLayout(null);
@@ -47,10 +47,15 @@ public class PlayerDetials extends BgPanel{
 	}
 	
 	private void init(){
-		title = new GLabel("  "+po.getName(), new Point(27, 30), new Point(946, 52), this, true, 0, 25);
+		title = new GLabel("  "+"name"//po.getName()
+				, new Point(27, 30), new Point(946, 52), this, true, 0, 25);
 		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
+		
+		border = new GLabel("", new Point(27, 26), new Point(946, 4), this, true);
+		border.setOpaque(true);
+		border.setBackground(UIUtil.nbaBlue);
 		
 		tdMenu = new SelectLabel[4];
 		tdMenu[0] = new SelectLabel("资料", new Point(27, 83), new Point(235, 35), this, true, 0, 18);

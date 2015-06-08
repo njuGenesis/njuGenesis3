@@ -18,6 +18,7 @@ import java.util.Vector;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -41,13 +42,14 @@ import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.hotspot.SelectLabel;
 import presentation.mainui.StartUI;
+import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 
 public class PlayerUI extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private static String file = "";
-	private GLabel title, chooser;
+	private GLabel title, chooser, borderUp, borderDown;
 	private SelectLabel letter[];
 	private PlayerLogic playerLogic = new PlayerLogic();
 	private TeamLogic teamLogic = new TeamLogic();
@@ -75,62 +77,62 @@ public class PlayerUI extends BgPanel{
 //		} catch (Exception e) {}
 		
 		this.setLayout(null);
-		this.setBackground(UIUtil.bgWhite);
+		//this.setBackground(UIUtil.bgWhite);
+		this.setOpaque(false);
 		
 		init();
 	}
 
 	private void init(){
 		playList = playerLogic.getAllInfo(playerLogic.getLatestSeason());
+		
+		borderUp = new GLabel("", new Point(30,26), new Point(940,4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
+		
+		borderDown = new GLabel("", new Point(30,82), new Point(940,4), this, true);
+		borderDown.setOpaque(true);
+		borderDown.setBackground(UIUtil.nbaBlue);
 
-		title = new GLabel("  球员",new Point(30,30),new Point(940,52),this,true,0,24);
+		title = new GLabel("  球员列表",new Point(30,30),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
 
-		chooser = new GLabel("",new Point(30,83),new Point(940,80),this,true,0,16);
+		chooser = new GLabel("",new Point(30,86),new Point(940,80),this,true,0,16);
 		chooser.setOpaque(true);
-		chooser.setBackground(UIUtil.bgGrey);
-		chooser.setForeground(UIUtil.bgWhite);
-
-		GLabel message = new GLabel("*单击表头可排序", new Point(40, 167), new Point(120, 30), this, true, 0, 13);
+		chooser.setBackground(UIUtil.bgWhite);
+		chooser.setForeground(UIUtil.nbaBlue);
 
 		letter = new SelectLabel[26];
 		for(int i=0;i<letter.length;i++){
 			final String letterString = String.valueOf((char)(65+i));
 			letter[i] = new SelectLabel(letterString, new Point(10+i*31, 7), new Point(30, 30), chooser, true, 0, 20);
 			letter[i].setOpaque(true);
-			letter[i].setSelected(false);
-			letter[i].setForeground(UIUtil.bgWhite);
 			letter[i].setHorizontalAlignment(SwingConstants.CENTER);
-			letter[i].addMouseListener(new MouseListener() {
-				public void mouseReleased(MouseEvent e) {
-				}
+			letter[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+			letter[i].addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
+					SelectLabel Label = (SelectLabel)e.getSource();
+					Label.setSelected(true);
 					comboBoxTeam.setSelectedIndex(0);
 					comboBoxPosition.setSelectedIndex(0);
 					search.setText("根据姓名查找");
-					SelectLabel selectLabel = (SelectLabel)e.getSource();
-					for(int i=0;i<letter.length;i++){
-						letter[i].setSelected(false);
-					}
-					selectLabel.setSelected(true);
 					playList = playerLogic.getPlayerByFirstName(playerLogic.getAllInfo(playerLogic.getLatestSeason()), letterString);
 					refreshTable();
 					table.updateUI();
 				}
 				public void mouseExited(MouseEvent e) {
-					SelectLabel selectLabel = (SelectLabel)e.getSource();
-					if(!selectLabel.isSelected){
-						selectLabel.setBackground(UIUtil.bgGrey);
-					}
+//					for(int i=0;i<letter.length;i++){
+//						letter[i].setForeground(UIUtil.nbaBlue);
+//					}
 				}
 				public void mouseEntered(MouseEvent e) {
-					SelectLabel selectLabel = (SelectLabel)e.getSource();
-					selectLabel.setBackground(UIUtil.nbaRed);
-					selectLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				}
-				public void mouseClicked(MouseEvent e) {
+//					GLabel Label = (GLabel)e.getSource();
+//					for(int i=0;i<letter.length;i++){
+//						letter[i].setForeground(UIUtil.nbaBlue);
+//					}
+//					Label.setForeground(UIUtil.nbaRed);
 				}
 			});
 		}
@@ -222,63 +224,6 @@ public class PlayerUI extends BgPanel{
 		infoInit();
 	}
 	
-	private void tableSetting(final JTable table){
-		table.setPreferredScrollableViewportSize(new Dimension(920, 440));//设置大小
-		table.setBounds(40, 200, 920, 480);
-		table.getTableHeader().setPreferredSize(new Dimension(920, 30));//设置表头大小
-
-		DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer(){
-			public java.awt.Component getTableCellRendererComponent(JTable t, Object value,
-					boolean isSelected, boolean hasFocus, int row, int column) {
-				if (row % 2 == 0)
-					setBackground(new Color(235, 236, 231));
-				else
-					setBackground(new Color(251, 251, 251));
-
-				setForeground(UIUtil.nbaBlue);
-				return super.getTableCellRendererComponent(t, value, isSelected,
-						hasFocus, row, column);
-			}
-		};
-		//设置列显示蓝色字
-		table.getColumnModel().getColumn(0).setCellRenderer(defaultTableCellRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(defaultTableCellRenderer);
-		
-		//设置列手形监听
-		table.addMouseMotionListener(new MouseMotionListener() {
-			public void mouseMoved(MouseEvent e) {
-				int column = table.getColumnModel().getColumnIndexAtX(e.getX());
-				int row    = e.getY()/table.getRowHeight();
-
-				if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == 0 || column ==1)) {
-					table.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				}else{
-					table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-			public void mouseDragged(MouseEvent e) {
-			}
-		});
-		
-		MouseAdapter mouseAdapter = new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				int column = table.getColumnModel().getColumnIndexAtX(e.getX());
-				int row    = e.getY()/table.getRowHeight();
-
-				if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == 0)) {
-					String playerName = table.getValueAt(row, column).toString();
-					StartUI.startUI.turn(turnController.turnToPlayerDetials(playerName));
-				}else{
-					if(row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == 1)) {
-						String teamName = table.getValueAt(row, column).toString().split(" ")[1];
-						StartUI.startUI.turn(turnController.turnToTeamDetials(teamName));
-					}
-				}
-			}
-		};
-		table.addMouseListener(mouseAdapter);
-	}
-	
 	private void refreshTable(){
 		data.removeAllElements();
 		for(int i=0;i<playList.length;i++){
@@ -297,30 +242,23 @@ public class PlayerUI extends BgPanel{
 	}
 	
 	private void infoInit(){
-		header.removeAllElements();
-		data.removeAllElements();
-		header.addElement("姓名");header.addElement("球队");header.addElement("位置");header.addElement("号码");header.addElement("身高");
-		header.addElement("体重");header.addElement("生日");header.addElement("球龄");
-		for(int i=0;i<playList.length;i++){
-			PlayerDataPO p = playList[i];
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(p.getName());
-			vector.addElement(TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName());
-			vector.addElement(p.getPosition());
-			vector.addElement(p.getNumber());
-			vector.addElement(p.getHeight());
-			vector.addElement(p.getWeight());
-			vector.addElement(p.getBirth());
-			vector.addElement(p.getExp());
-			data.addElement(vector);
-		}
-		
-//		table = new StyleTable();
-//		scrollPane = new StyleScrollPane(table);
-//		table.tableSetting(table, header, data, scrollPane, new Rectangle(40, 200, 920, 440));
-//		table.setSort();
-//		tableSetting(table);
-//		this.add(scrollPane);
+//		header.removeAllElements();
+//		data.removeAllElements();
+//		header.addElement("姓名");header.addElement("球队");header.addElement("位置");header.addElement("号码");header.addElement("身高");
+//		header.addElement("体重");header.addElement("生日");header.addElement("球龄");
+//		for(int i=0;i<playList.length;i++){
+//			PlayerDataPO p = playList[i];
+//			Vector<Object> vector = new Vector<Object>();
+//			vector.addElement(p.getName());
+//			vector.addElement(TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName());
+//			vector.addElement(p.getPosition());
+//			vector.addElement(p.getNumber());
+//			vector.addElement(p.getHeight());
+//			vector.addElement(p.getWeight());
+//			vector.addElement(p.getBirth());
+//			vector.addElement(p.getExp());
+//			data.addElement(vector);
+//		}
 		
 		String h[] = {"姓名","球队","位置","号码","身高","体重","生日","球龄"};
 		Object[][] d = new Object[playList.length][h.length];
@@ -335,8 +273,35 @@ public class PlayerUI extends BgPanel{
 			d[i][6] = p.getBirth()==null?"a":p.getBirth();
 			d[i][7] = p.getExp();
 		}
-		table = new WebTable(h, d, new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		table = new WebTable(h, d, new Rectangle(30, 166, 940, 454), UIUtil.lightGrey);
+		table.setColumDataCenter(2);
+		table.setColumDataCenter(3);
+		table.setColumDataCenter(4);
 		table.setColumDataCenter(5);
+		table.setColumDataCenter(7);
+		table.setColumForeground(0, UIUtil.nbaBlue);
+		table.setColumForeground(1, UIUtil.nbaBlue);
+		table.setColumHand(0);
+		table.setColumHand(1);
+		
+		for(int i=0;i<playList.length;i++){
+			table.getColum(0)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String playerName = label.getText();
+					WebFrame.frame.setPanel(turnController.turnToPlayerDetials(playerName), playerName);
+				}
+			});
+			table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String teamName = label.getText().split(" ")[1];
+					WebFrame.frame.setPanel(turnController.turnToPlayerDetials(teamName), teamName);
+				}
+			});
+		}
 		this.add(table);
 		this.repaint();
 	}

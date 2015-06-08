@@ -54,8 +54,8 @@ public class WebLabel extends JLabel{
 	}
 	
 	private void setClose(){
-		label = new WebLabel("✕︎", new Point(10, 0), new Point(30, 30), true, 0, 15, null);
-		label.setForeground(UIUtil.nbaRed);
+		label = new WebLabel("✕︎", new Point(10, 0), new Point(25, 25), true, 0, 15, null);
+		label.setForeground(UIUtil.bgWhite);
 		label.setLabel(this);
 		
 		this.add(label);
@@ -75,7 +75,7 @@ public class WebLabel extends JLabel{
 				WebFrame.frame.getLabel().removeElement(label.getLabel());
 				WebFrame.frame.getPanel().removeElement(label.getLabel().getPanel());
 				WebFrame.frame.getmenuLabel().remove(label.getLabel());
-				WebFrame.frame.getbg().remove(label.getLabel().getPanel());
+				WebFrame.frame.getpanelBg().remove(label.getLabel().getPanel());
 				WebFrame.frame.repaint();
 				if(WebLabel.this.isSelected){
 					WebFrame.frame.setLabelLocation(true);
@@ -123,20 +123,20 @@ public class WebLabel extends JLabel{
 	
 	public void setSelected(){
 		for(int i = 0;i<WebFrame.frame.getLabel().size();i++){
-			WebFrame.frame.getLabel().get(i).setBackground(WebFrame.frame.getmenuLabel().getBackground());
-			WebFrame.frame.getLabel().get(i).setForeground(UIUtil.bgWhite);
+			WebFrame.frame.getLabel().get(i).setBackground(WebFrame.frame.getBg().getBackground());
+			WebFrame.frame.getLabel().get(i).setForeground(UIUtil.foreGrey);
 			WebFrame.frame.getLabel().get(i).isSelected = false;
 			WebFrame.frame.getLabel().get(i).label.setVisible(false);
-			WebFrame.frame.getLabel().get(i).label.setForeground(UIUtil.bgWhite);
+			WebFrame.frame.getLabel().get(i).label.setForeground(UIUtil.foreGrey);
 		}
 		for(int i = 0;i<WebFrame.frame.getPanel().size();i++){
 			WebFrame.frame.getPanel().get(i).setVisible(false);
 		}
-		this.setBackground(UIUtil.bgWhite);
-		this.setForeground(UIUtil.nbaRed);
+		this.setBackground(UIUtil.nbaBlue);
+		this.setForeground(UIUtil.bgWhite);
 		this.isSelected = true;
 		this.label.setVisible(true);
-		this.label.setForeground(UIUtil.nbaRed);
+		this.label.setForeground(UIUtil.bgWhite);
 		this.getPanel().setVisible(true);
 	}
 

@@ -8,6 +8,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -26,13 +27,15 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import com.sun.java.swing.plaf.gtk.GTKConstants.PositionType;
+
 import presentation.component.GFrame;
 import presentation.contenui.UIUtil;
 
 public class WebTable extends JLabel{
 
 	private static final long serialVersionUID = 1L;
-	private JLabel[][] content;
+	private contentLabel[][] content;
 	private HeaderLabel[] header;
 	private JPanel dataLabel;
 	private String[] headerData;
@@ -53,7 +56,7 @@ public class WebTable extends JLabel{
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, f.getWidth(), f.getHeight());
 		panel.setLayout(null);
-		panel.setBackground(UIUtil.nbaBlue);
+		panel.setBackground(new Color(190, 190, 190));
 		
 		String header[] = {"<html>aa<br>aaas<html>", "b", "c", "d"};
 		String[][] data = new String[25][4];
@@ -62,17 +65,16 @@ public class WebTable extends JLabel{
 		}
 		
 		WebTable table = new WebTable(header, data, new Rectangle(70, 70, 900, 500), panel.getBackground());
-		table.setRowBackground(0, UIUtil.nbaRed);
-		table.setColumBackground(0, UIUtil.nbaRed);
-		table.setRowForeground(0, UIUtil.nbaBlue);
-		table.setColumForeground(0, UIUtil.nbaBlue);
-		table.setRowDataCenter(0);
-		table.setColumDataCenter(0);
-		table.setHeaderBackground(UIUtil.bgGrey);
-		table.setHeaderForeground(UIUtil.bgWhite);
-		table.setRowHand(0);
-		table.setColumHand(0);
-		table.setOrder(0, Double.class);
+//		table.setRowBackground(0, UIUtil.nbaRed);
+//		table.setColumBackground(0, UIUtil.nbaRed);
+//		table.setRowForeground(0, UIUtil.nbaBlue);
+//		table.setColumForeground(0, UIUtil.nbaBlue);
+//		table.setRowDataCenter(0);
+//		table.setColumDataCenter(0);
+//		table.setHeaderForeground(UIUtil.bgWhite);
+//		table.setRowHand(0);
+//		table.setColumHand(0);
+//		table.setOrder(0, Double.class);
 		
 		f.add(panel);
 		panel.add(table);
@@ -133,7 +135,8 @@ public class WebTable extends JLabel{
 			}
 			
 			this.header[i].setLocation(i*columWeight, 0);
-			this.header[i].setBackground(new Color(151, 183, 252));
+			this.header[i].setBackground(new Color(124, 124, 124));
+			this.header[i].setForeground(UIUtil.bgWhite);
 			this.header[i].setOpaque(true);
 			this.header[i].setHorizontalAlignment(JLabel.CENTER);
 			this.header[i].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
@@ -145,7 +148,7 @@ public class WebTable extends JLabel{
 	}
 	
 	private void contentInit(){
-		this.content = new JLabel[row][colum];
+		this.content = new contentLabel[row][colum];
 		
 		int columWeight = tableRectangle.width/colum;
 		int columHeight = 30;
@@ -159,31 +162,50 @@ public class WebTable extends JLabel{
 		
 		for(int i=0;i<row;i++){
 			for(int j=0;j<colum;j++){
-				this.content[i][j] = new JLabel(contentData[i][j]);
+				this.content[i][j] = new contentLabel(contentData[i][j]);
+				this.content[i][j].setPoint(i, j);
 				
-				if(i%2 != 0){
-					this.content[i][j].setBackground(new Color(190, 208, 247));
-				}else{
+//				if(i%2 != 0){
+//					this.content[i][j].setBackground(new Color(190, 208, 247));
+//				}else{
 					this.content[i][j].setBackground(UIUtil.bgWhite);
-				}
+					this.content[i][j].setDefaultBackground(UIUtil.bgWhite);
+					this.content[i][j].setForeground(Color.black);
+					this.content[i][j].setDefaultForeground(Color.black);
+				//}
 				
 				if(j<colum - 1){
 					this.content[i][j].setSize(columWeight, columHeight);
 				}else{
 					this.content[i][j].setSize(tableRectangle.width-(colum-1)*columWeight, columHeight);
 				}
-				
+
 				this.content[i][j].setLocation(j*columWeight, i*columHeight);
 				this.content[i][j].setOpaque(true);
 				this.content[i][j].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
-				
+
+				this.content[i][j].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e){
+						contentLabel label = (contentLabel)e.getSource();
+						Point location = label.getPoint();
+
+						WebTable.this.initBackground();
+						WebTable.this.mouseEnter(location.y, location.x, UIUtil.nbaBlue);
+					}
+					@Override
+					public void mouseExited(MouseEvent e){
+						WebTable.this.initBackground();
+					}
+				});
+
 				this.dataLabel.add(this.content[i][j]);
 			}
 		}
-		
+
 		this.repaint();
 	}
-	
+
 	private void scrollInit(){
 		
 		this.scrollPane = new JScrollPane();
@@ -193,6 +215,7 @@ public class WebTable extends JLabel{
 		this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		this.scrollPane.setOpaque(false);
 		this.scrollPane.getViewport().setOpaque(false);
+		this.scrollPane.setVisible(true);
 		
         this.scrollPane.getVerticalScrollBar().setUI(new IScrollBarUI());
         this.scrollPane.getHorizontalScrollBar().setUI(new IScrollBarUI());
@@ -233,6 +256,35 @@ public class WebTable extends JLabel{
 		}
 	}
 	
+	private void initBackground(){
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.content[i][j].setBackground(this.content[i][j].getDefaultBackground());
+				this.content[i][j].setForeground(this.content[i][j].getDefaultForeground());
+			}
+		}
+	}
+	private void initBorderColor(){
+		for(int i=0;i<row;i++){
+			for(int j=0;j<colum;j++){
+				this.content[i][j].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
+			}
+		}
+	}
+	private void mouseEnter(int columNumber, int rowNumber, Color color){
+		if(rowNumber>=0&&rowNumber<this.row){
+			for(int i=0;i<colum;i++){
+				this.content[rowNumber][i].setBackground(color);
+				this.content[rowNumber][i].setForeground(UIUtil.bgWhite);
+			}
+		}
+		if(columNumber>=0&&columNumber<this.colum){
+			for(int i=0;i<row;i++){
+				this.content[i][columNumber].setBackground(color);
+				this.content[i][columNumber].setForeground(UIUtil.bgWhite);
+			}
+		}
+	}
 /////////////////////////////////////////////////////////////////////////////
 //   							 										   //
 //							  对外接口                                      //
@@ -292,6 +344,15 @@ public class WebTable extends JLabel{
 		if(rowNumber>=0&&rowNumber<this.row){
 			for(int i=0;i<colum;i++){
 				this.content[rowNumber][i].setBackground(color);
+				this.content[rowNumber][i].setDefaultBackground(color);
+			}
+		}
+	}
+	//设置行边框色
+	public void setRowBorderColor(int rowNumber, Color color){
+		if(rowNumber>=0&&rowNumber<this.row){
+			for(int i=0;i<colum;i++){
+				this.content[rowNumber][i].setBorder(BorderFactory.createLineBorder(color, 1));
 			}
 		}
 	}
@@ -300,6 +361,7 @@ public class WebTable extends JLabel{
 		if(rowNumber>=0&&rowNumber<this.row){
 			for(int i=0;i<colum;i++){
 				this.content[rowNumber][i].setForeground(color);
+				this.content[rowNumber][i].setDefaultForeground(color);
 			}
 		}
 	}
@@ -308,6 +370,15 @@ public class WebTable extends JLabel{
 		if(columNumber>=0&&columNumber<this.colum){
 			for(int i=0;i<row;i++){
 				this.content[i][columNumber].setBackground(color);
+				this.content[i][columNumber].setDefaultBackground(color);
+			}
+		}
+	}
+	//设置列边框色
+	public void setColumBorderColor(int columNumber, Color color){
+		if(columNumber>=0&&columNumber<this.colum){
+			for(int i=0;i<row;i++){
+				this.content[i][columNumber].setBorder(BorderFactory.createLineBorder(color, 1));
 			}
 		}
 	}
@@ -316,6 +387,7 @@ public class WebTable extends JLabel{
 		if(columNumber>=0&&columNumber<this.colum){
 			for(int i=0;i<row;i++){
 				this.content[i][columNumber].setForeground(color);
+				this.content[i][columNumber].setDefaultForeground(color);
 			}
 		}
 	}
@@ -391,9 +463,9 @@ public class WebTable extends JLabel{
 				for(int k=0;k<row-1;k++){
 					for(int i=0;i<row-1;i++){
 						String[] move;
-						char a = this.contentData[i][columNumber].charAt(0);
-						char b = this.contentData[i+1][columNumber].charAt(0);
-						if(a<b){
+						String a = this.contentData[i][columNumber];
+						String b = this.contentData[i+1][columNumber];
+						if(a.compareTo(b)<0){
 							move = this.contentData[i];
 							this.contentData[i] = this.contentData[i+1];
 							this.contentData[i+1] = move;
@@ -467,11 +539,11 @@ class IScrollBarUI extends BasicScrollBarUI {
         //填充滚动条矩形
         Paint arcRectPaint = null;
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-            arcRectPaint = new GradientPaint(0, 0, new Color(151, 183, 252),
-                    thumbBounds.width, 0, new Color(151, 183, 252));
+            arcRectPaint = new GradientPaint(0, 0, UIUtil.nbaBlue,
+                    thumbBounds.width, 0, UIUtil.nbaBlue);
         } else {
-            arcRectPaint = new GradientPaint(0, 0, new Color(151, 183, 252),
-                    0, thumbBounds.height, new Color(151, 183, 252));
+            arcRectPaint = new GradientPaint(0, 0, UIUtil.nbaBlue,
+                    0, thumbBounds.height, UIUtil.nbaBlue);
         }
         g2.setPaint(arcRectPaint);
         g2.fill(arcRect);
@@ -538,12 +610,12 @@ class IScrollBarUI extends BasicScrollBarUI {
 
         	 @Override
              public Dimension getPreferredSize() {//将箭头默认大小设成0
-                 return new Dimension(1, 1);
+                 return new Dimension(0, 0);
              }
               
              @Override
              public Dimension getMinimumSize() {//将箭头最小大小设成0
-                 return new Dimension(1, 1);
+                 return new Dimension(0, 0);
              }
             @Override
             public void paint(Graphics g) {
@@ -559,7 +631,7 @@ class IScrollBarUI extends BasicScrollBarUI {
                 g2.setPaint(backgroupRectPaint);
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 // Draw the arrow
-                //IScrollBarUI.this.paintTriangle(g2, getSize(), direction);
+                IScrollBarUI.this.paintTriangle(g2, getSize(), direction);
             }
         };
     }
@@ -621,12 +693,12 @@ class IScrollBarUI extends BasicScrollBarUI {
 
         	 @Override
              public Dimension getPreferredSize() {//将箭头默认大小设成0
-                 return new Dimension(1, 1);
+                 return new Dimension(0, 0);
              }
               
              @Override
              public Dimension getMinimumSize() {//将箭头最小大小设成0
-                 return new Dimension(1, 1);
+                 return new Dimension(0, 0);
              }
             @Override
             public void paint(Graphics g) {
@@ -641,7 +713,7 @@ class IScrollBarUI extends BasicScrollBarUI {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setPaint(backgroupRectPaint);
                 g2.fillRect(0, 0, getWidth(), getHeight());
-                //IScrollBarUI.this.paintTriangle(g2, getSize(), direction);
+                IScrollBarUI.this.paintTriangle(g2, getSize(), direction);
             }
         };
     }
@@ -665,5 +737,39 @@ class HeaderLabel extends JLabel{
 	}
 	public void setDown(){
 		this.order = -1;
+	}
+}
+
+class contentLabel extends JLabel{
+
+	private static final long serialVersionUID = 1L;
+	private Point point;
+	private Color defaultBackground;
+	private Color defaultForeground;
+	
+	public contentLabel(){
+		super();
+	}
+	public contentLabel(String s){
+		super(s);
+	}
+	
+	public Point getPoint(){
+		return this.point;
+	}
+	public void setPoint(int x, int y){
+		this.point = new Point(x, y);
+	}
+	public void setDefaultBackground(Color color){
+		this.defaultBackground = color;
+	}
+	public void setDefaultForeground(Color color){
+		this.defaultForeground = color;
+	}
+	public Color getDefaultBackground(){
+		return this.defaultBackground;
+	}
+	public Color getDefaultForeground(){
+		return this.defaultForeground;
 	}
 }

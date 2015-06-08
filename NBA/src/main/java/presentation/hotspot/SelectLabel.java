@@ -25,8 +25,8 @@ public class SelectLabel extends GLabel{
 		super(message,location,size,container,visible,bord,wordSize);
 		
 		this.setOpaque(true);
-		this.setBackground(UIUtil.bgGrey);
-		this.setForeground(UIUtil.bgWhite);
+		this.setBackground(UIUtil.bgWhite);
+		this.setForeground(UIUtil.nbaBlue);
 		this.setHorizontalAlignment(JLabel.CENTER);
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		this.addMouseListener(new LabelListener());
@@ -35,9 +35,9 @@ public class SelectLabel extends GLabel{
 	public void setSelected(boolean sel){
 		isSelected = sel;
 		if(isSelected){
-			this.setBackground(UIUtil.nbaRed);
+			this.setForeground(UIUtil.nbaRed);
 		}else{
-			this.setBackground(UIUtil.bgGrey);
+			this.setForeground(UIUtil.nbaBlue);
 		}
 	}
 	
@@ -65,13 +65,13 @@ public class SelectLabel extends GLabel{
 
 		public void mouseEntered(MouseEvent e) {
 			SelectLabel l = (SelectLabel)e.getSource();
-			l.setBackground(UIUtil.nbaRed);
+			l.setForeground(UIUtil.nbaRed);
 		}
 
 		public void mouseExited(MouseEvent e) {
 			SelectLabel l = (SelectLabel)e.getSource();
 			if(!l.isSelected){
-				l.setBackground(UIUtil.bgGrey);
+				l.setForeground(UIUtil.nbaBlue);
 			}
 		}
 		
