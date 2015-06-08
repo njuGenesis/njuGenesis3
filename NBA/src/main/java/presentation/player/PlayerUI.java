@@ -36,12 +36,10 @@ import data.po.TeamDataPO;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.component.StyleScrollPane;
-import presentation.component.StyleTable;
 import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.hotspot.SelectLabel;
-import presentation.mainui.StartUI;
 import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 
@@ -86,20 +84,20 @@ public class PlayerUI extends BgPanel{
 	private void init(){
 		playList = playerLogic.getAllInfo(playerLogic.getLatestSeason());
 		
-		borderUp = new GLabel("", new Point(30,26), new Point(940,4), this, true);
+		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
 		borderUp.setOpaque(true);
 		borderUp.setBackground(UIUtil.nbaBlue);
 		
-		borderDown = new GLabel("", new Point(30,82), new Point(940,4), this, true);
+		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
 		borderDown.setOpaque(true);
 		borderDown.setBackground(UIUtil.nbaBlue);
 
-		title = new GLabel("  球员列表",new Point(30,30),new Point(940,52),this,true,0,24);
+		title = new GLabel("  球员列表",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
 		title.setForeground(UIUtil.nbaBlue);
 
-		chooser = new GLabel("",new Point(30,86),new Point(940,80),this,true,0,16);
+		chooser = new GLabel("",new Point(0,60),new Point(940,80),this,true,0,16);
 		chooser.setOpaque(true);
 		chooser.setBackground(UIUtil.bgWhite);
 		chooser.setForeground(UIUtil.nbaBlue);
@@ -273,7 +271,7 @@ public class PlayerUI extends BgPanel{
 			d[i][6] = p.getBirth()==null?"a":p.getBirth();
 			d[i][7] = p.getExp();
 		}
-		table = new WebTable(h, d, new Rectangle(30, 166, 940, 454), UIUtil.lightGrey);
+		table = new WebTable(h, d, new Rectangle(0, 140, 940, 460), UIUtil.lightGrey);
 		table.setColumDataCenter(2);
 		table.setColumDataCenter(3);
 		table.setColumDataCenter(4);

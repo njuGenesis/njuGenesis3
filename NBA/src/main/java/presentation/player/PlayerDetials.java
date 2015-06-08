@@ -39,35 +39,30 @@ public class PlayerDetials extends BgPanel{
 		this.name = name;
 		
 		this.setLayout(null);
-		this.setBackground(UIUtil.lightGrey);
-		this.setBounds(0, 0, 1000, 650);
+		this.setBackground(UIUtil.bgWhite);
 		this.setVisible(true);
 		
 		init();
 	}
 	
 	private void init(){
-		borderMid = new GLabel("", new Point(69, 76), new Point(4, 24), this, true);
-		borderMid.setOpaque(true);
-		borderMid.setBackground(UIUtil.nbaBlue);
-
 		title = new GLabel("  "+"name"//po.getName()
-				, new Point(27, 30), new Point(946, 52), this, true, 0, 25);
+				, new Point(0, 4), new Point(940, 52), this, true, 0, 25);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
 		title.setForeground(UIUtil.nbaBlue);
 		
-		borderUp = new GLabel("", new Point(27, 26), new Point(946, 4), this, true);
+		borderUp = new GLabel("", new Point(0, 0), new Point(940, 4), this, true);
 		borderUp.setOpaque(true);
 		borderUp.setBackground(UIUtil.nbaBlue);
 
 		tdMenu = new SelectLabel[4];
-		tdMenu[0] = new SelectLabel("资料", new Point(114, 83), new Point(60, 30), this, true, 0, 20);
-		tdMenu[1] = new SelectLabel("数据", new Point(114+235+2, 83), new Point(60, 30), this, true, 0, 20);
-		tdMenu[2] = new SelectLabel("比赛", new Point(114+(235+2)*2, 83), new Point(60, 30), this, true, 0, 20);
-		tdMenu[3] = new SelectLabel("对比", new Point(114+(235+2)*3, 83), new Point(60, 30), this, true, 0, 20);
+		tdMenu[0] = new SelectLabel("资料", new Point(84, 56), new Point(60, 30), this, true, 0, 20);
+		tdMenu[1] = new SelectLabel("数据", new Point(84+235+2, 56), new Point(60, 30), this, true, 0, 20);
+		tdMenu[2] = new SelectLabel("比赛", new Point(84+(235+2)*2, 56), new Point(60, 30), this, true, 0, 20);
+		tdMenu[3] = new SelectLabel("对比", new Point(84+(235+2)*3, 56), new Point(60, 30), this, true, 0, 20);
 		
-		borderDown = new GLabel("", new Point(73, 96), new Point(900, 4), this, true);
+		borderDown = new GLabel("", new Point(0, 69), new Point(940, 4), this, true);
 		borderDown.setOpaque(true);
 		borderDown.setBackground(UIUtil.nbaBlue);
 		

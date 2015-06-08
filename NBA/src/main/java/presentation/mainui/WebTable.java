@@ -80,7 +80,7 @@ public class WebTable extends JLabel{
 	}
 	
 	public WebTable(String[] header, Object[][] data, Rectangle r, Color background){
-		this.setBounds(r.x, r.y, r.width+18, r.height);
+		this.setBounds(r.x, r.y, r.width, r.height);
 		this.tableRectangle = r;
 		this.bgColor = background;
 		
@@ -121,7 +121,7 @@ public class WebTable extends JLabel{
 	private void headerInit(){
 		this.header = new HeaderLabel[colum];
 		
-		int columWeight = tableRectangle.width/colum;
+		int columWeight = (tableRectangle.width-9)/colum;
 		
 		for(int i=0;i<colum;i++){
 			this.header[i] = new HeaderLabel(headerData[i]);
@@ -148,11 +148,11 @@ public class WebTable extends JLabel{
 	private void contentInit(){
 		this.content = new contentLabel[row][colum];
 		
-		int columWeight = tableRectangle.width/colum;
+		int columWeight = (tableRectangle.width-9)/colum;
 		int columHeight = 30;
 		
 		this.dataLabel = new JPanel();
-		this.dataLabel.setBounds(0, header[0].getHeight(), tableRectangle.width, row*columHeight);
+		this.dataLabel.setBounds(0, header[0].getHeight(), tableRectangle.width-9, row*columHeight);
 		this.dataLabel.setLayout(null);
 		this.dataLabel.setPreferredSize(new Dimension(dataLabel.getWidth(), dataLabel.getHeight()));
 		this.dataLabel.revalidate();
@@ -175,7 +175,7 @@ public class WebTable extends JLabel{
 				if(j<colum - 1){
 					this.content[i][j].setSize(columWeight, columHeight);
 				}else{
-					this.content[i][j].setSize(tableRectangle.width-(colum-1)*columWeight, columHeight);
+					this.content[i][j].setSize(tableRectangle.width-9-(colum-1)*columWeight, columHeight);
 				}
 
 				this.content[i][j].setLocation(j*columWeight, i*columHeight);
@@ -208,7 +208,7 @@ public class WebTable extends JLabel{
 		
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.getViewport().setView(dataLabel);
-		this.scrollPane.setBounds(0, header[0].getHeight(), tableRectangle.width+18, tableRectangle.height-header[0].getHeight());
+		this.scrollPane.setBounds(0, header[0].getHeight(), tableRectangle.width+7, tableRectangle.height-header[0].getHeight());
 		this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		this.scrollPane.setOpaque(false);
@@ -567,21 +567,21 @@ class IScrollBarUI extends BasicScrollBarUI {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-            foregroundRectPaint = new GradientPaint(0, 0, WebTable.bgColor,
-                    trackBounds.width, 0, WebTable.bgColor);
-            backgroupRectPaint = new GradientPaint(0, 0, WebTable.bgColor,
-                    trackBounds.width, 0, WebTable.bgColor);
+            foregroundRectPaint = new GradientPaint(0, 0, UIUtil.bgWhite,
+                    trackBounds.width, 0, UIUtil.bgWhite);
+            backgroupRectPaint = new GradientPaint(0, 0, UIUtil.bgWhite,
+                    trackBounds.width, 0, UIUtil.bgWhite);
         } else {
-            foregroundRectPaint = new GradientPaint(0, 0, WebTable.bgColor,
-                    0, trackBounds.height, WebTable.bgColor);
-            backgroupRectPaint = new GradientPaint(0, 0, WebTable.bgColor,
-                    0, trackBounds.height, WebTable.bgColor);
+            foregroundRectPaint = new GradientPaint(0, 0, UIUtil.bgWhite,
+                    0, trackBounds.height, UIUtil.bgWhite);
+            backgroupRectPaint = new GradientPaint(0, 0, UIUtil.bgWhite,
+                    0, trackBounds.height, UIUtil.bgWhite);
         }
         g2.setPaint(backgroupRectPaint);
         g2.fillRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
         g2.setPaint(foregroundRectPaint);
         g2.fillRoundRect(trackBounds.x, trackBounds.y, trackBounds.width - 1, trackBounds.height - 1, (int) ARC_NUMBER, (int) ARC_NUMBER);
-        g2.setColor(WebTable.bgColor);
+        g2.setColor(UIUtil.bgWhite);
         g2.drawRoundRect(trackBounds.x, trackBounds.y, trackBounds.width - 1, trackBounds.height - 1, (int) ARC_NUMBER, (int) ARC_NUMBER);
 
         g2.setPaint(oldPaint);

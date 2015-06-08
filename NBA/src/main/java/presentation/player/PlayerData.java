@@ -41,7 +41,7 @@ public class PlayerData extends BgPanel{
 		} catch (Exception e) {}
 		
 		this.pos = pos;
-		this.setBounds(26, 120, 948, 530);
+		this.setBounds(0, 90, 940, 510);
 		this.setLayout(null);
 		this.setVisible(true);
 		this.setBackground(UIUtil.bgWhite);
