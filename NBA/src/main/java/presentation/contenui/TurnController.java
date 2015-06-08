@@ -42,7 +42,7 @@ public class TurnController {
 		case STATS_PLAYER:newPanel = new PlayerStatsPanelNew();break;
 		case STATS_TEAM:newPanel = new TeamStatsPanelNew();break;
 		}
-		newPanel.setBounds(0, 0, 1000, 650);
+		newPanel.setBounds(30, 30, 940, 600);
 		newPanel.setVisible(false);
 		return newPanel;
 	}
@@ -51,7 +51,7 @@ public class TurnController {
 	
 	public BgPanel turnToTeamDetials(String shortName){
 		BgPanel newPanel = new TeamDetials(shortName);
-		newPanel.setBounds(0, 0, 1000, 650);
+		newPanel.setBounds(30, 30, 940, 600);
 		newPanel.setVisible(false);
 		
 		StartUI.startUI.setMenu(1);
@@ -61,7 +61,7 @@ public class TurnController {
 	
 	public BgPanel turnToPlayerDetials(String name){
 		BgPanel newPanel = new PlayerDetials(name);
-		newPanel.setBounds(0, 0, 1000, 650);
+		newPanel.setBounds(30, 30, 940, 600);
 		newPanel.setVisible(false);
 		
 		//StartUI.startUI.setMenu(2);
@@ -75,7 +75,7 @@ public class TurnController {
 		ArrayList<MatchDataPO> pos = l.GetInfo(date, date, shortName);
 		
 		BgPanel newPanel = new MatchDetailPanel(pos.get(0));
-		newPanel.setBounds(0, 0, 1000, 650);
+		newPanel.setBounds(30, 30, 940, 600);
 		newPanel.setVisible(false);
 		
 		StartUI.startUI.setMenu(3);

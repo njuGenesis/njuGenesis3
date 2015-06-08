@@ -81,7 +81,7 @@ public class WebFrame extends GFrame{
 	
 	private void menuInit(){
 		menuPanel = new GLabel("", new Point(0, 0), new Point(150, 700), bg, true);
-		menuLabel = new GLabel("", new Point(150, 0), new Point(1000, 50), bg, true);
+		menuLabel = new GLabel("", new Point(150, 0), new Point(1000, 40), bg, true);
 //		
 //		menuTitle = new GLabel("NBA", new Point(0, 0), new Point(250, 105), menuPanel, true, 1, 30);
 //		menuTitle.setBackground(menuTitleColor);
@@ -197,7 +197,7 @@ public class WebFrame extends GFrame{
 		bg.setBackground(UIUtil.lightGrey);
 		bg.setOpaque(true); 
 		
-		panelBg = new GLabel("", new Point(150, 50), new Point(1000, 650), bg, true);
+		panelBg = new GLabel("", new Point(150, 40), new Point(1000, 660), bg, true);
 		panelBg.setBackground(bg.getBackground());
 		panelBg.setOpaque(true);
 	}
