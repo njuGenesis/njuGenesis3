@@ -188,10 +188,12 @@ public class PlayerLogic_db {
 			}
 			break;
 		}
-		
+	
 		PlayerDetailInfo tempinfo = new PlayerDetailInfo();
 		for(int i = 0;i<temp.size();i++){
+			System.out.println("temp:"+temp.get(i));
 			tempinfo = getdetail(temp.get(i));
+			System.out.println(tempinfo.getPosition());
 			if((firstc(tempinfo,firstc))&&(namekeys(tempinfo,namekey))&&(position(tempinfo,position))&&(union(tempinfo.getId(),union))){
 				res.add(temp.get(i));
 			}
@@ -205,10 +207,14 @@ public class PlayerLogic_db {
 			return true;
 		}
 		else{
+			try{
 			if(p.getName().toLowerCase().startsWith(firstc.toLowerCase())){
 				return true;
 			}
 			else{
+				return false;
+			}
+			}catch(Exception e){
 				return false;
 			}
 		}		
@@ -218,10 +224,14 @@ public class PlayerLogic_db {
 			return true;
 		}
 		else{
+			try{
 			if(p.getName().toLowerCase().contains(namekeys.toLowerCase())){
 				return true;
 			}
 			else{
+				return false;
+			}
+			}catch(Exception e){
 				return false;
 			}
 		}
@@ -231,10 +241,15 @@ public class PlayerLogic_db {
 			return true;
 		}
 		else{
+			try{
 			if(p.getPosition().contains(position)){
 				return true;
 			}
 			else{
+				return false;
+			}
+			}
+			catch(Exception e){
 				return false;
 			}
 		}
