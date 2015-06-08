@@ -97,18 +97,18 @@ public class PlayerStatsPanelNew extends BgPanel{
 			"得分","胜","负",};
 
 	String[] header_ad_basic = {"姓名","球队",
-			"篮板%","进攻板%","防守板%",
-			"助攻%","抢断%","盖帽%","失误%","使用%",
-			"进攻效率","防守效率",
-			"WS","进攻WS","防守WS",  //胜利贡献率
+			"篮板","进攻板","防守板",
+			"助攻","抢断","盖帽","失误","使用",
+			"<html>进攻<br>效率<html>","<html>防守<br>效率<html>",
+			"WS","<html>进攻<br>WS<html>","<html>防守<br>WS<html>",  //胜利贡献率
 			"PER","扣篮","2/3+1","被帽",  //PER为效率
 	};
 	String[] header_ad_shoot = {"姓名","球队","出手距离",
-			"篮下命中率","命中","出手","占比",
-			"近距两分","命中","出手","占比",
-			"中距两分","命中","出手","占比",
-			"远距两分","命中","出手","占比",
-			"真实命中率","投篮效率",
+			"<html>篮下<br>命中率<html>","命中","出手","占比",
+			"<html>近距<br>两分<html>","命中","出手","占比",
+			"<html>中距<br>两分<html>","命中","出手","占比",
+			"<html>远距<br>两分<html>","命中","出手","占比",
+			"<html>真实<br>命中率<html>","<html>投篮<br>效率<html>",
 	};
 
 
@@ -122,7 +122,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 	JCheckBox ad_eff;  //进阶数据
 	JCheckBox ad_shooteff;  //投篮进阶数据
 
-	JCheckBox[] checkBoxes = {all,all2,avg,avg2,ad_eff,ad_shooteff};
+	JCheckBox[] checkBoxes = new JCheckBox[6];
 
 	public GTable table;
 	public StyleScrollPane jspAll;
@@ -137,7 +137,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 	public WebTable adBasicTable;
 	public WebTable adShootTable;
 
-	WebTable[] tables = {allTable1,allTable2,avgTable1,avgTable2,adBasicTable,adShootTable};
+	WebTable[] tables = new WebTable[6];
 
 	StatsFactory factory = new StatsFactory();
 
@@ -201,14 +201,14 @@ public class PlayerStatsPanelNew extends BgPanel{
 		season.setFont(NewFont.ComboBoxFont);
 		this.add(season);
 
-		type = new GComboBox(seasonItem);
+		type = new GComboBox(typeItem);
 		type.setBounds(620-this.getX(), 100, 150, 30);
 		type.setFont(NewFont.ComboBoxFont);
 		this.add(type);
 
 		submit = UIUtil.getSelectButton();
 		submit.setBounds(820-this.getX(), 100, 150, 30);
-		submit.addMouseListener(new SubmitListener());
+		//		submit.addMouseListener(new SubmitListener());
 		this.add(submit);
 
 		//--------------------筛选条件end--------------------
@@ -221,65 +221,77 @@ public class PlayerStatsPanelNew extends BgPanel{
 		all.setOpaque(false);
 		all.addMouseListener(new CheckListener(0));
 		this.add(all);
+		checkBoxes[0] = all;
 
 		all2 = new JCheckBox("总数二");
 		all2.setBounds(180, 150, 70, 30);
-		all2.setSelected(true);
 		all2.setOpaque(false);
 		all2.addMouseListener(new CheckListener(1));
 		this.add(all2);
+		checkBoxes[1] = all2;
 
 		avg = new JCheckBox("场均");
 		avg.setBounds(280, 150, 70, 30);
 		avg.setOpaque(false);
 		avg.addMouseListener(new CheckListener(2));
 		this.add(avg);
+		checkBoxes[2] = avg;
 
 		avg2 = new JCheckBox("场均二");
 		avg2.setBounds(380, 150, 70, 30);
 		avg2.setOpaque(false);
 		avg2.addMouseListener(new CheckListener(3));
 		this.add(avg2);
+		checkBoxes[3] = avg2;
 
 		ad_eff = new JCheckBox("进阶数据");
 		ad_eff.setBounds(480, 150, 70, 30);
 		ad_eff.setOpaque(false);
 		ad_eff.addMouseListener(new CheckListener(4));
 		this.add(ad_eff);
+		checkBoxes[4] = ad_eff;
 
 		ad_shooteff = new JCheckBox("投篮进阶");
 		ad_shooteff.setBounds(580, 150, 70, 30);
 		ad_shooteff.setOpaque(false);
 		ad_shooteff.addMouseListener(new CheckListener(5));
 		this.add(ad_shooteff);
+		checkBoxes[5] = ad_shooteff;
+
 		//--------------------表格分类end--------------------
 
 
-		
-		
+
+
 		//--------------------默认表格内容--------------------
 		allTable1 = new WebTable(getBasicHeader(), getAllData1_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		this.add(allTable1);
+		tables[0] = allTable1;
 
 		allTable2 = new WebTable(this.header_basic2, getAllData2_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		allTable2.setVisible(false);
 		this.add(allTable2);
+		tables[1] = allTable2;
 
 		avgTable1 = new WebTable(getBasicHeader(), getAvgData1_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		avgTable1.setVisible(false);
 		this.add(avgTable1);
+		tables[2] = avgTable1;
 
-		avgTable2 = new WebTable(getBasicHeader(), getAvgData2_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		avgTable2 = new WebTable(this.header_basic2, getAvgData2_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		avgTable2.setVisible(false);
 		this.add(avgTable2);
+		tables[3] = avgTable2;
 
-		adBasicTable = new WebTable(header_basic, getAdEff_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		adBasicTable = new WebTable(header_ad_basic, getAdEff_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		adBasicTable.setVisible(false);
 		this.add(adBasicTable);
+		tables[4] = adBasicTable;
 
-		adShootTable = new WebTable(header_basic, getAdEffShoot_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
 		adShootTable.setVisible(false);
 		this.add(adShootTable);
+		tables[5] = adShootTable;
 
 		//--------------------默认表格内容end--------------------
 
@@ -719,7 +731,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 				e.printStackTrace();
 			}
 
-			Object[][] data = new Object[temp.size()][19];
+			Object[][] data = new Object[temp.size()][header_ad_shoot.length];
 
 			for(int i=0;i<temp.size();i++){
 				data[i][0] = temp.get(i).getName();
@@ -760,7 +772,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 				e.printStackTrace();
 			}
 
-			Object[][] data = new Object[temp.size()][19];
+			Object[][] data = new Object[temp.size()][header_ad_shoot.length];
 
 			for(int i=0;i<temp.size();i++){
 				data[i][0] = temp.get(i).getName();
@@ -915,6 +927,38 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}
 	}
 
+	private int getSelectNumber(){
+		for(int i=0;i<checkBoxes.length;i++){
+			if(checkBoxes[i].isSelected()){
+				return i;
+			}
+		}
+		return 0;
+	}
+
+	private String getTableName(int num){
+		if(isRegular()){
+			switch(num){
+			case 0:
+			case 1:return "s_t_b";
+			case 2:
+			case 3:return "s_a_b";
+			case 4:return "s_ad_b";
+			case 5:return "s_ad_s";
+			};
+		}else{
+			switch(num){
+			case 0:
+			case 1:return "p_t_b";
+			case 2:
+			case 3:return "p_a_b";
+			case 4:return "p_ad_b";
+			case 5:return "p_ad_s";
+			};
+		}
+		return "s_t_b";
+	}
+
 	class SubmitListener implements MouseListener{
 
 		@Override
@@ -925,24 +969,60 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			PlayerStatsPanelNew.this.remove(jspAll);
-			PlayerStatsPanelNew.this.remove(jspAvg);
-			PlayerStatsPanelNew.this.remove(jspEff);
 
-			all.setSelected(true);
-			avg.setSelected(false);
-			eff.setSelected(false);
 
-			jspAll = factory.getTablePanePlayer(getHeader1(), getAllData());
-			PlayerStatsPanelNew.this.add(jspAll);
+			for(int i=0;i<tables.length;i++){
+				PlayerStatsPanelNew.this.remove(tables[i]);
+				if(i==0){
+					checkBoxes[i].setSelected(true);
+				}else{
+					checkBoxes[i].setSelected(false);
+				}
+			}
 
-			jspAvg = factory.getTablePanePlayer(getHeader1(), getAvgData());
-			jspAvg.setVisible(false);
-			PlayerStatsPanelNew.this.add(jspAvg);
 
-			jspEff = factory.getTablePanePlayer(getHeader2(), getEffData());
-			jspEff.setVisible(false);
-			PlayerStatsPanelNew.this.add(jspEff);
+
+			int select = getSelectNumber();
+
+
+
+//			logic_db.selectByTag(getSeasonStr(season.getSelectedItem().toString()),
+//					getTableName,
+//					"null", "null", 
+//					changePosStr(position.getSelectedItem().toString()), 
+//					changeUnStr(league.getSelectedItem().toString()));
+
+			//--------------------默认表格内容--------------------
+			allTable1 = new WebTable(getBasicHeader(), getAllData1_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			PlayerStatsPanelNew.this.add(allTable1);
+			tables[0] = allTable1;
+
+			allTable2 = new WebTable(header_basic2, getAllData2_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			allTable2.setVisible(false);
+			PlayerStatsPanelNew.this.add(allTable2);
+			tables[1] = allTable2;
+
+			avgTable1 = new WebTable(getBasicHeader(), getAvgData1_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			avgTable1.setVisible(false);
+			PlayerStatsPanelNew.this.add(avgTable1);
+			tables[2] = avgTable1;
+
+			avgTable2 = new WebTable(header_basic2, getAvgData2_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			avgTable2.setVisible(false);
+			PlayerStatsPanelNew.this.add(avgTable2);
+			tables[3] = avgTable2;
+
+			adBasicTable = new WebTable(header_ad_basic, getAdEff_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			adBasicTable.setVisible(false);
+			PlayerStatsPanelNew.this.add(adBasicTable);
+			tables[4] = adBasicTable;
+
+			adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_default(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			adShootTable.setVisible(false);
+			PlayerStatsPanelNew.this.add(adShootTable);
+			tables[5] = adShootTable;
+
+
 		}
 
 		@Override
