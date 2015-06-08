@@ -7,14 +7,30 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import data.po.teamData.OtherTeamData;
+import data.po.teamData.TeamCompleteInfo;
 import data.po.teamData.TeamData_Avg_PO;
+import data.po.teamData.TeamBaseInfo;
+import data.po.teamData.TeamHData;
+import data.po.teamData.TeamLData;
 
 public class TeamDb extends DataBaseLink {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
 		TeamDb t = new TeamDb();
-		t.initializeTeamTable();
-		//t.clearTeamTable();
+		// t.initializeTeamTable();
+		// t.clearTeamTable();
+
+		/*ArrayList<TeamData_Avg_PO> res = t.getted("SAS","unknown","unknown");
+		for(int i=0;i<res.size();i++){
+			System.out.println(res.get(i).getOff()+"  "+res.get(i).getAssistEff());
+		}*/
+		
+		ArrayList<TeamLData> hotseaon =t.getSortLData("13-14", "shooteff", "yes");
+		for(int i=0;i<hotseaon.size();i++){
+			System.out.println(hotseaon.get(i).getShootEff()+hotseaon.get(i).getShortName());
+		}
+		
 	}
 
 	public void clearTeamTable() {
@@ -181,19 +197,24 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 查询球队基本信息
-	public TeamData_Avg_PO getbaseinfo(String shortname) throws RemoteException {
-
-		TeamData_Avg_PO res = new TeamData_Avg_PO();
+	public ArrayList<TeamBaseInfo> getbaseinfo(String shortname)
+			throws RemoteException {
+		ArrayList<TeamBaseInfo> temp = new ArrayList<TeamBaseInfo>();
+		TeamBaseInfo res = new TeamBaseInfo();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed()) {
-			}
 			Statement st = con.createStatement();
 			ResultSet rs = st
-					.executeQuery("select * from teambaseinfo where shotrname = '"
-							+ shortname + "'");
+					.executeQuery("select * from teambaseinfo where (shortname = '"
+							+ shortname
+							+ "' or "
+							+ shortname.equals("unknown")
+							+ " )");
+			while(rs.next()){
+			res=new TeamBaseInfo();
 			res.setName(rs.getString("name"));
+			res.setIsSeason(rs.getString("isseason"));
 			res.setShortName(rs.getString("shortname"));
 			res.setSeason(rs.getString("season"));
 			res.setCity(rs.getString("city"));
@@ -202,7 +223,8 @@ public class TeamDb extends DataBaseLink {
 			res.setMainposition(rs.getString("mainposition"));
 			res.setPlayers(rs.getString("players"));
 			res.setBuildyear(rs.getInt("buildyear"));
-
+			temp.add(res);
+			}
 			con.close();
 
 		} catch (Exception e) {
@@ -210,39 +232,34 @@ public class TeamDb extends DataBaseLink {
 			e.printStackTrace();
 			return null;
 		}
-		return res;
+		return temp;
 	}
 
 	// 查询球队低阶数据
-	public ArrayList<TeamData_Avg_PO> gettbi(String shortname, String season,
+	public ArrayList<TeamLData> getLData(String shortname, String season,
 			String isseason) {
-		if (season.equals("unknown")) {
-			season = "*";
-		}
-		if (shortname.equals("unknown")) {
-			shortname = "*";
-		}
-		if (isseason.equals("unknown")) {
-			isseason = "*";
-		}
-		ArrayList<TeamData_Avg_PO> temp = new ArrayList<TeamData_Avg_PO>();
-		TeamData_Avg_PO res = new TeamData_Avg_PO();
+	
+		ArrayList<TeamLData> temp = new ArrayList<TeamLData>();
+		TeamLData res = new TeamLData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
-					.executeQuery("select * from teambasedata where shortname = '"
+					.executeQuery("select * from teambasedata where (shortname = '"
 							+ shortname
-							+ "'"
-							+ "and season = '"
+							+ "' or "
+							+ shortname.equals("unknown")
+							+ " )"
+							+ "and (season = '"
 							+ season
-							+ "'"
-							+ "and isseason = '" + isseason + "'");
+							+ "' or "
+							+ season.equals("unknown")
+							+ " )"
+							+ "and( isseason = '"
+							+ isseason + "' or " + isseason.equals("unknown") + " )");
 			while (rs.next()) {
-				res = new TeamData_Avg_PO();
+				res = new TeamLData();
 				res.setShortName(shortname);
 				res.setSeason(season);
 				settbi(rs, res);
@@ -257,32 +274,30 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 查询球队高阶数据
-	public ArrayList<TeamData_Avg_PO> getted(String shortname, String season,
+	public ArrayList<TeamHData> getHData(String shortname, String season,
 			String isseason) {
-		if (season.equals("unknown")) {
-			season = "*";
-		}
-		if (shortname.equals("unknown")) {
-			shortname = "*";
-		}
-		ArrayList<TeamData_Avg_PO> temp = new ArrayList<TeamData_Avg_PO>();
-		TeamData_Avg_PO res = new TeamData_Avg_PO();
+		
+		ArrayList<TeamHData> temp = new ArrayList<TeamHData>();
+		TeamHData res = new TeamHData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
-					.executeQuery("select * from teamexdata where shortname = '"
+					.executeQuery("select * from teamexdata where (shortname = '"
 							+ shortname
-							+ "'"
-							+ "and season = '"
+							+ "' or "
+							+ shortname.equals("unknown")
+							+ " )"
+							+ "and (season = '"
 							+ season
-							+ "'"
-							+ "and isseason = '" + isseason + "'");
+							+ "' or "
+							+ season.equals("unknown")
+							+ " )"
+							+ "and( isseason = '"
+							+ isseason + "' or " + isseason.equals("unknown") + " )");
 			while (rs.next()) {
-				res = new TeamData_Avg_PO();
+				res = new TeamHData();
 				res.setShortName(shortname);
 				res.setSeason(season);
 				setted(rs, res);
@@ -297,32 +312,31 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 查询对手球队数据
-	public ArrayList<TeamData_Avg_PO> getotd(String shortname, String season,
+	public ArrayList<OtherTeamData> getOtherTeamData(String shortname, String season,
 			String isseason) {
-		if (season.equals("unknown")) {
-			season = "*";
-		}
-		if (shortname.equals("unknown")) {
-			shortname = "*";
-		}
-		ArrayList<TeamData_Avg_PO> temp = new ArrayList<TeamData_Avg_PO>();
-		TeamData_Avg_PO res = new TeamData_Avg_PO();
+	
+		ArrayList<OtherTeamData> temp = new ArrayList<OtherTeamData>();
+		OtherTeamData res = new OtherTeamData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
-					.executeQuery("select * from otherteamdata where shortname = '"
+					.executeQuery("select * from otherteamdata where (shortname = '"
 							+ shortname
-							+ "'"
-							+ "and season = '"
+							+ "' or "
+							+ shortname.equals("unknown")
+							+ " )"
+							+ "and (season = '"
 							+ season
-							+ "'"
-							+ "and isseason = '" + isseason + "'");
+							+ "' or "
+							+ season.equals("unknown")
+							+ " )"
+							+ "and( isseason = '"
+							+ isseason + "' or " + isseason.equals("unknown") + " )");
+
 			while (rs.next()) {
-				res = new TeamData_Avg_PO();
+				res = new OtherTeamData();
 				res.setShortName(shortname);
 				res.setSeason(season);
 				setotd(rs, res);
@@ -336,18 +350,56 @@ public class TeamDb extends DataBaseLink {
 		return temp;
 	}
 
-	// *查询球队所有数据
+	// *查询并装载球队所有数据
+	public TeamCompleteInfo getAllTeamInfo(String shortname, String season,
+			String isseason) throws RemoteException{
+		TeamCompleteInfo temp = new TeamCompleteInfo();
+		temp.setBaseinfo(getbaseinfo(shortname).get(0));
+		temp.setLData(getLData(shortname,season,isseason).get(0));
+		temp.setHData(getHData(shortname,season,isseason).get(0));
+		temp.setOtherTeam(getOtherTeamData(shortname,season,isseason).get(0));
+
+		return temp;
+	}
+	
+	// 根据低阶数据中任意属性排序
+		public ArrayList<TeamLData> getSortLData(String season, String property,
+				String isseason) {
+		
+			ArrayList<TeamLData> temp = new ArrayList<TeamLData>();
+			TeamLData res = new TeamLData();
+			try {
+				Connection con = DriverManager.getConnection(DataBaseLink.url,
+						"root", "");
+				Statement st = con.createStatement();
+				ResultSet rs = st
+						.executeQuery("select * from teambasedata where  (season = '"
+								+ season
+								+ "' or "
+								+ season.equals("unknown")
+								+ " )"
+								+ "and( isseason = '"
+								+ isseason + "' or " + isseason.equals("unknown") + " ) order by "+property+" desc");
+				while (rs.next()) {
+					res = new TeamLData();
+					res.setSeason(season);
+					settbi(rs, res);
+					temp.add(res);
+				}
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			return temp;
+		}
 
 	// 装载球队低阶数据
-	private TeamData_Avg_PO settbi(ResultSet rs, TeamData_Avg_PO res) {
+	private TeamLData settbi(ResultSet rs, TeamLData res) {
 		try {
-			if (res.getSeason().equals("*")) {
-				res.setSeason(rs.getString("season"));
-			}
-			if (res.getShortName().equals("*")) {
-				res.setShortName(rs.getString("shortname"));
-			}
-			res.setIsSeason(rs.getString("isseason"));
+			res.setSeason(rs.getString("season"));
+			res.setShortName(rs.getString("shortname"));
+			res.setIsseason(rs.getString("isseason"));
 			res.setMatchNumber(rs.getDouble("matchnumber"));
 			res.setWinMatch(rs.getDouble("winmatch"));
 			res.setWinrate(rs.getDouble("winrate"));
@@ -377,15 +429,11 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 装载球队高阶数据
-	private TeamData_Avg_PO setted(ResultSet rs, TeamData_Avg_PO res) {
+	private TeamHData setted(ResultSet rs, TeamHData res) {
 		try {
-			if (res.getSeason().equals("*")) {
-				res.setSeason(rs.getString("season"));
-			}
-			if (res.getShortName().equals("*")) {
-				res.setShortName(rs.getString("shortname"));
-			}
-			res.setIsSeason(rs.getString("isseason"));
+			res.setSeason(rs.getString("season"));
+			res.setShortName(rs.getString("shortname"));
+			res.setIsseason(rs.getString("isseason"));
 			res.setOff(rs.getDouble("off"));
 			res.setDef(rs.getDouble("def"));
 			res.setOffEff(rs.getDouble("offeff"));
@@ -402,15 +450,11 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 装载对手球队数据
-	private TeamData_Avg_PO setotd(ResultSet rs, TeamData_Avg_PO res) {
+	private OtherTeamData setotd(ResultSet rs, OtherTeamData res) {
 		try {
-			if (res.getSeason().equals("*")) {
-				res.setSeason(rs.getString("season"));
-			}
-			if (res.getShortName().equals("*")) {
-				res.setShortName(rs.getString("shortname"));
-			}
-			res.setIsSeason(rs.getString("isseason"));
+			res.setSeason(rs.getString("season"));
+			res.setShortName(rs.getString("shortname"));
+			res.setIsseason(rs.getString("isseason"));
 			res.setMatchNumber(rs.getDouble("matchnumber"));
 			res.setWinMatch(rs.getDouble("winmatch"));
 			res.setWinrate(rs.getDouble("winrate"));

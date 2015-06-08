@@ -3,7 +3,7 @@ package data.po.teamData;
 public class TeamData_Avg_PO {
   	  String Name;// 队名
   	  String ShortName;
-  	  String Season;//赛季   形式如13-14
+  	  String Season;//赛季   形式如13_14
   	  String IsSeason;
   	  String City;// 城市
       String EorW;// 东西部

@@ -1,227 +1,140 @@
 package bussinesslogic.match;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
-
-import assistance.GetFileData;
 import bslogicService.MatchInfoService;
-import bussinesslogic.team.TeamLogic;
-import data.match.Matchdata;
-import data.po.MatchDataPO;
-import data.po.Match_PlayerPO;
+import data.db.MatchDb;
+import data.po.matchData.MatchDataSeason;
+import data.po.matchData.MatchPlayer;
 
 public class MatchLogic implements MatchInfoService {
-	Matchdata add = new Matchdata();
-	public static ArrayList<MatchDataPO> matches = new ArrayList<MatchDataPO>();
+	MatchDb m = new MatchDb();
 
-	/*
-	 * private boolean isExit(){ return m.judge(); }
-	 */
+	// 获得一个赛季所有的比赛的基本信息 season格式为13-14    isseason为yes时返回常规赛，为no时返回季后赛，为unknown时返回全部比赛
+	public ArrayList<MatchDataSeason> GetSeasonMatch(String season,String isseason) {
+		ArrayList<MatchDataSeason> matches = new ArrayList<MatchDataSeason>();
+		matches = m.getmatchinfo("unknown", "unknown", season, "unknown",
+				isseason, "unknown");
+		return matches;
+	}
 
-	public ArrayList<MatchDataPO> ini(String fileDir) {
-		ArrayList<MatchDataPO> MatchList12 = new ArrayList<MatchDataPO>();
-		ArrayList<MatchDataPO> MatchList13 = new ArrayList<MatchDataPO>();
-		ArrayList<MatchDataPO> MatchListtest = new ArrayList<MatchDataPO>();
-		GetFileData MatchReader = new GetFileData();
-		File[] fileList = MatchReader.getAllMathcFielName(fileDir);
-		for (int i = 0; i < fileList.length; i++) {
-			/*if (MatchReader.detailMatch(fileList[i]).getSeason()
-					.equals("12-13")) {
-				if (!MatchReader.detailMatch(fileList[i]).getPoints()
-						.equals("0-0")) {
-					MatchList12.add(calcuRound(MatchReader
-							.detailMatch(fileList[i])));
-				}
+	// 获得某一天的所有比赛 ，date的格式为“2014-11-01”
+	public ArrayList<MatchDataSeason> GetDateMatch(String date) {
+		ArrayList<MatchDataSeason> matches = new ArrayList<MatchDataSeason>();
+		matches = m.getmatchinfo("unknown", "unknown", "unknown", date,
+				"unknown", "unknown");
+		return matches;
+	}
+
+	// 获得一个球队一个赛季的*所有*比赛 ，season的格式为“13-14”,球队为简称, isseason格式同上
+	public ArrayList<MatchDataSeason> GetTeamSeasonMatch(String shotrName,
+			String season,String isseason) {
+		ArrayList<MatchDataSeason> matches1 = new ArrayList<MatchDataSeason>();
+		matches1 = m.getmatchinfo(shotrName, "unknown",season, "unknown",
+				isseason,"unknown");
+		ArrayList<MatchDataSeason> matches2 = new ArrayList<MatchDataSeason>();
+		matches2 = m.getmatchinfo("unknown", shotrName, season, "unknown",
+				isseason,"unknown");
+		matches1.addAll(matches2);
+		matches1.sort(new Comparator<MatchDataSeason>() {
+			public int compare(MatchDataSeason o1, MatchDataSeason o2) {
+				if (o1.getDate().compareTo(o2.getDate()) <= 0)
+					return 0;
+				else
+					return 1;
 			}
-
-			if (MatchReader.detailMatch(fileList[i]).getSeason()
-					.equals("13-14")) {
-				if (!MatchReader.detailMatch(fileList[i]).getPoints()
-						.equals("0-0")) {
-					MatchList13.add(calcuRound(MatchReader
-							.detailMatch(fileList[i])));
-				}
-			}*/
-			
-		//else
-		{
-				if (!MatchReader.detailMatch(fileList[i]).getPoints()
-						.equals("0-0")) {
-					MatchListtest.add(calcuRound(MatchReader
-							.detailMatch(fileList[i])));
-				}
-			}
-			
-		}
-		//System.out.println(MatchLogic.getTime());
-		matches.addAll(MatchList12);
-		matches.addAll(MatchList13);
-		matches.addAll(MatchListtest);
-		TeamLogic t = new TeamLogic();
-		t.initTeamData(fileDir);
-		if (MatchList12.size() != 0) {
-			add.writeIn(MatchList12);
-		}
-		if (MatchList13.size() != 0) {
-			add.writeIn(MatchList13);
-		}
-		if (MatchListtest.size() != 0) {
-			add.writeIn(MatchListtest);
-		}
-
-		return null;
+		});
+		return matches1;
 	}
 
-	public void update(String filename) {
-		GetFileData MatchReader = new GetFileData();
-		File file = new File(filename);
-		ArrayList<MatchDataPO> matches = new ArrayList<MatchDataPO>();
-		matches.add(calcuRound(MatchReader.detailMatch(file)));
-		updateMatchInfo(matches);
-		TeamLogic t = new TeamLogic();
-		t.updateTeamInfo(matches);
+	// 获得一个球队一个赛季的所有*主场*比赛 ，season的格式为“13-14”,球队为简称, isseason格式同上
+	public ArrayList<MatchDataSeason> GetTeamSeasonHomeMatch(String shotrName,
+			String season,String isseason) {
+		ArrayList<MatchDataSeason> matches1 = new ArrayList<MatchDataSeason>();
+		matches1 = m.getmatchinfo(shotrName, "unknown",season, "unknown",
+				isseason, "unknown");
+		return matches1;
 	}
 
-	public void updateMatchInfo(ArrayList<MatchDataPO> matches) {
-		for (int i = 0; i < matches.size(); i++) {
-			calcuRound(matches.get(i));
-		}
-		add.writeIn(matches);
+	// 获得一个球队一个赛季的所有*客场*比赛 ，season的格式为“13-14”,球队为简称, isseason格式同上
+	public ArrayList<MatchDataSeason> GetTeamSeasonAwayMatch(String shotrName,
+			String season,String isseason) {
+		ArrayList<MatchDataSeason> matches1 = new ArrayList<MatchDataSeason>();
+		matches1 = m.getmatchinfo("unknown", shotrName, season, "unknown",
+				isseason, "unknown");
+		return matches1;
 	}
 
-	@SuppressWarnings("unused")
-	private void addMatch(MatchDataPO match) {
-		add.writeIn(calcuRound(match));
-	}
-
-	// 计算比赛双方进攻回合数
-	private MatchDataPO calcuRound(MatchDataPO match) {
-		if (match.getPoints().equals("0-0")) {
-			match.setValid(false);
-			;
-			return match;
-		}
-		match.setTeamround1(match.getShoot1() + 0.4 * match.getFT1() - 1.07
-				* match.getTeam1Off() * match.getLostSH1()
-				/ (match.getTeam1Off() + match.getTeam2Def()) + 1.07
-				* match.getTo1());
-
-		match.setTeamround2(match.getShoot2() + 0.4 * match.getFT2() - 1.07
-				* match.getTeam2Off() * match.getLostSH2()
-				/ (match.getTeam2Off() + match.getTeam1Def()) + 1.07
-				* match.getTo2());
-		return match;
-	}
-
-	// 获得所有的比赛
-	public ArrayList<MatchDataPO> GetAllInfo() {
-		return add.GetAllMatch();
-	}
-
-	// 获得一个赛季所有的比赛
-	public ArrayList<MatchDataPO> GetAllInfo(String season) {
-		return add.GetPartMatch(season);
-	}
-
-	// 获得一个球队一段时间的所有比赛 ，date的格式为“13-14_01-01” （赛季+“_”+日期）
-	public ArrayList<MatchDataPO> GetInfo(String startDate, String endDate,
-			String shotrName) {
-		return add.GetPartMatch(startDate, endDate, shotrName);
-	}
-
-	// 获得一段时间的所有比赛 ，date的格式为“13-14_01-01” （赛季+“_”+日期）
-	public ArrayList<MatchDataPO> GetDateMatch(String startDate, String endDate) {
-		return add.GetDateMatch(startDate, endDate);
-	}
-
-	// 获得一个球队一个赛季的所有比赛 ，season的格式为“13-14”
-	public ArrayList<MatchDataPO> GetInfo(String shotrName, String season) {
-		return add.GetPartMatch(shotrName, season);
-	}
-
-	// 获得一个球队一个赛季的所有比赛 ，season的格式为“13-14”
-	public ArrayList<MatchDataPO> GetInfo(String teamShotrName) {
-		return add.GetInfo(teamShotrName);
-	}
-
-	// 根据球员和赛季返回比赛
-	public ArrayList<MatchDataPO> GetPlayerInfo(String playername, String season) {
-		ArrayList<MatchDataPO> allinfo = GetAllInfo(season);
-		ArrayList<MatchDataPO> res = new ArrayList<MatchDataPO>();
-		for (int i = 0; i < allinfo.size(); i++) {
-			for (int k = 0; k < allinfo.get(i).getPlayers1().size(); k++) {
-				if (allinfo.get(i).getPlayers1().get(k).getPlayername()
-						.equals(playername)) {
-					res.add(allinfo.get(i));
-					break;
-				}
-			}
-			for (int k = 0; k < allinfo.get(i).getPlayers2().size(); k++) {
-				if (allinfo.get(i).getPlayers2().get(k).getPlayername()
-						.equals(playername)) {
-					res.add(allinfo.get(i));
-					break;
-				}
-			}
+	// 根据球员返回比赛，isseason格式同上
+	public ArrayList<MatchDataSeason> GetPlayerMatch(String playername,String isseason) {
+		ArrayList<MatchPlayer> playerMatchID = m.getmatchplayer("unknown",
+				playername, "unknown",isseason);
+		ArrayList<MatchDataSeason> res = new ArrayList<MatchDataSeason>();
+		for (int i = 0; i < playerMatchID.size(); i++) {
+			res.add(m.getmatchinfo("unknown", "unknown", "unknown", "unknown",
+					isseason, playerMatchID.get(i).getMatchID()).get(0));
 		}
 		return res;
 	}
 
-	// 根据球员返回比赛
-	public ArrayList<Match_PlayerPO> GetPlayerInfo(String playername) {
-		ArrayList<MatchDataPO> allinfo = GetAllInfo();
-		ArrayList<Match_PlayerPO> res = new ArrayList<Match_PlayerPO>();
-		for (int i = 0; i < allinfo.size(); i++) {
-			for (int k = 0; k < allinfo.get(i).getPlayers1().size(); k++) {
-				if (allinfo.get(i).getPlayers1().get(k).getPlayername()
-						.equals(playername)) {
-					res.add(allinfo.get(i).getPlayers1().get(k));
-					break;
-				}
-			}
-			for (int k = 0; k < allinfo.get(i).getPlayers2().size(); k++) {
-				if (allinfo.get(i).getPlayers2().get(k).getPlayername()
-						.equals(playername)) {
-					res.add(allinfo.get(i).getPlayers2().get(k));
-					break;
-				}
-			}
+	// 根据球员和赛季返回比赛，isseason格式同上
+	public ArrayList<MatchDataSeason> GetPlayerSeasonMatch(String playername,
+			String season,String isseason) {
+		ArrayList<MatchPlayer> playerMatchID = m.getmatchplayer("unknown",
+				playername, "unknown",isseason);
+		ArrayList<MatchDataSeason> res = new ArrayList<MatchDataSeason>();
+		for (int i = 0; i < playerMatchID.size(); i++) {
+			res.add(m.getmatchinfo("unknown", "unknown", "season", "unknown",
+					isseason, playerMatchID.get(i).getMatchID()).get(0));
 		}
 		return res;
 	}
 
-	/*
-	 * //
-	 * string[0]是赛季（格式13-14），string[1]是日期（格式01-01）,string[3]是赛季_日期（格式13-14_01-
-	 * 01） public String[] getDate(){ String date=""; String[] res=new
-	 * String[3];
-	 * 
-	 * ArrayList<MatchDataPO> allMatches =GetAllInfo();
-	 * date=allMatches.get(0).getDate(); for(int i=1;i<allMatches.size();i++){
-	 * 
-	 * if(allMatches.get(i).getDate().compareTo(date)>0){
-	 * date=allMatches.get(i).getDate(); } } res[0]=date.split("_")[0];
-	 * res[1]=date.split("_")[1]; res[2]=res[0]+"_"+res[1]; return res; }
-	 */
+	// 根据两个球队返回比赛，isseason格式同上
+	public ArrayList<MatchDataSeason> GetTeamToTeamMatch(String team,
+			String otherteam,String isseason) {
+		ArrayList<MatchDataSeason> res1 = new ArrayList<MatchDataSeason>();
+		res1 = m.getmatchinfo(team, otherteam, "unknown", "unknown", isseason,
+				"unknown");
+		ArrayList<MatchDataSeason> res2 = new ArrayList<MatchDataSeason>();
+		res2 = m.getmatchinfo(otherteam, team, "unknown", "unknown", isseason,
+				"unknown");
+		res1.addAll(res2);
+		return res1;
+	}
+
+	// 根据MatchID返回该场比赛的所有信息
+	public MatchDataSeason GetCompleteMatch(String MatchID) {
+		MatchDataSeason res = new MatchDataSeason();
+		System.out.println(MatchLogic.getTime());
+		res = m.getmatchinfo("unknown", "unknown", "unknown", "unknown",
+				"unknown", MatchID).get(0);
+		
+		m.getAllMatchPlayer(res, MatchID, res.getTeam(), res.getOtherTeam());
+		m.getAllMatchTeam(res, MatchID, res.getTeam(), res.getOtherTeam());
+		/*res.setTeamdata(m.getmatchteam(MatchID, res.getTeam(), "unknown")
+				.get(0));
+		res.setOtherteamdata(m.getmatchteam(MatchID, res.getOtherTeam(),
+				"unknown").get(0));
+		res.setTeamPlayer(m.getmatchplayer(MatchID, "unknown", res.getTeam(), "unknown"));
+		res.setOtherteamPlayer(m.getmatchplayer(MatchID, "unknown", res.getOtherTeam(),
+				"unknown"));*/
+		System.out.println(MatchLogic.getTime());
+		return res;
+	}
 
 	public static void main(String[] args) {
-		System.out.println(MatchLogic.getTime());
-		MatchLogic match = new MatchLogic();
-		// System.out.println(match.GetInfo("HOU").size());
-		match.ini("C:\\Users\\zy\\Documents\\GitHub\\njuGenesis2\\NBA\\迭代一数据");
-		// match.getDate();
-		// System.out.println(match.getDate()[2]);
-		/*
-		 * match.ini(); TeamLogic team = new TeamLogic(); team.initTeamData();
-		 */
-		/*
-		 * ArrayList<Match_PlayerPO> res = match.GetPlayerInfo("CJ Miles");
-		 * System.out.println(res.size()); for(int i=0;i<res.size();i++){
-		 * System.
-		 * out.println(res.get(i).getPlayername()+" "+res.get(i).getData()); }
-		 */
-		System.out.println(MatchLogic.getTime());
+		
+		MatchLogic m = new MatchLogic();
+		ArrayList<MatchDataSeason> a = m.GetTeamSeasonMatch("SAS", "13-14","yes");
+		System.out.println(a.size());
+		
+		
+		/*MatchDataSeason a =m.GetCompleteMatch("25401");
+		System.out.println(a.getDate());
+		System.out.println(a.getTeamdata().getAss());
+		System.out.println(a.getOtherteamPlayer().get(0).getPoints());*/
 	}
 
 	public static long getTime() {

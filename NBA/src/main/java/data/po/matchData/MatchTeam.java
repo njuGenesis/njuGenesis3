@@ -2,6 +2,7 @@ package data.po.matchData;
 
 public class MatchTeam {
 	String MatchID;
+	String isseason;
 	String TeamShortName;
 	String playerNumber;//上场人数
 	String points; // 得分
@@ -28,6 +29,14 @@ public class MatchTeam {
 	String Rejection;// 盖帽数
 	String Foul;// 犯规数
 	String To; // 失误
+	
+	
+	public String getIsseason() {
+		return isseason;
+	}
+	public void setIsseason(String isseason) {
+		this.isseason = isseason;
+	}
 	public String getMatchID() {
 		return MatchID;
 	}

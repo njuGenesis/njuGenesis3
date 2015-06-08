@@ -62,7 +62,7 @@ public class TeamSortLogic {
 
 	public static void main(String[] args) {
 		TeamLogic t = new TeamLogic();
-		ArrayList<TeamDataPO> teams =t.GetInfoBySeason("13-14");
+	//	ArrayList<TeamDataPO> teams =t.GetInfoBySeason("13-14");
 		/*for(int i=0;i<teams.size();i++){
 			System.out.println(teams.get(i).getName());
 		}*/
@@ -75,16 +75,7 @@ public class TeamSortLogic {
 		for(int i=0;i<teams.size();i++){
 			System.out.println(teams.get(i).getBuildyear());
 		}*/
-		TeamSortLogic.sortByDouble(teams,"Buildyear");
-		System.out.println("--------------");
-		for(int i=0;i<teams.size();i++){
-			System.out.println(teams.get(i).getBuildyear()+teams.get(i).getName());
-		}
-		teams=TeamSortLogic.sortByDoubleAsc(TeamSortLogic.sortByDouble(teams,"Buildyear"),"Buildyear");
-		System.out.println("--------------");
-		for(int i=0;i<teams.size();i++){
-			System.out.println(teams.get(i).getBuildyear()+teams.get(i).getName());
-		}
+	
 	}
 
 }

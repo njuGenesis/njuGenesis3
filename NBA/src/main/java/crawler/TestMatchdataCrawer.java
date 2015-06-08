@@ -16,7 +16,7 @@ public class TestMatchdataCrawer {
 	MatchDb matchDb = new MatchDb();
 	public static void main(String[] args) {
 		TestMatchdataCrawer m = new TestMatchdataCrawer();
-		for (int i = 1; i < 10; i++) {
+		for (int i = 20637; i <=37456; i++) {
 			m.getSeasonMatch(i);
 		}
 
@@ -106,7 +106,8 @@ public class TestMatchdataCrawer {
 			}
 			
 			match.setMatchID(String.valueOf(number));
-			match.setSeason(timeInfo.split(",")[0].split("赛")[0]); ;
+			match.setSeason(timeInfo.split(",")[0].split("赛")[0]);
+			System.out.println(match.getSeason());
 			match.setDate( timeInfo.split(",")[1].replaceAll("年", "-").replaceAll("月", "-").replaceAll("日", ""));
 	
 			match.setOtherTeam(nameInfo1.attr("href").split("/")[2].split("\\.")[0]); 	
@@ -143,12 +144,29 @@ public class TestMatchdataCrawer {
 			MatchPlayer player = new MatchPlayer();
 			MatchTeam team = new MatchTeam();
 			MatchTeam otherteam = new MatchTeam();
+			if(isSeason.equals("常规赛")){
+				team.setIsseason("yes");
+				otherteam.setIsseason("yes");
+			}
+			else{
+				team.setIsseason("no");
+				otherteam.setIsseason("no");
+			}
 			int other = 0; // 记录主队的第一人数据位置
 			for (int k = 0; k < e.size(); k++) {
 				player = new MatchPlayer();
+				if(isSeason.equals("常规赛")){
+					player.setIsseason("yes");
+				}
+				else{
+					player.setIsseason("no");
+				}
 				
 				team.setMatchID(String.valueOf(number));
 				otherteam.setMatchID(String.valueOf(number));
+				
+				
+				
 				player.setMatchID(String.valueOf(number));
 				
 				last = e.get(k).select("td");

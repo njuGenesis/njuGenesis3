@@ -2,6 +2,7 @@ package data.po.matchData;
 
 public class MatchPlayer {
 	String MatchID; 
+	String isseason;
 	String Team;
 	String Playername;
 	String Time;  //在场时间
@@ -33,6 +34,12 @@ public class MatchPlayer {
 	
 	
 	
+	public String getIsseason() {
+		return isseason;
+	}
+	public void setIsseason(String isseason) {
+		this.isseason = isseason;
+	}
 	public String getMatchID() {
 		return MatchID;
 	}

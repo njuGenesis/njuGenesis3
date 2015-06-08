@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MatchDataSeason {
 	String isSeason;
 	String Date;
-	String season; // 形式如85-86
+	String season; // 形式如85_86
 	String Team; // 主队
 	String OtherTeam; // 客队
 	String MatchID;
@@ -56,7 +56,7 @@ public class MatchDataSeason {
 	public String getPoints(){
 		String res="";
 		for(int i=0;i<point.length;i++){
-			res=res+";"+point[i];
+			res=res+point[i]+";" ;
 		}
 		return res;
 	}

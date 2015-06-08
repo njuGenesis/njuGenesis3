@@ -45,8 +45,8 @@ public class TeatTeamdataCrawer {
 	public static void main(String[] args) {
 		TeatTeamdataCrawer t = new TeatTeamdataCrawer();
 		t.readTeamfile();
-		// t.initializeSeason_Avg();
-		t.initializeSeason_Avg();
+	     t.initializeSeason_Avg();
+		t.initializePlayOff_Avg();
 		/*
 		 * Document doc = null; try { // 所有数据都在stat_box里面 doc = Jsoup .connect(
 		 * "http://www.stat-nba.com/team/stat_box_team.php?team=SAS&season=2014&col=pts&order=1&isseason=0"
@@ -67,7 +67,7 @@ public class TeatTeamdataCrawer {
 		String isseason = "1";
 		String players = "";
 		for (int i = 29; i >= 0; i--) {
-			for (int templeseason = season; templeseason > 2013; templeseason--) {
+			for (int templeseason = season; templeseason > 2004; templeseason--) {
 				players = "";
 				TeamData_Avg_PO one = new TeamData_Avg_PO();
 				one.setShortName(teamName[i]);
@@ -90,6 +90,10 @@ public class TeatTeamdataCrawer {
 							.select("tr").last();
 					Elements e = doc.select("table").select("tbody")
 							.select("tr").select("td");
+					
+					if (e.size() == 0) {
+						continue;
+					}
 					System.out.println(teamName[i]
 							+ "______________________________________" + i);
 					int k = 0;// 记录“全队数据"出现的位置
@@ -237,7 +241,7 @@ public class TeatTeamdataCrawer {
 		String players = "";
 		TeamData_Avg_PO one = new TeamData_Avg_PO();
 		for (int i = 29; i >= 0; i--) {
-			for (int templeseason = season; templeseason > 2013; templeseason--) {
+			for (int templeseason = season; templeseason > 2004; templeseason--) {
 				players = "";
 				one = new TeamData_Avg_PO();
 				one.setShortName(teamName[i]);
