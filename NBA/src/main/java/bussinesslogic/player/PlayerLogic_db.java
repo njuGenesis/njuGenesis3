@@ -74,7 +74,62 @@ public class PlayerLogic_db {
 		res = pdb.getp_ad_s(id);
 		return res;
 	}
+	//------------根据id和season获得所有数据
+	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataSeason_Avg_Basic> res = new ArrayList<PlayerDataSeason_Avg_Basic>();
+		res = pdb.gets_a_b(id,season);
+		return res;
+	}
+	
+	public ArrayList<PlayerDataSeason_Tot_Basic> gets_t_b(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataSeason_Tot_Basic> res = new ArrayList<PlayerDataSeason_Tot_Basic>();
+		res = pdb.gets_t_b(id,season);
+		return res;
+	}
 
+	public ArrayList<PlayerDataSeason_Ad_Basic> gets_ad_b(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataSeason_Ad_Basic> res = new ArrayList<PlayerDataSeason_Ad_Basic>();
+		res = pdb.gets_ad_b(id,season);
+		return res;
+	}
+
+	public ArrayList<PlayerDataSeason_Ad_Shoot> gets_ad_s(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataSeason_Ad_Shoot> res = new ArrayList<PlayerDataSeason_Ad_Shoot>();
+		res = pdb.gets_ad_s(id,season);
+		return res;
+	}
+
+	public ArrayList<PlayerDataPlayOff_Avg_Basic> getp_a_b(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataPlayOff_Avg_Basic> res = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
+		res = pdb.getp_a_b(id,season);
+		return res;
+	}
+
+	public ArrayList<PlayerDataPlayOff_Tot_Basic> getp_t_b(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataPlayOff_Tot_Basic> res = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
+		res = pdb.getp_t_b(id,season);
+		return res;
+	}
+
+	public ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataPlayOff_Ad_Basic> res = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
+		res = pdb.getp_ad_b(id,season);
+		return res;
+	}
+
+	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getp_ad_s(int id,String season)
+			throws RemoteException {
+		ArrayList<PlayerDataPlayOff_Ad_Shoot> res = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
+		res = pdb.getp_ad_s(id,season);
+		return res;
+	}
 	// -----------获取某一赛季的所有数据
 	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getAllp_ad_s(String season)
 			throws RemoteException {

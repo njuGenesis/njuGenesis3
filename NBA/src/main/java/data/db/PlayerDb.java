@@ -1116,7 +1116,9 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
-   
+   //--------------
+	
+	
 	@Override
 	public ArrayList<PlayerDataSeason_Avg_Basic> getAlls_a_b(String season) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -1377,6 +1379,237 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			return 0;
 		}
 		return res;
+	}
+	@Override
+	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id, String season)
+			throws RemoteException {
+		ArrayList<PlayerDataSeason_Avg_Basic> temp = new ArrayList<PlayerDataSeason_Avg_Basic>();
+		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed())
+
+				System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'and season = '"+season+"'");
+			while(rs.next()){
+				res = sets_a_b(rs);
+				temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataSeason_Tot_Basic> gets_t_b(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Tot_Basic> temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
+		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_t_b where id = '"+id+"'and season = '"+season+"'");
+			while(rs.next()){
+			res = sets_t_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataSeason_Ad_Basic> gets_ad_b(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Ad_Basic> temp = new ArrayList<PlayerDataSeason_Ad_Basic>();
+		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_ad_b where id = '"+id+"'and season ='"+season+"'");
+			while(rs.next()){
+			res = sets_ad_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataSeason_Ad_Shoot> gets_ad_s(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataSeason_Ad_Shoot> temp = new ArrayList<PlayerDataSeason_Ad_Shoot>();
+		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_ad_s where id = '"+id+"'and season = '"+season+"'");
+			while(rs.next()){
+			res = sets_ad_s(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataPlayOff_Avg_Basic> getp_a_b(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Avg_Basic> temp = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
+		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_a_b where id = '"+id+"'and season = '"+season+"'");
+			while(rs.next()){
+			res = setp_a_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getp_ad_s(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Ad_Shoot> temp = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
+		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_ad_s where id = '"+id+"'and season = '"+season+"'");
+			while(rs.next()){
+			res = setp_ad_s(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataPlayOff_Tot_Basic> getp_t_b(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Tot_Basic> temp = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
+		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_t_b where id = '"+id+"'and season='"+season+"'");
+			while(rs.next()){
+			res = setp_t_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
+	}
+	@Override
+	public ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id, String season)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDataPlayOff_Ad_Basic> temp = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
+		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_p_ad_b where id = '"+id+"'and season='"+season+"'");
+			while(rs.next()){
+			res = setp_ad_b(rs);
+			temp.add(res);
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return temp;
 	}
 	
 }

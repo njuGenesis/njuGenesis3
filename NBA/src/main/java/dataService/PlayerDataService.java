@@ -43,4 +43,20 @@ public interface PlayerDataService extends Remote{
 			throws RemoteException;
 	ArrayList<PlayerDataSeason_Ad_Shoot> getAlls_ad_s(String season)
 			throws RemoteException;
+	ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataSeason_Tot_Basic> gets_t_b(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataSeason_Ad_Basic> gets_ad_b(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataSeason_Ad_Shoot> gets_ad_s(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataPlayOff_Avg_Basic> getp_a_b(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataPlayOff_Ad_Shoot> getp_ad_s(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataPlayOff_Tot_Basic> getp_t_b(int id, String season)
+			throws RemoteException;
+	ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id, String season)
+			throws RemoteException;
 }

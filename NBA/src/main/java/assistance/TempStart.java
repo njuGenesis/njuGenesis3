@@ -23,9 +23,9 @@ public class TempStart {
 //		t.initializePlayerSeason(1,4273);
 //		t.initializePlayerPlayOff(1,4273);
 		try {
-			ArrayList<Integer> temp = pdb.selectByTag("14-15", "s_a_b", "null", "null", "前锋", "Northwest");
+			ArrayList<PlayerDataSeason_Avg_Basic> temp = pdb.gets_a_b(195,"14-15");
 			for(int i = 0;i<temp.size();i++){
-				System.out.println(temp.get(i));
+				System.out.println(temp.get(i).getName()+temp.get(i).getDefb());
 			}
 			//System.out.println(temp.get(0).getId()+";"+temp.get(0).getBackbound()+";"+temp.get(0).getName());
 		} catch (RemoteException e) {
