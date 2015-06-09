@@ -798,7 +798,8 @@ public class TestCrawlerByJsoup {
 		System.out.println("initialize player playoff end");
 	}
 
-	public void getHotPlayerDaily(String key){
+	public String[] getHotPlayerDaily(String key){
+		String[] res = new String[5];
 		URL url;  
         StringBuffer sb = new StringBuffer();  
         String line = null; 
@@ -830,21 +831,29 @@ public class TestCrawlerByJsoup {
             JSONArray js  = new JSONArray(json);
            // String json = sb.substring(sb.indexOf("{"), sb.indexOf("}") + 1);
             for(int i = 0;i<js.length();i++){
+            	String temp = "";
+            	temp = temp+js.getJSONObject(i).getString("rank")+";";
             	
             	Object pprofile = js.getJSONObject(i).get("playerProfile");
             	JSONObject parr = new JSONObject(pprofile.toString());
-            	System.out.println(parr.getString("displayName"));
-            	System.out.println(parr.getString("jerseyNo"));
-            	System.out.println(parr.getString("position"));
+            	temp = temp+parr.getString("displayName")+";";
+            	temp = temp+parr.getString("jerseyNo")+";";
+            	temp = temp+parr.getString("position")+";";
+            	
+//            	System.out.println(parr.getString("displayName"));
+//            	System.out.println(parr.getString("jerseyNo"));
+//            	System.out.println(parr.getString("position"));
             	
             	Object tprofile = js.getJSONObject(i).get("teamProfile");
             	JSONObject tarr = new JSONObject(tprofile.toString());
-            	System.out.println(tarr.getString("city"));
-            	System.out.println(tarr.getString("name"));
-            	
-            	System.out.println(js.getJSONObject(i).getString("rank"));
-            	System.out.println(js.getJSONObject(i).getString("value"));
-            	System.out.println();
+            	temp = temp+tarr.getString("city")+";"+tarr.getString("name")+";";
+//            	System.out.println(tarr.getString("city"));
+//            	System.out.println(tarr.getString("name"));
+            	temp = temp+js.getJSONObject(i).getString("value");
+//            	System.out.println(js.getJSONObject(i).getString("rank"));
+//            	System.out.println(js.getJSONObject(i).getString("value"));
+//            	System.out.println();
+            	res[i] = temp;
             }
             
         } catch (MalformedURLException e) {  
@@ -852,9 +861,11 @@ public class TestCrawlerByJsoup {
         } catch (IOException e) {  
             e.printStackTrace();  
         } 
+        return res;
 	}
 	
-	public void getHotPlayerSeason(String key){
+	public String[] getHotPlayerSeason(String key){
+		String[] res = new String[5];
 		URL url;  
         StringBuffer sb = new StringBuffer();  
         String line = null; 
@@ -890,25 +901,31 @@ public class TestCrawlerByJsoup {
             JSONArray js  = new JSONArray(json);
            // String json = sb.substring(sb.indexOf("{"), sb.indexOf("}") + 1);
             for(int i = 0;i<js.length();i++){
-            	System.out.println(js.getJSONObject(i).getString("rank"));
+            	String temp = "";
+            	temp = temp+js.getJSONObject(i).getString("rank")+";";
+            	//System.out.println(js.getJSONObject(i).getString("rank"));
             	
             	Object pprofile = js.getJSONObject(i).get("playerProfile");
             	JSONObject parr = new JSONObject(pprofile.toString());
-            	System.out.println(parr.getString("displayName"));
-            	System.out.println(parr.getString("jerseyNo"));
-            	System.out.println(parr.getString("position"));
+            	temp = temp+parr.getString("displayName")+";"+parr.getString("jerseyNo")+";"+parr.getString("position")+";";
+//            	System.out.println(parr.getString("displayName"));
+//            	System.out.println(parr.getString("jerseyNo"));
+//            	System.out.println(parr.getString("position"));
             	
             	Object tprofile = js.getJSONObject(i).get("teamProfile");
             	JSONObject tarr = new JSONObject(tprofile.toString());
-            	System.out.println(tarr.getString("city"));
-            	System.out.println(tarr.getString("name"));
+            	temp =temp +tarr.getString("city")+";"+tarr.getString("name")+";";
+//            	System.out.println(tarr.getString("city"));
+//            	System.out.println(tarr.getString("name"));
             	//"statAverage":{"assistsPg":1.2,"blocksPg":2.3,"defRebsPg":10.4,"efficiency":22.8,"fgaPg":10.706,"fgmPg":6.176,"fgpct":57.7,"foulsPg":3.5,"ftaPg":9.706,"ftmPg":4.0,"ftpct":41.2,"games":17,"gamesStarted":17,"minsPg":33.8,"offRebsPg":3.6,"pointsPg":16.4,"rebsPg":14.0,"stealsPg":1.4,"tpaPg":0.0,"tpmPg":0.0,"tppct":0.0,"turnoversPg":2.2}
             	
             	Object stprofile = js.getJSONObject(i).get("statAverage");
             	JSONObject starr = new JSONObject(stprofile.toString());
-            	System.out.println(starr.getDouble(keyavg));
-            	
-            	System.out.println();
+            	temp = temp+starr.getDouble(keyavg);
+//            	System.out.println(starr.getDouble(keyavg));
+//            	
+//            	System.out.println();
+            	res[i] = temp;
             }
             
         } catch (MalformedURLException e) {  
@@ -916,9 +933,11 @@ public class TestCrawlerByJsoup {
         } catch (IOException e) {  
             e.printStackTrace();  
         } 
+        return res;
 	}
 
-	public void getProgressPlayer(String key){
+	public String[] getProgressPlayer(String key){
+		String[] res = new String[5];
 		URL url;  
         StringBuffer sb = new StringBuffer();  
         String line = null; 
@@ -969,22 +988,27 @@ public class TestCrawlerByJsoup {
             //JSONArray js  = new JSONArray(json);
            // String json = sb.substring(sb.indexOf("{"), sb.indexOf("}") + 1);
             for(int i = 0;i<js.length();i++){
+            	String temp = "";
+            	temp = temp+js.getJSONObject(i).getString("rank")+";";
             	
             	Object pprofile = js.getJSONObject(i).get("playerProfile");
             	JSONObject parr = new JSONObject(pprofile.toString());
-            	System.out.println(parr.getString("displayName"));
-            	System.out.println(parr.getString("jerseyNo"));
-            	System.out.println(parr.getString("position"));
+            	temp = temp+parr.getString("displayName")+";"+parr.getString("jerseyNo")+";"+parr.getString("position")+";";
+//            	System.out.println(parr.getString("displayName"));
+//            	System.out.println(parr.getString("jerseyNo"));
+//            	System.out.println(parr.getString("position"));
             	
             	Object tprofile = js.getJSONObject(i).get("teamProfile");
             	JSONObject tarr = new JSONObject(tprofile.toString());
-            	System.out.println(tarr.getString("city"));
-            	System.out.println(tarr.getString("name"));
-            	
-            	System.out.println(js.getJSONObject(i).getString("rank"));
-            	System.out.println(js.getJSONObject(i).getString("last5"));
-            	System.out.println(js.getJSONObject(i).getString("differential"));
-            	System.out.println();
+            	temp = temp+tarr.getString("city")+";"+tarr.getString("name")+";";
+//            	System.out.println(tarr.getString("city"));
+//            	System.out.println(tarr.getString("name"));
+            	temp = temp+js.getJSONObject(i).getString("last5")+";"+js.getJSONObject(i).getString("differential");
+//            	System.out.println(js.getJSONObject(i).getString("rank"));
+//            	System.out.println(js.getJSONObject(i).getString("last5"));
+//            	System.out.println(js.getJSONObject(i).getString("differential"));
+            	//System.out.println();
+            	res[i] = temp;
             }
             
         } catch (MalformedURLException e) {  
@@ -992,5 +1016,6 @@ public class TestCrawlerByJsoup {
         } catch (IOException e) {  
             e.printStackTrace();  
         } 
+        return res;
 	}
 }

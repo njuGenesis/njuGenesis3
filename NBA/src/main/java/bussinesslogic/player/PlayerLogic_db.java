@@ -3,11 +3,13 @@ package bussinesslogic.player;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import crawler.TestCrawlerByJsoup;
 import data.db.PlayerDb;
 import data.po.playerData.*;
 
 public class PlayerLogic_db {
 	PlayerDb pdb = new PlayerDb();
+	TestCrawlerByJsoup tc = new TestCrawlerByJsoup();
 
 	// ----------获得基本信息
 	public PlayerDetailInfo getdetail(int id) throws RemoteException {
@@ -256,6 +258,22 @@ public class PlayerLogic_db {
 		
 		return res;
 	}
+	//------热点---
+	public String[] getHotPlayerDaily(String key){
+		String[] res = tc.getHotPlayerDaily(key);
+		return res;
+	}
+	
+	public String[] getHotPlayerSeason(String key){
+		String[] res = tc.getHotPlayerSeason(key);
+		return res;
+	}
+	
+	public String[] getProgressPlayer(String key){
+		String[] res = tc.getProgressPlayer(key);
+		return res;
+	}
+	
 	//===============筛选方法
 	private boolean firstc(PlayerDetailInfo p,String firstc){
 		if(firstc=="null"){
