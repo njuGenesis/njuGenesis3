@@ -190,8 +190,8 @@ public class Console {
 				System.exit(0);
 			}
 			//TeamLogic tl = new TeamLogic();
-			tl.aotoTest(out,  t.isAvg, t.isHigh,t.AllOrHot,
-					t.number, t.sortCondition);
+//			tl.aotoTest(out,  t.isAvg, t.isHigh,t.AllOrHot,
+//					t.number, t.sortCondition);
 		}
 		else{
 			//init
@@ -201,7 +201,7 @@ public class Console {
 			PlayerLogic temppl = new PlayerLogic(playerPath,matchPath);
 			String season = temppl.getSeason(matchPath);
 			temppl.initialize(datasource, season);
-			ml.ini(datasource);
+			//ml.ini(datasource);
 		}
 
 	}

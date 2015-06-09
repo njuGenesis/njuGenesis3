@@ -1785,8 +1785,8 @@ public class PlayerLogic implements PlayerInfoService{
     public String getLatestDate(){
     	String res = "04-27";
     	MatchLogic m = new MatchLogic();
-    	ArrayList<MatchDataPO> p = m.GetAllInfo();
-    	res = p.get(p.size()-1).getDate();		
+    	//ArrayList<MatchDataPO> p = m.GetAllInfo();
+    	//res = p.get(p.size()-1).getDate();		
 		return res;
     }
 	public void updatePlayer(String filename,String season){
