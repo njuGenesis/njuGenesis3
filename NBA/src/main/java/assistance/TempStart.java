@@ -26,10 +26,8 @@ public class TempStart {
 //		t.initializePlayerPlayOff(1,4273);
 		//pdb.selectByTag("14-15", "s_a_b", "null", "null", "前锋", "Northwest");
 		try {
-			ArrayList<Integer> temp = pdb.selectByTag("14-15", "s_t_b", "null", "null", "前锋", "Northwest");
-			for(int i = 0;i<temp.size();i++){
-				System.out.println(temp.get(i));
-			}
+			String temp = pdb.getTeambyId(195, "13-14");
+			System.out.println(temp);
 			//System.out.println(temp.get(0).getId()+";"+temp.get(0).getBackbound()+";"+temp.get(0).getName());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

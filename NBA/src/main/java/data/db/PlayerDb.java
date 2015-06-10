@@ -1611,5 +1611,33 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
+	public String getTeambyId(int id, String season)
+		throws RemoteException{
+		// TODO Auto-generated method stub
+		String res = "";
+		try{
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'and season='"+season+"'");
+			while(rs.next()){
+			res = rs.getString("team");
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return res;
+		
+		
+	}
 	
 }
