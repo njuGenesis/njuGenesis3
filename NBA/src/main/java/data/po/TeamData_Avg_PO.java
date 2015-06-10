@@ -1,4 +1,4 @@
-package data.po.teamData;
+package data.po;
 
 public class TeamData_Avg_PO {
   	  String Name;// 队名

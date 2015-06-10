@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 import com.sun.management.VMOption.Origin;
 
 import data.db.TeamDb;
+import data.po.TeamData_Avg_PO;
 import data.po.playerData.PlayerDataPlayOff_Ad_Basic;
 import data.po.playerData.PlayerDataPlayOff_Ad_Shoot;
 import data.po.playerData.PlayerDataPlayOff_Avg_Basic;
@@ -25,7 +26,6 @@ import data.po.playerData.PlayerDataSeason_Avg_Basic;
 import data.po.playerData.PlayerDataSeason_Tot_Basic;
 import data.po.playerData.PlayerDetailInfo;
 import data.po.teamData.TeamAdData;
-import data.po.teamData.TeamData_Avg_PO;
 
 public class TeatTeamdataCrawer {
 	TeamDb teamDb= new TeamDb();
