@@ -16,16 +16,19 @@ public class TempStart {
 		// TODO Auto-generated method stub
 //		PlayerLogic p = new PlayerLogic();
 		PlayerLogic_db pdb = new PlayerLogic_db();
+		
+		
 		//pdb.initializePlayerTable();
 //		pdb.clearPlayerTable();
 //		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
 //		t.initializePlayerDetail(1,4273);
 //		t.initializePlayerSeason(1,4273);
 //		t.initializePlayerPlayOff(1,4273);
+		//pdb.selectByTag("14-15", "s_a_b", "null", "null", "前锋", "Northwest");
 		try {
-			ArrayList<PlayerDataSeason_Avg_Basic> temp = pdb.gets_a_b(195,"14-15");
+			ArrayList<Integer> temp = pdb.selectByTag("14-15", "s_t_b", "null", "null", "前锋", "Northwest");
 			for(int i = 0;i<temp.size();i++){
-				System.out.println(temp.get(i).getName()+temp.get(i).getDefb());
+				System.out.println(temp.get(i));
 			}
 			//System.out.println(temp.get(0).getId()+";"+temp.get(0).getBackbound()+";"+temp.get(0).getName());
 		} catch (RemoteException e) {
