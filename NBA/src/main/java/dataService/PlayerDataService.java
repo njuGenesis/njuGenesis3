@@ -61,4 +61,6 @@ public interface PlayerDataService extends Remote{
 			throws RemoteException;
 	public ArrayList<String> getTeambyId(int id, String season)
 			throws RemoteException;
+	public ArrayList<PlayerDetailInfo> getAlldetail(String season) 
+			throws RemoteException;
 }

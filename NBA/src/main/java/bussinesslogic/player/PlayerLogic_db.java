@@ -12,19 +12,26 @@ public class PlayerLogic_db {
 	TestCrawlerByJsoup tc = new TestCrawlerByJsoup();
 
 	// ----------获得基本信息
+	public ArrayList<PlayerDetailInfo> getAlldetail(String season)throws RemoteException{
+		ArrayList<PlayerDetailInfo> res =pdb.getAlldetail(season);
+		return res;
+	}
+	
 	public PlayerDetailInfo getdetail(int id) throws RemoteException {
 		PlayerDetailInfo res = new PlayerDetailInfo();
 		res = pdb.getdetail(id);
 		return res;
 	}
-	
-	public ArrayList<String> getTeambyId(int id,String season)throws RemoteException{
-		return pdb.getTeambyId(id,season);
+
+	public ArrayList<String> getTeambyId(int id, String season)
+			throws RemoteException {
+		return pdb.getTeambyId(id, season);
 	}
-	
-	public int getIDbyName(String name,String team)throws RemoteException{
-		return pdb.getIDbyName(name,team);
+
+	public int getIDbyName(String name, String team) throws RemoteException {
+		return pdb.getIDbyName(name, team);
 	}
+
 	// ----------获得单个球员的所有数据
 	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id)
 			throws RemoteException {
@@ -81,62 +88,64 @@ public class PlayerLogic_db {
 		res = pdb.getp_ad_s(id);
 		return res;
 	}
-	//------------根据id和season获得所有数据
-	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id,String season)
+
+	// ------------根据id和season获得所有数据
+	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Avg_Basic> res = new ArrayList<PlayerDataSeason_Avg_Basic>();
-		res = pdb.gets_a_b(id,season);
+		res = pdb.gets_a_b(id, season);
 		return res;
 	}
-	
-	public ArrayList<PlayerDataSeason_Tot_Basic> gets_t_b(int id,String season)
+
+	public ArrayList<PlayerDataSeason_Tot_Basic> gets_t_b(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Tot_Basic> res = new ArrayList<PlayerDataSeason_Tot_Basic>();
-		res = pdb.gets_t_b(id,season);
+		res = pdb.gets_t_b(id, season);
 		return res;
 	}
 
-	public ArrayList<PlayerDataSeason_Ad_Basic> gets_ad_b(int id,String season)
+	public ArrayList<PlayerDataSeason_Ad_Basic> gets_ad_b(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Ad_Basic> res = new ArrayList<PlayerDataSeason_Ad_Basic>();
-		res = pdb.gets_ad_b(id,season);
+		res = pdb.gets_ad_b(id, season);
 		return res;
 	}
 
-	public ArrayList<PlayerDataSeason_Ad_Shoot> gets_ad_s(int id,String season)
+	public ArrayList<PlayerDataSeason_Ad_Shoot> gets_ad_s(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataSeason_Ad_Shoot> res = new ArrayList<PlayerDataSeason_Ad_Shoot>();
-		res = pdb.gets_ad_s(id,season);
+		res = pdb.gets_ad_s(id, season);
 		return res;
 	}
 
-	public ArrayList<PlayerDataPlayOff_Avg_Basic> getp_a_b(int id,String season)
+	public ArrayList<PlayerDataPlayOff_Avg_Basic> getp_a_b(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Avg_Basic> res = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
-		res = pdb.getp_a_b(id,season);
+		res = pdb.getp_a_b(id, season);
 		return res;
 	}
 
-	public ArrayList<PlayerDataPlayOff_Tot_Basic> getp_t_b(int id,String season)
+	public ArrayList<PlayerDataPlayOff_Tot_Basic> getp_t_b(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Tot_Basic> res = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
-		res = pdb.getp_t_b(id,season);
+		res = pdb.getp_t_b(id, season);
 		return res;
 	}
 
-	public ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id,String season)
+	public ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Ad_Basic> res = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
-		res = pdb.getp_ad_b(id,season);
+		res = pdb.getp_ad_b(id, season);
 		return res;
 	}
 
-	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getp_ad_s(int id,String season)
+	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getp_ad_s(int id, String season)
 			throws RemoteException {
 		ArrayList<PlayerDataPlayOff_Ad_Shoot> res = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
-		res = pdb.getp_ad_s(id,season);
+		res = pdb.getp_ad_s(id, season);
 		return res;
 	}
+
 	// -----------获取某一赛季的所有数据
 	public ArrayList<PlayerDataPlayOff_Ad_Shoot> getAllp_ad_s(String season)
 			throws RemoteException {
@@ -250,172 +259,183 @@ public class PlayerLogic_db {
 			}
 			break;
 		}
-	
+
 		PlayerDetailInfo tempinfo = new PlayerDetailInfo();
-		for(int i = 0;i<temp.size();i++){
-			System.out.println("temp:"+temp.get(i));
+		int laest = 0;
+		for (int i = 0; i < temp.size(); i++) {
+			
 			tempinfo = getdetail(temp.get(i));
-			System.out.println(tempinfo.getPosition());
-			if((firstc(tempinfo,firstc))&&(namekeys(tempinfo,namekey))&&(position(tempinfo,position))&&(union(tempinfo.getId(),union))){
-				res.add(temp.get(i));
+			
+			if ((firstc(tempinfo, firstc)) && (namekeys(tempinfo, namekey))
+					&& (position(tempinfo, position))
+					&& (union(tempinfo.getId(), union, season))) {
+				if(res.size()==0){
+					laest=temp.get(i);
+					res.add(temp.get(i));
+				}
+				else{
+					if(temp.get(i)==laest){
+						
+					}
+					else{
+						laest=temp.get(i);
+						res.add(temp.get(i));
+					}
+				}
+				
 			}
+			
 		}
-		
+
 		return res;
 	}
-	//------热点---
-	public String[] getHotPlayerDaily(String key){
+
+	// ------热点---
+	public String[] getHotPlayerDaily(String key) {
 		String[] res = tc.getHotPlayerDaily(key);
 		return res;
 	}
-	
-	public String[] getHotPlayerSeason(String key){
+
+	public String[] getHotPlayerSeason(String key) {
 		String[] res = tc.getHotPlayerSeason(key);
 		return res;
 	}
-	
-	public String[] getProgressPlayer(String key){
+
+	public String[] getProgressPlayer(String key) {
 		String[] res = tc.getProgressPlayer(key);
 		return res;
 	}
-	
-	//===============筛选方法
-	private boolean firstc(PlayerDetailInfo p,String firstc){
-		if(firstc=="null"){
+
+	// ===============筛选方法
+	private boolean firstc(PlayerDetailInfo p, String firstc) {
+		if (firstc == "null") {
 			return true;
-		}
-		else{
-			try{
-			if(p.getName().toLowerCase().startsWith(firstc.toLowerCase())){
-				return true;
-			}
-			else{
-				return false;
-			}
-			}catch(Exception e){
-				return false;
-			}
-		}		
-	}
-	private boolean namekeys(PlayerDetailInfo p,String namekeys){
-		if(namekeys=="null"){
-			return true;
-		}
-		else{
-			try{
-			if(p.getName().toLowerCase().contains(namekeys.toLowerCase())){
-				return true;
-			}
-			else{
-				return false;
-			}
-			}catch(Exception e){
-				return false;
-			}
-		}
-	}
-	private boolean position(PlayerDetailInfo p,String position){
-		if(position=="null"){
-			return true;
-		}
-		else{
-			try{
-			if(p.getPosition().contains(position)){
-				return true;
-			}
-			else{
-				return false;
-			}
-			}
-			catch(Exception e){
-				return false;
-			}
-		}
-		
-	}
-	private boolean union(int id,String union) throws RemoteException{
-		if(union=="null"){
-			return true;
-		}
-		else{
-			try{
-				String teamname = gets_a_b(id).get(0).getTeam();
-			if(union.equals("Southeast")){
-				
-					if((teamname.equals("亚特兰大老鹰"))
-							||(teamname.equals("夏洛特黄蜂"))
-							||(teamname.equals("迈阿密热火"))
-							||(teamname.equals("奥兰多魔术"))
-							||(teamname.equals("华盛顿奇才"))){
-						return true;
-					}
+		} else {
+			try {
+				if (p.getName().toLowerCase().startsWith(firstc.toLowerCase())) {
+					return true;
+				} else {
 					return false;
-				
-			}
-			else if(union.equals("Central")){
-				
-				if((teamname.equals("克里夫兰骑士"))
-						||(teamname.equals("芝加哥公牛"))
-						||(teamname.equals("底特律活塞"))
-						||(teamname.equals("印第安纳步行者"))
-						||(teamname.equals("密尔沃基雄鹿"))){
-					return true;
 				}
-				return false;
-			}
-			else if(union.equals("Atlantic")){
-				
-				if((teamname.equals("布鲁克林篮网"))
-						||(teamname.equals("波士顿凯尔特人"))
-						||(teamname.equals("纽约尼克斯"))
-						||(teamname.equals("费城76人"))
-						||(teamname.equals("多伦多猛龙"))){
-					return true;
-				}
-				return false;
-			}
-			else if(union.equals("Southwest")){
-				
-				if((teamname.equals("达拉斯小牛"))
-						||(teamname.equals("休斯顿火箭"))
-						||(teamname.equals("孟菲斯灰熊"))
-						||(teamname.equals("新奥尔良鹈鹕"))
-						||(teamname.equals("圣安东尼奥马刺"))){
-					return true;
-				}
-				return false;
-			}
-			else if(union.equals("Northwest")){
-				
-				if((teamname.equals("金州勇士"))
-						||(teamname.equals("洛杉矶快船"))
-						||(teamname.equals("洛杉矶湖人"))
-						||(teamname.equals("菲尼克斯太阳"))
-						||(teamname.equals("萨克拉门托国王"))){
-					return true;
-				}
-				return false;
-			}
-			else if(union.equals("Pacific")){
-				
-				if((teamname.equals("丹佛掘金"))
-						||(teamname.equals("明尼苏达森林狼"))
-						||(teamname.equals("俄克拉荷马雷霆"))
-						||(teamname.equals("波特兰开拓者"))
-						||(teamname.equals("犹他爵士"))){
-					return true;
-				}
-				return false;
-			}
-			else{
-				return false;
-			}
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				return false;
 			}
 		}
-		
 	}
-	//===============筛选方法
+
+	private boolean namekeys(PlayerDetailInfo p, String namekeys) {
+		if (namekeys == "null") {
+			return true;
+		} else {
+			try {
+				if (p.getName().toLowerCase().contains(namekeys.toLowerCase())) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				return false;
+			}
+		}
+	}
+
+	private boolean position(PlayerDetailInfo p, String position) {
+		if (position == "null") {
+			return true;
+		} else {
+			try {
+				if (p.getPosition().contains(position)) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+	}
+
+	private boolean union(int id, String union, String season)
+			throws RemoteException {
+		if (union == "null") {
+			return true;
+		} else {
+			ArrayList<String> temp = getTeambyId(id, season);
+			System.out.println(id+";"+temp.size());
+			for (int i = 0; i < temp.size(); i++) {
+				String teamname = temp.get(i).split(";")[1];
+				try {
+
+					if (union.equals("Southeast")) {
+
+						if ((teamname.equals("亚特兰大老鹰"))
+								|| (teamname.equals("夏洛特黄蜂"))
+								|| (teamname.equals("迈阿密热火"))
+								|| (teamname.equals("奥兰多魔术"))
+								|| (teamname.equals("华盛顿奇才"))) {
+							return true;
+						}
+						return false;
+
+					} else if (union.equals("Central")) {
+
+						if ((teamname.equals("克里夫兰骑士"))
+								|| (teamname.equals("芝加哥公牛"))
+								|| (teamname.equals("底特律活塞"))
+								|| (teamname.equals("印第安纳步行者"))
+								|| (teamname.equals("密尔沃基雄鹿"))) {
+							return true;
+						}
+						return false;
+					} else if (union.equals("Atlantic")) {
+
+						if ((teamname.equals("布鲁克林篮网"))
+								|| (teamname.equals("波士顿凯尔特人"))
+								|| (teamname.equals("纽约尼克斯"))
+								|| (teamname.equals("费城76人"))
+								|| (teamname.equals("多伦多猛龙"))) {
+							return true;
+						}
+						return false;
+					} else if (union.equals("Southwest")) {
+
+						if ((teamname.equals("达拉斯小牛"))
+								|| (teamname.equals("休斯顿火箭"))
+								|| (teamname.equals("孟菲斯灰熊"))
+								|| (teamname.equals("新奥尔良鹈鹕"))
+								|| (teamname.equals("圣安东尼奥马刺"))) {
+							return true;
+						}
+						return false;
+					} else if (union.equals("Northwest")) {
+
+						if ((teamname.equals("金州勇士"))
+								|| (teamname.equals("洛杉矶快船"))
+								|| (teamname.equals("洛杉矶湖人"))
+								|| (teamname.equals("菲尼克斯太阳"))
+								|| (teamname.equals("萨克拉门托国王"))) {
+							return true;
+						}
+						return false;
+					} else if (union.equals("Pacific")) {
+
+						if ((teamname.equals("丹佛掘金"))
+								|| (teamname.equals("明尼苏达森林狼"))
+								|| (teamname.equals("俄克拉荷马雷霆"))
+								|| (teamname.equals("波特兰开拓者"))
+								|| (teamname.equals("犹他爵士"))) {
+							return true;
+						}
+						return false;
+					}
+				} catch (Exception e) {
+					return false;
+				}
+			}
+			return false;
+		}
+
+	}
+	// ===============筛选方法
 }

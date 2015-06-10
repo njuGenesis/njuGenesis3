@@ -1117,7 +1117,48 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		return temp;
 	}
    //--------------
-	
+	public ArrayList<PlayerDetailInfo> getAlldetail(String season) throws RemoteException {
+		// TODO Auto-generated method stub
+		ArrayList<PlayerDetailInfo> pd = new ArrayList<PlayerDetailInfo>();
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+		int latest = 0;
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where season = '"+season+"'");
+			while(rs.next()){
+				if(temp.size()==0){
+					latest = rs.getInt("id");
+					temp.add(rs.getInt("id"));
+				}
+				else{
+					if(latest==rs.getInt("id")){
+						
+					}
+					else{
+						latest = rs.getInt("id");
+						temp.add(rs.getInt("id"));
+					}				
+				}
+			}			
+			con.close();
+			for(int i = 0;i<temp.size();i++){
+				//System.out.println(temp.get(i));
+				pd.add(getdetail(temp.get(i)));
+			}
+			return pd;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 	
 	@Override
 	public ArrayList<PlayerDataSeason_Avg_Basic> getAlls_a_b(String season) throws RemoteException {
@@ -1127,9 +1168,9 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"thometoy", "960105");
-			if (!con.isClosed())
+			if (!con.isClosed()){}
 
-				System.out.println("success");
+				
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_a_b where season = '"+season+"'");
@@ -1649,5 +1690,6 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		
 		
 	}
+	
 	
 }

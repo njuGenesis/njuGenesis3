@@ -9,6 +9,7 @@ import bussinesslogic.player.PlayerLogic_db;
 import data.db.PlayerDb;
 import data.po.PlayerDataPO;
 import data.po.playerData.PlayerDataSeason_Avg_Basic;
+import data.po.playerData.PlayerDetailInfo;
 
 public class TempStart {
 
@@ -26,8 +27,10 @@ public class TempStart {
 //		t.initializePlayerPlayOff(1,4273);
 		//pdb.selectByTag("14-15", "s_a_b", "null", "null", "前锋", "Northwest");
 		try {
-			ArrayList<String> temp = pdb.getTeambyId(3, "72-73");
-			System.out.println(temp);
+			ArrayList<PlayerDetailInfo> t =pdb.getAlldetail("78-79");
+			for(int i = 0;i<t.size();i++){
+			System.out.println(t.get(i).getId()+";"+t.get(i).getName());
+			}
 			//System.out.println(temp.get(0).getId()+";"+temp.get(0).getBackbound()+";"+temp.get(0).getName());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
