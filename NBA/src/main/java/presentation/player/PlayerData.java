@@ -4,68 +4,55 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
-
 import javax.swing.JCheckBox;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
-import com.sun.org.apache.xml.internal.security.Init;
-
+import javax.swing.JLabel;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.component.StyleScrollPane;
-import presentation.component.StyleTable;
 import presentation.contenui.UIUtil;
+import presentation.mainui.WebTable;
 import data.po.PlayerDataPO;
 
 public class PlayerData extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private PlayerDataPO[] pos;
-	private StyleTable basicTable,totalTable,  pgTable, effTable;
-	private StyleScrollPane basicSP,totalSP, pgSP, effSP;
+	private WebTable basicTable,totalTable,  pgTable, effTable;
 	private JCheckBox checkBox1, checkBox2, checkBox3, checkBox4;
 	private Rectangle rectangle;
+	private GLabel label, border;
 
 	public PlayerData(PlayerDataPO[] pos) {
 		super("");
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
-		
 		this.pos = pos;
-		this.setBounds(0, 90, 940, 510);
+		this.setBounds(0, 600, 940, 400);
 		this.setLayout(null);
 		this.setVisible(true);
+		this.setOpaque(false);
 		this.setBackground(UIUtil.bgWhite);
 		
 		init();
 	}
 
 	private void init(){
-		rectangle = new Rectangle(14, 164, 920, 380);
+		rectangle = new Rectangle(50, 40, 840, 360);
+		
+		label = new GLabel("赛季信息", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBackground(UIUtil.bgWhite);
+		label.setOpaque(true);
+		
+		border = new GLabel("", new Point(0, 13), new Point(300, 4), this, true);
+		border.setBackground(UIUtil.nbaBlue);
+		border.setOpaque(true);
 
 		basicSetting();
 		totalSetting();
 		pgSetting();
 		effSetting();
 
-		basicSP.setVisible(true);
-
-		GLabel palyerPic = new GLabel("img/portrait/"+pos[pos.length-1].getName()+".png", new Point(50, 30), new Point(120, 97), this, true);
-		GLabel ppg = new GLabel("场均得分:"+pos[pos.length-1].getPPG(), new Point(260, 25), new Point(200, 30), this, true, 0, 20);
-		GLabel bpg = new GLabel("场均篮板:"+pos[pos.length-1].getBPG(), new Point(300, 60), new Point(200, 30), this, true, 0, 20);
-		GLabel apg = new GLabel("场均助攻:"+pos[pos.length-1].getAPG(), new Point(340, 95), new Point(200, 30), this, true, 0, 20);
-
 		checkBox1 = new JCheckBox("总览");
-		checkBox1.setBounds(600, 115, 70, 30);
+		checkBox1.setBounds(600, 0, 70, 30);
 		checkBox1.setSelected(true);
 		this.add(checkBox1);
 		checkBox1.addActionListener(new ActionListener() {
@@ -74,10 +61,10 @@ public class PlayerData extends BgPanel{
 					checkBox2.setSelected(false);
 					checkBox3.setSelected(false);
 					checkBox4.setSelected(false);
-					pgSP.setVisible(false);
-					effSP.setVisible(false);
-					totalSP.setVisible(false);
-					basicSP.setVisible(true);
+					pgTable.setVisible(false);
+					effTable.setVisible(false);
+					totalTable.setVisible(false);
+					basicTable.setVisible(true);
 				}else{
 					checkBox1.setSelected(true);
 				}
@@ -85,7 +72,7 @@ public class PlayerData extends BgPanel{
 		});
 		
 		checkBox2 = new JCheckBox("总计");
-		checkBox2.setBounds(670, 115, 70, 30);
+		checkBox2.setBounds(670, 0, 70, 30);
 		this.add(checkBox2);
 		checkBox2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -93,10 +80,10 @@ public class PlayerData extends BgPanel{
 					checkBox1.setSelected(false);
 					checkBox3.setSelected(false);
 					checkBox4.setSelected(false);
-					pgSP.setVisible(false);
-					effSP.setVisible(false);
-					basicSP.setVisible(false);
-					totalSP.setVisible(true);
+					pgTable.setVisible(false);
+					effTable.setVisible(false);
+					basicTable.setVisible(false);
+					totalTable.setVisible(true);
 				}else{
 					checkBox2.setSelected(true);
 				}
@@ -104,7 +91,7 @@ public class PlayerData extends BgPanel{
 		});
 		
 		checkBox3 = new JCheckBox("场均");
-		checkBox3.setBounds(740, 115, 70, 30);
+		checkBox3.setBounds(740, 0, 70, 30);
 		this.add(checkBox3);
 		checkBox3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,10 +99,10 @@ public class PlayerData extends BgPanel{
 					checkBox1.setSelected(false);
 					checkBox2.setSelected(false);
 					checkBox4.setSelected(false);
-					basicSP.setVisible(false);
-					effSP.setVisible(false);
-					totalSP.setVisible(false);
-					pgSP.setVisible(true);
+					basicTable.setVisible(false);
+					effTable.setVisible(false);
+					totalTable.setVisible(false);
+					pgTable.setVisible(true);
 				}else{
 					checkBox3.setSelected(true);
 				}
@@ -123,7 +110,7 @@ public class PlayerData extends BgPanel{
 		});
 		
 		checkBox4 = new JCheckBox("效率");
-		checkBox4.setBounds(810, 115, 70, 30);
+		checkBox4.setBounds(810, 0, 70, 30);
 		this.add(checkBox4);
 		checkBox4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,10 +118,10 @@ public class PlayerData extends BgPanel{
 					checkBox1.setSelected(false);
 					checkBox2.setSelected(false);
 					checkBox3.setSelected(false);
-					basicSP.setVisible(false);
-					pgSP.setVisible(false);
-					totalSP.setVisible(false);
-					effSP.setVisible(true);
+					basicTable.setVisible(false);
+					pgTable.setVisible(false);
+					totalTable.setVisible(false);
+					effTable.setVisible(true);
 				}else{
 					checkBox4.setSelected(true);
 				}
@@ -143,134 +130,109 @@ public class PlayerData extends BgPanel{
 	}
 	
 	private void totalSetting(){
-		final Vector<String> header = new Vector<String>();
-		header.addElement("赛季");
-		header.addElement("进攻篮板");header.addElement("防守篮板");header.addElement("总篮板");header.addElement("助攻");header.addElement("投篮");
-		header.addElement("命中");header.addElement("三分");header.addElement("三分命中");header.addElement("罚球");header.addElement("罚球命中");
-		header.addElement("进攻");header.addElement("防守");header.addElement("抢断");header.addElement("盖帽");header.addElement("失误");
-		header.addElement("犯规");
+		String[] header = {"赛季", "进攻篮板", "防守篮板", "总篮板", "助攻", "投篮", 
+				"命中", "三分", "三分命中", "罚球", "罚球命中", "进攻", "防守", "抢断", "盖帽", "失误", "犯规"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		Object[][] data = new Object[pos.length][header.length];
 		for(int i=0;i<pos.length;i++){
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(pos[pos.length-1-i].getSeason());
-			vector.addElement(pos[pos.length-1-i].getOffb());
-			vector.addElement(pos[pos.length-1-i].getDefb());
-			vector.addElement(pos[pos.length-1-i].getBackboard());
-			vector.addElement(pos[pos.length-1-i].getAssist());
-			vector.addElement(pos[pos.length-1-i].getTotalFieldGoal());
-			vector.addElement(pos[pos.length-1-i].getFieldGoal());
-			vector.addElement(pos[pos.length-1-i].getTotalThreeGoal());
-			vector.addElement(pos[pos.length-1-i].getThreeGoal());
-			vector.addElement(pos[pos.length-1-i].getTotalFT());
-			vector.addElement(pos[pos.length-1-i].getFT());
-			vector.addElement(pos[pos.length-1-i].getOff());
-			vector.addElement(pos[pos.length-1-i].getDef());
-			vector.addElement(pos[pos.length-1-i].getSteal());
-			vector.addElement(pos[pos.length-1-i].getRejection());
-			vector.addElement(pos[pos.length-1-i].getTo());
-			vector.addElement(pos[pos.length-1-i].getFoul());
-			data.addElement(vector);
+			data[i][0] = pos[pos.length-1-i].getSeason();
+			data[i][1] = pos[pos.length-1-i].getOffb();
+			data[i][2] = pos[pos.length-1-i].getDefb();
+			data[i][3] = pos[pos.length-1-i].getBackboard();
+			data[i][4] = pos[pos.length-1-i].getAssist();
+			data[i][5] = pos[pos.length-1-i].getTotalFieldGoal();
+			data[i][6] = pos[pos.length-1-i].getFieldGoal();
+			data[i][7] = pos[pos.length-1-i].getTotalThreeGoal();
+			data[i][8] = pos[pos.length-1-i].getThreeGoal();
+			data[i][9] = pos[pos.length-1-i].getTotalFT();
+			data[i][10] = pos[pos.length-1-i].getFT();
+			data[i][11] = pos[pos.length-1-i].getOff();
+			data[i][12] = pos[pos.length-1-i].getDef();
+			data[i][13] = pos[pos.length-1-i].getSteal();
+			data[i][14] = pos[pos.length-1-i].getRejection();
+			data[i][15] = pos[pos.length-1-i].getTo();
+			data[i][16] = pos[pos.length-1-i].getFoul();
 		}
-		totalTable = new StyleTable();
-		totalSP = new StyleScrollPane(totalTable);
-		totalTable.tableSetting(totalTable, header, data, totalSP,  rectangle);
-		totalTable.setSort();
-		totalSP.setVisible(false);
-		this.add(totalSP);
+		totalTable = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		totalTable.setVisible(false);
+		this.add(totalTable);
 	}
 	
 	private void basicSetting(){
-		final Vector<String> header = new Vector<String>();
-		header.addElement("赛季");
-		header.addElement("上场数");header.addElement("先发场数");header.addElement("上场总时间");header.addElement("总得分");header.addElement("两双数");
+		String[] header = {"赛季", "上场数", "先发场数", "上场总时间", "总得分", "两双数"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		for(int i=0;i<pos.length;i++){
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(pos[pos.length-1-i].getSeason());
-			vector.addElement(pos[pos.length-1-i].getGP());
-			vector.addElement(pos[pos.length-1-i].getGS());
-			vector.addElement(pos[pos.length-1-i].getMinutesOnField());
-			vector.addElement(pos[pos.length-1-i].getPTS());
-			vector.addElement(pos[pos.length-1-i].getDouble());
-			data.addElement(vector);
+		Object[][] data = new Object[100][header.length];
+		for(int i=0;i<100;i++){
+//			data[i][0] = pos[pos.length-1-i].getSeason();
+//			data[i][1] = pos[pos.length-1-i].getGP();
+//			data[i][2] = pos[pos.length-1-i].getGS();
+//			data[i][3] = pos[pos.length-1-i].getMinutesOnField();
+//			data[i][4] = pos[pos.length-1-i].getPTS();
+//			data[i][5] = pos[pos.length-1-i].getDouble();
+			data[i][0] = pos[pos.length-1].getSeason();
+			data[i][1] = pos[pos.length-1].getGP();
+			data[i][2] = pos[pos.length-1].getGS();
+			data[i][3] = pos[pos.length-1].getMinutesOnField();
+			data[i][4] = pos[pos.length-1].getPTS();
+			data[i][5] = pos[pos.length-1].getDouble();
 		}
 		
-		basicTable = new StyleTable();
-		basicSP = new StyleScrollPane(basicTable);
-		basicTable.tableSetting(basicTable, header, data, basicSP, rectangle);
-		basicTable.setSort();
-		basicSP.setVisible(false);
-		this.add(basicSP);
+		basicTable = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		basicTable.setVisible(true);
+		this.add(basicTable);
 	}
 	
 	private void pgSetting(){
-		final Vector<String> header = new Vector<String>();
-		header.addElement("赛季");header.addElement("上场时间");header.addElement("得分");
-		header.addElement("篮板");header.addElement("助攻");header.addElement("进攻");header.addElement("防守");header.addElement("抢断");
-		header.addElement("盖帽");header.addElement("失误");header.addElement("犯规");
+		String[] header = {"赛季", "上场时间", "得分", "篮板", "助攻", "进攻", 
+				"防守", "抢断", "盖帽", "失误", "犯规"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		Object[][] data = new Object[pos.length][header.length];
 		for(int i=0;i<pos.length;i++){
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(pos[pos.length-1-i].getSeason());
-			vector.addElement(pos[pos.length-1-i].getMPG());
-			vector.addElement(pos[pos.length-1-i].getPPG());
-			vector.addElement(pos[pos.length-1-i].getBPG());
-			vector.addElement(pos[pos.length-1-i].getAPG());
-			vector.addElement(pos[pos.length-1-i].getOffPG());
-			vector.addElement(pos[pos.length-1-i].getDefPG());
-			vector.addElement(pos[pos.length-1-i].getStealPG());
-			vector.addElement(pos[pos.length-1-i].getRPG());
-			vector.addElement(pos[pos.length-1-i].getToPG());
-			vector.addElement(pos[pos.length-1-i].getFoulPG());
-			data.addElement(vector);
+			data[i][0] = pos[pos.length-1-i].getSeason();
+			data[i][1] = pos[pos.length-1-i].getMPG();
+			data[i][2] = pos[pos.length-1-i].getPPG();
+			data[i][3] = pos[pos.length-1-i].getBPG();
+			data[i][4] = pos[pos.length-1-i].getAPG();
+			data[i][5] = pos[pos.length-1-i].getOffPG();
+			data[i][6] = pos[pos.length-1-i].getDefPG();
+			data[i][7] = pos[pos.length-1-i].getStealPG();
+			data[i][8] = pos[pos.length-1-i].getRPG();
+			data[i][9] = pos[pos.length-1-i].getToPG();
+			data[i][10] = pos[pos.length-1-i].getFoulPG();
 		}
 		
-		pgTable = new StyleTable();
-		pgSP = new StyleScrollPane(pgTable); 
-		pgTable.tableSetting(pgTable, header, data, pgSP,  rectangle);
-		pgTable.setSort();
-		pgSP.setVisible(false);
-		this.add(pgSP);
+		pgTable = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		pgTable.setVisible(false);
+		this.add(pgTable);
 	}
 	
 	private void effSetting(){
-		final Vector<String> header = new Vector<String>();
-		header.addElement("赛季");header.addElement("效率       ");header.addElement("GMSC");header.addElement("使用率");header.addElement("真实命中率");
-		header.addElement("投篮命中率");header.addElement("三分命中率");header.addElement("罚篮命中率");header.addElement("投篮");header.addElement("篮板");
-		header.addElement("进攻篮板");header.addElement("防守篮板");header.addElement("助攻");header.addElement("抢断");header.addElement("盖帽");
-		header.addElement("失误率");
+		String[] header = {"赛季", "效率", "GMSC", "使用率", "真实命中率", "投篮命中率", 
+				"三分命中率", "罚篮命中率", "投篮", "篮板", "进攻篮板", "防守篮板", "助攻", "抢断", "盖帽", "失误率"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		Object[][] data = new Object[pos.length][header.length];
 		for(int i=0;i<pos.length;i++){
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(pos[pos.length-1-i].getSeason());
-			vector.addElement(pos[pos.length-1-i].getEff());
-			vector.addElement(pos[pos.length-1-i].getGmsc());
-			vector.addElement(pos[pos.length-1-i].getUseEff());
-			vector.addElement(pos[pos.length-1-i].getTruePercentage());
-			vector.addElement(pos[pos.length-1-i].getFieldGoalPercentage());
-			vector.addElement(pos[pos.length-1-i].getThreePGPercentage());
-			vector.addElement(pos[pos.length-1-i].getFTPercentage());
-			vector.addElement(pos[pos.length-1-i].getShootEff());
-			vector.addElement(pos[pos.length-1-i].getBackboardEff());
-			vector.addElement(pos[pos.length-1-i].getOffBEff());
-			vector.addElement(pos[pos.length-1-i].getDefBEff());
-			vector.addElement(pos[pos.length-1-i].getAssitEff());
-			vector.addElement(pos[pos.length-1-i].getStealEff());
-			vector.addElement(pos[pos.length-1-i].getRejectionEff());
-			vector.addElement(pos[pos.length-1-i].getToEff());
-			data.addElement(vector);
+			data[i][0] = pos[pos.length-1-i].getSeason();
+			data[i][1] = pos[pos.length-1-i].getEff();
+			data[i][2] = pos[pos.length-1-i].getGmsc();
+			data[i][3] = pos[pos.length-1-i].getUseEff();
+			data[i][4] = pos[pos.length-1-i].getTruePercentage();
+			data[i][5] = pos[pos.length-1-i].getFieldGoalPercentage();
+			data[i][6] = pos[pos.length-1-i].getThreePGPercentage();
+			data[i][7] = pos[pos.length-1-i].getFTPercentage();
+			data[i][8] = pos[pos.length-1-i].getShootEff();
+			data[i][9] = pos[pos.length-1-i].getBackboardEff();
+			data[i][10] = pos[pos.length-1-i].getOffBEff();
+			data[i][11] = pos[pos.length-1-i].getDefBEff();
+			data[i][12] = pos[pos.length-1-i].getAssitEff();
+			data[i][13] = pos[pos.length-1-i].getStealEff();
+			data[i][14] = pos[pos.length-1-i].getRejectionEff();
+			data[i][15] = pos[pos.length-1-i].getToEff();
 		}
 		
-		effTable = new StyleTable();
-		effSP = new StyleScrollPane(effTable); 
-		effTable.tableSetting(effTable, header, data, effSP, rectangle);
-		effTable.setSort();
-		effSP.setVisible(false);
-		this.add(effSP);
+		effTable = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		effTable.setVisible(false);
+		this.add(effTable);
 	}
 	@Override
 	public void refreshUI(){

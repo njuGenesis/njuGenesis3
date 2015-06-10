@@ -42,8 +42,6 @@ public class TurnController {
 		case STATS_PLAYER:newPanel = new PlayerStatsPanelNew();break;
 		case STATS_TEAM:newPanel = new TeamStatsPanelNew();break;
 		}
-		newPanel.setBounds(30, 30, 940, 600);
-		newPanel.setVisible(false);
 		return newPanel;
 	}
 
@@ -61,11 +59,6 @@ public class TurnController {
 	
 	public BgPanel turnToPlayerDetials(String name){
 		BgPanel newPanel = new PlayerDetials(name);
-		newPanel.setBounds(30, 30, 940, 600);
-		newPanel.setVisible(false);
-		
-		//StartUI.startUI.setMenu(2);
-		
 		return newPanel;
 	}
 	

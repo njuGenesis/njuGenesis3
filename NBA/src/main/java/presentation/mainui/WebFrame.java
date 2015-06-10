@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import presentation.component.BgPanel;
 import presentation.component.GFrame;
@@ -23,8 +24,9 @@ public class WebFrame extends GFrame{
 	private GLabel title, panelBg, close, bg;
 	public static WebFrame frame;
 	private Vector<WebLabel> labelVector = new Vector<WebLabel>();
-	private Vector<BgPanel> panelVector = new Vector<BgPanel>();
+	private Vector<JPanel> panelVector = new Vector<JPanel>();
 	private int a = 251, b = 251, c = 251;
+	private JPanel currentPanel;
 	
 	private GLabel menuPanel, menuTitle, menuLabel;
 	private GLabel[] menuButton = new GLabel[6];
@@ -197,19 +199,20 @@ public class WebFrame extends GFrame{
 		bg.setBackground(UIUtil.lightGrey);
 		bg.setOpaque(true); 
 		
-		panelBg = new GLabel("", new Point(150, 40), new Point(1000, 660), bg, true);
+		panelBg = new GLabel("", new Point(180, 70), new Point(958, 600), bg, true);
 		panelBg.setBackground(bg.getBackground());
 		panelBg.setOpaque(true);
 	}
 	
-	public void setPanel(BgPanel newPanel, String message){
+	public void setPanel(JPanel newPanel, String message){
 		
 		for(int i=0;i<panelVector.size();i++){
 			panelVector.get(i).setVisible(false);
 		}
 		panelVector.addElement(newPanel);
-		newPanel.setVisible(true);
-		panelBg.add(panelVector.get(panelVector.size()-1));
+		currentPanel = newPanel;
+		currentPanel.setVisible(true);
+		panelBg.add(currentPanel);
 		
 		WebLabel gLabel = new WebLabel(" "+message, new Point(labelVector.size()*130, 15), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
 		gLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -235,7 +238,7 @@ public class WebFrame extends GFrame{
 		return this.labelVector;
 	}
 	
-	public Vector<BgPanel> getPanel(){
+	public Vector<JPanel> getPanel(){
 		return this.panelVector;
 	}
 

@@ -3,6 +3,7 @@ package presentation.player;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,17 +15,20 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import presentation.component.BgPanel;
+import presentation.component.GLabel;
 import presentation.component.StyleScrollPane;
 import presentation.component.StyleTable;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.mainui.StartUI;
+import presentation.mainui.WebTable;
 import bussinesslogic.match.MatchLogic;
 import data.po.MatchDataPO;
 import data.po.Match_PlayerPO;
@@ -34,46 +38,53 @@ public class PlayerMatch extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private PlayerDataPO po;
-	private StyleTable basicTable, pgTable;
-	private StyleScrollPane basicSP, pgSP;
+	private WebTable basicTable, pgTable;
 	private JCheckBox checkBox1, checkBox2;
 	private MatchLogic matchLogic = new MatchLogic();
 	private ArrayList<Match_PlayerPO> match_PlayerPOs = new ArrayList<Match_PlayerPO>();
 	private ArrayList<ArrayList<MatchDataPO>> matchDataPOs = new ArrayList<ArrayList<MatchDataPO>>();
 	private Rectangle rectangle;
+	private GLabel label, border;
 
 	public PlayerMatch(PlayerDataPO po) {
 		super("");
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
+//		try {
+//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//		        if ("Nimbus".equals(info.getName())) {
+//		            UIManager.setLookAndFeel(info.getClassName());
+//		            break;
+//		        }
+//		    }
+//		} catch (Exception e) {}
 		
 		this.po = po;
-		this.setBounds(26, 120, 948, 530);
+		this.setBounds(0, 1050, 940, 400);
 		this.setLayout(null);
 		this.setVisible(true);
 		this.setBackground(UIUtil.bgWhite);
-		
+
 		init();
-		
+
 	}
-	
+
 	private void init(){
-rectangle = new Rectangle(14, 40, 920, 480);
+		rectangle = new Rectangle(50, 40, 840, 360);
 		
-		match_PlayerPOs = matchLogic.GetPlayerInfo(po.getName());
+		label = new GLabel("比赛信息", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBackground(UIUtil.bgWhite);
+		label.setOpaque(true);
 		
+		border = new GLabel("", new Point(0, 13), new Point(300, 4), this, true);
+		border.setBackground(UIUtil.nbaBlue);
+		border.setOpaque(true);
+
+		//match_PlayerPOs = matchLogic.GetPlayerInfo(po.getName());
+
 		basicSetting();
 		pgSetting();
-		
-		basicSP.setVisible(true);
-		
+
 		checkBox1 = new JCheckBox("总览");
 		checkBox1.setBounds(740, 5, 70, 30);
 		checkBox1.setSelected(true);
@@ -82,8 +93,8 @@ rectangle = new Rectangle(14, 40, 920, 480);
 			public void actionPerformed(ActionEvent e) {
 				if(checkBox1.isSelected()){
 					checkBox2.setSelected(false);
-					pgSP.setVisible(false);
-					basicSP.setVisible(true);
+					pgTable.setVisible(false);
+					basicTable.setVisible(true);
 				}else{
 					checkBox1.setSelected(true);
 				}
@@ -97,8 +108,8 @@ rectangle = new Rectangle(14, 40, 920, 480);
 			public void actionPerformed(ActionEvent e) {
 				if(checkBox2.isSelected()){
 					checkBox1.setSelected(false);
-					basicSP.setVisible(false);
-					pgSP.setVisible(true);
+					basicTable.setVisible(false);
+					pgTable.setVisible(true);
 				}else{
 					checkBox2.setSelected(true);
 				}
@@ -113,118 +124,61 @@ rectangle = new Rectangle(14, 40, 920, 480);
 	
 	private void basicSetting(){
 		
-		final Vector<String> header = new Vector<String>();
-		header.addElement("日期");header.addElement("对手");
-		header.addElement("位置");header.addElement("在场时间");header.addElement("得分");
-		header.addElement("篮板");header.addElement("三分命中率");header.addElement("罚球命中率");header.addElement("助攻数");header.addElement("比赛链接");
+		String[] header = {"日期", "对手", "位置", "在场时间", "得分", "篮板", "三分命中率", "罚球命中率", "助攻数", "比赛链接"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		Object[][] data = new Object[match_PlayerPOs.size()][header.length];
 		for(int i=match_PlayerPOs.size()-1;i>=0;i--){
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(match_PlayerPOs.get(i).getDate());
-			vector.addElement(match_PlayerPOs.get(i).getOtherTeam());
+			data[i][0] = match_PlayerPOs.get(i).getDate();
+			data[i][1] = match_PlayerPOs.get(i).getOtherTeam();
 			if(match_PlayerPOs.get(i).getState().equals("")){
-				vector.addElement("非首发");
+				data[i][2] = "非首发";
 			}else{
-				vector.addElement(match_PlayerPOs.get(i).getState());
+				data[i][2] = match_PlayerPOs.get(i).getState();
 			}
-			vector.addElement(match_PlayerPOs.get(i).getTime());
-			vector.addElement((int)match_PlayerPOs.get(i).getPoints());
-			vector.addElement((int)match_PlayerPOs.get(i).getBank());
-			vector.addElement(ShortDouble(match_PlayerPOs.get(i).getTPShootEff()));
-			vector.addElement(ShortDouble(match_PlayerPOs.get(i).getFTShootEff()));
-			vector.addElement((int)match_PlayerPOs.get(i).getAss());
-			vector.addElement("比赛链接");
-			data.addElement(vector);
+			data[i][3] = match_PlayerPOs.get(i).getTime();
+			data[i][4] = (int)match_PlayerPOs.get(i).getPoints();
+			data[i][5] = (int)match_PlayerPOs.get(i).getBank();
+			data[i][6] = ShortDouble(match_PlayerPOs.get(i).getTPShootEff());
+			data[i][7] = ShortDouble(match_PlayerPOs.get(i).getFTShootEff());
+			data[i][8] = (int)match_PlayerPOs.get(i).getAss();
+			data[i][9] = "比赛链接";
 		}
 		
-		basicTable = new StyleTable();
-		basicSP = new StyleScrollPane(basicTable); 
-		basicTable.tableSetting(basicTable, header, data, basicSP, rectangle);
-		tableSetting(basicTable);
-		basicTable.setSort();
-		basicSP.setVisible(false);
-		this.add(basicSP);
+		basicTable = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		basicTable.setVisible(true);
+		this.add(basicTable);
 	}
 	
 	private void pgSetting(){
-		final Vector<String> header = new Vector<String>();
-		header.addElement("日期");header.addElement("对手");
-		header.addElement("进攻篮板");header.addElement("防守篮板");
-		header.addElement("罚球");header.addElement("失误");header.addElement("投球");
-		header.addElement("投篮命中");header.addElement("投篮命中率");header.addElement("三分投篮");
-		header.addElement("三分命中");header.addElement("罚篮命中");header.addElement("抢断");header.addElement("盖帽");
-		header.addElement("犯规");header.addElement("比赛链接");
+		String[] header = {"日期", "对手", "进攻篮板", "防守篮板", "罚球", "失误", "投球", "投篮命中", 
+				"投篮命中率", "三分投篮", "三分命中", "罚篮命中", "抢断", "盖帽", "犯规", "比赛链接"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		Object[][] data = new Object[match_PlayerPOs.size()][header.length];
 		for(int i=match_PlayerPOs.size()-1;i>=0;i--){
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(match_PlayerPOs.get(i).getDate());
-			vector.addElement(match_PlayerPOs.get(i).getOtherTeam());
-			vector.addElement((int)match_PlayerPOs.get(i).getBankOff());
-			vector.addElement((int)match_PlayerPOs.get(i).getBankDef());
-			vector.addElement((int)match_PlayerPOs.get(i).getFT());
-			vector.addElement((int)match_PlayerPOs.get(i).getTo());
-			vector.addElement((int)match_PlayerPOs.get(i).getShoot());
-			vector.addElement((int)match_PlayerPOs.get(i).getShootEffNumber());
-			vector.addElement(ShortDouble(match_PlayerPOs.get(i).getShootEff()));
-			vector.addElement((int)match_PlayerPOs.get(i).getTPShoot());
-			vector.addElement((int)match_PlayerPOs.get(i).getTPShootEffNumber());
-			vector.addElement((int)match_PlayerPOs.get(i).getFTShootEffNumber());
-			vector.addElement((int)match_PlayerPOs.get(i).getSteal());
-			vector.addElement((int)match_PlayerPOs.get(i).getRejection());
-			vector.addElement((int)match_PlayerPOs.get(i).getFoul());
-			vector.addElement("比赛链接");
-			data.addElement(vector);
+			data[i][0] = match_PlayerPOs.get(i).getDate();
+			data[i][0] = match_PlayerPOs.get(i).getOtherTeam();
+			data[i][0] = (int)match_PlayerPOs.get(i).getBankOff();
+			data[i][0] = (int)match_PlayerPOs.get(i).getBankDef();
+			data[i][0] = (int)match_PlayerPOs.get(i).getFT();
+			data[i][0] = (int)match_PlayerPOs.get(i).getTo();
+			data[i][0] = (int)match_PlayerPOs.get(i).getShoot();
+			data[i][0] = (int)match_PlayerPOs.get(i).getShootEffNumber();
+			data[i][0] = ShortDouble(match_PlayerPOs.get(i).getShootEff());
+			data[i][0] = (int)match_PlayerPOs.get(i).getTPShoot();
+			data[i][0] = (int)match_PlayerPOs.get(i).getTPShootEffNumber();
+			data[i][0] = (int)match_PlayerPOs.get(i).getFTShootEffNumber();
+			data[i][0] = (int)match_PlayerPOs.get(i).getSteal();
+			data[i][0] = (int)match_PlayerPOs.get(i).getRejection();
+			data[i][0] = (int)match_PlayerPOs.get(i).getFoul();
+			data[i][0] = "比赛链接";
 		}
 		
-		pgTable = new StyleTable();
-		pgSP = new StyleScrollPane(pgTable); 
-		pgTable.tableSetting(pgTable, header, data, pgSP, rectangle);
-		tableSetting(pgTable);
-		pgTable.setSort();
-		pgSP.setVisible(false);
-		this.add(pgSP);
+		pgTable = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		pgTable.setVisible(false);
+		this.add(pgTable);
 	}
 	
 	private void tableSetting(final StyleTable table){
-		table.setPreferredScrollableViewportSize(new Dimension(920, 480));//设置大小
-		table.setBounds(14, 35, 920, 480);
-		table.getTableHeader().setPreferredSize(new Dimension(920, 30));//设置表头大小
-		
-		DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer(){
-			public java.awt.Component getTableCellRendererComponent(JTable t, Object value,
-					boolean isSelected, boolean hasFocus, int row, int column) {
-				if (row % 2 == 0)
-					setBackground(new Color(235, 236, 231));
-				else
-					setBackground(new Color(251, 251, 251));
-
-				setForeground(UIUtil.nbaBlue);
-				return super.getTableCellRendererComponent(t, value, isSelected,
-						hasFocus, row, column);
-			}
-		};
-		table.getColumnModel().getColumn(table.getColumnCount()-1).setCellRenderer(defaultTableCellRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(defaultTableCellRenderer);
-		
-		table.addMouseMotionListener(new MouseMotionListener() {
-			
-			public void mouseMoved(MouseEvent e) {
-				int column = table.getColumnModel().getColumnIndexAtX(e.getX());
-				int row    = e.getY()/table.getRowHeight();
-
-				if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == table.getColumnCount()-1 || column == 1)) {
-					table.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				}else{
-					table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-			
-			public void mouseDragged(MouseEvent e) {
-			}
-		});
-		
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				int column = table.getColumnModel().getColumnIndexAtX(e.getX());

@@ -41,9 +41,10 @@ public class WebTable extends JLabel{
 	
 	private Rectangle tableRectangle;
 	
-	private int colum, row;
+	private int colum, row, cellHeight, cellWidth, headerHeight;
 	
 	private JScrollPane scrollPane;
+	private boolean isScroll;
 	public static Color bgColor;
 	
 	public static void main(String[] args) {
@@ -54,11 +55,11 @@ public class WebTable extends JLabel{
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, f.getWidth(), f.getHeight());
 		panel.setLayout(null);
-		panel.setBackground(new Color(190, 190, 190));
+		panel.setBackground(UIUtil.bgWhite);
 		
 		String header[] = {"<html>aa<br>aaas<html>", "b", "c", "d"};
-		String[][] data = new String[25][4];
-		for(int i=0;i<25;i++){
+		String[][] data = new String[1][4];
+		for(int i=0;i<1;i++){
 			data[i][0] = String.valueOf(i);data[i][1] = "1";data[i][2] = String.valueOf(i);data[i][3] = "1";
 		}
 		
@@ -93,6 +94,16 @@ public class WebTable extends JLabel{
 				this.contentData[i][j] = String.valueOf(data[i][j]);
 			}
 		}
+
+		this.cellHeight = 30;
+		this.headerHeight = 40;
+		if(row*cellHeight+headerHeight>tableRectangle.height){
+			cellWidth = (tableRectangle.width-9)/colum;
+			isScroll = true;
+		}else{
+			cellWidth = (tableRectangle.width)/colum;
+			isScroll = false;
+		}
 		
 		headerInit();
 		contentInit();
@@ -121,18 +132,16 @@ public class WebTable extends JLabel{
 	private void headerInit(){
 		this.header = new HeaderLabel[colum];
 		
-		int columWeight = (tableRectangle.width-9)/colum;
-		
 		for(int i=0;i<colum;i++){
 			this.header[i] = new HeaderLabel(headerData[i]);
 			
 			if(i<colum - 1){
-				this.header[i].setSize(columWeight, 40);
+				this.header[i].setSize(cellWidth, headerHeight);
 			}else{
-				this.header[i].setSize(tableRectangle.width-(colum-1)*columWeight, 40);
+				this.header[i].setSize(tableRectangle.width-(colum-1)*cellWidth, headerHeight);
 			}
 			
-			this.header[i].setLocation(i*columWeight, 0);
+			this.header[i].setLocation(i*cellWidth, 0);
 			this.header[i].setBackground(new Color(124, 124, 124));
 			this.header[i].setForeground(UIUtil.bgWhite);
 			this.header[i].setOpaque(true);
@@ -148,11 +157,12 @@ public class WebTable extends JLabel{
 	private void contentInit(){
 		this.content = new contentLabel[row][colum];
 		
-		int columWeight = (tableRectangle.width-9)/colum;
-		int columHeight = 30;
-		
 		this.dataLabel = new JPanel();
-		this.dataLabel.setBounds(0, header[0].getHeight(), tableRectangle.width-9, row*columHeight);
+		if(isScroll){
+			this.dataLabel.setBounds(0, header[0].getHeight(), tableRectangle.width-9, row*cellHeight);
+		}else{
+			this.dataLabel.setBounds(0, header[0].getHeight(), tableRectangle.width, row*cellHeight);
+		}
 		this.dataLabel.setLayout(null);
 		this.dataLabel.setPreferredSize(new Dimension(dataLabel.getWidth(), dataLabel.getHeight()));
 		this.dataLabel.revalidate();
@@ -173,12 +183,16 @@ public class WebTable extends JLabel{
 				//}
 				
 				if(j<colum - 1){
-					this.content[i][j].setSize(columWeight, columHeight);
+					this.content[i][j].setSize(cellWidth, cellHeight);
 				}else{
-					this.content[i][j].setSize(tableRectangle.width-9-(colum-1)*columWeight, columHeight);
+					if(isScroll){
+						this.content[i][j].setSize(tableRectangle.width-9-(colum-1)*cellWidth, cellHeight);
+					}else{
+						this.content[i][j].setSize(tableRectangle.width-(colum-1)*cellWidth, cellHeight);
+					}
 				}
 
-				this.content[i][j].setLocation(j*columWeight, i*columHeight);
+				this.content[i][j].setLocation(j*cellWidth, i*cellHeight);
 				this.content[i][j].setOpaque(true);
 				this.content[i][j].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
 
@@ -206,41 +220,45 @@ public class WebTable extends JLabel{
 
 	private void scrollInit(){
 		
-		this.scrollPane = new JScrollPane();
-		this.scrollPane.getViewport().setView(dataLabel);
-		this.scrollPane.setBounds(0, header[0].getHeight(), tableRectangle.width+7, tableRectangle.height-header[0].getHeight());
-		this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		this.scrollPane.setOpaque(false);
-		this.scrollPane.getViewport().setOpaque(false);
-		this.scrollPane.setVisible(true);
-		
-        this.scrollPane.getVerticalScrollBar().setUI(new IScrollBarUI());
-        this.scrollPane.getHorizontalScrollBar().setUI(new IScrollBarUI());
-        this.scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        
-        if (scrollPane.getCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER) == null) {
-            JLabel component = new JLabel() {
-				private static final long serialVersionUID = 1L;
+		if(isScroll){
+			this.scrollPane = new JScrollPane();
+			this.scrollPane.getViewport().setView(dataLabel);
+			this.scrollPane.setBounds(0, header[0].getHeight(), tableRectangle.width+7, tableRectangle.height-header[0].getHeight());
+			this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
+			this.scrollPane.setOpaque(false);
+			this.scrollPane.getViewport().setOpaque(false);
+			this.scrollPane.setVisible(true);
+			
+	        this.scrollPane.getVerticalScrollBar().setUI(new IScrollBarUI());
+	        this.scrollPane.getHorizontalScrollBar().setUI(new IScrollBarUI());
+	        this.scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+	        
+	        if (scrollPane.getCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER) == null) {
+	            JLabel component = new JLabel() {
+					private static final long serialVersionUID = 1L;
 
-				@Override
-                protected void paintComponent(Graphics g) {
-                    Graphics2D g2 = (Graphics2D) g;
-                    Paint oldPaint = g2.getPaint();
-                    Rectangle bounds = getBounds();
-                    Paint backgroupRectPaint = new GradientPaint(0, 0, new Color(216, 216, 216),
-                            bounds.width, bounds.height, new Color(152, 152, 152));
-                    g2.setPaint(backgroupRectPaint);
-                    g2.fillRect(0, 0, bounds.width, bounds.height);
-                    g2.setPaint(oldPaint);
+					@Override
+	                protected void paintComponent(Graphics g) {
+	                    Graphics2D g2 = (Graphics2D) g;
+	                    Paint oldPaint = g2.getPaint();
+	                    Rectangle bounds = getBounds();
+	                    Paint backgroupRectPaint = new GradientPaint(0, 0, new Color(216, 216, 216),
+	                            bounds.width, bounds.height, new Color(152, 152, 152));
+	                    g2.setPaint(backgroupRectPaint);
+	                    g2.fillRect(0, 0, bounds.width, bounds.height);
+	                    g2.setPaint(oldPaint);
 
-                }
-            };
-            scrollPane.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, component);
-        }
-        
-        this.add(scrollPane);
-        this.repaint();
+	                }
+	            };
+	            scrollPane.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, component);
+	        }
+	        
+	        this.add(scrollPane);
+	        this.repaint();
+		}else{
+			this.add(dataLabel);
+		}
 	}
 	
 	private void update(){

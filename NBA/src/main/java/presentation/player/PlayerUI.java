@@ -35,6 +35,7 @@ import data.po.PlayerDataPO;
 import data.po.TeamDataPO;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
+import presentation.component.ScrollPanel;
 import presentation.component.StyleScrollPane;
 import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
@@ -74,6 +75,7 @@ public class PlayerUI extends BgPanel{
 //		    }
 //		} catch (Exception e) {}
 		
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
 		//this.setBackground(UIUtil.bgWhite);
 		this.setOpaque(false);
@@ -135,14 +137,15 @@ public class PlayerUI extends BgPanel{
 			});
 		}
 		
-		ArrayList<TeamDataPO> teamDataPOs = teamLogic.GetInfoBySeason("13-14");
-		int boxHeaderTeamLength = teamDataPOs.size()+1;
-		String[] boxHeaderTeam = new String[boxHeaderTeamLength];
-		boxHeaderTeam[0] = "根据球队查找";
-		for(int i=1;i<boxHeaderTeam.length;i++){
-			boxHeaderTeam[i] = TableUtility.getChTeam(teamDataPOs.get(i-1).getShortName())+" "+
-					teamDataPOs.get(i-1).getShortName();
-		}
+//		ArrayList<TeamDataPO> teamDataPOs = teamLogic.GetInfoBySeason("13-14");
+//		int boxHeaderTeamLength = teamDataPOs.size()+1;
+//		String[] boxHeaderTeam = new String[boxHeaderTeamLength];
+//		boxHeaderTeam[0] = "根据球队查找";
+//		for(int i=1;i<boxHeaderTeam.length;i++){
+//			boxHeaderTeam[i] = TableUtility.getChTeam(teamDataPOs.get(i-1).getShortName())+" "+
+//					teamDataPOs.get(i-1).getShortName();
+//		}
+		String[] boxHeaderTeam = {"a", "b"};
 		comboBoxTeam = new JComboBox<String>(boxHeaderTeam);
 		comboBoxTeam.setBounds(10, 44, 200, 30);
 		chooser.add(comboBoxTeam);
@@ -288,7 +291,8 @@ public class PlayerUI extends BgPanel{
 				public void mousePressed(MouseEvent e){
 					JLabel label = (JLabel)e.getSource();
 					String playerName = label.getText();
-					WebFrame.frame.setPanel(turnController.turnToPlayerDetials(playerName), playerName);
+					ScrollPanel scrollPanel = new ScrollPanel(turnController.turnToPlayerDetials(playerName), 600);
+					WebFrame.frame.setPanel(scrollPanel, playerName);
 				}
 			});
 			table.getColum(1)[i].addMouseListener(new MouseAdapter() {

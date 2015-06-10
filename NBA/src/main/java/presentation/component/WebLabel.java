@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import presentation.contenui.UIUtil;
 import presentation.mainui.WebFrame;
@@ -16,14 +17,14 @@ public class WebLabel extends JLabel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private BgPanel panel = null;
+	private JPanel panel = null;
 	private WebLabel label = null;
 	private GLabel text = null;
 	public boolean isSelected;
 
 	public WebLabel(String message, Point location, Point size, Container container, 
 			boolean visible, int bord, int wordSize, 
-			BgPanel panel){
+			JPanel panel){
 		this.setText(message);
 		this.setBounds(location.x, location.y, size.x, size.y);
 		this.setVisible(visible);
@@ -113,7 +114,7 @@ public class WebLabel extends JLabel{
 		this.label = label;
 	}
 	
-	public BgPanel getPanel(){
+	public JPanel getPanel(){
 		return this.panel;
 	}
 	
