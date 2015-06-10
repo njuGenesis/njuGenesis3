@@ -329,12 +329,12 @@ public class PlayerLogic_db {
 		
 	}
 	private boolean union(int id,String union) throws RemoteException{
-		String teamname = gets_a_b(id).get(0).getTeam();
 		if(union=="null"){
 			return true;
 		}
 		else{
 			try{
+				String teamname = gets_a_b(id).get(0).getTeam();
 			if(union.equals("Southeast")){
 				
 					if((teamname.equals("亚特兰大老鹰"))

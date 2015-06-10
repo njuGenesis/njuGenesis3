@@ -56,15 +56,16 @@ public class StatsUI extends BgPanel{
 	public StatsUI(String s) {
 		super(bgStr);
 
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
+//		try {
+//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//		        if ("Nimbus".equals(info.getName())) {
+//		            UIManager.setLookAndFeel(info.getClassName());
+//		            break;
+//		        }
+//		    }
+//		} catch (Exception e) {}
 		
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
 		this.setOpaque(false);
 
