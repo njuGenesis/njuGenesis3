@@ -18,7 +18,7 @@ public class PlayerLogic_db {
 		return res;
 	}
 	
-	public String getTeambyId(int id,String season)throws RemoteException{
+	public ArrayList<String> getTeambyId(int id,String season)throws RemoteException{
 		return pdb.getTeambyId(id,season);
 	}
 	

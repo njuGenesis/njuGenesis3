@@ -59,6 +59,6 @@ public interface PlayerDataService extends Remote{
 			throws RemoteException;
 	ArrayList<PlayerDataPlayOff_Ad_Basic> getp_ad_b(int id, String season)
 			throws RemoteException;
-	public String getTeambyId(int id, String season)
+	public ArrayList<String> getTeambyId(int id, String season)
 			throws RemoteException;
 }

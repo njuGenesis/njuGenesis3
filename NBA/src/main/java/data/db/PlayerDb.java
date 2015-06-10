@@ -1611,10 +1611,11 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
-	public String getTeambyId(int id, String season)
+	public ArrayList<String> getTeambyId(int id, String season)
 		throws RemoteException{
 		// TODO Auto-generated method stub
 		String res = "";
+		ArrayList<String> temp = new ArrayList<String>();
 		try{
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"thometoy", "960105");
@@ -1623,9 +1624,18 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//System.out.println("success");
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'and season='"+season+"'");
+			ResultSet rs;
+			if(season.equals("null")){
+				rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'");
+			}
+			else{
+			rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'and season='"+season+"'");
+			}
 			while(rs.next()){
-			res = rs.getString("team");
+				res = rs.getString("season")+";"+rs.getString("team");
+				if((!res.endsWith("支"))&&(!res.endsWith("计"))){
+					temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1635,7 +1645,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			e.printStackTrace();
 			return null;
 		}
-		return res;
+		return temp;
 		
 		
 	}
