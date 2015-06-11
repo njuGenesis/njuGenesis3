@@ -15,8 +15,9 @@ import data.po.matchData.MatchTeam;
 public class TestMatchdataCrawer {
 	MatchDb matchDb = new MatchDb();
 	public static void main(String[] args) {
+		//20637
 		TestMatchdataCrawer m = new TestMatchdataCrawer();
-		for (int i = 20637; i <=37456; i++) {
+		for (int i = 31671; i <=37457; i++) {
 			m.getSeasonMatch(i);
 		}
 
@@ -161,13 +162,27 @@ public class TestMatchdataCrawer {
 				else{
 					player.setIsseason("no");
 				}
-				
+
 				team.setMatchID(String.valueOf(number));
 				otherteam.setMatchID(String.valueOf(number));
-				
-				
-				
 				player.setMatchID(String.valueOf(number));
+				
+				team.setSeason(match.getSeason());
+				otherteam.setSeason(match.getSeason());
+				player.setSeason(match.getSeason());
+				
+				team.setDate(match.getDate());
+				otherteam.setDate(match.getDate());
+				player.setDate(match.getDate());
+				
+				team.setResult(match.getPoint()[0]);
+				otherteam.setResult(match.getPoint()[0]);
+				player.setResult(match.getPoint()[0]);
+				
+				team.setTwoteam(match.getOtherTeam()+"-"+match.getTeam());
+				otherteam.setTwoteam(match.getOtherTeam()+"-"+match.getTeam());
+				player.setTwoteam(match.getOtherTeam()+"-"+match.getTeam());
+				
 				
 				last = e.get(k).select("td");
 
@@ -283,8 +298,8 @@ public class TestMatchdataCrawer {
 				}
 			}
 			
-			System.out.println(players.size());
-	/*		System.out.println(team.getPoints());
+			/*System.out.println(players.size());
+			System.out.println(team.getPoints());
 			System.out.println(otherteam.getPoints());*/
 			writematchInfo(match);
 			writematchPlayer(players);

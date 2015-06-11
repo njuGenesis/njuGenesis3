@@ -2,6 +2,10 @@ package data.po.matchData;
 
 public class MatchPlayer {
 	String MatchID; 
+	String season;
+	String twoteam;   //客队-主队
+	String result;//结果比分    客队得分-主队得分
+	String date;
 	String isseason;
 	String Team;
 	String Playername;
@@ -34,6 +38,30 @@ public class MatchPlayer {
 	
 	
 	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getSeason() {
+		return season;
+	}
+	public void setSeason(String season) {
+		this.season = season;
+	}
+	public String getTwoteam() {
+		return twoteam;
+	}
+	public void setTwoteam(String twoteam) {
+		this.twoteam = twoteam;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
 	public String getIsseason() {
 		return isseason;
 	}
