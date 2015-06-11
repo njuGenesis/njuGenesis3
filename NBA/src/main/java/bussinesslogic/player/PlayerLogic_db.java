@@ -306,6 +306,18 @@ public class PlayerLogic_db {
 		return res;
 	}
 
+	//-----------联盟平均-----
+	public ArrayList<Double> getAvgOfAll(String season,boolean isSeason)throws Exception{
+		ArrayList<Double> res = new ArrayList<Double>();
+		if(isSeason){
+			res = pdb.getSeasonAvg(season);
+			
+		}
+		else{
+			res = pdb.getPlayOffAvg(season);
+		}
+		return res;
+	}
 	// ===============筛选方法
 	private boolean firstc(PlayerDetailInfo p, String firstc) {
 		if (firstc == "null") {

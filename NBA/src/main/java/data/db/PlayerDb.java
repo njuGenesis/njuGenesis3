@@ -33,6 +33,12 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		operation("Truncate Table p_detail");
 		System.out.println("clear player table end");
 	}
+	public void clearPlayerTable2(){
+		operation("Truncate Table p_s_a_b");
+		operation("Truncate Table p_s_t_b");
+		operation("Truncate Table p_s_ad_b");
+		operation("Truncate Table p_s_ad_s");
+	}
 	public void initializePlayerTable(){
 		System.out.println("initialize Player Table start");
 		//------------detail建表
@@ -1421,6 +1427,39 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return res;
 	}
+	public int getIDHot(String name,String team) throws RemoteException{
+		// TODO Auto-generated method stub
+		String[] keyname = name.split(" ");
+		System.out.println(keyname[0]);
+		System.out.println(keyname[1]);
+		int res = 0;
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_a_b");
+			while(rs.next()){
+				if((rs.getString("name").contains(keyname[0]))&&(rs.getString("name").contains(keyname[1]))){
+					res = rs.getInt("id");
+					System.out.println(res);
+					break;
+				}
+			
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+		return res;
+	}
 	@Override
 	public ArrayList<PlayerDataSeason_Avg_Basic> gets_a_b(int id, String season)
 			throws RemoteException {
@@ -1689,6 +1728,64 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		return temp;
 		
 		
+	}
+	public ArrayList<Double> getSeasonAvg(String season) {
+		// TODO Auto-generated method stub
+		ArrayList<Double> res = new ArrayList<Double>();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select avg(pts) as ptsavg,avg(assist) as assistavg,avg(backbound) as backboundavg,avg(ftper) as ftperavg,avg(thper) as thperavg from p_s_a_b where season = '"+season+"'");
+			while(rs.next()){
+				res.add(rs.getDouble("ptsavg"));
+				res.add(rs.getDouble("assistavg"));
+				res.add(rs.getDouble("backboundavg"));
+				res.add(rs.getDouble("ftperavg"));
+				res.add(rs.getDouble("thperavg"));
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return res;
+	}
+	public ArrayList<Double> getPlayOffAvg(String season) {
+		// TODO Auto-generated method stub
+		ArrayList<Double> res = new ArrayList<Double>();
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"thometoy", "960105");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select avg(pts) as ptsavg,avg(assist) as assistavg,avg(backbound) as backboundavg,avg(ftper) as ftperavg,avg(thper) as thperavg from p_p_a_b where season = '"+season+"'");
+			while(rs.next()){
+				res.add(rs.getDouble("ptsavg"));
+				res.add(rs.getDouble("assistavg"));
+				res.add(rs.getDouble("backboundavg"));
+				res.add(rs.getDouble("ftperavg"));
+				res.add(rs.getDouble("thperavg"));
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return res;
 	}
 	
 	

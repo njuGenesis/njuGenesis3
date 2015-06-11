@@ -15,28 +15,19 @@ public class TempStart {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		PlayerLogic p = new PlayerLogic();
-		PlayerLogic_db pdb = new PlayerLogic_db();
-		
-		
-		//pdb.initializePlayerTable();
-//		pdb.clearPlayerTable();
 //		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
-//		t.initializePlayerDetail(1,4273);
-//		t.initializePlayerSeason(1,4273);
-//		t.initializePlayerPlayOff(1,4273);
-		//pdb.selectByTag("14-15", "s_a_b", "null", "null", "前锋", "Northwest");
+//		String[] a = t.getHotPlayerDaily("rebounds");
+//		for(int i=0;i<5;i++){
+//			System.out.println(a[i]);
+//		}
+		PlayerLogic_db pdb = new PlayerLogic_db();
 		try {
-			ArrayList<PlayerDetailInfo> t =pdb.getAlldetail("78-79");
-			for(int i = 0;i<t.size();i++){
-			System.out.println(t.get(i).getId()+";"+t.get(i).getName());
-			}
-			//System.out.println(temp.get(0).getId()+";"+temp.get(0).getBackbound()+";"+temp.get(0).getName());
-		} catch (RemoteException e) {
+			ArrayList<Double> res=pdb.getAvgOfAll("13-14", false);
+			System.out.println(res);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println("'hi".replaceAll("'", "\\?"));
 	}
 	
 }

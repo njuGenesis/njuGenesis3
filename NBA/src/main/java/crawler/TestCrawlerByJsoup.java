@@ -1,15 +1,20 @@
 package crawler;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -49,8 +54,12 @@ public class TestCrawlerByJsoup {
 //		}catch(Exception e){
 //			e.printStackTrace();
 //		}
-	    TestCrawlerByJsoup  t = new TestCrawlerByJsoup();
-	   t.getProgressPlayer("assists");
+		try {
+			getImg("http://china.nba.com/media/img/players/head/132x132/203521.png","Hotimg//test_hotdaily.png");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void test(){
 		Document doc = null;
@@ -73,32 +82,49 @@ public class TestCrawlerByJsoup {
 		}
 	}
 	//-------------装入detail对象
-	private void initializeDetailObject(int i){
+	private void initializeDetailObject(int i,int size){
 		//--------每一个球员的基本信息
 		PlayerDetailInfo p = new PlayerDetailInfo();
-		int x = 4;
+		
 		p.setId(i);
-		p.setName(tempInfo.get(0).replaceAll("'", "\\?"));
-		p.setPosition(tempInfo.get(1));
-		p.setHeight(tempInfo.get(2));
-		p.setWeight(tempInfo.get(3));
-		try{
-		p.setBirth(tempInfo.get(x));
-		x++;
-		}catch(Exception e){
-			
-		}
-		try{
-		p.setBorncity(tempInfo.get(x));
-		x++;
-		}catch(Exception e){
-			
-		}
-		try{
-		p.setNumber(tempInfo.get(x));
-		x++;
-		}catch(Exception e){
-			System.out.println(i+": number not exist");
+		p.setName("null");
+		p.setPosition("null");
+		p.setHeight("null");
+		p.setWeight("null");		
+		p.setBirth("null");		
+		p.setBorncity("null");		
+		p.setNumber("null");
+		for(int k = 0;k<size;k++){
+			//System.out.println(tempInfo.get(k));
+			String[] res1 = tempInfo.get(k).split(";");
+			try{
+			String res = res1[0];
+			String value = tempInfo.get(k).split(";")[1];
+			if(res.equals("name")){
+				p.setName(value.replaceAll("'", "\\?"));
+			}
+			if(res.equals("position")){
+				p.setPosition(value);
+			}
+			if(res.equals("height")){
+				p.setHeight(value);
+			}	
+			if(res.equals("weight")){
+				p.setWeight(value);
+			}
+			if(res.equals("birth")){
+				p.setBirth(value);
+			}
+			if(res.equals("borncity")){
+				p.setBorncity(value);
+			}
+			if(res.equals("number")){
+				p.setNumber(value);
+			}
+			}
+			catch(Exception e){
+				System.out.println(tempInfo.get(k));
+			}
 		}
 		
 		playerdetail.add(p);
@@ -122,74 +148,74 @@ public class TestCrawlerByJsoup {
 		Document doc = null;
 			
 		for(int i = first;i<size;i++){
-		   
+		    //System.out.println("initialize player:" +i);
 		    String basicinfoUrl = "http://www.stat-nba.com/player/"+i+".html";
 			//url = "http://www.stat-nba.com/player/stat_box/"+i+"_season.html";
 			try{
 				//-------------------------初始化球员基本信息
-				doc = Jsoup.connect(basicinfoUrl).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").get();
+				doc = Jsoup.connect(basicinfoUrl).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000).get();
 				Elements BasicInfo = doc.select("div.playerinfo").select("div.detail").select("div.row");
+				
 				for(Element el:BasicInfo){
 					//System.out.print(el.tagName());
 //					if((el.tagName().equals("a")||(el.tagName().equals("div.column")))){
 //						continue;
 //					}
-					
+						
 						if(el.text().substring(0,5).equals("球衣号码:")){
 						//System.out.println(el.text()+";");
 						//----每一个球员的信息暂存
-							tempInfo.add(el.text().substring(5).replaceAll(" 详情", ""));
+							tempInfo.add("number;"+el.text().substring(5).replaceAll(" 详情", ""));
+							temp++;
 							break;
 						}
 						
 					
 					if((el.text().substring(0,5).equals("全　　名:"))){					
-					tempInfo.add(el.text().substring(5));		
+					tempInfo.add("name;"+el.text().substring(5));		
 					temp++;
-					}					
+					
+					}				
+					
 					if((el.text().substring(0,5).equals("位　　置:"))){					
-						tempInfo.add(el.text().substring(5));	
+						tempInfo.add("position;"+el.text().substring(5));	
 						temp++;
-						}
-					if((el.text().substring(0,5).equals("身　　高:"))){					
-						tempInfo.add(el.text().substring(5));
-						temp++;
-						}
-					if((el.text().substring(0,5).equals("体　　重:"))){					
-						tempInfo.add(el.text().substring(5));	
-						temp++;
-						continue;
-						}
-					if(temp==4){
-						temp++;
-						if((el.text().substring(0,5).equals("出生日期:"))){					
-							tempInfo.add(el.text().substring(5));
-							
-							}
-						else{
-							
-							tempInfo.add("null");
-						}
-						continue;
-					}
-					if(temp==5){
-						temp++;
-						if((el.text().substring(0,5).equals("出生城市:"))){					
-						tempInfo.add(el.text().substring(5));	
 						
-							}
-						else{
-						tempInfo.add("null");
-						}
-						continue;
+					}
+					
+					if((el.text().substring(0,5).equals("身　　高:"))){					
+						tempInfo.add("height;"+el.text().substring(5));
+						temp++;
+						
+					}
+					
+					if((el.text().substring(0,5).equals("体　　重:"))){					
+						tempInfo.add("weight;"+el.text().substring(5));	
+						temp++;
+						
+						
+					}
+					
+						if((el.text().substring(0,5).equals("出生日期:"))){					
+							tempInfo.add("birth;"+el.text().substring(5));
+							temp++;
+							
+					}
+					
+						if((el.text().substring(0,5).equals("出生城市:"))){					
+						tempInfo.add("borncity;"+el.text().substring(5).replaceAll("'", " "));	
+						temp++;
+							
 					}
 					
 				}
+				
+				initializeDetailObject(i,temp);
 				temp = 0;
-				initializeDetailObject(i);
 				tempInfo.clear();//装入对象之后情况该数组
 			}
 			catch(Exception e){
+				System.out.println("error:player:"+i);
 				e.printStackTrace();
 			}
 		}
@@ -235,8 +261,8 @@ public class TestCrawlerByJsoup {
 	private void initializeS_t_b(String name,int i){
 		PlayerDataSeason_Tot_Basic p = new PlayerDataSeason_Tot_Basic();
 		p.setId(i);
-		p.setName(name);
-		p.setSeason(tempInfo.get(0).replaceAll("'", "\\?"));
+		p.setName(name.replaceAll("'", "\\?"));
+		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
 		p.setGs(tempInfo.get(3));
@@ -268,9 +294,9 @@ public class TestCrawlerByJsoup {
 	private void initializeS_ad_b(String name,int i){
 		PlayerDataSeason_Ad_Basic p = new PlayerDataSeason_Ad_Basic();
 		
-		p.setName(name);
+		p.setName(name.replaceAll("'", "\\?"));
 		p.setId(i);
-		p.setSeason(tempInfo.get(0).replaceAll("'", "\\?"));
+		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setBackeff(tempInfo.get(2));
 		p.setOffbeff(tempInfo.get(3));
@@ -295,9 +321,9 @@ public class TestCrawlerByJsoup {
 	//-------------装入season-ad-shoot对象
 	private void initializeS_ad_s(String name,int i){
 		PlayerDataSeason_Ad_Shoot p = new PlayerDataSeason_Ad_Shoot();
-		p.setName(name);
+		p.setName(name.replaceAll("'", "\\?"));
 		p.setId(i);
-		p.setSeason(tempInfo.get(0).replaceAll("'", "\\?"));
+		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setShootdis(tempInfo.get(2));
 		p.setBshootper(tempInfo.get(3));
@@ -378,9 +404,9 @@ public class TestCrawlerByJsoup {
 			url = "http://www.stat-nba.com/player/stat_box/"+i+"_season.html";
 			try{
 				//-------------------------初始化球员基本信息
-				name = playerdetail.get(i-first).getName();//获取姓名
+				name = pdb.getdetail(i).getName();//获取姓名
 				//-------------------------初始化平均基础数据
-				doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").get();
+				doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000).get();
 			    Elements Avgbasic = doc.select("table#stat_box_avg").select("tbody").select("tr").select("td");
 			    tablesize = doc.select("table#stat_box_avg").select("thead").select("tr").select("th").size()-1;
 			    //System.out.println("size:"+tablesize);
@@ -675,10 +701,10 @@ public class TestCrawlerByJsoup {
 			
 			try{
 				//-------------------------初始化球员基本信息
-				name = playerdetail.get(i-first).getName();
+				name = pdb.getdetail(i).getName();
 						
 				//-------------------------初始化平均基础数据
-				doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").get();
+				doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000).get();
 				tablesize = doc.select("table#stat_box_avg").select("thead").select("tr").select("th").size()-1;
 				if(tablesize<0){
 					//--没有参加过季后赛
@@ -799,6 +825,7 @@ public class TestCrawlerByJsoup {
 	}
 
 	public String[] getHotPlayerDaily(String key){
+		
 		String[] res = new String[5];
 		URL url;  
         StringBuffer sb = new StringBuffer();  
@@ -840,6 +867,14 @@ public class TestCrawlerByJsoup {
             	temp = temp+parr.getString("jerseyNo")+";";
             	temp = temp+parr.getString("position")+";";
             	
+            	String imgurl = "";
+            	//----
+            	if(js.getJSONObject(i).getString("rank").equals("1")){
+            		imgurl = "http://china.nba.com/media/img/players/silos/220x350/"+parr.getString("playerId")+".png";
+            	}
+            	else{
+            		imgurl = "http://china.nba.com/media/img/players/head/132x132/"+parr.getString("playerId")+".png";
+            	}
 //            	System.out.println(parr.getString("displayName"));
 //            	System.out.println(parr.getString("jerseyNo"));
 //            	System.out.println(parr.getString("position"));
@@ -853,16 +888,24 @@ public class TestCrawlerByJsoup {
 //            	System.out.println(js.getJSONObject(i).getString("rank"));
 //            	System.out.println(js.getJSONObject(i).getString("value"));
 //            	System.out.println();
+            	
+            		
+            	String keyname = parr.getString("displayNameEn");
+            	String teamname = tarr.getString("city")+tarr.getString("name");
+            	temp = temp+";"+pdb.getIDHot(keyname, teamname);
+					getimg(imgurl,"Hotimg//"+js.getJSONObject(i).getString("rank")+"_"+key+"_hotdaily.png");
+				
+            	
+            	
             	res[i] = temp;
             }
             
-        } catch (MalformedURLException e) {  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        } 
+        } catch(Exception e){
+        	e.printStackTrace();
+        }
         return res;
 	}
+	
 	
 	public String[] getHotPlayerSeason(String key){
 		String[] res = new String[5];
@@ -911,6 +954,15 @@ public class TestCrawlerByJsoup {
 //            	System.out.println(parr.getString("displayName"));
 //            	System.out.println(parr.getString("jerseyNo"));
 //            	System.out.println(parr.getString("position"));
+            	String imgurl = "";
+            	//----
+            	if(js.getJSONObject(i).getString("rank").equals("1")){
+            		imgurl = "http://china.nba.com/media/img/players/silos/220x350/"+parr.getString("playerId")+".png";
+            	}
+            	else{
+            		imgurl = "http://china.nba.com/media/img/players/head/132x132/"+parr.getString("playerId")+".png";
+            	}
+            	
             	
             	Object tprofile = js.getJSONObject(i).get("teamProfile");
             	JSONObject tarr = new JSONObject(tprofile.toString());
@@ -924,6 +976,11 @@ public class TestCrawlerByJsoup {
             	temp = temp+starr.getDouble(keyavg);
 //            	System.out.println(starr.getDouble(keyavg));
 //            	
+            	String keyname = parr.getString("displayNameEn");
+            	String teamname = tarr.getString("city")+tarr.getString("name");
+            	temp = temp+";"+pdb.getIDHot(keyname, teamname);
+                	getimg(imgurl,"Hotimg//"+js.getJSONObject(i).getString("rank")+"_"+key+"_hotseason.png");
+                	
 //            	System.out.println();
             	res[i] = temp;
             }
@@ -994,12 +1051,25 @@ public class TestCrawlerByJsoup {
             	Object pprofile = js.getJSONObject(i).get("playerProfile");
             	JSONObject parr = new JSONObject(pprofile.toString());
             	temp = temp+parr.getString("displayName")+";"+parr.getString("jerseyNo")+";"+parr.getString("position")+";";
+            	
+            	
 //            	System.out.println(parr.getString("displayName"));
 //            	System.out.println(parr.getString("jerseyNo"));
 //            	System.out.println(parr.getString("position"));
+            	String imgurl = "";
+            	//----
+            	if(js.getJSONObject(i).getString("rank").equals("1")){
+            		imgurl = "http://china.nba.com/media/img/players/head/230x185/"+parr.getString("playerId")+".png";
+            	}
+            	else{
+            		imgurl = "http://china.nba.com/media/img/players/head/132x132/"+parr.getString("playerId")+".png";
+            	}
             	
             	Object tprofile = js.getJSONObject(i).get("teamProfile");
             	JSONObject tarr = new JSONObject(tprofile.toString());
+            	
+            	
+            	
             	temp = temp+tarr.getString("city")+";"+tarr.getString("name")+";";
 //            	System.out.println(tarr.getString("city"));
 //            	System.out.println(tarr.getString("name"));
@@ -1008,6 +1078,11 @@ public class TestCrawlerByJsoup {
 //            	System.out.println(js.getJSONObject(i).getString("last5"));
 //            	System.out.println(js.getJSONObject(i).getString("differential"));
             	//System.out.println();
+            	String keyname = parr.getString("displayNameEn");
+            	String teamname = tarr.getString("city")+tarr.getString("name");
+            	temp = temp+";"+pdb.getIDHot(keyname, teamname);
+                	getimg(imgurl,"Hotimg//"+js.getJSONObject(i).getString("rank")+"_"+key+"_progress.png");
+                	
             	res[i] = temp;
             }
             
@@ -1018,4 +1093,52 @@ public class TestCrawlerByJsoup {
         } 
         return res;
 	}
+
+
+	public static void getImg(String urlPath,String fileName) throws Exception{
+		//System.out.println(urlPath);
+        URL url = new URL(urlPath);//：获取的路径
+        //:http协议连接对象
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");;
+        conn.setRequestMethod("GET");
+        conn.setReadTimeout(6 * 10000);
+        if (conn.getResponseCode() <10000){
+            InputStream inputStream = conn.getInputStream();
+            byte[] data = readStream(inputStream);
+            if(data.length>(1024*10)){
+                FileOutputStream outputStream = new FileOutputStream(fileName);
+                outputStream.write(data);
+                outputStream.close();
+            }
+        }
+         
+    }
+    public static byte[] readStream(InputStream inputStream) throws Exception{
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        while((len = inputStream.read(buffer)) !=-1){
+            outputStream.write(buffer, 0, len);
+        }
+        outputStream.close();
+        inputStream.close();
+        return outputStream.toByteArray();
+    }
+    public static void getimg(String u,String des){
+    	try{
+    	URL   url   =   new   URL(u); 
+    	URLConnection   uc   =   url.openConnection(); 
+    	InputStream   is   =   uc.getInputStream(); 
+    	File   file   =   new   File( des); 
+    	FileOutputStream   out   =   new   FileOutputStream(file); 
+    	int   i=0; 
+    	while   ((i=is.read())!=-1)   { 
+    	out.write(i); 
+    	} 
+    	is.close();
+    	}catch(Exception e){
+    		System.out.println("not found:"+u);
+    	}
+    }
 }
