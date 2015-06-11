@@ -162,7 +162,8 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
 
 		init();
 
@@ -172,11 +173,11 @@ public class PlayerStatsPanelNew extends BgPanel{
 		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
 		borderUp.setOpaque(true);
 		borderUp.setBackground(UIUtil.nbaBlue);
-		
+
 		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
 		borderDown.setOpaque(true);
 		borderDown.setBackground(UIUtil.nbaBlue);
-		
+
 		title = new GLabel("   球员",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
@@ -318,7 +319,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 			ArrayList<PlayerDataSeason_Tot_Basic> temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
 			try {
 				System.out.println(s+"  "+pos+"  "+un);
-				
+
 				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_t_b","null", "null", pos, un);
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_t_b(ints.get(i),s));
@@ -510,7 +511,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		if(isRegular()){
 			ArrayList<PlayerDataSeason_Ad_Shoot> temp = new ArrayList<PlayerDataSeason_Ad_Shoot>();
 			try {
-				
+
 				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_ad_s","null", "null", pos, un);
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_ad_s(ints.get(i),s));
@@ -771,15 +772,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 	}
 
 	private String changePosStr(String chinese){
-//		if(chinese=="前锋"){
-//			return "F";
-//		}else if(chinese=="中锋"){
-//			return "C";
-//		}else if(chinese=="后卫"){
-//			return "G";
-//		}else{
-//			return "null";
-//		}
+		//		if(chinese=="前锋"){
+		//			return "F";
+		//		}else if(chinese=="中锋"){
+		//			return "C";
+		//		}else if(chinese=="后卫"){
+		//			return "G";
+		//		}else{
+		//			return "null";
+		//		}
 		if(chinese.equals("全部位置")){
 			return "null";
 		}else{
@@ -1205,7 +1206,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 					tables[i].setVisible(false);
 				}
 			}
-			
+
 			PlayerStatsPanelNew.this.repaint();
 
 		}
