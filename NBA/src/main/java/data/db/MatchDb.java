@@ -17,18 +17,18 @@ public class MatchDb extends DataBaseLink {
 
 	public static void main(String[] args) throws SQLException {
 		MatchDb m = new MatchDb();
+		//m.initializeTeamTable();
+		 m.clearMatchTable();
 
-		// m.clearMatchTable();
-
-		ArrayList<MatchDataSeason> matches = m.getmatchinfo("SAS",
-				"unknown", "13-14", "unknown", "yes", "unknown");
+		/*ArrayList<MatchDataSeason> matches = m.getmatchinfo("SAS", "unknown",
+				"13-14", "unknown", "yes", "unknown");
 
 		System.out.println(matches.size());
 
 		for (int i = 0; i < matches.size(); i++) {
 			System.out.println(m.getmatchplayer(matches.get(i).getMatchID(),
-					"unknown", "unknown", "no").size());
-		}
+					"unknown", "unknown", "no", "unknown").size());
+		}*/
 
 	}
 
@@ -52,6 +52,8 @@ public class MatchDb extends DataBaseLink {
 
 		// 比赛球员数据数据
 		operation("create table matchplayer (" + "matchid varchar(255),"
+				+ "data varchar(255)," + "twoteam varchar(255),"
+				+ "result varchar(255)," + "season varchar(255),"
 				+ "isseason varchar(255)," + "team varchar(255),"
 				+ "playername varchar(255)," + "time varchar(255),"
 				+ "points   varchar(255)," + "isfirst varchar(255),"
@@ -67,6 +69,8 @@ public class MatchDb extends DataBaseLink {
 
 		// 比赛球队数据
 		operation("create table matchteam (" + "matchid varchar(255),"
+				+ "data varchar(255)," + "twoteam varchar(255),"
+				+ "result varchar(255)," + "season varchar(255),"
 				+ "isseason varchar(255)," + "teamshortname varchar(255),"
 				+ "playernumber varchar(255)," + "points   varchar(255),"
 				+ "shooteff varchar(255)," + "shootnumber varchar(255),"
@@ -100,7 +104,9 @@ public class MatchDb extends DataBaseLink {
 	public void addmatchplayer(MatchPlayer m) {
 		try {
 			operation("insert into matchplayer values(" + "'" + m.getMatchID()
-					+ "'," + "'" + m.getIsseason() + "'," + "'" + m.getTeam()
+					+ "'," + "'" + m.getIsseason() + "'," + "'" + m.getDate()
+					+ "'," + "'" + m.getTwoteam() + "'," + "'" + m.getResult()
+					+ "'," + "'" + m.getSeason() + "'," + "'" + m.getTeam()
 					+ "'," + "'" + m.getPlayername() + "'," + "'" + m.getTime()
 					+ "'," + "'" + m.getPoints() + "'," + "'" + m.getIsFirst()
 					+ "'," + "'" + m.getShootEff() + "'," + "'" + m.getShoot()
@@ -123,6 +129,8 @@ public class MatchDb extends DataBaseLink {
 	public void addmatchteam(MatchTeam m) {
 		try {
 			operation("insert into matchteam values(" + "'" + m.getMatchID()
+					+ "'," + "'" + m.getDate() + "'," + "'" + m.getTwoteam()
+					+ "'," + "'" + m.getResult() + "'," + "'" + m.getSeason()
 					+ "'," + "'" + m.getIsseason() + "'," + "'"
 					+ m.getTeamShortName() + "'," + "'" + m.getPlayerNumber()
 					+ "'," + "'" + m.getPoints() + "'," + "'" + m.getShootEff()
@@ -153,8 +161,7 @@ public class MatchDb extends DataBaseLink {
 
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
+			;
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchinfo where  (team = '"
@@ -184,15 +191,13 @@ public class MatchDb extends DataBaseLink {
 
 	// 查询比赛球员信息
 	public ArrayList<MatchPlayer> getmatchplayer(String MatchID,
-			String playername, String team, String isseason) {
+			String playername, String team, String isseason, String season) {
 
 		ArrayList<MatchPlayer> temp = new ArrayList<MatchPlayer>();
 		MatchPlayer res = new MatchPlayer();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchplayer where (matchid = '"
@@ -204,6 +209,11 @@ public class MatchDb extends DataBaseLink {
 							+ playername
 							+ "' or "
 							+ playername.equals("unknown")
+							+ " )"
+							+ "and (season = '"
+							+ season
+							+ "' or "
+							+ season.equals("unknown")
 							+ " )"
 							+ "and (isseason = '"
 							+ isseason
@@ -224,20 +234,20 @@ public class MatchDb extends DataBaseLink {
 
 	// 查询比赛队伍信息
 	public ArrayList<MatchTeam> getmatchteam(String MatchID, String team,
-			String isseason) {
+			String isseason, String season) {
 
 		ArrayList<MatchTeam> temp = new ArrayList<MatchTeam>();
 		MatchTeam res = new MatchTeam();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchteam where (matchid = '"
 							+ MatchID + "' or " + MatchID.equals("unknown")
-							+ " )" + "and (teamshortname = '" + team + "' or "
+							+ " )" + "and (season = '" + season + "' or "
+							+ season.equals("unknown") + " )"
+							+ "and (teamshortname = '" + team + "' or "
 							+ team.equals("unknown") + " )"
 							+ "and (isseason = '" + isseason + "' or "
 							+ isseason.equals("unknown") + " )");
@@ -264,8 +274,6 @@ public class MatchDb extends DataBaseLink {
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchplayer where (matchid = '"
@@ -299,8 +307,6 @@ public class MatchDb extends DataBaseLink {
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
 					"root", "");
-			if (!con.isClosed())
-				System.out.println("success");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchteam where (matchid = '"
@@ -344,6 +350,10 @@ public class MatchDb extends DataBaseLink {
 		try {
 			res.setMatchID(rs.getString("matchid"));
 			res.setIsseason(rs.getString("isseason"));
+			res.setDate(rs.getString("date"));
+			res.setSeason(rs.getString("season"));
+			res.setTwoteam(rs.getString("twoteam"));
+			res.setResult(rs.getString("result"));
 			res.setTeam(rs.getString("team"));
 			res.setPlayername(rs.getString("playername"));
 			res.setTime(rs.getString("time"));
@@ -379,6 +389,10 @@ public class MatchDb extends DataBaseLink {
 	private MatchTeam setmatchteam(ResultSet rs, MatchTeam res) {
 		try {
 			res.setMatchID(rs.getString("matchid"));
+			res.setDate(rs.getString("date"));
+			res.setSeason(rs.getString("season"));
+			res.setTwoteam(rs.getString("twoteam"));
+			res.setResult(rs.getString("result"));
 			res.setIsseason(rs.getString("isseason"));
 			res.setTeamShortName(rs.getString("teamshortname"));
 			res.setPlayerNumber(rs.getString("playernumber"));

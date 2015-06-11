@@ -7,16 +7,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
+import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
 import bussinesslogic.player.PlayerLogic;
-import data.po.PlayerDataPO;
+import bussinesslogic.player.PlayerLogic_db;
 
 public class HotPlayerSeasonPanel extends BgPanel{
 	
@@ -28,7 +28,7 @@ public class HotPlayerSeasonPanel extends BgPanel{
 
 	private static String bg = "";
 	
-	GLabel title;
+	private GLabel title, borderUp, borderDown;
 
 	SelectLabel score;  //场均得分
 	SelectLabel backboard;  //场均篮板
@@ -44,6 +44,7 @@ public class HotPlayerSeasonPanel extends BgPanel{
 	JComboBox<String> seasonChooser;
 
 	PlayerLogic logic = new PlayerLogic();
+	PlayerLogic_db logic_db = new PlayerLogic_db();
 
 
 	RankingFactory factory = new RankingFactory();
@@ -79,100 +80,104 @@ public class HotPlayerSeasonPanel extends BgPanel{
 		    }
 		} catch (Exception e) {}
 		
-		this.setBounds(50, 0, 950, 650);
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
 		
 		init();
 	}
 	
 	private void init(){
-		String[] seasons = {"13-14赛季","12-13赛季",};
+		//--------------------标题--------------------
+		String[] seasons = StatsUtil.seasons;
 		seasonChooser = new JComboBox<String>(seasons);
 		seasonChooser.setBounds(800-this.getX(), 42, 120, 30);
 		seasonChooser.addActionListener(new SeasonListener());
-		this.add(seasonChooser);
+//		this.add(seasonChooser);
 
-		title = new GLabel("   赛季热点球员",new Point(80-this.getX(),30),new Point(890,52),this,true,0,24);
+		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
+
+		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
+		borderDown.setOpaque(true);
+		borderDown.setBackground(UIUtil.nbaBlue);
+		
+		title = new GLabel("   赛季热点球员",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
 
-		score = new SelectLabel("场均得分",new Point(80-this.getX(),83),new Point(110,35),this,true,0,16);
-		score.setOpaque(true);
-		score.setBackground(UIUtil.bgGrey);
-		score.setForeground(UIUtil.bgWhite);
-		score.setHorizontalAlignment(JLabel.CENTER);
+		//--------------------标签--------------------
+		score = new SelectLabel("场均得分",new Point(0,70),new Point(117,35),this,true,0,16);
 		score.setSelected(true);
 		score.addMouseListener(new MenuListener());
 		menuItem[0] = score;
 
 		getRankingPanel("场均得分");
 
-		backboard = new SelectLabel("场均篮板",new Point(191-this.getX(),83),new Point(110,35),this,true,0,16);
-		backboard.setOpaque(true);
-		backboard.setBackground(UIUtil.bgGrey);
-		backboard.setForeground(UIUtil.bgWhite);
-		backboard.setHorizontalAlignment(JLabel.CENTER);
+		backboard = new SelectLabel("场均篮板",new Point(118,70),new Point(117,35),this,true,0,16);
 		backboard.addMouseListener(new MenuListener());
 		menuItem[1] = backboard;
 
-		assis = new SelectLabel("场均助攻",new Point(302-this.getX(),83),new Point(110,35),this,true,0,16);
-		assis.setOpaque(true);
-		assis.setBackground(UIUtil.bgGrey);
-		assis.setForeground(UIUtil.bgWhite);
-		assis.setHorizontalAlignment(JLabel.CENTER);
+		assis = new SelectLabel("场均助攻",new Point(236-this.getX(),70),new Point(117,35),this,true,0,16);
 		assis.addMouseListener(new MenuListener());
 		menuItem[2] = assis;
 
-		block = new SelectLabel("场均盖帽",new Point(413-this.getX(),83),new Point(110,35),this,true,0,16);
-		block.setOpaque(true);
-		block.setBackground(UIUtil.bgGrey);
-		block.setForeground(UIUtil.bgWhite);
-		block.setHorizontalAlignment(JLabel.CENTER);
+		block = new SelectLabel("场均盖帽",new Point(354-this.getX(),70),new Point(117,35),this,true,0,16);
 		block.addMouseListener(new MenuListener());
 		menuItem[3] = block;
 
-		steal = new SelectLabel("场均抢断",new Point(524-this.getX(),83),new Point(110,35),this,true,0,16);
-		steal.setOpaque(true);
-		steal.setBackground(UIUtil.bgGrey);
-		steal.setForeground(UIUtil.bgWhite);
-		steal.setHorizontalAlignment(JLabel.CENTER);
+		steal = new SelectLabel("场均抢断",new Point(472-this.getX(),70),new Point(117,35),this,true,0,16);
 		steal.addMouseListener(new MenuListener());
 		menuItem[4] = steal;
 		
-		tps = new SelectLabel("三分命中率",new Point(635-this.getX(),83),new Point(110,35),this,true,0,16);
-		tps.setOpaque(true);
-		tps.setBackground(UIUtil.bgGrey);
-		tps.setForeground(UIUtil.bgWhite);
-		tps.setHorizontalAlignment(JLabel.CENTER);
+		tps = new SelectLabel("三分命中率",new Point(590-this.getX(),70),new Point(117,35),this,true,0,16);
 		tps.addMouseListener(new MenuListener());
 		menuItem[5] = tps;
 		
-		shooting = new SelectLabel("投篮命中率",new Point(746-this.getX(),83),new Point(110,35),this,true,0,16);
-		shooting.setOpaque(true);
-		shooting.setBackground(UIUtil.bgGrey);
-		shooting.setForeground(UIUtil.bgWhite);
-		shooting.setHorizontalAlignment(JLabel.CENTER);
+		shooting = new SelectLabel("投篮命中率",new Point(708-this.getX(),70),new Point(117,35),this,true,0,16);
 		shooting.addMouseListener(new MenuListener());
 		menuItem[6] = shooting;
 		
-		free = new SelectLabel("罚球命中率",new Point(857-this.getX(),83),new Point(113,35),this,true,0,16);
-		free.setOpaque(true);
-		free.setBackground(UIUtil.bgGrey);
-		free.setForeground(UIUtil.bgWhite);
-		free.setHorizontalAlignment(JLabel.CENTER);
+		free = new SelectLabel("罚球命中率",new Point(826-this.getX(),70),new Point(117,35),this,true,0,16);
 		free.addMouseListener(new MenuListener());
 		menuItem[7] = free;
 
+		
 		this.repaint();
 	}
 	
+	private String getType(String ch){
+		switch(ch){
+		case "场均得分":return "points";
+		case "场均篮板":return "rebounds";
+		case "场均助攻":return "assists";
+		case "场均盖帽":return "blocks";
+		case "场均抢断":return "steals";
+		case "三分命中率":return "tppct";
+		case "投篮命中率":return "fgpct";
+		case "罚球命中率":return "ftpct";
+		default:return "";
+		}
+	}
+	
+	private boolean isPercent(String en){
+		switch(en){
+		case "tppct":
+		case "fgpct":
+		case "ftpct":return true;
+		default:return false;
+		}
+	}
 	
 	public void getRankingPanel(String type){
-		PlayerDataPO[] players = logic.hotPlayerSeason(getSeasonStr(), type);
+		String en = getType(type);
+		String[] str = logic_db.getHotPlayerSeason(en);
+//		PlayerDataPO[] players = logic.hotPlayerSeason(getSeasonStr(), type);
 		
-		JPanel p = factory.getPlayerSeason(players,type);
+		JPanel p = factory.getPlayerSeason(str,isPercent(en));
 		rankingPanel = p;
 		this.add(rankingPanel);
 		this.repaint();

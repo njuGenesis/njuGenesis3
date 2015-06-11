@@ -56,6 +56,40 @@ public class RankingFactory {
 		return panel;
 	}
 	
+
+	
+	private String[] getDetailInfo_progress(String str){
+//		1;马修 德拉维多瓦;8;后卫;克利夫兰;骑士;11.2;49.33333333333332
+//		2;安德鲁 伊格达拉;9;后卫-前锋;金州;勇士;11.2;28.73563218390805
+//		3;文斯 卡特;15;后卫-前锋;孟菲斯;灰熊;8.0;26.984126984126988
+//		4;提莫菲 莫兹戈夫;20;中锋;克利夫兰;骑士;12.4;26.530612244897956
+//		5;杰夫 蒂格;0;后卫;亚特兰大;老鹰;21.2;26.19047619047618
+		String[] temp = str.split(";");
+		
+		String name = temp[1];
+		String detail = temp[2] + " / " + temp[3] + " / " + temp[4] + temp[5];
+		String data = temp[6] + "/" + temp[7].substring(0, 4) + "%";
+		String team = temp[5];
+		
+		String[] info =  {name,detail,data,team};
+		return info;
+	}
+	
+	public JPanel getPlayerProgress(String[] data){
+		JPanel panel = getInitPanel();
+		
+		for(int i=0;i<5;i++){
+			String[] info = getDetailInfo_progress(data[i]);
+			if(i==0){
+				panel.add(this.getPlayerPanel_1(info));
+			}else{
+				panel.add(this.getPlayerPanel_2to5(i+1, info));
+			}
+		}
+		return panel;
+	}
+
+	
 	public JPanel getPlayerProgress(PlayerDataPO[] players,String type){
 		JPanel panel = getInitPanel();
 		String[] info = new String[5];
@@ -77,6 +111,132 @@ public class RankingFactory {
 		panel.add(getPlayerPanel5(players[4],info[4]));
 		
 		return panel;
+	}
+	
+
+	private String[] getDetailInfo_player(String str){
+//		1;安东尼 戴维斯;23;前锋-中锋;新奥尔良;鹈鹕;31.5
+		String[] temp = str.split(";");
+		
+		String name = temp[1];
+		String detail = temp[2] + " / " + temp[3] + " / " + temp[4] + temp[5];
+		String data = temp[6];
+		String team = temp[5];
+		
+		String[] info =  {name,detail,data,team};
+		return info;
+	}
+	
+	private String[] getDetailInfo_player_percent(String str){
+//		1;安东尼 戴维斯;23;前锋-中锋;新奥尔良;鹈鹕;31.5
+		String[] temp = str.split(";");
+		
+		String name = temp[1];
+		String detail = temp[2] + " / " + temp[3] + " / " + temp[4] + temp[5];
+		String data = temp[6] + "%";
+		String team = temp[5];
+		
+		String[] info =  {name,detail,data,team};
+		return info;
+	}
+	
+	public JPanel getPlayerSeason(String[] data,boolean percent){
+		JPanel panel = getInitPanel();
+		
+		for(int i=0;i<5;i++){
+			String[] info;
+			if(percent){
+				info = getDetailInfo_player_percent(data[i]);
+			}else{
+				info = getDetailInfo_player(data[i]);
+			}
+			if(i==0){
+				panel.add(this.getPlayerPanel_1(info));
+			}else{
+				panel.add(this.getPlayerPanel_2to5(i+1, info));
+			}
+		}
+		
+		return panel;
+	}
+	
+	public JPanel getPlayerDaily(String[] data){
+		JPanel panel = getInitPanel();
+		
+		for(int i=0;i<5;i++){
+			String[] info = getDetailInfo_player(data[i]);
+			if(i==0){
+				panel.add(this.getPlayerPanel_1(info));
+			}else{
+				panel.add(this.getPlayerPanel_2to5(i+1, info));
+			}
+		}
+		
+		return panel;
+	}
+	
+	private JPanel getPlayerPanel_1(String[] info){
+		JPanel p = new JPanel();
+		p.setBounds(0, 150-120, 370, 470);
+		p.setLayout(null);
+		p.setOpaque(false);
+		
+		String namestr = info[0];
+		String detailstr = info[1];
+		String data = info[2];
+		String teamstr = info[3];
+		
+		
+		GLabel num = new GLabel(HotspotUtil.ranking_1,new Point(20,45),new Point(36,40),p,true);
+		GLabel player = new GLabel(getBigPlayer(namestr),new Point(0,102),new Point(207,329),p,true);
+//		player.addMouseListener(new PlayerListener(name));
+//		player.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+TableUtility.checkNOH(TableUtility.getShortChTeam(teamstr))+".svg", 95, 75),
+				new Point(205,316),new Point(95,75),p,true);
+		team.addMouseListener(new TeamListener(teamstr));
+		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		GLabel name = new GLabel(namestr,new Point(180,50),new Point(220,30),p,true,0,18);
+		GLabel detail = new GLabel(detailstr,new Point(180,90),new Point(180,30),p,true,0,12);
+		GLabel infoLabel = new GLabel(data,new Point(225,220),new Point(180,60),p,true,0,26);
+		
+		return p;
+		
+	}
+	
+	private JPanel getPlayerPanel_2to5(int number,String[] info){
+		JPanel p = new JPanel();
+		p.setBounds(370, 150+(number-2)*115-100, 570, 110);
+		p.setLayout(null);
+		p.setOpaque(false);
+		
+		String namestr = info[0];
+		String detailstr = info[1];
+		String data = info[2];
+		String teamstr = info[3];
+		
+		ImageIcon image = new ImageIcon();
+		switch(number){
+		case 2:image = HotspotUtil.ranking_2;break;
+		case 3:image = HotspotUtil.ranking_3;break;
+		case 4:image = HotspotUtil.ranking_4;break;
+		case 5:image = HotspotUtil.ranking_5;
+		}
+		
+		GLabel num = new GLabel(image,new Point(18,38),new Point(36,40),p,true);
+		GLabel player = new GLabel(getPlayer(namestr),new Point(68,23),new Point(81,62),p,true);
+//		player.addMouseListener(new PlayerListener(namestr));
+//		player.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+TableUtility.checkNOH(TableUtility.getShortChTeam(teamstr))+".svg", 95, 75),
+				new Point(460,23),new Point(95,75),p,true);
+		team.addMouseListener(new TeamListener(teamstr));
+		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		GLabel name = new GLabel(namestr,new Point(170,30),new Point(220,30),p,true,0,18);
+		GLabel detail = new GLabel(detailstr,new Point(170,60),new Point(180,30),p,true,0,12);
+		GLabel infoLabel = new GLabel(data,new Point(350,30),new Point(130,60),p,true,0,20);
+		
+		return p;
 	}
 	
 	public JPanel getPlayerSeason(PlayerDataPO[] players,String type){
@@ -111,6 +271,8 @@ public class RankingFactory {
 		
 		return panel;
 	}
+	
+	
 	
 	public JPanel getPlayerToday(PlayerDataPO[] players,String type){
 		JPanel panel = getInitPanel();
@@ -150,7 +312,7 @@ public class RankingFactory {
 	
 	private JPanel getInitPanel(){
 		JPanel p = new JPanel();
-		p.setBounds(30, 120, 890, 500);
+		p.setBounds(0, 80, 940, 600);
 		p.setLayout(null);
 		p.setOpaque(false);
 		return p;

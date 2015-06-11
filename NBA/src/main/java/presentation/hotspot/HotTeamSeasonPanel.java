@@ -78,9 +78,10 @@ public class HotTeamSeasonPanel extends BgPanel{
 		} catch (Exception e) {}
 
 
-		this.setBounds(50, 0, 950, 650);
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
 
 		init();
 	}

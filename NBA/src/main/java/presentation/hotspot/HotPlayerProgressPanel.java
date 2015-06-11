@@ -14,8 +14,10 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
+import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
 import bussinesslogic.player.PlayerLogic;
+import bussinesslogic.player.PlayerLogic_db;
 import data.po.PlayerDataPO;
 
 public class HotPlayerProgressPanel extends BgPanel{
@@ -26,7 +28,7 @@ public class HotPlayerProgressPanel extends BgPanel{
 	private static final long serialVersionUID = 1L;
 	private static String bg = "";
 	
-	GLabel title;
+	private GLabel title, borderUp, borderDown;
 
 	SelectLabel score;  //场均得分
 	SelectLabel backboard;  //场均篮板
@@ -34,6 +36,7 @@ public class HotPlayerProgressPanel extends BgPanel{
 	SelectLabel[] menuItem = new SelectLabel[3];
 
 	PlayerLogic logic = new PlayerLogic();
+	PlayerLogic_db logic_db = new PlayerLogic_db();
 	
 	JComboBox<String> seasonChooser;
 
@@ -64,48 +67,62 @@ public class HotPlayerProgressPanel extends BgPanel{
 		    }
 		} catch (Exception e) {}
 		
-		this.setBounds(50, 0, 950, 650);
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
+		
 
 		init();
 	}
 	
 	private void init(){
-		String[] seasons = {"13-14赛季","12-13赛季",};
+		//--------------------标题--------------------
+		String[] seasons = StatsUtil.seasons;
 		seasonChooser = new JComboBox<String>(seasons);
 		seasonChooser.setBounds(800-this.getX(), 42, 120, 30);
 		seasonChooser.addActionListener(new SeasonListener());
-		this.add(seasonChooser);
+//		this.add(seasonChooser);
 
-		title = new GLabel("   进步最快球员",new Point(80-this.getX(),30),new Point(890,52),this,true,0,24);
+		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
+
+		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
+		borderDown.setOpaque(true);
+		borderDown.setBackground(UIUtil.nbaBlue);
+		
+		title = new GLabel("   进步最快球员",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
 
-		score = new SelectLabel("场均得分",new Point(80-this.getX(),83),new Point(296,35),this,true,0,16);
-		score.setOpaque(true);
-		score.setBackground(UIUtil.bgGrey);
-		score.setForeground(UIUtil.bgWhite);
-		score.setHorizontalAlignment(JLabel.CENTER);
+		
+		
+		//--------------------标签--------------------
+		score = new SelectLabel("场均得分",new Point(0,70),new Point(312,35),this,true,0,16);
+//		score.setOpaque(true);
+//		score.setBackground(UIUtil.bgGrey);
+//		score.setForeground(UIUtil.bgWhite);
+//		score.setHorizontalAlignment(JLabel.CENTER);
 		score.setSelected(true);
 		score.addMouseListener(new MenuListener());
 		menuItem[0] = score;
 
 		getRankingPanel("场均得分");
 
-		backboard = new SelectLabel("场均篮板",new Point(377-this.getX(),83),new Point(296,35),this,true,0,16);
-		backboard.setOpaque(true);
-		backboard.setBackground(UIUtil.bgGrey);
-		backboard.setForeground(UIUtil.bgWhite);
-		backboard.setHorizontalAlignment(JLabel.CENTER);
+		backboard = new SelectLabel("场均篮板",new Point(313,70),new Point(313,35),this,true,0,16);
+//		backboard.setOpaque(true);
+//		backboard.setBackground(UIUtil.bgGrey);
+//		backboard.setForeground(UIUtil.bgWhite);
+//		backboard.setHorizontalAlignment(JLabel.CENTER);
 		backboard.addMouseListener(new MenuListener());
 		menuItem[1] = backboard;
 
-		assis = new SelectLabel("场均助攻",new Point(674-this.getX(),83),new Point(296,35),this,true,0,16);
-		assis.setOpaque(true);
-		assis.setBackground(UIUtil.bgGrey);
-		assis.setForeground(UIUtil.bgWhite);
+		assis = new SelectLabel("场均助攻",new Point(627,70),new Point(314,35),this,true,0,16);
+//		assis.setOpaque(true);
+//		assis.setBackground(UIUtil.bgGrey);
+//		assis.setForeground(UIUtil.bgWhite);
 		assis.setHorizontalAlignment(JLabel.CENTER);
 		assis.addMouseListener(new MenuListener());
 		menuItem[2] = assis;
@@ -113,10 +130,22 @@ public class HotPlayerProgressPanel extends BgPanel{
 		this.repaint();
 	}
 
+	private String getType(String ch){
+		switch(ch){
+		case "场均得分":return "points";
+		case "场均篮板":return "rebounds";
+		case "场均助攻":return "assists";
+		default:return "";
+		}
+	}
+	
 	public void getRankingPanel(String type){
+		String en = getType(type);
+		String[] info = this.logic_db.getProgressPlayer(en);
 
-		PlayerDataPO[] players = logic.progressPlayer(getSeasonStr(), type);
-		JPanel p = factory.getPlayerProgress(players,type);
+//		PlayerDataPO[] players = logic.progressPlayer(getSeasonStr(), type);
+//		JPanel p = factory.getPlayerProgress(players,type);
+		JPanel p = factory.getPlayerProgress(info);
 		rankingPanel = p;
 		this.add(rankingPanel);
 		this.repaint();
