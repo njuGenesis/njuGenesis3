@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -18,6 +19,7 @@ import presentation.component.GLabel;
 import presentation.contenui.UIUtil;
 import bussinesslogic.team.TeamLogic;
 import data.po.TeamDataPO;
+import data.po.teamData.TeamCompleteInfo;
 
 public class HotTeamSeasonPanel extends BgPanel{
 
@@ -168,13 +170,65 @@ public class HotTeamSeasonPanel extends BgPanel{
 		this.repaint();
 	}
 	
+	private String getType(String ch){
+		switch(ch){
+		case "场均得分":return "ppg";
+		case "场均篮板":return "backboardpg";
+		case "场均助攻":return "assitnumberpg";
+		case "场均盖帽":return "rejectionpg";
+		case "场均抢断":return "stealnumberpg";
+		case "三分命中率":return "tpeff";
+		case "投篮命中率":return "shooteff";
+		case "罚球命中率":return "fteff";
+		default:return "";
+		}
+	}
+	
+	private String getDataStr(TeamCompleteInfo t,String property){
+		String team = t.getBaseinfo().getName();
+		String shortteam = t.getBaseinfo().getShortName();
+		String union = t.getBaseinfo().getEorW();
+		String data = "";
+		switch(property){
+		case "ppg":data = String.valueOf(t.getLData().getPPG());break;
+		case "backboardpg":String.valueOf(t.getLData().getBackBoardPG());break;
+		case "assitnumberpg":String.valueOf(t.getLData().getAssitNumberPG());break;
+		case "rejectionpg":String.valueOf(t.getLData().getRejectionPG());break;
+		case "stealnumberpg":String.valueOf(t.getLData().getStealNumberPG());break;
+		case "tpeff":String.valueOf(t.getLData().getTPEff());break;
+		case "shooteff":String.valueOf(t.getLData().getShootEff());break;
+		case "fteff":String.valueOf(t.getLData().getFTEff());break;
+		}
+		
+		return team+";"+shortteam+";"+union+";"+data;
+	}
+	
+	
+	// property为排序的属性
+	// ppg场均得分、assitnumberpg场均助攻、stealnumberpg场均抢断、rejectionpg场均盖帽等（teambasedata表的属性都可以）
+	// 返回的array不只5项，从大到小排序。
+//	public ArrayList<TeamCompleteInfo> hotTeamSeason(String season,
+//			String property, String isseason) throws RemoteException {
+//	
+	
 	public void getRankingPanel(String type){
+		String property = getType(type);
 
-		ArrayList<TeamDataPO> teams  = logic.hotTeamSeason(getSeasonStr(), transType(type));
-		JPanel p = factory.getTeamSeason(teams,type);
-		rankingPanel = p;
-		this.add(rankingPanel);
-		this.repaint();
+		ArrayList<TeamCompleteInfo> teams;
+		try {
+			teams = logic.hotTeamSeason("14-15", property, "unknown");
+			String[] info = new String[5];
+			for(int i=0;i<5;i++){
+				info[i] = getDataStr(teams.get(i),property);
+			}
+			JPanel p = factory.getTeamSeason(info,property);
+			rankingPanel = p;
+			this.add(rankingPanel);
+			this.repaint();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private String getSeasonStr(){

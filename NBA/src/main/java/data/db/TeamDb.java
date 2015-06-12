@@ -203,7 +203,7 @@ public class TeamDb extends DataBaseLink {
 		TeamBaseInfo res = new TeamBaseInfo();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from teambaseinfo where (shortname = '"
@@ -243,7 +243,7 @@ public class TeamDb extends DataBaseLink {
 		TeamLData res = new TeamLData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from teambasedata where (shortname = '"
@@ -281,7 +281,7 @@ public class TeamDb extends DataBaseLink {
 		TeamHData res = new TeamHData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from teamexdata where (shortname = '"
@@ -319,7 +319,7 @@ public class TeamDb extends DataBaseLink {
 		OtherTeamData res = new OtherTeamData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from otherteamdata where (shortname = '"
@@ -370,7 +370,7 @@ public class TeamDb extends DataBaseLink {
 			TeamLData res = new TeamLData();
 			try {
 				Connection con = DriverManager.getConnection(DataBaseLink.url,
-						"root", "");
+						"root", "nba");
 				Statement st = con.createStatement();
 				ResultSet rs = st
 						.executeQuery("select * from teambasedata where  (season = '"

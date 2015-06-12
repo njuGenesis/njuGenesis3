@@ -139,7 +139,7 @@ public class HotPlayerTodayPanel extends BgPanel{
 		String en = getType(type);
 		String[] info = this.logic_db.getHotPlayerDaily(en);
 
-		JPanel p = factory.getPlayerDaily(info);
+		JPanel p = factory.getPlayerDaily(info,en+"_hotdaily");
 		rankingPanel = p;
 		this.add(rankingPanel);
 		this.repaint();

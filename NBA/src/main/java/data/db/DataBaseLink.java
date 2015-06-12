@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class DataBaseLink // 数据库连接
 {
 	public static String ip = "localhost";
-//	public static String ip = "114.212.42.143";
+//	public static String ip = "172.26.83.142";
 	public static String url = "jdbc:mysql://" + ip
 			+ ":3306/nba?useUnicode=true&characterEncoding=utf-8";
 	public static String driver = "com.mysql.jdbc.Driver";

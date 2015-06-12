@@ -145,7 +145,7 @@ public class HotPlayerProgressPanel extends BgPanel{
 
 //		PlayerDataPO[] players = logic.progressPlayer(getSeasonStr(), type);
 //		JPanel p = factory.getPlayerProgress(players,type);
-		JPanel p = factory.getPlayerProgress(info);
+		JPanel p = factory.getPlayerProgress(info,en+"_progress");
 		rankingPanel = p;
 		this.add(rankingPanel);
 		this.repaint();

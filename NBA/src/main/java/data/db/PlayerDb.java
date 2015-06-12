@@ -860,7 +860,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDetailInfo res = new PlayerDetailInfo();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -895,7 +895,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed())
 
 				System.out.println("success");
@@ -926,7 +926,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -955,7 +955,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -985,7 +985,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1014,7 +1014,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1043,7 +1043,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1072,7 +1072,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1101,7 +1101,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1130,7 +1130,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		int latest = 0;
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				
@@ -1173,7 +1173,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				
@@ -1204,7 +1204,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1233,7 +1233,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1263,7 +1263,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1292,7 +1292,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1321,7 +1321,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1350,7 +1350,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1379,7 +1379,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1406,7 +1406,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		int res = 0;
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1435,7 +1435,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		int res = 0;
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1467,7 +1467,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed())
 
 				System.out.println("success");
@@ -1496,7 +1496,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1525,7 +1525,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1554,7 +1554,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1583,7 +1583,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1612,7 +1612,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1641,7 +1641,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1670,7 +1670,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1698,7 +1698,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		ArrayList<String> temp = new ArrayList<String>();
 		try{
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1734,7 +1734,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		ArrayList<Double> res = new ArrayList<Double>();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");
@@ -1763,7 +1763,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		ArrayList<Double> res = new ArrayList<Double>();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){}
 
 				//System.out.println("success");

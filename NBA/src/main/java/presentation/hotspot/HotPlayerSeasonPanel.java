@@ -86,6 +86,11 @@ public class HotPlayerSeasonPanel extends BgPanel{
 		this.setBackground(UIUtil.bgWhite);
 		
 		init();
+		
+//		String[] str = logic_db.getHotPlayerSeason("points");
+//		for(int i = 0;i<5;i++){
+//			System.out.println(str[i]);
+//		}
 	}
 	
 	private void init(){
@@ -177,7 +182,7 @@ public class HotPlayerSeasonPanel extends BgPanel{
 		String[] str = logic_db.getHotPlayerSeason(en);
 //		PlayerDataPO[] players = logic.hotPlayerSeason(getSeasonStr(), type);
 		
-		JPanel p = factory.getPlayerSeason(str,isPercent(en));
+		JPanel p = factory.getPlayerSeason(str,isPercent(en),en+"_hotseason");
 		rankingPanel = p;
 		this.add(rankingPanel);
 		this.repaint();
