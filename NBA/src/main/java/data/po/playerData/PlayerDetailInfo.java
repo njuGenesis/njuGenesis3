@@ -9,6 +9,14 @@ public class PlayerDetailInfo {
 	String borncity;//出生城市
 	String number;//球衣号码
 	int id;//数据库中唯一标识，超键
+	String nameCn;
+	
+	public String getNameCn(){
+		return nameCn;
+	}
+	public void setNameCn(String name){
+		nameCn = name;
+	}
 	
 	public int getId() {
 		return id;

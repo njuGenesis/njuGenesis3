@@ -94,14 +94,18 @@ public class TestCrawlerByJsoup {
 		p.setBirth("null");		
 		p.setBorncity("null");		
 		p.setNumber("null");
+		p.setNameCn("null");
 		for(int k = 0;k<size;k++){
 			//System.out.println(tempInfo.get(k));
 			String[] res1 = tempInfo.get(k).split(";");
 			try{
 			String res = res1[0];
 			String value = tempInfo.get(k).split(";")[1];
-			if(res.equals("name")){
+			if(res.equals("nameEn")){
 				p.setName(value.replaceAll("'", "\\?"));
+			}
+			if(res.equals("nameCn")){
+				p.setNameCn(value);
 			}
 			if(res.equals("position")){
 				p.setPosition(value);
@@ -144,7 +148,7 @@ public class TestCrawlerByJsoup {
 	//------------初始化最基本信息
 	public void initializePlayerDetail(int first,int size){
 		System.out.println("initialize player detail start");
-		int temp = 0;
+		int temp = 2;
 		Document doc = null;
 			
 		for(int i = first;i<size;i++){
@@ -155,6 +159,20 @@ public class TestCrawlerByJsoup {
 				//-------------------------初始化球员基本信息
 				doc = Jsoup.connect(basicinfoUrl).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000).get();
 				Elements BasicInfo = doc.select("div.playerinfo").select("div.detail").select("div.row");
+				Element name = doc.select("div.playerinfo").select("div.name").first();
+				name.select("a").remove();
+				String nameCn = "null";
+				String nameEn = "null";
+				try{
+					String iscn = name.text().split("/")[1];
+					nameCn = name.text().split("/")[0];
+					nameEn = iscn;
+					}catch(Exception e){
+						nameEn = name.text();
+						System.out.println("not found cn name");
+					}
+				tempInfo.add("nameEn;"+nameEn);
+				tempInfo.add("nameCn;"+nameCn);
 				
 				for(Element el:BasicInfo){
 					//System.out.print(el.tagName());
@@ -169,13 +187,6 @@ public class TestCrawlerByJsoup {
 							temp++;
 							break;
 						}
-						
-					
-					if((el.text().substring(0,5).equals("全　　名:"))){					
-					tempInfo.add("name;"+el.text().substring(5));		
-					temp++;
-					
-					}				
 					
 					if((el.text().substring(0,5).equals("位　　置:"))){					
 						tempInfo.add("position;"+el.text().substring(5));	
@@ -211,7 +222,7 @@ public class TestCrawlerByJsoup {
 				}
 				
 				initializeDetailObject(i,temp);
-				temp = 0;
+				temp = 2;
 				tempInfo.clear();//装入对象之后情况该数组
 			}
 			catch(Exception e){
@@ -225,10 +236,11 @@ public class TestCrawlerByJsoup {
 	
 	//====================================================================================
 	//-------------转入season_avg_basic对象
-	private void initializeS_a_b(String name,int i){
+	private void initializeS_a_b(String name,String namecn,int i){
 		PlayerDataSeason_Avg_Basic p = new PlayerDataSeason_Avg_Basic();
 		p.setId(i);
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -258,10 +270,11 @@ public class TestCrawlerByJsoup {
 		p_s_a_b.add(p);
 	}
 	//-------------装入season-tot-basic对象
-	private void initializeS_t_b(String name,int i){
+	private void initializeS_t_b(String name,String namecn,int i){
 		PlayerDataSeason_Tot_Basic p = new PlayerDataSeason_Tot_Basic();
 		p.setId(i);
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -291,10 +304,11 @@ public class TestCrawlerByJsoup {
 		p_s_t_b.add(p);
 	}
 	//-------------装入season-ad-basic对象
-	private void initializeS_ad_b(String name,int i){
+	private void initializeS_ad_b(String name,String namecn,int i){
 		PlayerDataSeason_Ad_Basic p = new PlayerDataSeason_Ad_Basic();
 		
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setId(i);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
@@ -319,9 +333,10 @@ public class TestCrawlerByJsoup {
 		p_s_ad_b.add(p);
 	}
 	//-------------装入season-ad-shoot对象
-	private void initializeS_ad_s(String name,int i){
+	private void initializeS_ad_s(String name,String namecn,int i){
 		PlayerDataSeason_Ad_Shoot p = new PlayerDataSeason_Ad_Shoot();
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setId(i);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
@@ -398,6 +413,7 @@ public class TestCrawlerByJsoup {
 		int tablesize = 0;
 		boolean isFirst = false;
 		String name = "";
+		String namecn = "";
 		for(int i = first;i<size;i++){
 		    //int i = 379;
 			//System.out.println(i);
@@ -405,6 +421,7 @@ public class TestCrawlerByJsoup {
 			try{
 				//-------------------------初始化球员基本信息
 				name = pdb.getdetail(i).getName();//获取姓名
+				namecn = pdb.getdetail(i).getNameCn();
 				//-------------------------初始化平均基础数据
 				doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000).get();
 			    Elements Avgbasic = doc.select("table#stat_box_avg").select("tbody").select("tr").select("td");
@@ -427,7 +444,7 @@ public class TestCrawlerByJsoup {
 			    			tempInfo.add("unknown");
 			    			tempInfo.add("unknown");
 			    		}
-			    		initializeS_a_b(name,i);
+			    		initializeS_a_b(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -457,7 +474,7 @@ public class TestCrawlerByJsoup {
 			    			tempInfo.add("unknown");
 			    			tempInfo.add("unknown");
 			    		}
-			    		initializeS_t_b(name,i);
+			    		initializeS_t_b(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -479,7 +496,7 @@ public class TestCrawlerByJsoup {
 			    	if(temp==19){
 			    		//System.out.println();
 			    		
-			    		initializeS_ad_b(name,i);
+			    		initializeS_ad_b(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -499,7 +516,7 @@ public class TestCrawlerByJsoup {
 			    	if(temp==21){
 			    		//System.out.println();
 			    		
-			    		initializeS_ad_s(name,i);
+			    		initializeS_ad_s(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -519,10 +536,11 @@ public class TestCrawlerByJsoup {
 	//=====================================================================================
 	
 	//-------------转入p_avg_basic对象
-	private void initializeP_a_b(String name,int i){
+	private void initializeP_a_b(String name,String namecn,int i){
 		PlayerDataPlayOff_Avg_Basic p = new PlayerDataPlayOff_Avg_Basic();
 		p.setId(i);
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -553,10 +571,11 @@ public class TestCrawlerByJsoup {
 	}
 	//-------------装入p-tot-basic对象
 	//-------------装入p-tot-basic对象
-	private void initializeP_t_b(String name,int i){
+	private void initializeP_t_b(String name,String namecn,int i){
 		PlayerDataPlayOff_Tot_Basic p = new PlayerDataPlayOff_Tot_Basic();
 		p.setId(i);
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
 		p.setGp(tempInfo.get(2));
@@ -587,10 +606,11 @@ public class TestCrawlerByJsoup {
 	}
 	//-------------装入p-ad-basic对象
 	//-------------装入p-ad-basic对象
-	private void initializeP_ad_b(String name,int i){
+	private void initializeP_ad_b(String name,String namecn,int i){
 		PlayerDataPlayOff_Ad_Basic p = new PlayerDataPlayOff_Ad_Basic();
 		
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setId(i);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
@@ -615,9 +635,10 @@ public class TestCrawlerByJsoup {
 		p_p_ad_b.add(p);
 	}	
 	//-------------装入p-ad-shoot对象
-	private void initializeP_ad_s(String name,int i){
+	private void initializeP_ad_s(String name,String namecn,int i){
 		PlayerDataPlayOff_Ad_Shoot p = new PlayerDataPlayOff_Ad_Shoot();
 		p.setName(name.replaceAll("'", "\\?"));
+		p.setNameCn(namecn);
 		p.setId(i);
 		p.setSeason(tempInfo.get(0));
 		p.setTeam(tempInfo.get(1));
@@ -693,6 +714,7 @@ public class TestCrawlerByJsoup {
 		int tablesize = 0;
 		boolean isFirst = false;
 		String name = "";
+		String namecn = "";
 		for(int i = first;i<size;i++){
 		    //int i = 379;
 			
@@ -702,7 +724,7 @@ public class TestCrawlerByJsoup {
 			try{
 				//-------------------------初始化球员基本信息
 				name = pdb.getdetail(i).getName();
-						
+				namecn = pdb.getdetail(i).getNameCn();
 				//-------------------------初始化平均基础数据
 				doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000).get();
 				tablesize = doc.select("table#stat_box_avg").select("thead").select("tr").select("th").size()-1;
@@ -732,7 +754,7 @@ public class TestCrawlerByJsoup {
 			    			tempInfo.add("unknown");
 			    			tempInfo.add("unknown");
 			    		}
-			    		initializeP_a_b(name,i);
+			    		initializeP_a_b(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -761,7 +783,7 @@ public class TestCrawlerByJsoup {
 			    			tempInfo.add("unknown");
 			    			tempInfo.add("unknown");
 			    		}
-			    		initializeP_t_b(name,i);
+			    		initializeP_t_b(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -783,7 +805,7 @@ public class TestCrawlerByJsoup {
 			    	if(temp==19){
 			    		//System.out.println();
 			    		
-			    		initializeP_ad_b(name,i);
+			    		initializeP_ad_b(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}
@@ -804,7 +826,7 @@ public class TestCrawlerByJsoup {
 			    	if(temp==21){
 			    		//System.out.println();
 			    		
-			    		initializeP_ad_s(name,i);
+			    		initializeP_ad_s(name,namecn,i);
 			    		tempInfo.clear();
 			    		temp = 0;
 			    	}

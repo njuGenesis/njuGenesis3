@@ -22,7 +22,14 @@ public class PlayerDataPlayOff_Ad_Basic {
 	String strshoot;//扣篮
 	String kda;// 2/3+1
 	String berej;//被冒
+	String nameCn;
 	
+	public String getNameCn(){
+		return nameCn;
+	}
+	public void setNameCn(String name){
+		nameCn = name;
+	}
 	public String getName() {
 		return name;
 	}
