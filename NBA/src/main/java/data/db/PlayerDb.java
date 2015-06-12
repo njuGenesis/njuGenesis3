@@ -50,11 +50,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				+ "birth varchar(255),"
 				+ "borncity varchar(255),"
 				+ "number varchar(255),"
-				+ "id int primary key"
+				+ "id int primary key,"
+				+ "namecn varchar(255)"
 				+ ")");
 //-------------p_s_a_b建表
 		operation("create table p_s_a_b("
 				+ "name varchar(255),"
+				+ "namecn varchar(255),"
 				+ "id int,"
 				+"season varchar(255),"
 				+ "team varchar(255),"
@@ -86,6 +88,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	//--------------------p_s_t_b建表
 		operation("create table p_s_t_b("
 				+ "name varchar(255),"
+				+ "namecn varchar(255),"
 				+ "id int,"
 				+"season varchar(255),"
 				+ "team varchar(255),"
@@ -117,6 +120,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		//------------------p_s_ad_b建表
 		operation("create table p_s_ad_b("
 				+ "name varchar(255),"
+				+ "namecn varchar(255),"
 				+ "id int,"
 				+ "season varchar(255),"
 				+ "team varchar(255),"
@@ -142,6 +146,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		//------------------p_s_ad_s建表
 		operation("create table p_s_ad_s("
 				+ "name varchar(255),"
+				+ "namecn varchar(255),"
 				+ "id int,"
 				+ "season varchar(255),"
 				+ "team varchar(255),"
@@ -169,6 +174,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		//-------------p_p_a_b建表
 				operation("create table p_p_a_b("
 						+ "name varchar(255),"
+						+ "namecn varchar(255),"
 						+ "id int,"
 						+"season varchar(255),"
 						+ "team varchar(255),"
@@ -199,6 +205,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			//--------------------p_p_t_b建表
 				operation("create table p_p_t_b("
 						+ "name varchar(255),"
+						+ "namecn varchar(255),"
 						+ "id int,"
 						+"season varchar(255),"
 						+ "team varchar(255),"
@@ -229,6 +236,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//------------------p_p_ad_b建表
 				operation("create table p_p_ad_b("
 						+ "name varchar(255),"
+						+ "namecn varchar(255),"
 						+ "id int,"
 						+ "season varchar(255),"
 						+ "team varchar(255),"
@@ -254,6 +262,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//------------------p_p_ad_s建表
 				operation("create table p_p_ad_s("
 						+ "name varchar(255),"
+						+ "namecn varchar(255),"
 						+ "id int,"
 						+ "season varchar(255),"
 						+ "team varchar(255),"
@@ -285,6 +294,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try{
 		res.setName(rs.getString("name").replaceAll("\\?", "'"));
+		res.setNameCn(rs.getString("namecn"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -322,6 +332,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Tot_Basic res = new PlayerDataSeason_Tot_Basic();
 		try{
 		res.setName(rs.getString("name").replaceAll("\\?", "'"));
+		res.setNameCn(rs.getString("namecn"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -359,6 +370,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Avg_Basic res = new PlayerDataPlayOff_Avg_Basic();
 		try{
 		res.setName(rs.getString("name").replaceAll("\\?", "'"));
+		res.setNameCn(rs.getString("namecn"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -395,6 +407,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Tot_Basic res = new PlayerDataPlayOff_Tot_Basic();
 		try{
 		res.setName(rs.getString("name").replaceAll("\\?", "'"));
+		res.setNameCn(rs.getString("namecn"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -431,6 +444,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Basic res = new PlayerDataSeason_Ad_Basic();
 		try{
 		res.setName(rs.getString("name").replaceAll("\\?", "'"));
+		res.setNameCn(rs.getString("namecn"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -462,6 +476,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Basic res = new PlayerDataPlayOff_Ad_Basic();
 		try{
 		res.setName(rs.getString("name").replaceAll("\\?", "'"));
+		res.setNameCn(rs.getString("namecn"));
 		res.setId(rs.getInt("id"));
 		res.setSeason(rs.getString("season"));
 		res.setTeam(rs.getString("team"));
@@ -493,6 +508,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataSeason_Ad_Shoot res = new PlayerDataSeason_Ad_Shoot();
 		try{
 			res.setName(rs.getString("name").replaceAll("\\?", "'"));
+			res.setNameCn(rs.getString("namecn"));
 			res.setId(rs.getInt("id"));
 			res.setSeason(rs.getString("season"));
 			res.setTeam(rs.getString("team"));
@@ -525,6 +541,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		PlayerDataPlayOff_Ad_Shoot res = new PlayerDataPlayOff_Ad_Shoot();
 		try{
 			res.setName(rs.getString("name").replaceAll("\\?", "'"));
+			res.setNameCn(rs.getString("namecn"));
 			res.setId(rs.getInt("id"));
 			res.setSeason(rs.getString("season"));
 			res.setTeam(rs.getString("team"));
@@ -565,7 +582,8 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 					+ "'"+p.getBirth()+"',"
 					+ "'"+p.getBorncity()+"',"
 					+ "'"+p.getNumber()+"',"
-					+ "'"+p.getId()+"'"
+					+ "'"+p.getId()+"',"
+					+ "'"+p.getNameCn()+"'"
 					+ ")");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -578,6 +596,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_s_a_b values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+"'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -616,6 +635,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_s_t_b values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+"'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -654,6 +674,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_s_ad_b values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+ "'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -686,6 +707,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_s_ad_s values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+ "'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -720,6 +742,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_p_a_b values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+"'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -757,6 +780,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_p_t_b values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+"'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -794,6 +818,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_p_ad_b values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+ "'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -826,6 +851,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		try{
 			operation("insert into p_p_ad_s values("
 					+ "'"+p.getName()+"',"
+					+ "'"+p.getNameCn()+"',"
 					+ "'"+p.getId()+"',"
 					+ "'"+p.getSeason()+"',"
 					+ "'"+p.getTeam()+"',"
@@ -869,6 +895,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			ResultSet rs = st.executeQuery("select * from p_detail where id = '"+id+"'");
 			while(rs.next()){
 			res.setName(rs.getString("name").replaceAll("\\?", "'"));
+			res.setNameCn(rs.getString("namecn"));
 			res.setId(rs.getInt("id"));
 			res.setPosition(rs.getString("position"));
 			res.setHeight(rs.getString("height"));
@@ -1412,7 +1439,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//System.out.println("success");
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_s_a_b where name = '"+keyname+"' and team = '"+team+"'");
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where (name = '"+keyname+"' or namecn = '"+keyname+"')and team = '"+team+"'");
 			while(rs.next()){
 			res = rs.getInt("id");
 			
@@ -1429,9 +1456,6 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	}
 	public int getIDHot(String name,String team) throws RemoteException{
 		// TODO Auto-generated method stub
-		String[] keyname = name.split(" ");
-		System.out.println(keyname[0]);
-		System.out.println(keyname[1]);
 		int res = 0;
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
@@ -1441,13 +1465,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//System.out.println("success");
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_s_a_b");
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where name = '"+name+"'");
 			while(rs.next()){
-				if((rs.getString("name").contains(keyname[0]))&&(rs.getString("name").contains(keyname[1]))){
+				
 					res = rs.getInt("id");
 					System.out.println(res);
 					break;
-				}
+				
 			
 			}
 			con.close();

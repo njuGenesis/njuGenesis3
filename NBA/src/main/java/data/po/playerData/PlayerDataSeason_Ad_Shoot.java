@@ -24,7 +24,14 @@ public class PlayerDataSeason_Ad_Shoot {
 	String far_per;
 	String trueshootper;//真实命中率
 	String shooteff;//投篮效率
+	String nameCn;
 	
+	public String getNameCn(){
+		return nameCn;
+	}
+	public void setNameCn(String name){
+		nameCn = name;
+	}
 	public String getName() {
 		return name;
 	}
