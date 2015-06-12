@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import presentation.contenui.TeamOfAll;
 import bslogicService.TeamInfoService;
 import bussinesslogic.match.MatchLogic;
 import data.db.TeamDb;
+import data.po.teamData.OtherTeamData;
 import data.po.teamData.TeamBaseInfo;
 import data.po.teamData.TeamCompleteInfo;
 import data.po.teamData.TeamHData;
@@ -20,7 +22,6 @@ public class TeamLogic implements TeamInfoService {
 		ArrayList<TeamBaseInfo> temp = t.getbaseinfo("unknown");
 		return temp;
 	}
-
 
 	// 根据season，shortname，isseason（是否是常规赛）返回部分球队的完整信息，（若要取得所有赛季的，则将season设为"unknown",另外两个属性类似）
 	public ArrayList<TeamCompleteInfo> GetPartCompleteInfo(String shortName,
@@ -68,11 +69,11 @@ public class TeamLogic implements TeamInfoService {
 
 	}
 
-	
-	//0是场均得分，1是场均助攻，2是场均篮板，3是场均三分命中率，4是场均罚球进球率
+	// 0是场均得分，1是场均助攻，2是场均篮板，3是场均三分命中率，4是场均罚球进球率
 	public ArrayList<Double> getAvg(String isseason) {
 		TeamDb t = new TeamDb();
-		ArrayList<TeamLData> allTeams = t.getSortLData("unknown", "season", isseason);
+		ArrayList<TeamLData> allTeams = t.getSortLData("unknown", "season",
+				isseason);
 		String season = allTeams.get(0).getSeason();
 		double pointsAvg = 0.0;
 		double assAvg = 0.0;
@@ -85,9 +86,9 @@ public class TeamLogic implements TeamInfoService {
 				season = allTeams.get(i).getSeason();
 			}
 		}
-		
+
 		allTeams = t.getSortLData(season, "season", isseason);
-		
+
 		for (int i = 0; i < allTeams.size(); i++) {
 			pointsAvg = (pointsAvg * i + allTeams.get(i).getPPG()) / (i + 1);
 			assAvg = (assAvg * i + allTeams.get(i).getAssitNumberPG())
@@ -121,11 +122,31 @@ public class TeamLogic implements TeamInfoService {
 		return res;
 	}
 
+	// 赛季低阶数据的平均值
+	public TeamLData getLAvg(String season, String isseason) {
+		TeamDb t = new TeamDb();
+		return t.getLSeasonAvg(season, isseason);
+	}
+
+	// 赛季对手数据的平均值
+	public OtherTeamData getOtherAvg(String season, String isseason) {
+		TeamDb t = new TeamDb();
+		return t.getOSeasonAvg(season, isseason);
+	}
+
+	// 赛季高阶数据的平均值
+	public TeamHData getHAvg(String season, String isseason) {
+		TeamDb t = new TeamDb();
+		return t.getHSeasonAvg(season, isseason);
+	}
+
 	public static void main(String[] args) throws RemoteException {
-		TeamLogic t = new TeamLogic();   //GetAllCompleteInfo
-		//System.out.println(t.getAvg("yes").get(3));
+		TeamLogic t = new TeamLogic(); // GetAllCompleteInfo
+		// System.out.println(t.getAvg("yes").get(3));
 		System.out.println(MatchLogic.getTime());
-		System.out.println(t.GetPartCompleteInfo("SAS", "unknown", "unknown").size());
+		// System.out.println(t.GetPartCompleteInfo("SAS", "unknown",
+		// "unknown").size());
+		System.out.println(t.getAvg("yes").size());
 		System.out.println(MatchLogic.getTime());
 	}
 

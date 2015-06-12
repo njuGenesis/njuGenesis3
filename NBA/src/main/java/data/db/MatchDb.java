@@ -18,7 +18,7 @@ public class MatchDb extends DataBaseLink {
 	public static void main(String[] args) throws SQLException {
 		MatchDb m = new MatchDb();
 		//m.initializeTeamTable();
-		 m.clearMatchTable();
+		// m.clearMatchTable();
 
 		/*ArrayList<MatchDataSeason> matches = m.getmatchinfo("SAS", "unknown",
 				"13-14", "unknown", "yes", "unknown");
@@ -52,7 +52,7 @@ public class MatchDb extends DataBaseLink {
 
 		// 比赛球员数据数据
 		operation("create table matchplayer (" + "matchid varchar(255),"
-				+ "data varchar(255)," + "twoteam varchar(255),"
+				+ "date varchar(255)," + "twoteam varchar(255),"
 				+ "result varchar(255)," + "season varchar(255),"
 				+ "isseason varchar(255)," + "team varchar(255),"
 				+ "playername varchar(255)," + "time varchar(255),"
@@ -69,7 +69,7 @@ public class MatchDb extends DataBaseLink {
 
 		// 比赛球队数据
 		operation("create table matchteam (" + "matchid varchar(255),"
-				+ "data varchar(255)," + "twoteam varchar(255),"
+				+ "date varchar(255)," + "twoteam varchar(255),"
 				+ "result varchar(255)," + "season varchar(255),"
 				+ "isseason varchar(255)," + "teamshortname varchar(255),"
 				+ "playernumber varchar(255)," + "points   varchar(255),"
@@ -104,9 +104,9 @@ public class MatchDb extends DataBaseLink {
 	public void addmatchplayer(MatchPlayer m) {
 		try {
 			operation("insert into matchplayer values(" + "'" + m.getMatchID()
-					+ "'," + "'" + m.getIsseason() + "'," + "'" + m.getDate()
+					 + "'," + "'" + m.getDate()
 					+ "'," + "'" + m.getTwoteam() + "'," + "'" + m.getResult()
-					+ "'," + "'" + m.getSeason() + "'," + "'" + m.getTeam()
+					+ "'," + "'" + m.getSeason() + "'," + "'" + m.getIsseason()+ "'," + "'" + m.getTeam()
 					+ "'," + "'" + m.getPlayername() + "'," + "'" + m.getTime()
 					+ "'," + "'" + m.getPoints() + "'," + "'" + m.getIsFirst()
 					+ "'," + "'" + m.getShootEff() + "'," + "'" + m.getShoot()
