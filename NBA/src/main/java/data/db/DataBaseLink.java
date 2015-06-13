@@ -29,7 +29,7 @@ public class DataBaseLink // 数据库连接
 	public void operation(String sql) {
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 			if (!con.isClosed()){
 				
 			}

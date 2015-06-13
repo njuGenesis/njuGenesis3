@@ -18,20 +18,17 @@ public class TempStart {
 		PlayerLogic_db pd = new PlayerLogic_db();
 		PlayerDb p = new PlayerDb();
 //		//p.initializePlayerTable();
-		p.clearPlayerTable();
-		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
-		t.initializePlayerDetail(971, 972);
-		t.initializePlayerSeason(971, 972);
-		t.initializePlayerPlayOff(971, 972);
+//		p.clearPlayerTable();
+//		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
+//		t.initializePlayerDetail(1, 4364);
+//		t.initializePlayerSeason(1, 4364);
+//		t.initializePlayerPlayOff(1, 4364);
 		try {
-			ArrayList<PlayerDataSeason_Avg_Basic>temp = pd.gets_a_b(971);
-			
-			for(int i = 0;i<temp.size();i++){
-				System.out.println(temp.get(i).getName()+";"+temp.get(i).getNameCn());
-			}
+			System.out.println(p.getdetail(1).getName());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 }
