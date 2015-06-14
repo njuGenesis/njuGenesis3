@@ -19,7 +19,7 @@ public class TeamDb extends DataBaseLink {
 	public static void main(String[] args) throws RemoteException {
 		TeamDb t = new TeamDb();
 		// t.initializeTeamTable();
-		// t.clearTeamTable();
+		t.clearTeamTable();
 
 		/*
 		 * ArrayList<TeamData_Avg_PO> res = t.getted("SAS","unknown","unknown");
@@ -28,12 +28,12 @@ public class TeamDb extends DataBaseLink {
 		 * "  "+res.get(i).getAssistEff()); }
 		 */
 
-		TeamLData team3 = t.getLSeasonAvg("13-14", "yes");
+		/*TeamLData team3 = t.getLSeasonAvg("13-14", "yes");
 		System.out.println(team3.getPPG());
 		TeamLData team2 = t.getLSeasonAvg("13-14", "unknown");
 		System.out.println(team2.getPPG());
 		TeamLData team1 = t.getLSeasonAvg("13-14", "no");
-		System.out.println(team1.getPPG());
+		System.out.println(team1.getPPG());*/
 
 	}
 
@@ -505,7 +505,7 @@ public class TeamDb extends DataBaseLink {
 		TeamHData res = new TeamHData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 
 			Statement st = con.createStatement();
 			ResultSet rs = st
@@ -528,7 +528,7 @@ public class TeamDb extends DataBaseLink {
 				res.setDef(rs.getDouble("def"));
 				res.setOffEff(rs.getDouble("offeff"));
 				res.setDefEff(rs.getDouble("defeff"));
-				res.setOffBackBoardEff(rs.getInt("offbackboardeff"));
+				res.setOffBackBoardEff(rs.getDouble("offbackboardeff"));
 				res.setBackBoardEff(rs.getDouble("backboardeff"));
 				res.setDefBackBoardEff(rs.getDouble("defbackboardeff"));
 				res.setStealEff(rs.getDouble("stealeff"));

@@ -59,7 +59,7 @@ public class FileListener {
 		            		//Thread.sleep(20);
 		            		p.updatePlayer(event.context().toString(), ptemp);
 		            		System.out.println("play  "+MatchLogic.getTime());
-		            		m.update(temp);
+		            		//m.update(temp);
 		            		//System.out.println(p.getInfo("Paul Pierce", "12-13").getFieldGoalPercentage());
 		            		System.out.println("end   "+MatchLogic.getTime());
 		            		

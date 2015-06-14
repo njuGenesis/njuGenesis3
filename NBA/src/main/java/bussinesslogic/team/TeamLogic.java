@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import presentation.contenui.TeamOfAll;
 import bslogicService.TeamInfoService;
 import bussinesslogic.match.MatchLogic;
+import bussinesslogic.player.PlayerLogic;
 import data.db.TeamDb;
 import data.po.teamData.OtherTeamData;
 import data.po.teamData.TeamBaseInfo;
@@ -49,6 +50,15 @@ public class TeamLogic implements TeamInfoService {
 			String isseason) throws RemoteException {
 		TeamDb t = new TeamDb();
 		ArrayList<TeamHData> temp = t.getHData(shortName, season, isseason);
+		return temp;
+	}
+
+	// 返回部分球队的对手信息 （参数同上）
+	public ArrayList<OtherTeamData> GetPartOInfo(String shortName,
+			String season, String isseason) throws RemoteException {
+		TeamDb t = new TeamDb();
+		ArrayList<OtherTeamData> temp = t.getOtherTeamData(shortName, season,
+				isseason);
 		return temp;
 	}
 
@@ -142,12 +152,45 @@ public class TeamLogic implements TeamInfoService {
 
 	public static void main(String[] args) throws RemoteException {
 		TeamLogic t = new TeamLogic(); // GetAllCompleteInfo
-		// System.out.println(t.getAvg("yes").get(3));
-		System.out.println(MatchLogic.getTime());
-		// System.out.println(t.GetPartCompleteInfo("SAS", "unknown",
-		// "unknown").size());
-		System.out.println(t.getAvg("yes").size());
-		System.out.println(MatchLogic.getTime());
-	}
+		// PlayerLogic p = new PlayerLogic();
+		 ArrayList<TeamLData> teamLdata =t.GetPartLInfo("unknown", "unknown",
+		 "unknown");
+		ArrayList<TeamHData> teamHdata = t.GetPartHInfo("unknown", "unknown",
+				"unknown");
+		// ArrayList<OtherTeamData> teamLdata = t.GetPartOInfo("unknown",
+		// "unknown", "unknown");
 
+		// double winrate = t.getLAvg("unknown", "unknown").getWinrate();
+		// double ppg = t.getLAvg("unknown", "unknown").getPPG();
+
+		//  ASSIS  队ppg的影响 r=0.5845    defback(0.40)影响远大于offback(0.08)  shootnumber  0.558   tpnumber 0.5218    
+		//shooteff 0.35      tpeff 0.46
+		double avg_x = t.getLAvg("unknown", "unknown").getPPG();
+		double avg_y = t.getLAvg("unknown", "unknown").getShootEff();
+        System.out.println(avg_x+"   "+avg_y);
+		
+		double s_x = 0.0;
+		double s_y = 0.0;
+
+		for (int i = 0; i < teamLdata.size(); i++) {
+			s_x = s_x + Math.pow(teamLdata.get(i).getPPG()- avg_x, 2);
+			s_y = s_y + Math.pow(teamLdata.get(i).getShootEff() - avg_y, 2);
+		}
+		
+		s_x = s_x / (teamLdata.size() - 1);
+		s_y = s_y / (teamLdata.size() - 1);
+		s_x = Math.sqrt(s_x);
+		s_y = Math.sqrt(s_y);
+
+		double r = 0.0;
+		for (int i = 0; i < teamLdata.size(); i++) {
+			r = r + (teamLdata.get(i).getPPG() - avg_x)
+					* (teamLdata.get(i).getShootEff() - avg_y) / (s_x * s_y);
+		}
+		r = r / (teamLdata.size() - 1);
+		
+		
+		System.out.println(r);
+
+	}
 }

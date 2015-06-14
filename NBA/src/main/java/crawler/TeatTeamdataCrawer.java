@@ -275,7 +275,7 @@ public class TeatTeamdataCrawer {
 
 			// 这个奇葩的网站居然在季后赛没有命中率这列了....
 			BigDecimal bg1 = new BigDecimal(
-					(one.getShootEffNumberPG() / one.getShootNumberPG()));
+					(one.getShootEffNumberPG() *100/ one.getShootNumberPG()));
 			double ShootEff = bg1.setScale(2, BigDecimal.ROUND_HALF_UP)
 					.doubleValue();
 			one.setShootEff(ShootEff);
