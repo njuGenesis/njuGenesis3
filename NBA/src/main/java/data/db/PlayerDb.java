@@ -33,12 +33,32 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		operation("Truncate Table p_detail");
 		System.out.println("clear player table end");
 	}
-	public void clearPlayerTable2(){
-		operation("Truncate Table p_s_a_b");
-		operation("Truncate Table p_s_t_b");
-		operation("Truncate Table p_s_ad_b");
-		operation("Truncate Table p_s_ad_s");
+	public void clearPlayerTableForUpdate(int id,boolean isseason){
+		if(isseason){
+		operation("delete from Table p_s_a_b where id = '"+id+"'");
+		operation("delete from Table p_s_t_b where id = '"+id+"'");
+		operation("delete from Table p_s_ad_b where id = '"+id+"'");
+		operation("delete from Table p_s_ad_s where id = '"+id+"'");
+		}
+		else{
+		operation("delete from Table p_s_a_b where id = '"+id+"'");
+		operation("delete from Table p_s_t_b where id = '"+id+"'");
+		operation("delete from Table p_s_ad_b where id = '"+id+"'");
+		operation("delete from Table p_s_ad_s where id = '"+id+"'");
+		}
 	}
+	public int updateClear(String name,boolean isseason,String season){
+		int id = 0;
+		try {
+			id = getIDForUpdate(name,season);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		clearPlayerTableForUpdate(id,isseason);
+		return id;
+	}
+
 	public void initializePlayerTable(){
 		System.out.println("initialize Player Table start");
 		//------------detail建表
@@ -1440,6 +1460,31 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_a_b where (name = '"+keyname+"' or namecn = '"+keyname+"')and team = '"+team+"'");
+			while(rs.next()){
+			res = rs.getInt("id");
+			
+			}
+			con.close();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+		return res;
+	}
+	public int getIDForUpdate(String name,String season)throws RemoteException{
+		int res = 0;
+		try {
+			Connection con = DriverManager.getConnection(DataBaseLink.url,
+					"root", "nba");
+			if (!con.isClosed()){}
+
+				//System.out.println("success");
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where (name = '"+name+"' or namecn = '"+name+"')and season = '"+season+"'");
 			while(rs.next()){
 			res = rs.getInt("id");
 			

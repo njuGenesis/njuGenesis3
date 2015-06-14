@@ -11,7 +11,20 @@ public class PlayerLogic_db {
 	PlayerDb pdb = new PlayerDb();
 	TestCrawlerByJsoup tc = new TestCrawlerByJsoup();
 
+	
+	
+	public void update(String name,boolean isseason,String season){
+		int id = pdb.updateClear(name, isseason, season);
+		if(isseason){
+		tc.initializePlayerSeason(id,id+1);
+		}
+		else{
+		tc.initializePlayerPlayOff(id, id+1);
+		}
+	}
 	// ----------获得基本信息
+	
+	
 	public ArrayList<PlayerDetailInfo> getAlldetail(String season)throws RemoteException{
 		ArrayList<PlayerDetailInfo> res =pdb.getAlldetail(season);
 		return res;
