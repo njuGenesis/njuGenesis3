@@ -950,8 +950,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 				res = sets_a_b(rs);
 				temp.add(res);
+				}
 			}
 			con.close();
 
@@ -981,8 +986,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_t_b where id = '"+id+"'");
 			while(rs.next()){
-			res = sets_t_b(rs);
-			temp.add(res);
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
+					res = sets_t_b(rs);
+					temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1010,8 +1020,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_b where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_ad_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1040,8 +1055,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_s where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_ad_s(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1069,8 +1089,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_a_b where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_a_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1098,8 +1123,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_t_b where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_t_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1127,8 +1157,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_b where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_ad_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1156,8 +1191,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_s where id = '"+id+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_ad_s(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1228,8 +1268,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_a_b where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 				res = sets_a_b(rs);
 				temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1259,8 +1304,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_t_b where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_t_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1288,8 +1338,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_b where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_ad_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1318,8 +1373,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_s where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_ad_s(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1347,8 +1407,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_a_b where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_a_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1376,8 +1441,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_t_b where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_t_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1405,8 +1475,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_b where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_ad_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1434,8 +1509,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_s where season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_ad_s(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1510,7 +1590,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//System.out.println("success");
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_s_a_b where name = '"+name+"'");
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where name = '"+name+"' and team like '%"+team+"%'");
 			while(rs.next()){
 				
 					res = rs.getInt("id");
@@ -1544,8 +1624,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_a_b where id = '"+id+"'and season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 				res = sets_a_b(rs);
 				temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1573,8 +1658,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_t_b where id = '"+id+"'and season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_t_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1602,8 +1692,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_b where id = '"+id+"'and season ='"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_ad_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1631,8 +1726,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_s_ad_s where id = '"+id+"'and season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = sets_ad_s(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1660,8 +1760,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_a_b where id = '"+id+"'and season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_a_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1689,8 +1794,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_s where id = '"+id+"'and season = '"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_ad_s(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1718,8 +1828,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_t_b where id = '"+id+"'and season='"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_t_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 
@@ -1747,8 +1862,13 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("select * from p_p_ad_b where id = '"+id+"'and season='"+season+"'");
 			while(rs.next()){
+				if((rs.getString("team").equals("总计"))||(rs.getString("team").endsWith("支"))){
+					
+				}
+				else{
 			res = setp_ad_b(rs);
 			temp.add(res);
+				}
 			}
 			con.close();
 

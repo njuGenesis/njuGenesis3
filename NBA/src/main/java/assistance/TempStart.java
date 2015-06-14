@@ -23,12 +23,18 @@ public class TempStart {
 //		t.initializePlayerDetail(1, 4364);
 //		t.initializePlayerSeason(1, 4364);
 //		t.initializePlayerPlayOff(1, 4364);
-		try {
-			System.out.println(p.getdetail(1).getName());
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		try {
+//			for(int i = 0;i<p.gets_a_b(3).size();i++){
+//			System.out.println(p.gets_a_b(3).get(i).getSeason()+";"+p.gets_a_b(3).get(i).getTeam());
+//			}
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
+		String[] res = t.getHotPlayerDaily("points");
+		for(int i = 0;i<5;i++){
+			System.out.println(res[i]);
 		}
-		
 	}
 }

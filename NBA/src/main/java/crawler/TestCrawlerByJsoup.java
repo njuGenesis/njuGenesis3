@@ -913,7 +913,7 @@ public class TestCrawlerByJsoup {
             	
             		
             	String keyname = parr.getString("displayNameEn");
-            	String teamname = tarr.getString("city")+tarr.getString("name");
+            	String teamname = tarr.getString("name");
             	temp = temp+";"+pdb.getIDHot(keyname, teamname);
 					getimg(imgurl,"Hotimg//"+js.getJSONObject(i).getString("rank")+"_"+key+"_hotdaily.png");
 				
@@ -999,7 +999,7 @@ public class TestCrawlerByJsoup {
 //            	System.out.println(starr.getDouble(keyavg));
 //            	
             	String keyname = parr.getString("displayNameEn");
-            	String teamname = tarr.getString("city")+tarr.getString("name");
+            	String teamname = tarr.getString("name");
             	temp = temp+";"+pdb.getIDHot(keyname, teamname);
                 	getimg(imgurl,"Hotimg//"+js.getJSONObject(i).getString("rank")+"_"+key+"_hotseason.png");
                 	
@@ -1101,7 +1101,7 @@ public class TestCrawlerByJsoup {
 //            	System.out.println(js.getJSONObject(i).getString("differential"));
             	//System.out.println();
             	String keyname = parr.getString("displayNameEn");
-            	String teamname = tarr.getString("city")+tarr.getString("name");
+            	String teamname = tarr.getString("name");
             	temp = temp+";"+pdb.getIDHot(keyname, teamname);
                 	getimg(imgurl,"Hotimg//"+js.getJSONObject(i).getString("rank")+"_"+key+"_progress.png");
                 	
