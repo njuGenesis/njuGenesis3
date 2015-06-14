@@ -31,10 +31,16 @@ public class TempStart {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
-		String[] res = t.getHotPlayerDaily("points");
-		for(int i = 0;i<5;i++){
-			System.out.println(res[i]);
+//		TestCrawlerByJsoup t = new TestCrawlerByJsoup();
+//		String[] res = t.getHotPlayerDaily("points");
+//		for(int i = 0;i<5;i++){
+//			System.out.println(res[i]);
+//		}
+		try {
+			System.out.println(pd.getLatestTeam(241));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

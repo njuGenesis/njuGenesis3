@@ -36,6 +36,40 @@ public class PlayerLogic_db {
 		return res;
 	}
 
+	public String getLatestTeam(int id)throws RemoteException{
+		int latest = -1;
+		String res = "";
+		ArrayList<PlayerDataSeason_Avg_Basic> temp = pdb.gets_a_b(id);
+		for(int i = 0;i<temp.size();i++){
+			int tempseason = Integer.valueOf(temp.get(i).getSeason().substring(0,2));
+			if((tempseason>=0)&&(tempseason<=14)){
+				if((latest>=0)&&(latest<=14)){
+					if(tempseason>=latest){
+						latest = tempseason;
+						res = temp.get(i).getTeam();
+					}
+				}
+				else{
+					latest = tempseason;
+					res = temp.get(i).getTeam();
+				}
+			}
+			else{
+				if((latest<=14)&&(latest>=0)){
+					
+				}
+				else{
+					if(tempseason>=latest){
+						latest = tempseason;
+						res = temp.get(i).getTeam();
+					}
+				}
+			}
+		}
+		
+		return res;
+	}
+	
 	public ArrayList<String> getTeambyId(int id, String season)
 			throws RemoteException {
 		return pdb.getTeambyId(id, season);

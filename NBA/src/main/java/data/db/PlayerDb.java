@@ -1539,7 +1539,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				//System.out.println("success");
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_s_a_b where (name = '"+keyname+"' or namecn = '"+keyname+"')and team = '"+team+"'");
+			ResultSet rs = st.executeQuery("select * from p_s_a_b where (name = '"+keyname+"' or namecn = '"+keyname+"')");
 			while(rs.next()){
 			res = rs.getInt("id");
 			
@@ -1880,6 +1880,9 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
+	
+	
+	
 	public ArrayList<String> getTeambyId(int id, String season)
 		throws RemoteException{
 		// TODO Auto-generated method stub
