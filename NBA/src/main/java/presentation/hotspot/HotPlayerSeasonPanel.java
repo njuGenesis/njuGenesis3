@@ -1,5 +1,6 @@
 package presentation.hotspot;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,17 +54,10 @@ public class HotPlayerSeasonPanel extends BgPanel{
 	
 	@Override
 	public void refreshUI() {
-		this.remove(title);
-		this.remove(score);
-		this.remove(backboard);
-		this.remove(assis);
-		this.remove(block);
-		this.remove(steal);
-		this.remove(tps);
-		this.remove(shooting);
-		this.remove(free);
-		this.remove(seasonChooser);
-		this.remove(rankingPanel);
+		Component[] c = this.getComponents();
+		for(int i=0;i<c.length;i++){
+			this.remove(c[i]);
+		}
 
 		init();
 	}

@@ -16,4 +16,6 @@ public enum PanelKind {
 	
 	STATS_PLAYER,
 	STATS_TEAM,
+	
+	MATCH_DETAIL,
 }

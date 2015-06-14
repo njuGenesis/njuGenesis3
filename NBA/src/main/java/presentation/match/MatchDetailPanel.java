@@ -13,7 +13,8 @@ import presentation.component.GLabel;
 import presentation.contenui.TableUtility;
 import presentation.contenui.UIUtil;
 import presentation.hotspot.SelectLabel;
-import data.po.MatchDataPO;
+import bussinesslogic.match.MatchLogic;
+import data.po.matchData.MatchDataSeason;
 
 public class MatchDetailPanel extends BgPanel{
 
@@ -22,10 +23,12 @@ public class MatchDetailPanel extends BgPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static String bg = "img/hotspot/whitebg.jpg";
-	private MatchDataPO po;
+	private static String bg = "";
+//	private MatchDataPO po;
+	
+	private MatchDataSeason po;
 
-	private GLabel title;
+	private GLabel title, borderUp, borderDown;
 	private SelectLabel info;  //基本信息
 	private SelectLabel team1;  //技术统计：队伍一
 	private SelectLabel team2;  //技术统计：队伍二
@@ -38,6 +41,8 @@ public class MatchDetailPanel extends BgPanel{
 	private JPanel detailPanel;
 
 	private MatchFactory factory = new MatchFactory();
+	
+	private MatchLogic logic = new MatchLogic();
 
 
 	@Override
@@ -53,52 +58,66 @@ public class MatchDetailPanel extends BgPanel{
 	}
 
 
-	public MatchDetailPanel(MatchDataPO po) {
+	public MatchDetailPanel(MatchDataSeason po) {
 		super(bg);
 		this.po = po;
-		
+
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		} catch (Exception e) {}
 
-		this.setSize(1000, 650);
+		this.setSize(940, 600);
 		this.setLocation(0, 0);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
 
 		init();
 	}
 
 	private void init(){
-		title = new GLabel("   比赛",new Point(30,30),new Point(940,52),this,true,0,24);
-		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		//--------------------标题--------------------
 
-		info = new SelectLabel("基本信息",new Point(30,83),new Point(labelWeight,35),this,true,0,16);
+		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
+
+		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
+		borderDown.setOpaque(true);
+		borderDown.setBackground(UIUtil.nbaBlue);
+
+		title = new GLabel("   比赛",new Point(0,4),new Point(940,52),this,true,0,24);
+		title.setOpaque(true);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
+
+		info = new SelectLabel("基本信息",new Point(0,60),new Point(labelWeight,35),this,true,0,16);
 		info.setSelected(true);
 		info.addMouseListener(new MenuListener());
 		menuItem[0] = info;
 
 		getDetailPanel(0);
+		
+		String team = TableUtility.checkNOH(po.getTeam()); // 主队
+		String otherTeam = TableUtility.checkNOH(po.getOtherTeam()); // 客队
 
-		team1 = new SelectLabel(TableUtility.getShortChTeam(po.getFirstteam())+" 技术统计",new Point(30+labelWeight+1,83),new Point(labelWeight,35),this,true,0,16);
+		team1 = new SelectLabel(TableUtility.getShortChTeam(team)+" 技术统计",new Point(0+labelWeight+1,60),new Point(labelWeight,35),this,true,0,16);
 		team1.addMouseListener(new MenuListener());
 		menuItem[1] = team1;
 
-		team2 = new SelectLabel(TableUtility.getShortChTeam(po.getSecondteam())+" 技术统计",new Point(30+2*labelWeight+2,83),new Point(labelWeight,35),this,true,0,16);
+		team2 = new SelectLabel(TableUtility.getShortChTeam(otherTeam)+" 技术统计",new Point(0+2*labelWeight+2,60),new Point(labelWeight,35),this,true,0,16);
 		team2.addMouseListener(new MenuListener());
 		menuItem[2] = team2;
 
-		compare = new SelectLabel("球队对比",new Point(30+3*labelWeight+3,83),new Point(labelWeight,35),this,true,0,16);
+		compare = new SelectLabel("球队对比",new Point(0+3*labelWeight+3,60),new Point(labelWeight,35),this,true,0,16);
 		compare.addMouseListener(new MenuListener());
 		menuItem[3] = compare;
-		
+
 		this.repaint();
 	}
 
@@ -107,11 +126,11 @@ public class MatchDetailPanel extends BgPanel{
 		case 0:
 			detailPanel = factory.getInfoPanel(po);break;
 		case 1:
-			detailPanel = factory.getTeamPanel(po.getPlayers1());break;
+			detailPanel = factory.getTeamPanel(po.getTeamPlayer());break;
 		case 2:
-			detailPanel = factory.getTeamPanel(po.getPlayers2());
-			System.out.println(po.getPlayers2().get(0).getPlayername());
-			System.out.println(po.getPlayers2().get(1).getPlayername());
+			detailPanel = factory.getTeamPanel(po.getOtherteamPlayer());
+			System.out.println(po.getOtherteamPlayer().get(0).getPlayername());
+			System.out.println(po.getOtherteamPlayer().get(1).getPlayername());
 			break;
 
 		case 3:

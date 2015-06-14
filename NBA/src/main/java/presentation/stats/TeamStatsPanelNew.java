@@ -39,7 +39,7 @@ public class TeamStatsPanelNew extends BgPanel{
 	public GTable table;
 	public JScrollPane jsp;
 
-	public JLabel title;
+	private GLabel title, borderUp, borderDown;
 
 	public JComboBox<String> season;
 	public JComboBox<String> type;  //常规赛or季后赛
@@ -55,7 +55,7 @@ public class TeamStatsPanelNew extends BgPanel{
 	String[] header_avg1 = {"名称","投篮","命中","出手",
 			"三分","命中","出手",
 			"罚球","命中","出手",
-			"篮板","前场篮板","后场",
+			"篮板","前场","后场",
 			"助攻","抢断","盖帽","失误","犯规","得分",};
 	String[] header_avg2 = {"名称","场数","胜","胜率",
 			"助攻","抢断","盖帽","失误","犯规","得分",};
@@ -106,7 +106,8 @@ public class TeamStatsPanelNew extends BgPanel{
 		
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
 		
 		init();
 		
@@ -115,31 +116,39 @@ public class TeamStatsPanelNew extends BgPanel{
 	
 	
 	private void init(){
-		title = new GLabel("   球队",new Point(80-this.getX(),30),new Point(890,52),this,true,0,24);
+		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
+
+		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
+		borderDown.setOpaque(true);
+		borderDown.setBackground(UIUtil.nbaBlue);
+
+		title = new GLabel("   球队",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
 		
 		//--------------------筛选条件--------------------
 		season = new GComboBox(seasonItem);
-		season.setBounds(80-this.getX(), 100, 150, 30);
+		season.setBounds(0, 70, 150, 30);
 		season.setFont(NewFont.ComboBoxFont);
 		this.add(season);
 		
 		type = new GComboBox(typeItem);
-		type.setBounds(260-this.getX(), 100, 150, 30);
+		type.setBounds(180, 70, 150, 30);
 		type.setFont(NewFont.ComboBoxFont);
 		this.add(type);
 		
 		submit = UIUtil.getSelectButton();
-		submit.setBounds(820-this.getX(), 100, 150, 30);
+		submit.setBounds(780, 70, 150, 30);
 		submit.addMouseListener(new SubmitListener());
 		this.add(submit);
 		
 		//--------------------筛选条件end--------------------
 		
 		avg = new JCheckBox("场均一");
-		avg.setBounds(80, 150, 70, 30);
+		avg.setBounds(0, 110, 70, 30);
 		avg.setSelected(true);
 		avg.setOpaque(false);
 		avg.addMouseListener(new CheckListener(0));
@@ -147,30 +156,30 @@ public class TeamStatsPanelNew extends BgPanel{
 		checkBoxes[0] = avg;
 
 		avg2 = new JCheckBox("场均二");
-		avg2.setBounds(180, 150, 70, 30);
+		avg2.setBounds(100, 110, 70, 30);
 		avg2.setOpaque(false);
 		avg2.addMouseListener(new CheckListener(1));
 		this.add(avg2);
 		checkBoxes[1] = avg2;
 
 		ad = new JCheckBox("进阶");
-		ad.setBounds(280, 150, 70, 30);
+		ad.setBounds(200, 110, 70, 30);
 		ad.setOpaque(false);
 		ad.addMouseListener(new CheckListener(2));
 		this.add(ad);
 		checkBoxes[2] = ad;
 
 		
-		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		this.add(avgTable1);
 		tables[0] = avgTable1;
 
-		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable2.setVisible(false);
 		this.add(avgTable2);
 		tables[1] = avgTable2;
 		
-		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		adTable.setVisible(false);
 		this.add(adTable);
 		tables[2] = adTable;
@@ -264,6 +273,8 @@ public class TeamStatsPanelNew extends BgPanel{
 	private Object[][] getAvgData1(ArrayList<TeamLData> temp){
 		Object[][] data = new Object[temp.size()][header_avg1.length];
 
+//		"助攻","抢断","盖帽","失误","犯规","得分",};
+		
 		for(int i=0;i<temp.size();i++){
 			data[i][0] = temp.get(i).getShortName();
 			
@@ -282,6 +293,14 @@ public class TeamStatsPanelNew extends BgPanel{
 			data[i][10] = temp.get(i).getBackBoardPG();
 			data[i][11] = temp.get(i).getOffBackBoardPG();
 			data[i][12] = temp.get(i).getDefBackBoardPG();
+			
+			data[i][13] = temp.get(i).getAssitNumberPG();
+			data[i][14] = temp.get(i).getStealNumberPG();
+			data[i][15] = temp.get(i).getRejectionPG();
+
+			data[i][16] = temp.get(i).getToPG();
+			data[i][17] = temp.get(i).getFoulPG();
+			data[i][18] = temp.get(i).getPPG();
 		}
 		return data;
 	}
@@ -368,16 +387,16 @@ public class TeamStatsPanelNew extends BgPanel{
 				}
 			}
 
-			avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 			TeamStatsPanelNew.this.add(avgTable1);
 			tables[0] = avgTable1;
 
-			avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 			avgTable2.setVisible(false);
 			TeamStatsPanelNew.this.add(avgTable2);
 			tables[1] = avgTable2;
 			
-			adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(40, 200, 920, 440), UIUtil.bgWhite);
+			adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 			adTable.setVisible(false);
 			TeamStatsPanelNew.this.add(adTable);
 			tables[2] = adTable;

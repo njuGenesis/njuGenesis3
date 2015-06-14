@@ -85,7 +85,7 @@ public class TableUtility {
 			ch = "新奥尔良鹈鹕";
 		}else if(en.equals("SAC")){
 			ch = "萨克拉门托国王";
-		}else if(en.equals("PHX")){
+		}else if(en.equals("PHO")){
 			ch = "菲尼克斯太阳";
 		}else if(en.equals("GSW")){
 			ch = "金州勇士";
@@ -133,6 +133,8 @@ public class TableUtility {
 			ch = "布鲁克林篮网";
 		}else if(en.equals("TOR")){
 			ch = "多伦多猛龙";
+		}else if(en.equals("PHX")){
+			ch = "菲尼克斯太阳";
 		}else if(en.equals("null")){
 			ch = "无";
 		}else if(en.equals("圣安东尼奥马刺")){
@@ -148,7 +150,7 @@ public class TableUtility {
 		}else if(en.equals("萨克拉门托国王")){
 			ch = "SAC";
 		}else if(en.equals("菲尼克斯太阳")){
-			ch = "PHX";
+			ch = "PHO";
 		}else if(en.equals("金州勇士")){
 			ch = "GSW";
 		}else if(en.equals("洛杉矶快船")){
@@ -285,7 +287,7 @@ public class TableUtility {
 			ch = "鹈鹕";
 		}else if(en.equals("SAC")){
 			ch = "国王";
-		}else if(en.equals("PHX")){
+		}else if(en.equals("PHO")){
 			ch = "太阳";
 		}else if(en.equals("GSW")){
 			ch = "勇士";
@@ -335,6 +337,12 @@ public class TableUtility {
 			ch = "猛龙";
 		}else if(en.equals("NOH")){
 			ch = "黄蜂";
+		}else if(en.equals("NJN")){
+			ch = "篮网";
+		}else if(en.equals("SEA")){
+			ch = "超音速";
+		}else if(en.equals("PHX")){
+			ch = "太阳";
 		}else if(en.equals("null")){
 			ch = "无";
 		}
@@ -352,7 +360,7 @@ public class TableUtility {
 		}else if(en.equals("国王")){
 			ch = "SAC";
 		}else if(en.equals("太阳")){
-			ch = "PHX";
+			ch = "PHO";
 		}else if(en.equals("勇士")){
 			ch = "GSW";
 		}else if(en.equals("快船")){
@@ -401,6 +409,8 @@ public class TableUtility {
 			ch = "TOR";
 		}else if(en.equals("黄蜂")){
 			ch = "NOH";
+		}else if(en.equals("超音速")){
+			ch = "SEA";
 		}else if(en.equals("无")){
 			ch = "null";
 		}
@@ -410,11 +420,14 @@ public class TableUtility {
 	public static String checkNOH(String s){
 		if(s.equals("NOH")){
 			return "NOP";
+		}else if(s.equals("NJN")){
+			return "BKN";
+		}else if(s.equals("PHO")){
+			return "PHX";
 		}else{
 			return s;
 		}
 	}
-	
 
 	
 	

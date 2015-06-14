@@ -63,16 +63,16 @@ public class TurnController {
 	}
 	
 	//date格式为13-14_01-01
-	public BgPanel turnToMatchDetials(String date,String shortName){
-		MatchLogic l = new MatchLogic();
-		ArrayList<MatchDataPO> pos = l.GetInfo(date, date, shortName);
-		
-		BgPanel newPanel = new MatchDetailPanel(pos.get(0));
-		newPanel.setBounds(30, 30, 940, 600);
-		newPanel.setVisible(false);
-		
-		StartUI.startUI.setMenu(3);
-		
-		return newPanel;
-	}
+//	public BgPanel turnToMatchDetials(String date,String shortName){
+//		MatchLogic l = new MatchLogic();
+//		ArrayList<MatchDataPO> pos = l.GetInfo(date, date, shortName);
+//		
+//		BgPanel newPanel = new MatchDetailPanel(pos.get(0));
+//		newPanel.setBounds(30, 30, 940, 600);
+//		newPanel.setVisible(false);
+//		
+//		StartUI.startUI.setMenu(3);
+//		
+//		return newPanel;
+//	}
 }

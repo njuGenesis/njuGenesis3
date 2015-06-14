@@ -20,7 +20,7 @@ import presentation.component.GLabel;
 import presentation.match.MatchDetailPanel;
 import presentation.match.MatchFactory;
 import bussinesslogic.match.MatchLogic;
-import data.po.MatchDataPO;
+import data.po.matchData.MatchDataSeason;
 
 public class MatchUI extends BgPanel{
 
@@ -29,9 +29,9 @@ public class MatchUI extends BgPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static String bgStr = "img/hotspot/whitebg.jpg";
+	private static String bgStr = "";
 
-	GLabel title;
+	private GLabel title, borderUp, borderDown;
 	GLabel date;
 	DatePanel dateChooser;
 
@@ -40,7 +40,7 @@ public class MatchUI extends BgPanel{
 	JScrollPane matchPane;
 
 	public MatchDetailPanel detail;
-	
+
 	@Override
 	public void refreshUI() {
 		if(detail!=null){
@@ -53,44 +53,55 @@ public class MatchUI extends BgPanel{
 
 			init();
 		}
-		
+
 	}
 
 	public MatchUI(String s) {
 		super(bgStr);
 
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
-		
-		this.setSize(1000, 670);
-		this.setLocation(15, 50);
+//		try {
+//			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//				if ("Nimbus".equals(info.getName())) {
+//					UIManager.setLookAndFeel(info.getClassName());
+//					break;
+//				}
+//			}
+//		} catch (Exception e) {}
+
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		this.setOpaque(false);
+		this.setOpaque(true);
+		this.setBackground(UIUtil.bgWhite);
 
 		init();
 
 	}
 
 	private void init(){
-		dateChooser = new DatePanel(new Point(800-this.getX(),42),this);
+		dateChooser = new DatePanel(new Point(780,15),this);
 		//		dateChooser.addActionListener(new DateListener());
 		dateChooser.addDocuListener(new DateListener());
 
-		title = new GLabel("   比赛",new Point(30,30),new Point(940,52),this,true,0,24);
-		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		//--------------------标题--------------------
 
-		date = new GLabel(getToday(),new Point(30,83),new Point(940,35),this,true,0,16);
+		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
+
+		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
+		borderDown.setOpaque(true);
+		borderDown.setBackground(UIUtil.nbaBlue);
+
+		title = new GLabel("   比赛",new Point(0,4),new Point(940,52),this,true,0,24);
+		title.setOpaque(true);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
+
+
+		date = new GLabel(getToday(),new Point(0,60),new Point(940,35),this,true,0,16);
 		date.setOpaque(true);
-		date.setBackground(UIUtil.bgGrey);
-		date.setForeground(UIUtil.bgWhite);
+		date.setBackground(UIUtil.bgWhite);
+		date.setForeground(UIUtil.nbaBlue);
 		date.setHorizontalAlignment(JLabel.CENTER);
 
 		getMatchJSP();
@@ -99,17 +110,28 @@ public class MatchUI extends BgPanel{
 	}
 
 	public void getMatchJSP(){
-		String day = dateChooser.getText();
-		String d = day.split("-")[1] + "-" + day.split("-")[2];  //日期，如01-01
+		String day = checkDay(dateChooser.getText());
+		String d = day.split("-")[0]+ "-" +day.split("-")[1] + "-" + day.split("-")[2];  
 
 
-		ArrayList<MatchDataPO> matches = logic.GetDateMatch(getSeason(day)+"_"+d, getSeason(day)+"_"+d);
+		ArrayList<MatchDataSeason> matches = logic.GetDateMatch(d);
+		//		ArrayList<MatchDataPO> matches = logic.GetDateMatch(getSeason(day)+"_"+d, getSeason(day)+"_"+d);
+
 
 		JScrollPane jsp = factory.getMatchPane(this,matches);
 		matchPane = jsp;
 		this.add(matchPane);
 		this.repaint();
 
+	}
+
+	private String checkDay(String str){
+		String[] d = str.split("-");
+		if(d[1].startsWith("0")){
+			return d[0]+"-"+d[1].charAt(1)+"-"+d[2];
+		}else{
+			return str;
+		}
 	}
 
 

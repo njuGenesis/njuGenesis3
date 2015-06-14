@@ -1,5 +1,6 @@
 package presentation.hotspot;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -53,14 +54,10 @@ public class HotPlayerTodayPanel extends BgPanel{
 	
 	@Override
 	public void refreshUI() {
-		this.remove(title);
-		this.remove(score);
-		this.remove(backboard);
-		this.remove(assis);
-		this.remove(block);
-		this.remove(steal);
-		this.remove(rankingPanel);
-		this.remove(date);
+		Component[] c = this.getComponents();
+		for(int i=0;i<c.length;i++){
+			this.remove(c[i]);
+		}
 
 		init();
 	}
@@ -87,9 +84,6 @@ public class HotPlayerTodayPanel extends BgPanel{
 
 	
 	private void init(){
-//		date = new DatePanel(new Point(800-this.getX(),42),this);
-//		date.addDocuListener(new DateListener());
-
 
 		//--------------------标题--------------------
 		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);

@@ -125,16 +125,11 @@ public class RankingFactory {
 	
 //	team+";"+shortteam+";"+union+";"+data;
 	private String[] getDetailInfo_team(String str){
-//		1;马修 德拉维多瓦;8;后卫;克利夫兰;骑士;11.2;49.33333333333332
-//		2;安德鲁 伊格达拉;9;后卫-前锋;金州;勇士;11.2;28.73563218390805
-//		3;文斯 卡特;15;后卫-前锋;孟菲斯;灰熊;8.0;26.984126984126988
-//		4;提莫菲 莫兹戈夫;20;中锋;克利夫兰;骑士;12.4;26.530612244897956
-//		5;杰夫 蒂格;0;后卫;亚特兰大;老鹰;21.2;26.19047619047618
 		String[] temp = str.split(";");
 		
 		String team = TableUtility.getChTeam(temp[0]);
 		String shortteam = temp[1];
-		String union = temp[2];
+		String union = TableUtility.getChUnion(temp[2]);
 		String data = temp[3];
 		
 		String[] info =  {team,shortteam,union,data};
@@ -257,19 +252,19 @@ public class RankingFactory {
 		
 		
 		String teamstr = info[0];
-		String shortteam = info[1];
+		String shortteam = TableUtility.checkNOH(info[1]);
 		String union = info[2];
 		String data = info[3];
 		
 		
 		GLabel num = new GLabel(HotspotUtil.ranking_1,new Point(20,45),new Point(36,40),p,true);
-		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+shortteam+".svg", 200, 300),new Point(0,102),new Point(200,300),p,true);
+		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+shortteam+".svg", 200, 300),new Point(80,110),new Point(200,300),p,true);
 		team.addMouseListener(new TeamListener(shortteam));
 		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		GLabel name = new GLabel(TableUtility.getChTeam(teamstr),new Point(160,40),new Point(200,30),p,true,0,20);
+		GLabel name = new GLabel(teamstr,new Point(160,40),new Point(200,30),p,true,0,20);
 		GLabel detail = new GLabel(union,new Point(160,80),new Point(200,30),p,true,0,12);
-		GLabel infoLabel = new GLabel(data,new Point(230,220),new Point(130,60),p,true,0,24);
+		GLabel infoLabel = new GLabel(data,new Point(150,390),new Point(130,60),p,true,0,24);
 		
 		return p;
 		
@@ -282,7 +277,7 @@ public class RankingFactory {
 		p.setOpaque(false);
 		
 		String teamstr = info[0];
-		String shortteam = info[1];
+		String shortteam = TableUtility.checkNOH(info[1]);
 		String union = info[2];
 		String data = info[3];
 		
@@ -299,9 +294,9 @@ public class RankingFactory {
 		team.addMouseListener(new TeamListener(shortteam));
 		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		GLabel name = new GLabel(TableUtility.getChTeam(teamstr),new Point(170,30),new Point(180,30),p,true,0,20);
+		GLabel name = new GLabel(teamstr,new Point(170,30),new Point(180,30),p,true,0,20);
 		GLabel detail = new GLabel(union,new Point(170,60),new Point(180,30),p,true,0,12);
-		GLabel infoLabel = new GLabel(data,new Point(354,40),new Point(130,60),p,true,0,22);
+		GLabel infoLabel = new GLabel(data,new Point(370,30),new Point(130,60),p,true,0,22);
 		
 		return p;
 	}

@@ -1,5 +1,6 @@
 package presentation.hotspot;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +19,6 @@ import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
 import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
-import data.po.PlayerDataPO;
 
 public class HotPlayerProgressPanel extends BgPanel{
 
@@ -45,12 +45,10 @@ public class HotPlayerProgressPanel extends BgPanel{
 	
 	@Override
 	public void refreshUI() {
-		this.remove(title);
-		this.remove(score);
-		this.remove(backboard);
-		this.remove(assis);
-		this.remove(seasonChooser);
-		this.remove(rankingPanel);
+		Component[] c = this.getComponents();
+		for(int i=0;i<c.length;i++){
+			this.remove(c[i]);
+		}
 
 		init();
 	}

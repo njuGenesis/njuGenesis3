@@ -206,7 +206,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		this.add(type);
 
 		submit = UIUtil.getSelectButton();
-		submit.setBounds(800, 70, 150, 30);
+		submit.setBounds(780, 70, 150, 30);
 		submit.addMouseListener(new SubmitListener());
 		this.add(submit);
 

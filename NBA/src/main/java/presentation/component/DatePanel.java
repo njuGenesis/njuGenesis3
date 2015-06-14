@@ -46,7 +46,7 @@ public class DatePanel extends JPanel{
 		this.setSize(130, 30);
 		this.setFont(new Font("微软雅黑",1,13));
 		this.setOpaque(true);
-		this.setBackground(UIUtil.darkBlue);
+		this.setBackground(UIUtil.nbaBlue);
 		this.setLayout(null);
 		
 		Date dateNow = new Date();  
@@ -59,7 +59,7 @@ public class DatePanel extends JPanel{
 		jtf.setFont(new Font("微软雅黑",1,13));
 		jtf.setForeground(fore);
 		jtf.setOpaque(false);
-		jtf.setBackground(UIUtil.darkBlue);
+		jtf.setBackground(UIUtil.nbaBlue);
 		jtf.setEditable(false);
 		jtf.setBorder(null);
 		
