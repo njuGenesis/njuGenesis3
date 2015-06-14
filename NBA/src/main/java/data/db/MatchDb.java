@@ -17,8 +17,8 @@ public class MatchDb extends DataBaseLink {
 
 	public static void main(String[] args) throws SQLException {
 		MatchDb m = new MatchDb();
-		//m.initializeTeamTable();
-		 m.clearMatchTable();
+		//m.initializeMatchTable();
+	// m.clearMatchTable();
 
 		/*ArrayList<MatchDataSeason> matches = m.getmatchinfo("SAS", "unknown",
 				"13-14", "unknown", "yes", "unknown");
@@ -166,18 +166,18 @@ public class MatchDb extends DataBaseLink {
 			;
 			Statement st = con.createStatement();
 			ResultSet rs = st
-					.executeQuery("select * from matchinfo where  (team = '"
+					.executeQuery("select * from matchinfo where  ((team = '"
 							+ Team + "' or " + Team.equals("unknown") + " )"
-							+ "and (otherteam = '" + OtherTeam + "' or "
+							+ " and (otherteam = '" + OtherTeam + "' or "
 							+ OtherTeam.equals("unknown") + " )"
-							+ "and (date = '" + Date + "' or "
+							+ " and (date = '" + Date + "' or "
 							+ Date.equals("unknown") + " )"
-							+ "and (isseason = '" + isSeason + "' or "
+							+ " and (isseason = '" + isSeason + "' or "
 							+ isSeason.equals("unknown") + " )"
-							+ "and (matchid = '" + MatchID + "' or "
+							+ " and (matchid = '" + MatchID + "' or "
 							+ MatchID.equals("unknown") + " )"
-							+ "and( season = '" + season + "' or "
-							+ season.equals("unknown") + " )");
+							+ " and( season = '" + season + "' or "
+							+ season.equals("unknown") + " ))");
 			while (rs.next()) {
 				res = new MatchDataSeason();
 				setmatchinfo(rs, res);
@@ -245,14 +245,14 @@ public class MatchDb extends DataBaseLink {
 					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
-					.executeQuery("select * from matchteam where (matchid = '"
+					.executeQuery("select * from matchteam where ((matchid = '"
 							+ MatchID + "' or " + MatchID.equals("unknown")
 							+ " )" + "and (season = '" + season + "' or "
 							+ season.equals("unknown") + " )"
 							+ "and (teamshortname = '" + team + "' or "
 							+ team.equals("unknown") + " )"
 							+ "and (isseason = '" + isseason + "' or "
-							+ isseason.equals("unknown") + " )");
+							+ isseason.equals("unknown") + " ))");
 			while (rs.next()) {
 				res = new MatchTeam();
 				setmatchteam(rs, res);

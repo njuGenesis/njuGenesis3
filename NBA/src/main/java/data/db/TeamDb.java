@@ -19,7 +19,7 @@ public class TeamDb extends DataBaseLink {
 	public static void main(String[] args) throws RemoteException {
 		TeamDb t = new TeamDb();
 		// t.initializeTeamTable();
-		t.clearTeamTable();
+		//t.clearTeamTable();
 
 		/*
 		 * ArrayList<TeamData_Avg_PO> res = t.getted("SAS","unknown","unknown");

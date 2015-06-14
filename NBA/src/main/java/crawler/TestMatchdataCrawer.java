@@ -27,13 +27,15 @@ public class TestMatchdataCrawer {
 		TestMatchdataCrawer m = new TestMatchdataCrawer();
 		ArrayList<MatchDataSeason> newmatches = new ArrayList<MatchDataSeason>(); 
 		MatchDataSeason newmatch=new MatchDataSeason();
+		
 		for (int i = 20637; i <=37455; i++) {
 			newmatch=m.getSeasonMatch(i);
 			newmatches.add(newmatch);
 		}
 		for(int i=0;i<newmatches.size();i++){
 			for(int k=0;k<newmatches.get(i).getTeamPlayer().size();k++){
-				//updateplayer(name,season,isseason);
+				
+			//	updateplayer(name,season,isseason);
 			}
 			//updateteam(teamshortname,season,isseason)
 			//updateotherteam(otherteamshortname,season,season)
