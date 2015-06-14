@@ -9,6 +9,7 @@ import bussinesslogic.player.PlayerLogic_db;
 import data.db.PlayerDb;
 import data.po.PlayerDataPO;
 import data.po.playerData.PlayerDataSeason_Avg_Basic;
+import data.po.playerData.PlayerDescriptionStat;
 import data.po.playerData.PlayerDetailInfo;
 
 public class TempStart {
@@ -35,10 +36,14 @@ public class TempStart {
 //		String[] res = t.getHotPlayerDaily("points");
 //		for(int i = 0;i<5;i++){
 //			System.out.println(res[i]);
+		
 //		}
 		try {
-			System.out.println(pd.getLatestTeam(241));
-		} catch (RemoteException e) {
+			ArrayList<PlayerDescriptionStat> res = pd.getPlayerStat(195, true, true);
+			for(int i = 0;i<res.size();i++){
+				System.out.println(res.get(i).getType()+";"+res.get(i).getAvg()+";"+res.get(i).getMedian()+";"+res.get(i).getRange()+";"+res.get(i).getVar()+";"+res.get(i).getVarq()+";"+res.get(i).getC_v()+";"+res.get(i).getSkewness()+";"+res.get(i).getKurtosis());
+			}
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

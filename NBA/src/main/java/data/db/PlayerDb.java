@@ -19,7 +19,7 @@ import data.po.playerData.PlayerDetailInfo;
 import dataService.PlayerDataService;
 
 public class PlayerDb  extends DataBaseLink implements PlayerDataService{
-
+	//====================================database table
 	public void clearPlayerTable(){
 		System.out.println("clear player table start");
 		operation("Truncate Table p_s_a_b");
@@ -309,7 +309,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				operation("alter table p_p_ad_s add primary key(id, season,team)");
 				System.out.println("initialize Player Table end");
 	}
-	
+	//=======================================get and set
 	public PlayerDataSeason_Avg_Basic sets_a_b(ResultSet rs){
 		PlayerDataSeason_Avg_Basic res = new PlayerDataSeason_Avg_Basic();
 		try{
@@ -1527,6 +1527,8 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
+	
+	//==================================== ui request
 	public int getIDbyName(String name,String team) throws RemoteException{
 		// TODO Auto-generated method stub
 		String keyname = name;
@@ -1880,9 +1882,6 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return temp;
 	}
-	
-	
-	
 	public ArrayList<String> getTeambyId(int id, String season)
 		throws RemoteException{
 		// TODO Auto-generated method stub
@@ -1979,6 +1978,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		}
 		return res;
 	}
+	//=====================================statics request
 	
 	
 }
