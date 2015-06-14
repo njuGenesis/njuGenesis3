@@ -116,6 +116,37 @@ public class TeamDb extends DataBaseLink {
 				+ ")");
 	}
 
+	public void update(TeamData_Avg_PO newteam) {
+		operation("delete from teambaseinfo where shortname = " + "'"
+				+ newteam.getShortName() + "' and season = '"
+				+ newteam.getSeason() + "'");
+		addtbi(newteam);
+		operation("delete from teambasedata where shortname = " + "'"
+				+ newteam.getShortName() + "' and season = '"
+				+ newteam.getSeason() + "'");
+		addtbd(newteam);
+		operation("delete from teamexdata where shortname = " + "'"
+				+ newteam.getShortName() + "' and season = '"
+				+ newteam.getSeason() + "'");
+		addted(newteam);
+		operation("delete from otherteamdata where shortname = " + "'"
+				+ newteam.getShortName() + "' and season = '"
+				+ newteam.getSeason() + "'");
+		addotd(newteam);
+
+		/*operation("update teambaseinfo set name = '" + newteam.getName()
+				+ "', shortname = '" + newteam.getShortName() + "', season = '"
+				+ newteam.getSeason() + "', isseason = '" + newteam.getIsSeason()
+				+ "', city = '" + newteam.getCity() + "', eorw = '" + newteam.getEorW()
+				+ "', area = '" + newteam.getArea() + "', mainposition = '"
+				+ newteam.getMainposition() + "', players = '" + newteam.getPlayers()
+				+ "', buildyear = '" + newteam.getBuildyear()
+				+ "'  where shortname = '" + newteam.getShortName()
+				+ "' and season = '" + newteam.getSeason() + "'");*/
+
+	}
+
+	 
 	// 插入球队基本信息
 	public void addtbi(TeamData_Avg_PO t) {
 		try {
@@ -416,7 +447,7 @@ public class TeamDb extends DataBaseLink {
 		TeamLData res = new TeamLData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 
 			Statement st = con.createStatement();
 			ResultSet rs = st
@@ -520,7 +551,7 @@ public class TeamDb extends DataBaseLink {
 		OtherTeamData res = new OtherTeamData();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"thometoy", "960105");
+					"root", "nba");
 
 			Statement st = con.createStatement();
 			ResultSet rs = st

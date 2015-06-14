@@ -28,7 +28,7 @@ import data.po.playerData.PlayerDetailInfo;
 import data.po.teamData.TeamAdData;
 
 public class TeatTeamdataCrawer {
-	TeamDb teamDb= new TeamDb();
+	TeamDb teamDb = new TeamDb();
 	TeamAdData help = new TeamAdData();
 	ArrayList<String> tempInfo = new ArrayList<String>();
 	String[] teamName = { "CHI", "CLE", "DET", "IND", "MIL", "BKN", "BOS",
@@ -45,7 +45,7 @@ public class TeatTeamdataCrawer {
 	public static void main(String[] args) {
 		TeatTeamdataCrawer t = new TeatTeamdataCrawer();
 		t.readTeamfile();
-	     t.initializeSeason_Avg();
+		t.initializeSeason_Avg();
 		t.initializePlayOff_Avg();
 		/*
 		 * Document doc = null; try { // 所有数据都在stat_box里面 doc = Jsoup .connect(
@@ -59,6 +59,327 @@ public class TeatTeamdataCrawer {
 		 * (!el.text().equals("")) System.out.println(el.text() + ""); } } catch
 		 * (Exception e) { e.printStackTrace(); }
 		 */
+	}
+
+	public void update(String teamshortname, String season, String isseason) {
+		String realseason = "20" + season.split("-")[0];
+		if (isseason.equals("1")) {
+			String url = "http://www.stat-nba.com/team/stat_box_team.php?team="
+					+ teamshortname + "&season=" + realseason
+					+ "&col=pts&order=1&isseason=1";
+			upSeason(url, Integer.valueOf(realseason), teamshortname);
+		}
+		if (isseason.equals("0")) {
+			String url = "http://www.stat-nba.com/team/stat_box_team.php?team="
+					+ teamshortname + "&season=" + realseason
+					+ "&col=pts&order=1&isseason=0";
+			upSeason(url, Integer.valueOf(realseason), teamshortname);
+		}
+
+	}
+
+	public void upSeason(String url, int templeseason, String teamshortname) {
+		String players = "";
+		TeamData_Avg_PO one = new TeamData_Avg_PO();
+		one.setShortName(teamshortname);
+		getTeamInfo(one);
+		one.setSeason(Integer.toString(templeseason).substring(2) + "-"
+				+ Integer.toString(templeseason + 1).substring(2));
+		try {
+			Document doc = Jsoup
+					.connect(url)
+					.timeout(10000)
+					.header("User-Agent",
+							"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0")
+					.get();
+			Element origin = doc.select("table").select("tbody").select("tr")
+					.last();
+			Elements e = doc.select("table").select("tbody").select("tr")
+					.select("td");
+
+			if (e.size() == 0) {
+				return;
+			}
+			System.out.println(teamshortname
+					+ "______________________________________");
+			int k = 0;// 记录“全队数据"出现的位置
+			for (k = 0; k < e.size(); k++) {
+				if (e.get(k).text().equals("全队数据")) {
+					k++;
+					break;
+				}
+				if ((k % 22) == 1) {
+					players = players + e.get(k).text() + ";";
+				}
+			}
+			// 本队数据初始化
+			one.setIsSeason("yes");
+			one.setPlayers(players);
+			one.setMatchNumber(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setWinMatch(Double.valueOf(e.get(k).text()));
+			k += 2;
+
+			if (e.get(k).text().contains("%"))
+				one.setShootEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setShootEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setShootNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			if (e.get(k).text().contains("%"))
+				one.setTPEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setTPEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setTPNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			if (e.get(k).text().contains("%"))
+				one.setFTEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setFTEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setFTNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOffBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setDefBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setAssitNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setStealNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setRejectionPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setToPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setFoulPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setPPG(Double.valueOf(e.get(k).text()));
+			k += 2;
+
+			// 对手数据初始化-----------------------------------------------------------------------------------------------------
+			e = origin.select("td");
+			k = 1;
+			one.setOtherMatchNumber(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherWinMatch(Double.valueOf(e.get(k).text()));
+			k += 2;
+
+			if (e.get(k).text().contains("%"))
+				one.setOtherShootEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setOtherShootEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherShootNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			if (e.get(k).text().contains("%"))
+				one.setOtherTPEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setOtherTPEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherTPNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			if (e.get(k).text().contains("%"))
+				one.setOtherFTEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setOtherFTEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherFTNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setOtherBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherOffBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherDefBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setOtherAssitNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherStealNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherRejectionPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherToPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherFoulPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherPPG(Double.valueOf(e.get(k).text()));
+
+			// upteam(one);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void upPlayOff(String url, int templeseason, String teamshortname) {
+		String players = "";
+		TeamData_Avg_PO one = new TeamData_Avg_PO();
+		one.setShortName(teamshortname);
+		getTeamInfo(one);
+		one.setSeason(Integer.toString(templeseason).substring(2) + "-"
+				+ Integer.toString(templeseason + 1).substring(2));
+		try {
+			Document doc = Jsoup
+					.connect(url)
+					.timeout(10000)
+					.header("User-Agent",
+							"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0")
+					.get();
+			Element origin = doc.select("table").select("tbody").select("tr")
+					.last();
+			Elements e = doc.select("table").select("tbody").select("tr")
+					.select("td");
+			if (e.size() == 0) {
+				return;
+			}
+			System.out.println(teamshortname
+					+ "______________________________________");
+			int k = 0;// 记录“全队数据"出现的位置
+			for (k = 0; k < e.size(); k++) {
+				if (e.get(k).text().equals("全队数据")) {
+					k++;
+					break;
+				}
+				if ((k % 21) == 1) {
+					players = players + e.get(k).text() + ";";
+				}
+			}
+			// 本队数据初始化
+			one.setPlayers(players);
+			one.setIsSeason("no");
+			one.setMatchNumber(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setWinMatch(Double.valueOf(e.get(k).text()));
+			k += 2;
+
+			one.setShootEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setShootNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			// 这个奇葩的网站居然在季后赛没有命中率这列了....
+			BigDecimal bg1 = new BigDecimal(
+					(one.getShootEffNumberPG() / one.getShootNumberPG()));
+			double ShootEff = bg1.setScale(2, BigDecimal.ROUND_HALF_UP)
+					.doubleValue();
+			one.setShootEff(ShootEff);
+
+			if (e.get(k).text().contains("%"))
+				one.setTPEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setTPEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setTPNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			if (e.get(k).text().contains("%"))
+				one.setFTEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setFTEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setFTNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOffBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setDefBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setAssitNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setStealNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setRejectionPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setToPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setFoulPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setPPG(Double.valueOf(e.get(k).text()));
+			k += 2;
+
+			// 对手数据初始化-----------------------------------------------------------------------------------------------------
+			e = origin.select("td");
+			k = 1;
+			one.setOtherMatchNumber(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherWinMatch(Double.valueOf(e.get(k).text()));
+			k += 2;
+
+			one.setOtherShootEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherShootNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			// 这个奇葩的网站居然在季后赛没有命中率这列了....
+			BigDecimal bg = new BigDecimal(
+					(one.getOtherShootEffNumberPG() / one
+							.getOtherShootNumberPG()));
+			double OtherShootEff = bg.setScale(2, BigDecimal.ROUND_HALF_UP)
+					.doubleValue();
+			one.setOtherShootEff(OtherShootEff);
+
+			if (e.get(k).text().contains("%"))
+				one.setOtherTPEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setOtherTPEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherTPNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			if (e.get(k).text().contains("%"))
+				one.setOtherFTEff(Double.valueOf(e.get(k).text()
+						.substring(0, e.get(k).text().indexOf("%"))));
+			k++;
+			one.setOtherFTEffNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherFTNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setOtherBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherOffBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherDefBackBoardPG(Double.valueOf(e.get(k).text()));
+			k++;
+
+			one.setOtherAssitNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherStealNumberPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherRejectionPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherToPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherFoulPG(Double.valueOf(e.get(k).text()));
+			k++;
+			one.setOtherPPG(Double.valueOf(e.get(k).text()));
+
+			// upplayoff(one);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void initializeSeason_Avg() {
@@ -90,7 +411,7 @@ public class TeatTeamdataCrawer {
 							.select("tr").last();
 					Elements e = doc.select("table").select("tbody")
 							.select("tr").select("td");
-					
+
 					if (e.size() == 0) {
 						continue;
 					}
@@ -226,11 +547,7 @@ public class TeatTeamdataCrawer {
 		for (int i = 0; i < TeamDataSeason_Avgs.size(); i++) {
 			help.TeamRate(TeamDataSeason_Avgs.get(i));
 		}
-		/*System.out.println(TeamDataSeason_Avgs.size() + " ---------"
-				+ TeamDataSeason_Avgs.get(10).getPlayers()
-				+ TeamDataSeason_Avgs.get(10).getWinrate() + "--------"
-				+ TeamDataSeason_Avgs.get(10).getOffBackBoardEff() + "------"
-				+ TeamDataSeason_Avgs.get(10).getDef());*/
+
 		writeIn(TeamDataSeason_Avgs);
 	}
 
@@ -353,7 +670,8 @@ public class TeatTeamdataCrawer {
 
 					// 这个奇葩的网站居然在季后赛没有命中率这列了....
 					BigDecimal bg = new BigDecimal(
-							(one.getOtherShootEffNumberPG() / one.getOtherShootNumberPG()));
+							(one.getOtherShootEffNumberPG() / one
+									.getOtherShootNumberPG()));
 					double OtherShootEff = bg.setScale(2,
 							BigDecimal.ROUND_HALF_UP).doubleValue();
 					one.setOtherShootEff(OtherShootEff);
@@ -406,24 +724,26 @@ public class TeatTeamdataCrawer {
 		for (int i = 0; i < TeamDataPlayOff_Avgs.size(); i++) {
 			help.TeamRate(TeamDataPlayOff_Avgs.get(i));
 		}
-		/*System.out.println(TeamDataPlayOff_Avgs.get(5).getSeason()
-				+ "---------" + TeamDataPlayOff_Avgs.get(5).getPlayers()
-				+ TeamDataPlayOff_Avgs.get(5).getWinrate() + "--------"
-				+ TeamDataPlayOff_Avgs.get(5).getOffBackBoardEff() + "------"
-				+ TeamDataPlayOff_Avgs.get(5).getDef());*/
+		/*
+		 * System.out.println(TeamDataPlayOff_Avgs.get(5).getSeason() +
+		 * "---------" + TeamDataPlayOff_Avgs.get(5).getPlayers() +
+		 * TeamDataPlayOff_Avgs.get(5).getWinrate() + "--------" +
+		 * TeamDataPlayOff_Avgs.get(5).getOffBackBoardEff() + "------" +
+		 * TeamDataPlayOff_Avgs.get(5).getDef());
+		 */
 
 		writeIn(TeamDataPlayOff_Avgs);
 	}
 
-	private void writeIn(ArrayList<TeamData_Avg_PO> t){
-		for(int i=0;i<t.size();i++){
+	private void writeIn(ArrayList<TeamData_Avg_PO> t) {
+		for (int i = 0; i < t.size(); i++) {
 			teamDb.addotd(t.get(i));
 			teamDb.addtbd(t.get(i));
 			teamDb.addtbi(t.get(i));
 			teamDb.addted(t.get(i));
 		}
 	}
-	
+
 	private void getTeamInfo(TeamData_Avg_PO team) {
 		for (int i = 0; i < 30; i++) {
 			if (team.getShortName().equals(teamInfo.get(i).getShortName())) {
@@ -463,10 +783,10 @@ public class TeatTeamdataCrawer {
 				String[] teamData = temp[1].split("│");
 				team.setName(teamData[0].trim());
 				team.setShortName(teamData[1].trim());
-				if(team.getShortName().equals("NOP")){
+				if (team.getShortName().equals("NOP")) {
 					team.setShortName("NOH");
 				}
-				if(team.getShortName().equals("PHX")){
+				if (team.getShortName().equals("PHX")) {
 					team.setShortName("PHO");
 				}
 				team.setCity(teamData[2].trim());

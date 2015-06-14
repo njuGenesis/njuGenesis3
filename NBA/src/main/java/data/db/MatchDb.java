@@ -18,7 +18,7 @@ public class MatchDb extends DataBaseLink {
 	public static void main(String[] args) throws SQLException {
 		MatchDb m = new MatchDb();
 		//m.initializeTeamTable();
-		// m.clearMatchTable();
+		 m.clearMatchTable();
 
 		/*ArrayList<MatchDataSeason> matches = m.getmatchinfo("SAS", "unknown",
 				"13-14", "unknown", "yes", "unknown");
@@ -41,8 +41,8 @@ public class MatchDb extends DataBaseLink {
 		System.out.println("clear match table end");
 	}
 
-	public void initializeTeamTable() throws SQLException {
-		System.out.println("initialize Team Table start");
+	public void initializeMatchTable() throws SQLException {
+		System.out.println("initialize Match Table start");
 		// 比赛基本信息
 
 		operation("create table matchinfo (" + "isseason varchar(255),"
@@ -85,6 +85,8 @@ public class MatchDb extends DataBaseLink {
 
 	}
 
+
+	
 	// 插入比赛基本信息
 	public void addmatchinfo(MatchDataSeason m) {
 		try {
@@ -160,7 +162,7 @@ public class MatchDb extends DataBaseLink {
 		try {
 
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			;
 			Statement st = con.createStatement();
 			ResultSet rs = st
@@ -197,7 +199,7 @@ public class MatchDb extends DataBaseLink {
 		MatchPlayer res = new MatchPlayer();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchplayer where (matchid = '"
@@ -240,7 +242,7 @@ public class MatchDb extends DataBaseLink {
 		MatchTeam res = new MatchTeam();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchteam where (matchid = '"
@@ -273,7 +275,7 @@ public class MatchDb extends DataBaseLink {
 		MatchPlayer res = new MatchPlayer();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchplayer where (matchid = '"
@@ -306,7 +308,7 @@ public class MatchDb extends DataBaseLink {
 		MatchTeam temp = new MatchTeam();
 		try {
 			Connection con = DriverManager.getConnection(DataBaseLink.url,
-					"root", "");
+					"root", "nba");
 			Statement st = con.createStatement();
 			ResultSet rs = st
 					.executeQuery("select * from matchteam where (matchid = '"
@@ -318,7 +320,7 @@ public class MatchDb extends DataBaseLink {
 				if (temp.getTeamShortName().equals(team))
 					match.setTeamdata(temp);
 				else if ((temp.getTeamShortName().equals(otherteam))) {
-					match.setTeamdata(temp);
+					match.setOtherteamdata(temp);
 				}
 			}
 			con.close();

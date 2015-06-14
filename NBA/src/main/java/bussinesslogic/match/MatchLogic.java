@@ -160,7 +160,7 @@ public class MatchLogic implements MatchInfoService {
 		
 		MatchLogic m = new MatchLogic();
 		System.out.println(MatchLogic.getTime());
-		ArrayList<MatchPlayer> a = m.GetPlayerMatch("布拉德-比尔", "yes", "unknown");
+		ArrayList<MatchDataSeason> a = m.GetPlayerSeasonMatch("詹姆斯-哈登", "14-15", "yes");
 		System.out.println(a.size());
 		System.out.println(MatchLogic.getTime());
 		
