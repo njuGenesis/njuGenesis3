@@ -42,11 +42,11 @@ public class ScrollPanel extends JPanel{
 //		panel.setLayout(null);
 //		panel.setBackground(UIUtil.bgWhite);
 		
-		PlayerDetials panel = new PlayerDetials("", "");
+//		PlayerDetials panel = new PlayerDetials("", "");
 		
-		ScrollPanel scrollPanel = new ScrollPanel(panel, 300);
+//		ScrollPanel scrollPanel = new ScrollPanel(panel, 300);
 		
-		f.add(scrollPanel);
+//		f.add(scrollPanel);
 		f.setVisible(true);
 	}
 	
