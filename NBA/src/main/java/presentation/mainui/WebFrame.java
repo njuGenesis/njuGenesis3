@@ -1,25 +1,19 @@
 package presentation.mainui;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
-
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import presentation.component.BgPanel;
 import presentation.component.GFrame;
 import presentation.component.GLabel;
 import presentation.component.WebLabel;
 import presentation.contenui.PanelKind;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
-import presentation.player.PlayerCrosshairOverlay;
 
 public class WebFrame extends GFrame{
 
@@ -34,13 +28,6 @@ public class WebFrame extends GFrame{
 	private GLabel menuPanel, menuTitle, menuLabel;
 	private GLabel[] menuButton = new GLabel[6];
 	private GLabel[] menuButtonIcon = new GLabel[menuButton.length];
-	
-	private Color menuPanelColor = new Color(55, 100, 173);
-	private Color menuTitleColor = new Color(92, 156, 251);
-	private Color menuLabelColor = new Color(80, 157, 219);
-	private Color menuButtonColor = new Color(53, 142, 214);
-	private Color menuButtonIconColor = new Color(52, 108, 178);
-	private Color labelColor = new Color(242, 224, 224);
 	
 	private TurnController turnController;
 	
@@ -92,7 +79,7 @@ public class WebFrame extends GFrame{
 	
 	private void menuInit(){
 		menuPanel = new GLabel("", new Point(0, 0), new Point(150, 700), bg, true);
-		menuLabel = new GLabel("", new Point(150, 0), new Point(1000, 40), bg, true);
+		menuLabel = new GLabel("", new Point(150, 0), new Point(1000, 70), bg, true);
 //		
 //		menuTitle = new GLabel("NBA", new Point(0, 0), new Point(250, 105), menuPanel, true, 1, 30);
 //		menuTitle.setBackground(menuTitleColor);
@@ -208,9 +195,15 @@ public class WebFrame extends GFrame{
 		bg.setBackground(UIUtil.lightGrey);
 		bg.setOpaque(true); 
 		
-		panelBg = new GLabel("", new Point(180, 70), new Point(958, 600), bg, true);
+		panelBg = new GLabel("", new Point(180, 80), new Point(958, 600), bg, true);
 		panelBg.setBackground(bg.getBackground());
 		panelBg.setOpaque(true);
+		
+		title = new GLabel("NBA", new Point(100, 0), new Point(140, 60), bg, true, 0, 30);
+		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.nbaBlue);
+		title.setOpaque(true);
 	}
 	
 	public void setPanel(JPanel newPanel, String message){
@@ -223,13 +216,8 @@ public class WebFrame extends GFrame{
 		currentPanel.setVisible(true);
 		panelBg.add(currentPanel);
 		
-		WebLabel gLabel = new WebLabel(" "+message, new Point(labelVector.size()*130, 15), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
-		gLabel.setHorizontalAlignment(JLabel.CENTER);
-		gLabel.setBackground(UIUtil.nbaBlue);
-		gLabel.setForeground(UIUtil.bgWhite);
-		gLabel.isSelected = true;
-		//gLabel.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-		gLabel.setOpaque(true);
+		WebLabel gLabel = new WebLabel(" "+message, new Point(100+labelVector.size()*130, 35), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
+		gLabel.setSelected();
 		
 		labelVector.addElement(gLabel);
 		for(int i = 0;i<labelVector.size()-1;i++){
@@ -255,13 +243,13 @@ public class WebFrame extends GFrame{
 		if(key){
 			if(labelVector.size()!=0){
 				for(int i = 0;i<labelVector.size();i++){
-					labelVector.get(i).setLocation(i*130, 15);
+					labelVector.get(i).setLocation(100+i*130, 35);
 				}
 				labelVector.get(labelVector.size()-1).setSelected();
 			}
 		}else{
 			for(int i = 0;i<labelVector.size();i++){
-				labelVector.get(i).setLocation(i*130, 15);
+				labelVector.get(i).setLocation(100+i*130, 35);
 			}
 		}
 		this.repaint();

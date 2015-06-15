@@ -1,8 +1,6 @@
 package presentation.player;
 
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -11,35 +9,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Vector;
-
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
-
-import com.sun.org.apache.xml.internal.security.Init;
-
 import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
-import bussinesslogic.team.TeamLogic;
 import data.po.PlayerDataPO;
-import data.po.TeamDataPO;
 import data.po.playerData.PlayerDetailInfo;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.component.ScrollPanel;
-import presentation.component.StyleScrollPane;
 import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
@@ -57,10 +39,6 @@ public class PlayerUI extends BgPanel{
 	private WebTable table;
 	private JComboBox<String> comboBoxTeam, comboBoxPosition;
 	private JTextField search;
-	private JCheckBox checkBox1, checkBox2;
-	private Vector<String> header = new Vector<String>();
-	private Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-	private PlayerDataPO[] playList;
 	private TurnController turnController = new TurnController();
 	private PlayerLogic_db playerLogic_db;
 	private ArrayList<PlayerDetailInfo> playerDetailInfo;
@@ -116,8 +94,21 @@ public class PlayerUI extends BgPanel{
 					comboBoxTeam.setSelectedIndex(0);
 					comboBoxPosition.setSelectedIndex(0);
 					search.setText("根据姓名查找");
-					playList = playerLogic.getPlayerByFirstName(playerLogic.getAllInfo(playerLogic.getLatestSeason()), letterString);
-					refreshTable();
+					ArrayList<Integer> idList = new ArrayList<>();
+					try {System.out.println(letterString);
+						idList = playerLogic_db.selectByTag("null", "null", "A", "null", "null", "null");
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}System.out.println(idList.size());
+					playerDetailInfo = new ArrayList<>();
+					for(int i=0;i<idList.size();i++){
+						try {
+							playerDetailInfo.add(playerLogic_db.getdetail(idList.get(i)));
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+					}
+					infoInit();
 					table.updateUI();
 				}
 				public void mouseExited(MouseEvent e) {
@@ -158,8 +149,7 @@ public class PlayerUI extends BgPanel{
 					search.setText("根据姓名查找");
 					if(comboBoxTeam.getSelectedIndex()!=0){
 						String team = comboBoxTeam.getSelectedItem().toString().split(" ")[1];
-						playList = playerLogic.getPlayerByTeam(team, "null", "null", playerLogic.getLatestSeason());
-						refreshTable();
+						infoInit();
 						table.updateUI();
 					}
 				}
@@ -181,8 +171,7 @@ public class PlayerUI extends BgPanel{
 					search.setText("根据姓名查找");
 					if(comboBoxPosition.getSelectedIndex()!=0){
 						String position = comboBoxPosition.getSelectedItem().toString().split(" ")[1];
-						playList = playerLogic.getPlayerByTeam("null", "null", position, playerLogic.getLatestSeason());
-						refreshTable();
+						infoInit();
 						table.updateUI();
 					}
 				}
@@ -204,9 +193,8 @@ public class PlayerUI extends BgPanel{
 				comboBoxPosition.setSelectedIndex(0);
 				comboBoxTeam.setSelectedIndex(0);
 				String name = search.getText();System.out.println(name);
-				playList = playerLogic.getPlayerByTeam("null", name, "null", playerLogic.getLatestSeason());
-				refreshTable();
-				table.repaint();
+				infoInit();
+				table.updateUI();
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -222,36 +210,22 @@ public class PlayerUI extends BgPanel{
 		
 		infoInit();
 	}
-	
-	private void refreshTable(){
-		data.removeAllElements();
-		for(int i=0;i<playList.length;i++){
-			PlayerDataPO p = playList[i];
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(p.getName());
-			vector.addElement(TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName());
-			vector.addElement(p.getPosition());
-			vector.addElement(p.getNumber());
-			vector.addElement(p.getHeight());
-			vector.addElement(p.getWeight());
-			vector.addElement(p.getBirth());
-			vector.addElement(p.getExp());
-			data.addElement(vector);
-		}
-	}
-	
+
 	private void infoInit(){
-		String h[] = {"姓名","球队","位置","号码","身高","体重","生日","ID"};
+		String h[] = {"姓名","球队","位置","号码","身高","体重","生日"};
 		Object[][] d = new Object[playerDetailInfo.size()][h.length];
 		for(int i=0;i<playerDetailInfo.size();i++){
 			d[i][0] = playerDetailInfo.get(i).getName();
-			d[i][1] = playerDetailInfo.get(i).getBorncity();
+			try {
+				d[i][1] = playerLogic_db.getLatestTeam(playerDetailInfo.get(i).getId());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 			d[i][2] = playerDetailInfo.get(i).getPosition();
 			d[i][3] = playerDetailInfo.get(i).getNumber();
 			d[i][4] = playerDetailInfo.get(i).getHeight();
 			d[i][5] = playerDetailInfo.get(i).getWeight();
 			d[i][6] = playerDetailInfo.get(i).getBirth();
-			d[i][7] = playerDetailInfo.get(i).getId();
 		}
 		table = new WebTable(h, d, new Rectangle(0, 140, 940, 460), UIUtil.lightGrey);
 		table.setColumDataCenter(2);
@@ -277,8 +251,7 @@ public class PlayerUI extends BgPanel{
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}System.out.println(id);
-					ScrollPanel scrollPanel = new ScrollPanel(turnController.turnToPlayerDetials(id), 600);
-					WebFrame.frame.setPanel(scrollPanel, name);
+					WebFrame.frame.setPanel(turnController.turnToPlayerDetials(id), name);
 				}
 			});
 			table.getColum(1)[i].addMouseListener(new MouseAdapter() {

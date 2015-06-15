@@ -65,7 +65,7 @@ public class PlayerData extends BgPanel{
 			e.printStackTrace();
 		}
 		
-		this.setBounds(0, 600, 940, 400);
+		this.setBounds(0, 100, 940, 500);
 		this.setLayout(null);
 		this.setVisible(true);
 		this.setOpaque(false);
@@ -75,9 +75,9 @@ public class PlayerData extends BgPanel{
 	}
 
 	private void init(){
-		rectangle = new Rectangle(50, 40, 840, 360);
+		rectangle = new Rectangle(0, 80, 940, 320);
 		
-		label = new GLabel("赛季信息", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
+		label = new GLabel("赛季数据", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setBackground(UIUtil.bgWhite);
 		label.setOpaque(true);
@@ -95,9 +95,11 @@ public class PlayerData extends BgPanel{
 		advance_basic_off_setting();
 		advance_shoot_off_setting();
 		
+		isNormal = true;
+		
 		String comHeader[] = {"常规赛", "季后赛"};
 		comboBox = new JComboBox<String>(comHeader);
-		comboBox.setBounds(500, 0, 70, 30);
+		comboBox.setBounds(450, 35, 90, 30);
 		comboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -140,9 +142,10 @@ public class PlayerData extends BgPanel{
 				}
 			}
 		});
+		this.add(comboBox);
 
 		checkBox1 = new JCheckBox("基础场均");
-		checkBox1.setBounds(600, 0, 70, 30);
+		checkBox1.setBounds(540, 35, 90, 30);
 		checkBox1.setSelected(true);
 		this.add(checkBox1);
 		checkBox1.addActionListener(new ActionListener() {
@@ -172,7 +175,8 @@ public class PlayerData extends BgPanel{
 		});
 		
 		checkBox2 = new JCheckBox("基础总计");
-		checkBox2.setBounds(670, 0, 70, 30);
+		checkBox2.setBounds(checkBox1.getLocation().x+checkBox1.getSize().width, checkBox1.getLocation().y, 
+				checkBox1.getSize().width, checkBox1.getSize().height);
 		this.add(checkBox2);
 		checkBox2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -201,7 +205,8 @@ public class PlayerData extends BgPanel{
 		});
 		
 		checkBox3 = new JCheckBox("基础进阶");
-		checkBox3.setBounds(740, 0, 70, 30);
+		checkBox3.setBounds(checkBox2.getLocation().x+checkBox2.getSize().width, checkBox2.getLocation().y, 
+				checkBox2.getSize().width, checkBox2.getSize().height);
 		this.add(checkBox3);
 		checkBox3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -230,7 +235,8 @@ public class PlayerData extends BgPanel{
 		});
 		
 		checkBox4 = new JCheckBox("高级进阶");
-		checkBox4.setBounds(810, 0, 70, 30);
+		checkBox4.setBounds(checkBox3.getLocation().x+checkBox3.getSize().width, checkBox3.getLocation().y, 
+				checkBox3.getSize().width, checkBox3.getSize().height);
 		this.add(checkBox4);
 		checkBox4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -293,6 +299,11 @@ public class PlayerData extends BgPanel{
 		
 		total_basic_normal_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		total_basic_normal_table.setVisible(false);
+		for(int i=2;i<header.length;i++){
+			total_basic_normal_table.setColumDataCenter(i);
+		}
+		total_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
+		total_basic_normal_table.setColumHand(1);
 		this.add(total_basic_normal_table);
 	}
 
@@ -304,9 +315,9 @@ public class PlayerData extends BgPanel{
 			data[i][0] = playerDataSeason_Avg_Basic.get(i).getSeason();
 			data[i][1] = playerDataSeason_Avg_Basic.get(i).getTeam();
 			data[i][2] = playerDataSeason_Avg_Basic.get(i).getTime();
-			data[i][3] = playerDataSeason_Avg_Basic.get(i).getShootper();
-			data[i][4] = playerDataSeason_Avg_Basic.get(i).getThper();
-			data[i][5] = playerDataSeason_Avg_Basic.get(i).getFtper();
+			data[i][3] = playerDataSeason_Avg_Basic.get(i).getShootper().replaceAll("%", "");
+			data[i][4] = playerDataSeason_Avg_Basic.get(i).getThper().replaceAll("%", "");
+			data[i][5] = playerDataSeason_Avg_Basic.get(i).getFtper().replaceAll("%", "");
 			data[i][6] = playerDataSeason_Avg_Basic.get(i).getBackbound();
 			data[i][7] = playerDataSeason_Avg_Basic.get(i).getAssist();
 			data[i][8] = playerDataSeason_Avg_Basic.get(i).getSteal();
@@ -318,6 +329,11 @@ public class PlayerData extends BgPanel{
 		
 		avg_basic_normal_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		avg_basic_normal_table.setVisible(true);
+		for(int i=2;i<header.length;i++){
+			avg_basic_normal_table.setColumDataCenter(i);
+		}
+		avg_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
+		avg_basic_normal_table.setColumHand(1);
 		this.add(avg_basic_normal_table);
 	}
 	
@@ -330,14 +346,14 @@ public class PlayerData extends BgPanel{
 		for(int i=0;i<playerDataSeason_Ad_Basics.size();i++){
 			data[i][0] = playerDataSeason_Ad_Basics.get(i).getSeason();
 			data[i][1] = playerDataSeason_Ad_Basics.get(i).getTeam();
-			data[i][2] = playerDataSeason_Ad_Basics.get(i).getBackeff();
-			data[i][3] = playerDataSeason_Ad_Basics.get(i).getOffbeff();
-			data[i][4] = playerDataSeason_Ad_Basics.get(i).getDefbeff();
-			data[i][5] = playerDataSeason_Ad_Basics.get(i).getAssisteff();
-			data[i][6] = playerDataSeason_Ad_Basics.get(i).getStealeff();
-			data[i][7] = playerDataSeason_Ad_Basics.get(i).getRejeff();
-			data[i][8] = playerDataSeason_Ad_Basics.get(i).getMisseff();
-			data[i][9] = playerDataSeason_Ad_Basics.get(i).getUseeff();
+			data[i][2] = playerDataSeason_Ad_Basics.get(i).getBackeff().replaceAll("%", "");
+			data[i][3] = playerDataSeason_Ad_Basics.get(i).getOffbeff().replaceAll("%", "");
+			data[i][4] = playerDataSeason_Ad_Basics.get(i).getDefbeff().replaceAll("%", "");
+			data[i][5] = playerDataSeason_Ad_Basics.get(i).getAssisteff().replaceAll("%", "");
+			data[i][6] = playerDataSeason_Ad_Basics.get(i).getStealeff().replaceAll("%", "");
+			data[i][7] = playerDataSeason_Ad_Basics.get(i).getRejeff().replaceAll("%", "");
+			data[i][8] = playerDataSeason_Ad_Basics.get(i).getMisseff().replaceAll("%", "");
+			data[i][9] = playerDataSeason_Ad_Basics.get(i).getUseeff().replaceAll("%", "");
 			data[i][10] = playerDataSeason_Ad_Basics.get(i).getOffeff();
 			data[i][11] = playerDataSeason_Ad_Basics.get(i).getDefeff();
 			data[i][12] = playerDataSeason_Ad_Basics.get(i).getWs();
@@ -351,6 +367,11 @@ public class PlayerData extends BgPanel{
 		
 		advance_basic_normal_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		advance_basic_normal_table.setVisible(false);
+		for(int i=2;i<header.length;i++){
+			advance_basic_normal_table.setColumDataCenter(i);
+		}
+		advance_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
+		advance_basic_normal_table.setColumHand(1);
 		this.add(advance_basic_normal_table);
 	}
 	
@@ -367,28 +388,33 @@ public class PlayerData extends BgPanel{
 			data[i][0] = playerDataSeason_Ad_Shoots.get(i).getSeason();
 			data[i][1] = playerDataSeason_Ad_Shoots.get(i).getTeam();
 			data[i][2] = playerDataSeason_Ad_Shoots.get(i).getShootdis();
-			data[i][3] = playerDataSeason_Ad_Shoots.get(i).getBshootper();
+			data[i][3] = playerDataSeason_Ad_Shoots.get(i).getBshootper().replaceAll("%", "");
 			data[i][4] = playerDataSeason_Ad_Shoots.get(i).getBshoot_all();
 			data[i][5] = playerDataSeason_Ad_Shoots.get(i).getBshoot_in();
-			data[i][6] = playerDataSeason_Ad_Shoots.get(i).getB_per();
-			data[i][7] = playerDataSeason_Ad_Shoots.get(i).getCloseshootper();
+			data[i][6] = playerDataSeason_Ad_Shoots.get(i).getB_per().replaceAll("%", "");
+			data[i][7] = playerDataSeason_Ad_Shoots.get(i).getCloseshootper().replaceAll("%", "");
 			data[i][8] = playerDataSeason_Ad_Shoots.get(i).getCloseshoot_all();
 			data[i][9] = playerDataSeason_Ad_Shoots.get(i).getCloseshoot_in();
-			data[i][10] = playerDataSeason_Ad_Shoots.get(i).getClose_per();
-			data[i][11] = playerDataSeason_Ad_Shoots.get(i).getMidshootper();
+			data[i][10] = playerDataSeason_Ad_Shoots.get(i).getClose_per().replaceAll("%", "");
+			data[i][11] = playerDataSeason_Ad_Shoots.get(i).getMidshootper().replaceAll("%", "");
 			data[i][12] = playerDataSeason_Ad_Shoots.get(i).getMidshoot_all();
 			data[i][13] = playerDataSeason_Ad_Shoots.get(i).getMidshoot_in();
-			data[i][14] = playerDataSeason_Ad_Shoots.get(i).getMid_per();
-			data[i][15] = playerDataSeason_Ad_Shoots.get(i).getFarshootper();
+			data[i][14] = playerDataSeason_Ad_Shoots.get(i).getMid_per().replaceAll("%", "");
+			data[i][15] = playerDataSeason_Ad_Shoots.get(i).getFarshootper().replaceAll("%", "");
 			data[i][16] = playerDataSeason_Ad_Shoots.get(i).getFarshoot_all();
 			data[i][17] = playerDataSeason_Ad_Shoots.get(i).getFarshoot_in();
-			data[i][18] = playerDataSeason_Ad_Shoots.get(i).getFar_per();
-			data[i][19] = playerDataSeason_Ad_Shoots.get(i).getTrueshootper();
-			data[i][20] = playerDataSeason_Ad_Shoots.get(i).getShooteff();
+			data[i][18] = playerDataSeason_Ad_Shoots.get(i).getFar_per().replaceAll("%", "");
+			data[i][19] = playerDataSeason_Ad_Shoots.get(i).getTrueshootper().replaceAll("%", "");
+			data[i][20] = playerDataSeason_Ad_Shoots.get(i).getShooteff().replaceAll("%", "");
 		}
 
 		advance_shoot_normal_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		advance_shoot_normal_table.setVisible(false);
+		for(int i=2;i<header.length;i++){
+			advance_shoot_normal_table.setColumDataCenter(i);
+		}
+		advance_shoot_normal_table.setColumForeground(1, UIUtil.nbaBlue);
+		advance_shoot_normal_table.setColumHand(1);
 		this.add(advance_shoot_normal_table);
 	}
 	
@@ -425,6 +451,11 @@ public class PlayerData extends BgPanel{
 		
 		total_basic_off_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		total_basic_off_table.setVisible(false);
+		for(int i=2;i<header.length;i++){
+			total_basic_off_table.setColumDataCenter(i);
+		}
+		total_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
+		total_basic_off_table.setColumHand(1);
 		this.add(total_basic_off_table);
 	}
 
@@ -436,9 +467,9 @@ public class PlayerData extends BgPanel{
 			data[i][0] = playerDataPlayOff_Avg_Basics.get(i).getSeason();
 			data[i][1] = playerDataPlayOff_Avg_Basics.get(i).getTeam();
 			data[i][2] = playerDataPlayOff_Avg_Basics.get(i).getTime();
-			data[i][3] = playerDataPlayOff_Avg_Basics.get(i).getShootper();
-			data[i][4] = playerDataPlayOff_Avg_Basics.get(i).getThper();
-			data[i][5] = playerDataPlayOff_Avg_Basics.get(i).getFtper();
+			data[i][3] = playerDataPlayOff_Avg_Basics.get(i).getShootper().replaceAll("%", "");
+			data[i][4] = playerDataPlayOff_Avg_Basics.get(i).getThper().replaceAll("%", "");
+			data[i][5] = playerDataPlayOff_Avg_Basics.get(i).getFtper().replaceAll("%", "");
 			data[i][6] = playerDataPlayOff_Avg_Basics.get(i).getBackbound();
 			data[i][7] = playerDataPlayOff_Avg_Basics.get(i).getAssist();
 			data[i][8] = playerDataPlayOff_Avg_Basics.get(i).getSteal();
@@ -450,6 +481,11 @@ public class PlayerData extends BgPanel{
 		
 		avg_basic_off_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		avg_basic_off_table.setVisible(true);
+		for(int i=2;i<header.length;i++){
+			avg_basic_off_table.setColumDataCenter(i);
+		}
+		avg_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
+		avg_basic_off_table.setColumHand(1);
 		this.add(avg_basic_off_table);
 	}
 	
@@ -462,14 +498,14 @@ public class PlayerData extends BgPanel{
 		for(int i=0;i<playerDataPlayOff_Ad_Basics.size();i++){
 			data[i][0] = playerDataPlayOff_Ad_Basics.get(i).getSeason();
 			data[i][1] = playerDataPlayOff_Ad_Basics.get(i).getTeam();
-			data[i][2] = playerDataPlayOff_Ad_Basics.get(i).getBackeff();
-			data[i][3] = playerDataPlayOff_Ad_Basics.get(i).getOffbeff();
-			data[i][4] = playerDataPlayOff_Ad_Basics.get(i).getDefbeff();
-			data[i][5] = playerDataPlayOff_Ad_Basics.get(i).getAssisteff();
-			data[i][6] = playerDataPlayOff_Ad_Basics.get(i).getStealeff();
-			data[i][7] = playerDataPlayOff_Ad_Basics.get(i).getRejeff();
-			data[i][8] = playerDataPlayOff_Ad_Basics.get(i).getMisseff();
-			data[i][9] = playerDataPlayOff_Ad_Basics.get(i).getUseeff();
+			data[i][2] = playerDataPlayOff_Ad_Basics.get(i).getBackeff().replaceAll("%", "");
+			data[i][3] = playerDataPlayOff_Ad_Basics.get(i).getOffbeff().replaceAll("%", "");
+			data[i][4] = playerDataPlayOff_Ad_Basics.get(i).getDefbeff().replaceAll("%", "");
+			data[i][5] = playerDataPlayOff_Ad_Basics.get(i).getAssisteff().replaceAll("%", "");
+			data[i][6] = playerDataPlayOff_Ad_Basics.get(i).getStealeff().replaceAll("%", "");
+			data[i][7] = playerDataPlayOff_Ad_Basics.get(i).getRejeff().replaceAll("%", "");
+			data[i][8] = playerDataPlayOff_Ad_Basics.get(i).getMisseff().replaceAll("%", "");
+			data[i][9] = playerDataPlayOff_Ad_Basics.get(i).getUseeff().replaceAll("%", "");
 			data[i][10] = playerDataPlayOff_Ad_Basics.get(i).getOffeff();
 			data[i][11] = playerDataPlayOff_Ad_Basics.get(i).getDefeff();
 			data[i][12] = playerDataPlayOff_Ad_Basics.get(i).getWs();
@@ -483,6 +519,11 @@ public class PlayerData extends BgPanel{
 		
 		advance_basic_off_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		advance_basic_off_table.setVisible(false);
+		for(int i=2;i<header.length;i++){
+			advance_basic_off_table.setColumDataCenter(i);
+		}
+		advance_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
+		advance_basic_off_table.setColumHand(1);
 		this.add(advance_basic_off_table);
 	}
 	
@@ -499,28 +540,33 @@ public class PlayerData extends BgPanel{
 			data[i][0] = playerDataPlayOff_Ad_Shoots.get(i).getSeason();
 			data[i][1] = playerDataPlayOff_Ad_Shoots.get(i).getTeam();
 			data[i][2] = playerDataPlayOff_Ad_Shoots.get(i).getShootdis();
-			data[i][3] = playerDataPlayOff_Ad_Shoots.get(i).getBshootper();
+			data[i][3] = playerDataPlayOff_Ad_Shoots.get(i).getBshootper().replaceAll("%", "");
 			data[i][4] = playerDataPlayOff_Ad_Shoots.get(i).getBshoot_all();
 			data[i][5] = playerDataPlayOff_Ad_Shoots.get(i).getBshoot_in();
-			data[i][6] = playerDataPlayOff_Ad_Shoots.get(i).getB_per();
-			data[i][7] = playerDataPlayOff_Ad_Shoots.get(i).getCloseshootper();
+			data[i][6] = playerDataPlayOff_Ad_Shoots.get(i).getB_per().replaceAll("%", "");
+			data[i][7] = playerDataPlayOff_Ad_Shoots.get(i).getCloseshootper().replaceAll("%", "");
 			data[i][8] = playerDataPlayOff_Ad_Shoots.get(i).getCloseshoot_all();
 			data[i][9] = playerDataPlayOff_Ad_Shoots.get(i).getCloseshoot_in();
-			data[i][10] = playerDataPlayOff_Ad_Shoots.get(i).getClose_per();
-			data[i][11] = playerDataPlayOff_Ad_Shoots.get(i).getMidshootper();
+			data[i][10] = playerDataPlayOff_Ad_Shoots.get(i).getClose_per().replaceAll("%", "");
+			data[i][11] = playerDataPlayOff_Ad_Shoots.get(i).getMidshootper().replaceAll("%", "");
 			data[i][12] = playerDataPlayOff_Ad_Shoots.get(i).getMidshoot_all();
 			data[i][13] = playerDataPlayOff_Ad_Shoots.get(i).getMidshoot_in();
-			data[i][14] = playerDataPlayOff_Ad_Shoots.get(i).getMid_per();
-			data[i][15] = playerDataPlayOff_Ad_Shoots.get(i).getFarshootper();
+			data[i][14] = playerDataPlayOff_Ad_Shoots.get(i).getMid_per().replaceAll("%", "");
+			data[i][15] = playerDataPlayOff_Ad_Shoots.get(i).getFarshootper().replaceAll("%", "");
 			data[i][16] = playerDataPlayOff_Ad_Shoots.get(i).getFarshoot_all();
 			data[i][17] = playerDataPlayOff_Ad_Shoots.get(i).getFarshoot_in();
-			data[i][18] = playerDataPlayOff_Ad_Shoots.get(i).getFar_per();
-			data[i][19] = playerDataPlayOff_Ad_Shoots.get(i).getTrueshootper();
-			data[i][20] = playerDataPlayOff_Ad_Shoots.get(i).getShooteff();
+			data[i][18] = playerDataPlayOff_Ad_Shoots.get(i).getFar_per().replaceAll("%", "");
+			data[i][19] = playerDataPlayOff_Ad_Shoots.get(i).getTrueshootper().replaceAll("%", "");
+			data[i][20] = playerDataPlayOff_Ad_Shoots.get(i).getShooteff().replaceAll("%", "");
 		}
 
 		advance_shoot_off_table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		advance_shoot_off_table.setVisible(false);
+		for(int i=2;i<header.length;i++){
+			advance_shoot_off_table.setColumDataCenter(i);
+		}
+		advance_shoot_off_table.setColumForeground(1, UIUtil.nbaBlue);
+		advance_shoot_off_table.setColumHand(1);
 		this.add(advance_shoot_off_table);
 	}
 

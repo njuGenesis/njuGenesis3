@@ -25,18 +25,20 @@ public class WebLabel extends JLabel{
 	public WebLabel(String message, Point location, Point size, Container container, 
 			boolean visible, int bord, int wordSize, 
 			JPanel panel){
-		this.setText(message);
 		this.setBounds(location.x, location.y, size.x, size.y);
 		this.setVisible(visible);
-		this.setFont(new java.awt.Font("微软雅黑", bord, wordSize));
 		if(panel != null){
 			this.panel = panel;
 		}
 		if(container != null){
 			container.add(this);
 		}
-//		text = new GLabel(message, new Point(35, 0), new Point(size.x-35, size.y), this, true, bord, wordSize);
-//		text.setHorizontalAlignment(JLabel.CENTER);
+		text = new GLabel(message, new Point(30, 0), new Point(100, 25), this, true, bord, wordSize);
+		text.setHorizontalAlignment(JLabel.CENTER);
+		text.setBackground(UIUtil.nbaBlue);
+		text.setForeground(UIUtil.bgWhite);
+		text.setOpaque(true);
+		text.setFont(new java.awt.Font("微软雅黑", bord, wordSize));
 		
 		setClose();
 		setListener();
@@ -55,7 +57,7 @@ public class WebLabel extends JLabel{
 	}
 	
 	private void setClose(){
-		label = new WebLabel("✕︎", new Point(10, 0), new Point(25, 25), true, 0, 15, null);
+		label = new WebLabel("✕︎", new Point(10, 0), new Point(20, 25), true, 0, 15, null);
 		label.setForeground(UIUtil.bgWhite);
 		label.setLabel(this);
 		
@@ -124,8 +126,8 @@ public class WebLabel extends JLabel{
 	
 	public void setSelected(){
 		for(int i = 0;i<WebFrame.frame.getLabel().size();i++){
-			WebFrame.frame.getLabel().get(i).setBackground(WebFrame.frame.getBg().getBackground());
-			WebFrame.frame.getLabel().get(i).setForeground(UIUtil.foreGrey);
+			WebFrame.frame.getLabel().get(i).text.setBackground(WebFrame.frame.getBg().getBackground());
+			WebFrame.frame.getLabel().get(i).text.setForeground(UIUtil.foreGrey);
 			WebFrame.frame.getLabel().get(i).isSelected = false;
 			WebFrame.frame.getLabel().get(i).label.setVisible(false);
 			WebFrame.frame.getLabel().get(i).label.setForeground(UIUtil.foreGrey);
@@ -133,11 +135,11 @@ public class WebLabel extends JLabel{
 		for(int i = 0;i<WebFrame.frame.getPanel().size();i++){
 			WebFrame.frame.getPanel().get(i).setVisible(false);
 		}
-		this.setBackground(UIUtil.nbaBlue);
-		this.setForeground(UIUtil.bgWhite);
+		this.text.setBackground(UIUtil.nbaBlue);
+		this.text.setForeground(UIUtil.bgWhite);
 		this.isSelected = true;
 		this.label.setVisible(true);
-		this.label.setForeground(UIUtil.bgWhite);
+		this.label.setForeground(UIUtil.nbaBlue);
 		this.getPanel().setVisible(true);
 	}
 

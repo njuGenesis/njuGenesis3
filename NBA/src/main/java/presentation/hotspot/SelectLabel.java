@@ -20,6 +20,7 @@ public class SelectLabel extends GLabel{
 	
 	
 	public boolean isSelected = false;
+	private int number;
 
 	public SelectLabel(String message, Point location, Point size, Container container, boolean visible, int bord, int wordSize){
 		super(message,location,size,container,visible,bord,wordSize);
@@ -45,6 +46,12 @@ public class SelectLabel extends GLabel{
 		return isSelected;
 	}
 	
+	public void setNumber(int number){
+		this.number = number;
+	}
+	public int getNumber(){
+		return this.number;
+	}
 	
 	class LabelListener implements MouseListener{
 
