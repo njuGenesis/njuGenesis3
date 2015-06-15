@@ -21,7 +21,7 @@ public class PlayerInfo extends BgPanel{
 	private static final long serialVersionUID = 1L;
 	private static String file = "img/playerDetials/info.png";
 	private TeamImageAssist assist;
-	private GLabel playerPic, teamPic, number, position, height, weight, birthday, age, exp;
+	private GLabel playerPic, teamPic, number, position, height, weight, birthday, chName, exp;
 	private JTextArea borncity;
 	
 	private PlayerDetailInfo playerDetailInfo;
@@ -37,7 +37,7 @@ public class PlayerInfo extends BgPanel{
 			e.printStackTrace();
 		}
 		
-		this.setBounds(0, 50, 940, 550);
+		this.setBounds(0, 100, 940, 500);
 		this.setBackground(UIUtil.bgWhite);
 		this.setLayout(null);
 		this.setVisible(true);
@@ -61,20 +61,19 @@ public class PlayerInfo extends BgPanel{
 //				StartUI.startUI.turn(turnController.turnToTeamDetials(teamName));
 			}
 		});
-		number = new GLabel(playerDetailInfo.getNumber(), new Point(163, 408), new Point(200, 25), this, true, 0, 18);
-		position = new GLabel(playerDetailInfo.getPosition(), new Point(160, 438), new Point(200, 25), this, true, 0, 18);
-		height = new GLabel(playerDetailInfo.getHeight(), new Point(718, 147), new Point(200, 25), this, true, 0, 18);
-		weight = new GLabel(String.valueOf(playerDetailInfo.getWeight()), new Point(718, 180), new Point(200, 25), this, true, 0, 18);
-		birthday = new GLabel(playerDetailInfo.getBirth(), new Point(718, 213), new Point(200, 25), this, true, 0, 18);
-//		age = new GLabel(String.valueOf(playerDetailInfo.getAge()), new Point(718, 244), new Point(200, 25), this, true, 0, 18);
-//		exp = new GLabel(String.valueOf(playerDetailInfo.getExp()), new Point(718, 275), new Point(200, 25), this, true, 0, 18);
+		number = new GLabel(playerDetailInfo.getNumber(), new Point(163, 408), new Point(200, 25), this, true, 0, 15);
+		position = new GLabel(playerDetailInfo.getPosition(), new Point(160, 438), new Point(200, 25), this, true, 0, 15);
+		height = new GLabel(playerDetailInfo.getHeight(), new Point(718, 147), new Point(200, 25), this, true, 0, 15);
+		weight = new GLabel(String.valueOf(playerDetailInfo.getWeight()), new Point(718, 180), new Point(200, 25), this, true, 0, 15);
+		birthday = new GLabel(playerDetailInfo.getBirth(), new Point(718, 212), new Point(200, 25), this, true, 0, 15);
+		chName = new GLabel(String.valueOf(playerDetailInfo.getNameCn()), new Point(735, 245), new Point(200, 25), this, true, 0, 15);
 		borncity = new JTextArea();
 		borncity.setEditable(false);
 		borncity.setLineWrap(true);
 		borncity.setWrapStyleWord(true);
-		borncity.setBounds(747, 308, 200, 50);
+		borncity.setBounds(735, 279, 200, 50);
 		borncity.setText(playerDetailInfo.getBorncity());
-		borncity.setFont(new Font("微软雅黑", 0, 18));
+		borncity.setFont(new Font("微软雅黑", 0, 15));
 		borncity.setBorder(null);
 		borncity.setBackground(UIUtil.bgWhite);
 		borncity.setOpaque(false);

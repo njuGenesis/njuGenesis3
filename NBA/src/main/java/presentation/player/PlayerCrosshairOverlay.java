@@ -62,7 +62,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 		}
 
 		this.setLayout(null);
-		this.setBounds(0, 2030, 940, 530);
+		this.setBounds(0, 100, 940, 500);
 		//this.setBounds(0, 0, 940, 530);
 		this.setBackground(UIUtil.bgWhite);
 		this.setVisible(true);

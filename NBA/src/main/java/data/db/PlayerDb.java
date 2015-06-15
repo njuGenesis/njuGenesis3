@@ -1223,7 +1223,9 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				
 
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select * from p_s_a_b where season = '"+season+"'");
+			ResultSet rs;
+			if(!season.equals("null")){
+			rs = st.executeQuery("select * from p_s_a_b where season = '"+season+"'");
 			while(rs.next()){
 				if(temp.size()==0){
 					latest = rs.getInt("id");
@@ -1245,6 +1247,25 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				pd.add(getdetail(temp.get(i)));
 			}
 			return pd;
+			}
+			else{
+				rs = st.executeQuery("select * from p_detail");
+				while(rs.next()){
+					PlayerDetailInfo r = new PlayerDetailInfo();
+					r.setName(rs.getString("name").replaceAll("\\?", "'"));
+					r.setNameCn(rs.getString("namecn"));
+					r.setId(rs.getInt("id"));
+					r.setPosition(rs.getString("position"));
+					r.setHeight(rs.getString("height"));
+					r.setWeight(rs.getString("weight"));
+					r.setBirth(rs.getString("birth"));
+					r.setBorncity(rs.getString("borncity"));
+					r.setNumber(rs.getString("number"));
+					pd.add(r);
+				}
+				return pd;
+			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
