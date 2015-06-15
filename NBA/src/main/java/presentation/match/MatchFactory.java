@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -25,10 +26,13 @@ import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.mainui.StartUI;
 import presentation.mainui.WebTable;
+import bussinesslogic.team.TeamLogic;
 import data.po.Match_PlayerPO;
 import data.po.matchData.MatchDataSeason;
 import data.po.matchData.MatchPlayer;
 import data.po.matchData.MatchTeam;
+import data.po.teamData.TeamBaseInfo;
+import data.po.teamData.TeamCompleteInfo;
 
 public class MatchFactory {
 
@@ -37,6 +41,9 @@ public class MatchFactory {
 	private int pointIntervalUD = 52;  //得分显示的上下间隔
 
 	private TeamImageAssist imgAssist = new TeamImageAssist();
+	private TeamLogic logic = new TeamLogic();
+	
+	
 
 
 	public JPanel getInfoPanel(MatchDataSeason po){
@@ -48,12 +55,16 @@ public class MatchFactory {
 		String team = TableUtility.checkNOH(po.getTeam()); // 主队
 		String otherTeam = TableUtility.checkNOH(po.getOtherTeam()); // 客队
 		String[] points = po.getPoint();
+		
+		
+		TeamBaseInfo info = getInfo(team,po.getDate(),po.getisSeason());
+		TeamBaseInfo otherinfo = getInfo(otherTeam,po.getDate(),po.getisSeason());
 
 		GLabel team1 = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+team+".svg", 180, 140),new Point(88,55),new Point(180,140),jp,true);
 		GLabel team2 = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+otherTeam+".svg", 180, 140),new Point(688,55),new Point(180,140),jp,true);
-		team1.addMouseListener(new TeamListener(team));
+		team1.addMouseListener(new TeamListener(info));
 		team1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		team2.addMouseListener(new TeamListener(otherTeam));
+		team2.addMouseListener(new TeamListener(otherinfo));
 		team2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		GLabel pointall_1 = new GLabel(getPoint1(points[0]),new Point(285,120),new Point(150,40),jp,true,0,30);
@@ -372,6 +383,38 @@ public class MatchFactory {
 	private String getPoint2(String str){
 		return str.split("-")[0];
 	}
+	
+	
+	private TeamBaseInfo getInfo(String shortName,String date,String isSeason){
+		 try {
+			ArrayList<TeamCompleteInfo> list = logic.GetPartCompleteInfo(shortName, getSeason(date), isSeason);
+			if(list.size()!=0){
+				return list.get(0).getBaseinfo();
+			}else{
+				return new TeamBaseInfo();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return new TeamBaseInfo();
+		}
+	}
+	
+	
+	private String getSeason(String date){
+		String[] temp = date.split("-");
+		int year = Integer.parseInt(temp[0]);
+		int month = Integer.parseInt(temp[1]);
+		
+		if(month>=10){
+			String res = String.valueOf(year).substring(2, 4)+"-"+String.valueOf(year+1).substring(2, 4);
+			return res;
+		}else{
+			String res = String.valueOf(year-1).substring(2, 4)+"-"+String.valueOf(year).substring(2, 4);
+			return res;
+		}
+		
+	}
+	
 
 	//解析日期
 	private String getDate(String str){
@@ -497,16 +540,16 @@ public class MatchFactory {
 	
 	class TeamListener implements MouseListener{
 		
-		String shortName;
+		TeamBaseInfo info;
 		
-		public TeamListener(String shortName){
-			this.shortName = shortName;
+		public TeamListener(TeamBaseInfo info){
+			this.info = info;
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			TurnController tc = new TurnController();
-			StartUI.startUI.turn(tc.turnToTeamDetials(shortName));
+			StartUI.startUI.turn(tc.turnToTeamDetials(info));
 		}
 
 		@Override

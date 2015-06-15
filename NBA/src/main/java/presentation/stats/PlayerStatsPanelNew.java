@@ -8,29 +8,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GComboBox;
 import presentation.component.GLabel;
-import presentation.component.GTable;
 import presentation.component.StyleScrollPane;
 import presentation.contenui.StatsUtil;
-import presentation.contenui.TableUtility;
 import presentation.contenui.UIUtil;
 import presentation.mainui.WebTable;
 import assistance.NewFont;
-import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
-import data.po.PlayerDataPO;
 import data.po.playerData.PlayerDataPlayOff_Ad_Basic;
 import data.po.playerData.PlayerDataPlayOff_Ad_Shoot;
 import data.po.playerData.PlayerDataPlayOff_Avg_Basic;
@@ -55,7 +48,6 @@ public class PlayerStatsPanelNew extends BgPanel{
 	private static final long serialVersionUID = 1L;
 	private static String bg = "";
 
-	private PlayerLogic logic = new PlayerLogic();
 	private PlayerLogic_db logic_db = new PlayerLogic_db();
 
 	private GLabel title, borderUp, borderDown;
@@ -78,19 +70,25 @@ public class PlayerStatsPanelNew extends BgPanel{
 			"三分","命中","出手",
 			"罚球","命中","出手",
 	};
+	
+	String[] header_basic_off = {"姓名","球队","出场","时间",
+			"投篮","命中","出手",
+			"三分","命中","出手",
+			"罚球","命中","出手",
+	};
 
 	String[] header_basic2 = {"姓名","球队",
 			"篮板","前场","后场",
 			"助攻","抢断","盖帽","失误","犯规",
 			"得分","胜","负",};
 
-	String[] header_basic_off = {"姓名","球队","出场","时间",   //季后赛，无首发属性
-			"投篮","命中","出手",
-			"三分","命中","出手",
-			"罚球","命中","出手",
-			"篮板","前场","后场",
-			"助攻","抢断","盖帽","失误","犯规",
-			"得分","胜","负",};
+//	String[] header_basic_off = {"姓名","球队","出场","时间",   //季后赛，无首发属性
+//			"投篮","命中","出手",
+//			"三分","命中","出手",
+//			"罚球","命中","出手",
+//			"篮板","前场","后场",
+//			"助攻","抢断","盖帽","失误","犯规",
+//			"得分","胜","负",};
 
 	String[] header_ad_basic = {"姓名","球队",
 			"篮板","进攻板","防守板",
@@ -120,7 +118,6 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 	JCheckBox[] checkBoxes = new JCheckBox[6];
 
-	public GTable table;
 	public StyleScrollPane jspAll;
 	public StyleScrollPane jspAvg;
 	public StyleScrollPane jspEff;
@@ -842,7 +839,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 	}
 
 	private Object[][] getAllData1_playoff(ArrayList<PlayerDataPlayOff_Tot_Basic> temp){
-		Object[][] data = new Object[temp.size()][header_basic_off.length];  //无首发属性
+		Object[][] data = new Object[temp.size()][header_basic_off.length]; 
 
 		for(int i=0;i<temp.size();i++){
 			data[i][0] = temp.get(i).getName();
@@ -914,7 +911,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 	}
 
 	private Object[][] getAvgData1_regular(ArrayList<PlayerDataSeason_Avg_Basic> temp){
-		Object[][] data = new Object[temp.size()][header_basic_off.length];
+		Object[][] data = new Object[temp.size()][header_basic.length];
 
 		for(int i=0;i<temp.size();i++){
 			data[i][0] = temp.get(i).getName();
@@ -1095,7 +1092,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 			data[i][7] = temp.get(i).getCloseshootper();
 			data[i][8] = temp.get(i).getCloseshoot_in();
-			data[i][8] = temp.get(i).getCloseshoot_all();
+			data[i][9] = temp.get(i).getCloseshoot_all();
 			data[i][10] = temp.get(i).getClose_per();
 
 			data[i][11] = temp.get(i).getMidshootper();
@@ -1130,7 +1127,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 			data[i][7] = temp.get(i).getCloseshootper();
 			data[i][8] = temp.get(i).getCloseshoot_in();
-			data[i][8] = temp.get(i).getCloseshoot_all();
+			data[i][9] = temp.get(i).getCloseshoot_all();
 			data[i][10] = temp.get(i).getClose_per();
 
 			data[i][11] = temp.get(i).getMidshootper();

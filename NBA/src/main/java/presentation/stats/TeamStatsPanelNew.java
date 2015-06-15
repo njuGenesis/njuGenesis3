@@ -21,7 +21,6 @@ import bussinesslogic.team.TeamLogic;
 import presentation.component.BgPanel;
 import presentation.component.GComboBox;
 import presentation.component.GLabel;
-import presentation.component.GTable;
 import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
 import presentation.mainui.WebTable;
@@ -36,7 +35,6 @@ public class TeamStatsPanelNew extends BgPanel{
 	
 	private TeamLogic logic = new TeamLogic();
 
-	public GTable table;
 	public JScrollPane jsp;
 
 	private GLabel title, borderUp, borderDown;
