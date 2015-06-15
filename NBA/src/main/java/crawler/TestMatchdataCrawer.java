@@ -8,83 +8,94 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import data.db.MatchDb;
+import data.db.PlayerDb;
 import data.po.matchData.MatchDataSeason;
 import data.po.matchData.MatchPlayer;
 import data.po.matchData.MatchTeam;
 
 public class TestMatchdataCrawer {
 	MatchDb matchDb = new MatchDb();
+
 	public static void main(String[] args) {
-		//20637
+		// 20637
 		TestMatchdataCrawer m = new TestMatchdataCrawer();
-		for (int i = 20637; i <=37455; i++) {
+		for (int i = 20637; i <= 37455; i++) {
 			m.getSeasonMatch(i);
 		}
 
 	}
-	
-	public void update(){
+
+	public void update() {
 		TestMatchdataCrawer m = new TestMatchdataCrawer();
-		ArrayList<MatchDataSeason> newmatches = new ArrayList<MatchDataSeason>(); 
-		MatchDataSeason newmatch=new MatchDataSeason();
-		
-		for (int i = 20637; i <=37455; i++) {
-			newmatch=m.getSeasonMatch(i);
+		TeatTeamdataCrawer t = new TeatTeamdataCrawer();
+		ArrayList<MatchDataSeason> newmatches = new ArrayList<MatchDataSeason>();
+		MatchDataSeason newmatch = new MatchDataSeason();
+		PlayerDb p = new PlayerDb();
+		boolean is;
+		for (int i = 20637; i <= 37455; i++) {
+			newmatch = m.getSeasonMatch(i);
 			newmatches.add(newmatch);
 		}
-		for(int i=0;i<newmatches.size();i++){
-			for(int k=0;k<newmatches.get(i).getTeamPlayer().size();k++){
-				
-			//	updateplayer(name,season,isseason);
+		for (int i = 0; i < newmatches.size(); i++) {
+			for (int k = 0; k < newmatches.get(i).getTeamPlayer().size(); k++) {
+				if (newmatches.get(i).getisSeason().equals("yes")) {
+					is = true;
+				} else {
+					is = false;
+				}
+				p.updateClear(newmatches.get(i).getTeamPlayer().get(k)
+						.getPlayername(), is, newmatches.get(i).getSeason());
 			}
-			//updateteam(teamshortname,season,isseason)
-			//updateotherteam(otherteamshortname,season,season)
+			t.update(newmatches.get(i).getTeam(), newmatches.get(i)
+					.getisSeason(), newmatches.get(i).getisSeason());
+			t.update(newmatches.get(i).getOtherTeam(), newmatches.get(i)
+					.getisSeason(), newmatches.get(i).getisSeason());
 		}
-		
-		
+
 	}
-	
 
 	public MatchDataSeason getSeasonMatch(int number) {
-		
+
 		MatchDataSeason match = new MatchDataSeason();
-		
+
 		Document doc = null;
 		try {
 			doc = Jsoup
 					.connect("http://www.stat-nba.com/game/" + number + ".html")
 					.header("User-Agent",
-							"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").timeout(10000)
-					.get();
+							"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0")
+					.timeout(10000).get();
 
 			if (doc.select("table").size() == 0) {
 				return match;
 			}
 
-			// timeInfo,nameInfo 
+			// timeInfo,nameInfo
 			Element nameInfo1 = doc.select("div[class=teamDiv]")
 					.select("a[href]").get(0);
 			Element nameInfo2 = doc.select("div[class=teamDiv]")
 					.select("a[href]").get(5);
-			String  isSeason = doc.select("div[class=title]").first().text().split(" ")[1];
-			
+			String isSeason = doc.select("div[class=title]").first().text()
+					.split(" ")[1];
+
 			String timeInfo = doc.select("meta[name=description]").get(0)
 					.attr("content");
-			
-			if(isSeason.equals("常规赛")){
-				System.out.println(number+"------------------------");
+
+			if (isSeason.equals("常规赛")) {
+				System.out.println(number + "------------------------");
 				match.setisSeason("yes");
-			}
-			else{
+			} else {
 				match.setisSeason("no");
 			}
-			
+
 			match.setMatchID(String.valueOf(number));
 			match.setSeason(timeInfo.split(",")[0].split("赛")[0]);
 			System.out.println(match.getSeason());
-			match.setDate( timeInfo.split(",")[1].replaceAll("年", "-").replaceAll("月", "-").replaceAll("日", ""));
-	
-			match.setOtherTeam(nameInfo1.attr("href").split("/")[2].split("\\.")[0]); 	
+			match.setDate(timeInfo.split(",")[1].replaceAll("年", "-")
+					.replaceAll("月", "-").replaceAll("日", ""));
+
+			match.setOtherTeam(nameInfo1.attr("href").split("/")[2]
+					.split("\\.")[0]);
 			match.setTeam(nameInfo2.attr("href").split("/")[2].split("\\.")[0]);
 
 			// pointInfo
@@ -108,8 +119,6 @@ public class TestMatchdataCrawer {
 			}
 			match.setPoint(pointInfos);
 
-			
-
 			// 球员球队详细信息
 			Elements e = doc.select("table[class=stat_box]").select("tbody")
 					.select("tr");
@@ -118,56 +127,55 @@ public class TestMatchdataCrawer {
 			MatchPlayer player = new MatchPlayer();
 			MatchTeam team = new MatchTeam();
 			MatchTeam otherteam = new MatchTeam();
-			if(isSeason.equals("常规赛")){
+			if (isSeason.equals("常规赛")) {
 				team.setIsseason("yes");
 				otherteam.setIsseason("yes");
-			}
-			else{
+			} else {
 				team.setIsseason("no");
 				otherteam.setIsseason("no");
 			}
 			int other = 0; // 记录主队的第一人数据位置
 			for (int k = 0; k < e.size(); k++) {
 				player = new MatchPlayer();
-				if(isSeason.equals("常规赛")){
+				if (isSeason.equals("常规赛")) {
 					player.setIsseason("yes");
-				}
-				else{
+				} else {
 					player.setIsseason("no");
 				}
 
 				team.setMatchID(String.valueOf(number));
 				otherteam.setMatchID(String.valueOf(number));
 				player.setMatchID(String.valueOf(number));
-				
+
 				team.setSeason(match.getSeason());
 				otherteam.setSeason(match.getSeason());
 				player.setSeason(match.getSeason());
-				
+
 				team.setDate(match.getDate());
 				otherteam.setDate(match.getDate());
 				player.setDate(match.getDate());
-				
+
 				team.setResult(match.getPoint()[0]);
 				otherteam.setResult(match.getPoint()[0]);
 				player.setResult(match.getPoint()[0]);
-				
-				team.setTwoteam(match.getOtherTeam()+"-"+match.getTeam());
-				otherteam.setTwoteam(match.getOtherTeam()+"-"+match.getTeam());
-				player.setTwoteam(match.getOtherTeam()+"-"+match.getTeam());
-				
-				
+
+				team.setTwoteam(match.getOtherTeam() + "-" + match.getTeam());
+				otherteam.setTwoteam(match.getOtherTeam() + "-"
+						+ match.getTeam());
+				player.setTwoteam(match.getOtherTeam() + "-" + match.getTeam());
+
 				last = e.get(k).select("td");
 
 				if (last.text().equals("")) {
 					other = k + 2;
 					continue;
 				}
-				if(other == 0){
+				if (other == 0) {
 					player.setTeam(match.getOtherTeam());
 					player.setPlayername(last.get(1).text());
-					if(player.getPlayername().contains("'")){
-						player.setPlayername(player.getPlayername().replaceAll("'", "’"));
+					if (player.getPlayername().contains("'")) {
+						player.setPlayername(player.getPlayername().replaceAll(
+								"'", "’"));
 					}
 					player.setIsFirst(last.get(2).text());
 					player.setTime(last.get(3).text());
@@ -193,7 +201,7 @@ public class TestMatchdataCrawer {
 					players.add(player);
 				}
 				if (other != 0) {
-					if(k==other-1){
+					if (k == other - 1) {
 						team.setTeamShortName(match.getOtherTeam());
 						team.setPlayerNumber(last.get(1).text());
 						team.setShootEff(last.get(2).text());
@@ -215,8 +223,7 @@ public class TestMatchdataCrawer {
 						team.setTo(last.get(18).text());
 						team.setFoul(last.get(19).text());
 						team.setPoints(last.get(20).text());
-					}
-					else if(k==(e.size()-1)){
+					} else if (k == (e.size() - 1)) {
 						otherteam.setTeamShortName(match.getTeam());
 						otherteam.setPlayerNumber(last.get(1).text());
 						otherteam.setShootEff(last.get(2).text());
@@ -238,12 +245,12 @@ public class TestMatchdataCrawer {
 						otherteam.setTo(last.get(18).text());
 						otherteam.setFoul(last.get(19).text());
 						otherteam.setPoints(last.get(20).text());
-					}
-					else{
+					} else {
 						player.setTeam(match.getTeam());
 						player.setPlayername(last.get(1).text());
-						if(player.getPlayername().contains("'")){
-							player.setPlayername(player.getPlayername().replaceAll("'", "’"));
+						if (player.getPlayername().contains("'")) {
+							player.setPlayername(player.getPlayername()
+									.replaceAll("'", "’"));
 						}
 						player.setIsFirst(last.get(2).text());
 						player.setTime(last.get(3).text());
@@ -270,41 +277,41 @@ public class TestMatchdataCrawer {
 					}
 				}
 			}
-			
-			/*System.out.println(players.size());
-			System.out.println(team.getPoints());
-			System.out.println(otherteam.getPoints());*/
+
+			/*
+			 * System.out.println(players.size());
+			 * System.out.println(team.getPoints());
+			 * System.out.println(otherteam.getPoints());
+			 */
 			writematchInfo(match);
 			writematchPlayer(players);
 			writematchTeam(team, otherteam);
-			
-			
+
 			match.setTeamPlayer(players);
 			match.setTeamdata(team);
 			match.setOtherteamdata(otherteam);
-			
+
 			return match;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		return null;
 	}
-	
-	private void writematchInfo(MatchDataSeason m){
+
+	private void writematchInfo(MatchDataSeason m) {
 		matchDb.addmatchinfo(m);
 	}
-	private void writematchPlayer(ArrayList<MatchPlayer> m){
-		for(int i=0;i<m.size();i++){
-		matchDb.addmatchplayer(m.get(i));
+
+	private void writematchPlayer(ArrayList<MatchPlayer> m) {
+		for (int i = 0; i < m.size(); i++) {
+			matchDb.addmatchplayer(m.get(i));
 		}
 	}
-	private void writematchTeam(MatchTeam team,MatchTeam otherTeam){
+
+	private void writematchTeam(MatchTeam team, MatchTeam otherTeam) {
 		matchDb.addmatchteam(team);
 		matchDb.addmatchteam(otherTeam);
 	}
-	
 
 }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import bslogicService.TeamInfoService;
 import bussinesslogic.match.MatchLogic;
 import data.db.TeamDb;
-import data.po.matchData.MatchDataSeason;
 import data.po.matchData.MatchTeam;
 import data.po.teamData.OtherTeamData;
 import data.po.teamData.TeamBaseInfo;
@@ -191,9 +190,10 @@ public class TeamLogic implements TeamInfoService {
 		System.out.println(r);
 	}
 
+	
+	//两只球队的单因素方差分析
 	public void Var_a(String team1, String team2, String isseason, String season)
 			throws RemoteException {
-		TeamLogic t = new TeamLogic();
 		MatchLogic m = new MatchLogic();
 		ArrayList<MatchTeam> t1 = m.GetTeamMatch(team1, isseason, season);
 		ArrayList<MatchTeam> t2 = m.GetTeamMatch(team2, isseason, season);
@@ -201,7 +201,7 @@ public class TeamLogic implements TeamInfoService {
 		
 		System.out.println(t2.size());
 		
-		for (int i = 0; i < t1.size(); i++) {
+/*		for (int i = 0; i < t1.size(); i++) {
 			if (!t1.get(i).getTwoteam().contains(team2)) {
 				t1.remove(i);
 				i--;
@@ -213,7 +213,7 @@ public class TeamLogic implements TeamInfoService {
 				t2.remove(i);
 				i--;
 			}
-		}
+		}*/
 
 		// ArrayList<MatchDataSeason> t3=m.GetTeamToTeamMatch(team1, season,
 		// team2, isseason);
@@ -253,9 +253,83 @@ public class TeamLogic implements TeamInfoService {
 		System.out.println(Fa);
 	}
 
+	
+   //主客场的单因素方差分析
+	public void Var_a(String team, String isseason, String season)
+			throws RemoteException {
+		MatchLogic m = new MatchLogic();
+		ArrayList<MatchTeam> t1 = m.GetTeamMatch(team, isseason, season);
+		ArrayList<MatchTeam> home= new ArrayList<MatchTeam>();
+		ArrayList<MatchTeam> away = new ArrayList<MatchTeam>();
+
+		System.out.println(t1.size());
+		for (int i = 0; i < t1.size(); i++) {
+			/*if(t1.get(i).getResult().split("-")[0].compareTo(t1.get(i).getResult().split("-")[1])>0){
+				t1.get(i).setDate("2");
+			}
+			else{
+				t1.get(i).setDate("1");
+			}*/
+			
+			if(t1.get(i).getTwoteam().startsWith(t1.get(i).getTeamShortName())){
+				away.add(t1.get(i));
+			}
+			else{
+				home.add(t1.get(i));
+			}
+		}
+		System.out.println(home.size());
+		System.out.println(away.size());
+
+		// ArrayList<MatchDataSeason> t3=m.GetTeamToTeamMatch(team1, season,
+		// team2, isseason);
+		double t1_avg = 0.0;
+		double t2_avg = 0.0;
+		double Qt = 0.0;
+		
+		
+		for (int i = 0; i < home.size(); i++) {
+			t1_avg = t1_avg + Double.valueOf(home.get(i).getFoul());
+			Qt = Qt + Math.pow(Double.valueOf(home.get(i).getFoul()), 2);
+		}
+		
+		for (int i = 0; i < away.size(); i++) {
+			t2_avg = t2_avg + Double.valueOf(away.get(i).getFoul());
+			Qt = Qt + Math.pow(Double.valueOf(away.get(i).getFoul()), 2);
+		}
+		
+		
+	
+		double C = Math.pow(t1_avg + t2_avg, 2) / (home.size() + away.size());
+		double Qa = (Math.pow(t1_avg, 2) + Math.pow(t2_avg, 2)) / home.size();
+		t1_avg = t1_avg / home.size();
+		t2_avg = t2_avg / away.size();
+		
+		double St = Qt - C;
+		double Sa=Qa-C;
+		double Va=Sa/1;
+		double Ve=(St-Sa)/(home.size() + away.size()-2);
+		double Fa=Va/Ve;
+		System.out.println(C);
+		System.out.println(Va);
+		System.out.println(Ve);
+		System.out.println(Fa);
+	}
+
+	public void test() throws RemoteException{
+		TeamLogic t = new TeamLogic();
+		ArrayList<TeamLData> team = t.GetPartLInfo("unknown", "unknown", "yes");
+		ArrayList<TeamHData> team2=t.GetPartHInfo("unknown", "unknown", "yes");
+		for(int i=0;i<team.size();i++){
+		System.out.println(team.get(i).getShootEff());
+		}
+	}
+	
+	
 	public static void main(String[] args) throws RemoteException {
 		TeamLogic t = new TeamLogic(); // GetAllCompleteInfo
-		t.Var_a("ATL", "NYK", "yes", "14-15");
+	   // t.Var_a("HOU", "SAS", "yes", "05-06");
+		t.test();
 		MatchLogic m = new MatchLogic();
 
 	}
