@@ -66,7 +66,7 @@ public class TeamBarChart extends BgPanel{
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		this.setBounds(0, 0, 940, 700);
+		this.setBounds(0, 100, 940, 500);
 		//this.setBounds(0, 2030, 940, 600);
 		this.setBackground(UIUtil.bgWhite);
 		this.setLayout(null);
@@ -234,9 +234,9 @@ public class TeamBarChart extends BgPanel{
 		LayeredBarChart layeredBarChart = new LayeredBarChart(localDefaultCategoryDataset);
 		layeredBarChartPanel = layeredBarChart.getPanel();
 		if(selectLabel.isVisible()){
-			layeredBarChartPanel.setBounds(50, 105, 840, 500);
+			layeredBarChartPanel.setBounds(50, 105, 840, 450);
 		}else{
-			layeredBarChartPanel.setBounds(50, 25, 840, 500);
+			layeredBarChartPanel.setBounds(50, 25, 840, 450);
 		}
 		this.add(layeredBarChartPanel);
 		

@@ -35,7 +35,6 @@ public class PlayerUI extends BgPanel{
 	private static String file = "";
 	private GLabel title, chooser, borderUp, borderDown;
 	private SelectLabel letter[];
-	private PlayerLogic playerLogic = new PlayerLogic();
 	private WebTable table;
 	private JComboBox<String> comboBoxTeam, comboBoxPosition;
 	private JTextField search;
@@ -216,11 +215,7 @@ public class PlayerUI extends BgPanel{
 		Object[][] d = new Object[playerDetailInfo.size()][h.length];
 		for(int i=0;i<playerDetailInfo.size();i++){
 			d[i][0] = playerDetailInfo.get(i).getName();
-			try {
-				d[i][1] = playerLogic_db.getLatestTeam(playerDetailInfo.get(i).getId());
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+			d[i][1] = playerDetailInfo.get(i).getTeam();
 			d[i][2] = playerDetailInfo.get(i).getPosition();
 			d[i][3] = playerDetailInfo.get(i).getNumber();
 			d[i][4] = playerDetailInfo.get(i).getHeight();

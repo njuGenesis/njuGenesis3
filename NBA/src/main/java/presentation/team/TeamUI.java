@@ -16,6 +16,7 @@ import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.TurnController;
 import presentation.mainui.StartUI;
+import presentation.mainui.WebFrame;
 
 public class TeamUI extends BgPanel{
 
@@ -33,18 +34,9 @@ public class TeamUI extends BgPanel{
 	public TeamUI(){
 		super(bg);
 		
-//		try {
-//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//		        if ("Nimbus".equals(info.getName())) {
-//		            UIManager.setLookAndFeel(info.getClassName());
-//		            break;
-//		        }
-//		    }
-//		} catch (Exception e) {}
-		
 		teamLogic = new TeamLogic();
 		try {
-			teamBaseInfo = teamLogic.GetAllBaseInfo();
+			teamBaseInfo = teamLogic.GetAllBaseInfo("14-15");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +84,7 @@ public class TeamUI extends BgPanel{
 			}
 			public void mousePressed(MouseEvent e) {
 				GLabel button = (GLabel)e.getSource();
-				StartUI.startUI.turn(turnController.turnToTeamDetials(button.teamBaseInfo));
+				WebFrame.frame.setPanel(turnController.turnToTeamDetials(button.teamBaseInfo), button.teamBaseInfo.getName());
 			}
 		};
 

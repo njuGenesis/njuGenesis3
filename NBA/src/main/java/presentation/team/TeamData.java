@@ -1,5 +1,6 @@
 package presentation.team;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,8 +9,10 @@ import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 import presentation.component.BgPanel;
+import presentation.component.GLabel;
 import presentation.contenui.UIUtil;
 import presentation.mainui.WebTable;
 import bussinesslogic.team.TeamLogic;
@@ -19,6 +22,7 @@ public class TeamData extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private WebTable table_avg_normal, table_avg_off, table_total_off, table_total_normal;
+	private GLabel label, border;
 	private JCheckBox checkBox1, checkBox2;
 	private TeamLogic teamLogic;
 	private Rectangle rectangle;
@@ -37,7 +41,7 @@ public class TeamData extends BgPanel{
 			e.printStackTrace();
 		}
 		
-		this.setBounds(0, 1050, 940, 400);
+		this.setBounds(0, 100, 940, 500);
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
 		this.setVisible(true);
@@ -45,7 +49,16 @@ public class TeamData extends BgPanel{
 		init();
 	}
 	private void init(){
-		rectangle = new Rectangle(50, 40, 840, 360);
+		rectangle = new Rectangle(0, 80, 940, 420);
+		
+		label = new GLabel("比赛数据", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBackground(UIUtil.bgWhite);
+		label.setOpaque(true);
+		
+		border = new GLabel("", new Point(0, 13), new Point(300, 4), this, true);
+		border.setBackground(UIUtil.nbaBlue);
+		border.setOpaque(true);
 
 		total_normal_setting();
 		avg_normal_setting();
@@ -54,9 +67,11 @@ public class TeamData extends BgPanel{
 		
 		table_total_normal.setVisible(true);
 		
+		isNormal = true;
+		
 		String comHeader[] = {"常规赛", "季后赛"};
 		comboBox = new JComboBox<String>(comHeader);
-		comboBox.setBounds(500, 0, 70, 30);
+		comboBox.setBounds(590, 35, 90, 30);
 		comboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -83,9 +98,10 @@ public class TeamData extends BgPanel{
 				}
 			}
 		});
+		this.add(comboBox);
 		
 		checkBox1 = new JCheckBox("总览");
-		checkBox1.setBounds(600, 180, 70, 30);
+		checkBox1.setBounds(720, 35, 90, 30);
 		checkBox1.setSelected(true);
 		this.add(checkBox1);
 		checkBox1.addActionListener(new ActionListener() {
@@ -111,7 +127,8 @@ public class TeamData extends BgPanel{
 		});
 		
 		checkBox2 = new JCheckBox("场均");
-		checkBox2.setBounds(670, 180, 70, 30);
+		checkBox2.setBounds(checkBox1.getLocation().x+checkBox1.getSize().width, checkBox1.getLocation().y, 
+				checkBox1.getSize().width, checkBox1.getSize().height);
 		this.add(checkBox2);
 		checkBox2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,6 +175,9 @@ public class TeamData extends BgPanel{
 		
 		table_total_normal = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		table_total_normal.setVisible(false);
+		for(int i=0;i<header.length;i++){
+			table_total_normal.setColumDataCenter(i);
+		}
 		this.add(table_total_normal);
 	}
 	
@@ -187,6 +207,9 @@ public class TeamData extends BgPanel{
 		
 		table_avg_normal = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		table_avg_normal.setVisible(false);
+		for(int i=0;i<header.length;i++){
+			table_avg_normal.setColumDataCenter(i);
+		}
 		this.add(table_avg_normal);
 	}
 
@@ -216,6 +239,9 @@ public class TeamData extends BgPanel{
 
 		table_avg_off = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		table_avg_off.setVisible(false);
+		for(int i=0;i<header.length;i++){
+			table_avg_off.setColumDataCenter(i);
+		}
 		this.add(table_avg_off);
 	}
 
@@ -240,6 +266,9 @@ public class TeamData extends BgPanel{
 
 		table_total_off = new WebTable(header, data, rectangle, UIUtil.bgWhite);
 		table_total_off.setVisible(false);
+		for(int i=0;i<header.length;i++){
+			table_total_off.setColumDataCenter(i);
+		}
 		this.add(table_total_off);
 	}
 	

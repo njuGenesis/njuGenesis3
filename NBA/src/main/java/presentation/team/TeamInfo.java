@@ -24,7 +24,7 @@ public class TeamInfo extends BgPanel{
 		
 		this.teamBaseInfo = teamBaseInfo;
 		
-		this.setBounds(0, 50, 940, 550);
+		this.setBounds(0, 100, 940, 500);
 		this.setLayout(null);
 		this.setVisible(true);
 		

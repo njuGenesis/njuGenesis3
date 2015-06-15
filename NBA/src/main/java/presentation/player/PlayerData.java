@@ -75,7 +75,7 @@ public class PlayerData extends BgPanel{
 	}
 
 	private void init(){
-		rectangle = new Rectangle(0, 80, 940, 320);
+		rectangle = new Rectangle(0, 80, 940, 420);
 		
 		label = new GLabel("赛季数据", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
 		label.setHorizontalAlignment(JLabel.CENTER);

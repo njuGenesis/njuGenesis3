@@ -40,9 +40,9 @@ public class PlayerMatch extends BgPanel{
 			this.playerName = playerLogic_db.getdetail(id).getNameCn().equals("null")?playerLogic_db.getdetail(id).getName():playerLogic_db.getdetail(id).getNameCn();
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
-		}System.out.println(playerName);
+		}
 		matchLogic = new MatchLogic();
-		matchPlayer = matchLogic.GetPlayerMatch(playerName, "unknown", "unknown");System.out.println(matchPlayer.size());
+		matchPlayer = matchLogic.GetPlayerMatch(playerName, "unknown", "unknown");
 		String[] season = {"14-15", "13-14", "12-13", "11-12", "10-11", 
 				"09-10", "08-09", "07-08", "06-07", "05-06"};
 		String[] normal = {"常规赛", "季后赛"};
@@ -93,7 +93,7 @@ public class PlayerMatch extends BgPanel{
 	private void init(){
 		isFirst = true;
 		
-		rectangle = new Rectangle(0, 80, 940, 320);
+		rectangle = new Rectangle(0, 80, 940, 420);
 
 		label = new GLabel("比赛数据", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
 		label.setHorizontalAlignment(JLabel.CENTER);

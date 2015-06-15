@@ -50,11 +50,6 @@ public class TurnController {
 	
 	public BgPanel turnToTeamDetials(TeamBaseInfo teamBaseInfo){
 		BgPanel newPanel = new TeamDetials(teamBaseInfo);
-		newPanel.setBounds(30, 30, 940, 600);
-		newPanel.setVisible(false);
-		
-		StartUI.startUI.setMenu(1);
-		
 		return newPanel;
 	}
 	
