@@ -10,7 +10,13 @@ public class PlayerDetailInfo {
 	String number;//球衣号码
 	int id;//数据库中唯一标识，超键
 	String nameCn;
-	
+	String team;
+	public String getTeam(){
+		return team;
+	}
+	public void setTeam(String t){
+		team = t;
+	}
 	public String getNameCn(){
 		return nameCn;
 	}

@@ -71,7 +71,8 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 				+ "borncity varchar(255),"
 				+ "number varchar(255),"
 				+ "id int primary key,"
-				+ "namecn varchar(255)"
+				+ "namecn varchar(255),"
+				+ "team varchar(255)"
 				+ ")");
 //-------------p_s_a_b建表
 		operation("create table p_s_a_b("
@@ -603,7 +604,8 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 					+ "'"+p.getBorncity()+"',"
 					+ "'"+p.getNumber()+"',"
 					+ "'"+p.getId()+"',"
-					+ "'"+p.getNameCn()+"'"
+					+ "'"+p.getNameCn()+"',"
+					+ "'"+p.getTeam()+"'"
 					+ ")");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -923,6 +925,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 			res.setBirth(rs.getString("birth"));
 			res.setBorncity(rs.getString("borncity"));
 			res.setNumber(rs.getString("number"));
+			res.setTeam(rs.getString("team"));
 			}
 			con.close();
 
@@ -1261,6 +1264,7 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 					r.setBirth(rs.getString("birth"));
 					r.setBorncity(rs.getString("borncity"));
 					r.setNumber(rs.getString("number"));
+					r.setTeam(rs.getString("team"));
 					pd.add(r);
 				}
 				return pd;
@@ -2000,6 +2004,9 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 		return res;
 	}
 	//=====================================statics request
-	
+	public void insertTeam(int id,String team)throws RemoteException{
+		
+		operation("update p_detail set team = '"+team+"'where id = '"+id+"'");
+	}
 	
 }

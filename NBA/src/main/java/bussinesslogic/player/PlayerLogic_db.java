@@ -26,6 +26,10 @@ public class PlayerLogic_db {
 	}
 	// ----------获得基本信息
 	
+	public void updateTeam(int id)throws RemoteException{
+		String team = getLatestTeam(id);
+		pdb.insertTeam(id, team);
+	}
 	
 	public ArrayList<PlayerDetailInfo> getAlldetail(String season)throws RemoteException{
 		ArrayList<PlayerDetailInfo> res =pdb.getAlldetail(season);

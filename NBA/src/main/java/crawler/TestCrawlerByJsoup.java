@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -21,6 +22,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import bussinesslogic.player.PlayerLogic_db;
 import data.db.PlayerDb;
 import data.po.playerData.*;
 
@@ -61,25 +63,12 @@ public class TestCrawlerByJsoup {
 			e.printStackTrace();
 		}
 	}
-	public void test(){
-		Document doc = null;
-		String url = "http://www.stat-nba.com/team/stat_box_team.php?team=CHI&season=2014&col=pts&order=1&isseason=1";
-		try{
-			doc = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0").get();
-		    Elements e = doc.select("table.stat_box").select("tbody").select("tr");//.select("td");
-		    
-		    System.out.println(e);
-//		    for(Element el:e){
-//		    	temp++;
-//		    	System.out.print(el.text()+";");
-//		    	if(temp==22){
-//		    		temp = 0;
-//		    		System.out.println();
-//		    	}
-//		    }
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+	public void intializeData(int first,int size){
+		pdb.clearPlayerTable();
+		initializePlayerDetail(first,size);
+		initializePlayerSeason(first,size);
+		initializePlayerPlayOff(first,size);
+		lastDebugTeam();
 	}
 	//-------------装入detail对象
 	private void initializeDetailObject(int i,int size){
@@ -95,6 +84,7 @@ public class TestCrawlerByJsoup {
 		p.setBorncity("null");		
 		p.setNumber("null");
 		p.setNameCn("null");
+		p.setTeam("null");
 		for(int k = 0;k<size;k++){
 			//System.out.println(tempInfo.get(k));
 			String[] res1 = tempInfo.get(k).split(";");
@@ -152,7 +142,7 @@ public class TestCrawlerByJsoup {
 		Document doc = null;
 			
 		for(int i = first;i<size;i++){
-		    //System.out.println("initialize player:" +i);
+		    System.out.println("initialize player deatil: player " +i);
 		    String basicinfoUrl = "http://www.stat-nba.com/player/"+i+".html";
 			//url = "http://www.stat-nba.com/player/stat_box/"+i+"_season.html";
 			try{
@@ -416,7 +406,7 @@ public class TestCrawlerByJsoup {
 		String namecn = "";
 		for(int i = first;i<size;i++){
 		    //int i = 379;
-			//System.out.println(i);
+			System.out.println("initial player season data:player "+ i);
 			url = "http://www.stat-nba.com/player/stat_box/"+i+"_season.html";
 			try{
 				//-------------------------初始化球员基本信息
@@ -718,7 +708,7 @@ public class TestCrawlerByJsoup {
 		for(int i = first;i<size;i++){
 		    //int i = 379;
 			
-		   
+			System.out.println("initial player playoff data:player "+ i);
 			url = "http://www.stat-nba.com/player/stat_box/"+i+"_playoff.html";
 			
 			try{
@@ -846,6 +836,19 @@ public class TestCrawlerByJsoup {
 		System.out.println("initialize player playoff end");
 	}
 
+	public void lastDebugTeam(){
+		PlayerLogic_db p = new PlayerLogic_db();
+		try {
+			ArrayList<PlayerDetailInfo> t = p.getAlldetail("null");
+			for(int i = 0;i<t.size();i++){
+				p.updateTeam(t.get(i).getId());
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public String[] getHotPlayerDaily(String key){
 		
 		String[] res = new String[5];

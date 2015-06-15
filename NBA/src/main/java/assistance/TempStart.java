@@ -39,12 +39,22 @@ public class TempStart {
 		
 //		}
 		try {
-			ArrayList<Integer> t = pd.selectByTag("null", "detail", "a", "null", "null", "null");
-			
-			System.out.println(t);
+			//ArrayList<Integer> t = pd.selectByTag("null", "detail", "a", "null", "null", "Northwest");
+			ArrayList<Double> res = pd.getAvgOfAll("70-71", true);
+			System.out.println(res);
+			//System.out.println(t);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+//		try{
+//			TestCrawlerByJsoup t = new TestCrawlerByJsoup();
+//			//4138,4218
+//			t.initializePlayerSeason(4218, 4219);
+//			t.initializePlayerPlayOff(4218, 4219);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
 	}
 }
