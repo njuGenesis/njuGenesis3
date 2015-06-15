@@ -16,7 +16,7 @@ public class MatchDb extends DataBaseLink {
 	ArrayList<String> seasonlist = new ArrayList<String>();
 
 	public static void main(String[] args) throws SQLException {
-		MatchDb m = new MatchDb();
+		//MatchDb m = new MatchDb();
 		//m.initializeMatchTable();
 	// m.clearMatchTable();
 

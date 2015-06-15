@@ -1,5 +1,6 @@
 package data.po.teamData;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -113,6 +114,8 @@ public class TeamDescriptionStat {
 	}
 
 	public void setAvg(double avg) {
+		BigDecimal bg = new BigDecimal(avg);
+		avg = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.avg = avg;
 	}
 
@@ -129,6 +132,8 @@ public class TeamDescriptionStat {
 	}
 
 	public void setRange(double range) {
+		BigDecimal bg = new BigDecimal(range);
+		range = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.range = range;
 	}
 
@@ -137,6 +142,8 @@ public class TeamDescriptionStat {
 	}
 
 	public void setVar(double var) {
+		BigDecimal bg = new BigDecimal(var);
+		var = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.var = var;
 	}
 
@@ -145,6 +152,8 @@ public class TeamDescriptionStat {
 	}
 
 	public void setVarq(double varq) {
+		BigDecimal bg = new BigDecimal(varq);
+		varq = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.varq = varq;
 	}
 
@@ -153,6 +162,8 @@ public class TeamDescriptionStat {
 	}
 
 	public void setC_v(double c_v) {
+		BigDecimal bg = new BigDecimal(c_v);
+		c_v = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.c_v = c_v;
 	}
 
@@ -161,6 +172,8 @@ public class TeamDescriptionStat {
 	}
 
 	public void setSkewness(double skewness) {
+		BigDecimal bg = new BigDecimal(skewness);
+		skewness = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.skewness = skewness;
 	}
 
@@ -169,7 +182,9 @@ public class TeamDescriptionStat {
 	}
 
 	public void setKurtosis(double kurtosis) {
+		BigDecimal bg = new BigDecimal(kurtosis);
+		kurtosis = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		this.kurtosis = kurtosis;
 	}
-
+ 
 }

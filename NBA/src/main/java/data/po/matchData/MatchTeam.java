@@ -35,7 +35,44 @@ public class MatchTeam {
 	String To; // 失误
 	
 	
-	
+    public double getproperty(String property){
+   	 if(property.equals("TPShootEff")){
+   		 return Double.valueOf(getTPShootEff().replaceAll("%", ""));
+   	 }
+   	 if(property.equals("realEff")){
+   		 return Double.valueOf(getRealEff().replaceAll("%", ""));
+   	 }
+   	 else if(property.equals("ShootEff")){
+   		 return Double.valueOf(getShootEff().replaceAll("%", ""));
+   	 }
+   	 else if(property.equals("FTShootEff")){
+   		 return Double.valueOf(getFTShootEff().replaceAll("%", ""));
+   	 }
+   	 else if(property.equals("Bank")){
+   		 return Double.valueOf(getBank());
+   	 }
+   	 else if(property.equals("Ass")){
+   		 return Double.valueOf(getAss());
+   	 }
+   	 else if(property.equals("Steal")){
+   		 return Double.valueOf(getSteal());
+   	 }
+   	 else if(property.equals("Rejection")){
+   		 return Double.valueOf(getRejection());
+   	 }
+   	 else if(property.equals("Foul")){
+   		 return Double.valueOf(getFoul());
+   	 }
+   	 else if(property.equals("To")){
+   		 return Double.valueOf(getTo());
+   	 }
+   	 else if(property.equals("points")){
+   		 return Double.valueOf(getPoints());
+   	 }
+
+   	 return 0;
+    }
+   
 	
 	public String getDate() {
 		return date;
