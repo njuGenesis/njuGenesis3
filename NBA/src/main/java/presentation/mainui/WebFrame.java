@@ -7,8 +7,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import presentation.component.BgPanel;
 import presentation.component.GFrame;
@@ -17,6 +19,7 @@ import presentation.component.WebLabel;
 import presentation.contenui.PanelKind;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
+import presentation.player.PlayerCrosshairOverlay;
 
 public class WebFrame extends GFrame{
 
@@ -42,7 +45,13 @@ public class WebFrame extends GFrame{
 	private TurnController turnController;
 	
 	public static void main(String[] args) {
-		new WebFrame();
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				new WebFrame();
+			}
+		});
 	}
 
 	public WebFrame(){

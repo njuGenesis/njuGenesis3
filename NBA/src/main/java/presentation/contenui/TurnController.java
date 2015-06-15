@@ -17,6 +17,7 @@ import presentation.team.TeamDetials;
 import presentation.team.TeamUI;
 import bussinesslogic.match.MatchLogic;
 import data.po.MatchDataPO;
+import data.po.teamData.TeamBaseInfo;
 
 public class TurnController {
 
@@ -47,8 +48,8 @@ public class TurnController {
 
 	//	public 
 	
-	public BgPanel turnToTeamDetials(String shortName){
-		BgPanel newPanel = new TeamDetials(shortName);
+	public BgPanel turnToTeamDetials(TeamBaseInfo teamBaseInfo){
+		BgPanel newPanel = new TeamDetials(teamBaseInfo);
 		newPanel.setBounds(30, 30, 940, 600);
 		newPanel.setVisible(false);
 		
@@ -57,8 +58,8 @@ public class TurnController {
 		return newPanel;
 	}
 	
-	public BgPanel turnToPlayerDetials(String name){
-		BgPanel newPanel = new PlayerDetials(name);
+	public BgPanel turnToPlayerDetials(int id){
+		BgPanel newPanel = new PlayerDetials(id);
 		return newPanel;
 	}
 	

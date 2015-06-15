@@ -1,175 +1,111 @@
 package presentation.team;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
-
-import javax.swing.ImageIcon;
-import javax.swing.JTable;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.table.DefaultTableCellRenderer;
-
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import presentation.component.BgPanel;
-import presentation.component.DateLabel;
-import presentation.component.DatePanel;
 import presentation.component.GLabel;
-import presentation.component.StyleScrollPane;
-import presentation.component.StyleTable;
-import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
-import presentation.mainui.StartUI;
+import presentation.mainui.WebTable;
 import bussinesslogic.match.MatchLogic;
-import data.po.MatchDataPO;
-import data.po.TeamDataPO;
+import data.po.matchData.MatchTeam;
 
 public class TeamMatch extends BgPanel{
 
 	private static final long serialVersionUID = 1L;
 	private static String file = "";
 	private MatchLogic matchLogic;
-	private DatePanel dateLabel1;
-	private ArrayList<MatchDataPO> matchDataPOs;
-	private TeamDataPO po;
-	private StyleScrollPane scrollPane;
-	private StyleTable table;
+	private WebTable table;
 	private Rectangle rectangle;
+	private ArrayList<MatchTeam> matchTeam;
+	private String teamShortName;
+	private JComboBox<String> comboBox;
+	private GLabel border, label;
 	
-	public TeamMatch(TeamDataPO po) {
+	public TeamMatch(String teamShortName) {
 		super(file);
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
+		this.teamShortName = teamShortName;
+		matchLogic = new MatchLogic();
+		matchTeam = matchLogic.GetTeamMatch(teamShortName, "unknown", "unknown");
+		Vector<String> season = new Vector<String>();
+		for(int i=0;i<matchTeam.size();i++){
+			for(int j=0;j<season.size();j++){
+				if(matchTeam.get(i).getSeason().equals(season.get(i))){
+					continue;
+				}
+				season.add(matchTeam.get(i).getSeason());
+			}
+		}
+		for(int i=0;i<season.size()-1;i++){
+			for(int j=0;j<season.size()-1;j++){
+				String a = season.get(j);
+				String b = season.get(j+1);
+				if(a.compareTo(b)<0){
+					season.set(j, b);
+					season.set(j+1, a);
+				}
+			}
+		}
+		
+		matchTeam = matchLogic.GetTeamMatch(teamShortName, "unknown", season.get(0));
+		
+		comboBox = new JComboBox<String>(season);
+		comboBox.setBounds(600, 0, 100, 30);
+		comboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				matchTeam = matchLogic.GetTeamMatch(TeamMatch.this.teamShortName, "unknown", comboBox.getSelectedItem().toString());
+				basicSetting();
+			}
+		});
 		
 		this.setBounds(26, 120, 948, 530);
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
 		this.setVisible(true);
 		
-		this.po = po;
-		
 		init();
 	}
 	
 	private void init(){
-		GLabel message = new GLabel("*单击表头可排序", new Point(34, 5), new Point(120, 30), this, true, 0, 13);
-
-		matchLogic = new MatchLogic();
-		this.po = po;
-		matchDataPOs = matchLogic.GetInfo(po.getShortName());
-
 		rectangle = new Rectangle(14, 50, 920, 460);
 
-		//		dateLabel1 = new DatePanel(new Point(25, 9), this, Color.black, new ImageIcon("img/teamDetials/dateIcon.png"));
-		//		dateLabel1.setBackground(UIUtil.bgWhite);
-
-		matchSetting();
+		label = new GLabel("比赛信息", new Point(100, 0), new Point(100, 30), this, true, 0, 20);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBackground(UIUtil.bgWhite);
+		label.setOpaque(true);
+		
+		border = new GLabel("", new Point(0, 13), new Point(300, 4), this, true);
+		border.setBackground(UIUtil.nbaBlue);
+		border.setOpaque(true);
+		
+		basicSetting();
+		
 		repaint();
 	}
 	
-	private void matchSetting(){
-		final Vector<String> header = new Vector<String>();
-		header.addElement("日期");header.addElement("对手");
-		header.addElement("结果");header.addElement("比分");header.addElement("比赛链接");
+	private void basicSetting(){
+		String header[] = {"赛季", "日期", "客－主", "结果", "比分", "比赛链接"};
 		
-		final Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		for(int i=matchDataPOs.size()-1;i>=0;i--){
-			MatchDataPO m = matchDataPOs.get(i);
-			Vector<Object> vector = new Vector<Object>();
-			vector.addElement(m.getDate());
-			if(m.getFirstteam().equals(po.getShortName())){
-				vector.addElement(m.getSecondteam());
-			}else{
-				vector.addElement(m.getFirstteam());
-			}
-			if(m.getWinner().equals(po.getShortName())){
-				vector.addElement("胜");
-			}else{
-				vector.addElement("负");
-			}
-			vector.addElement(m.getPoints());
-			vector.addElement("比赛链接");
-			data.addElement(vector);
+		Object[][] data = new Object[matchTeam.size()][header.length];
+		for(int i=0;i<matchTeam.size();i++){
+			data[i][0] = matchTeam.get(i).getSeason();
+			data[i][0] = matchTeam.get(i).getDate();
+			data[i][0] = matchTeam.get(i).getTwoteam();
+			data[i][0] = "?";
+			data[i][0] = matchTeam.get(i).getResult();
+			data[i][0] = (String)("比赛链接"+matchTeam.get(i).getMatchID());
 		}
 		
-		table = new StyleTable();
-		scrollPane = new StyleScrollPane(table);
-		table.tableSetting(table, header, data, scrollPane, rectangle);
-		tableSetting(table);
-		table.setSort();
-		this.add(scrollPane);
-	}
-	
-	private void tableSetting(final JTable table){
-		table.setPreferredScrollableViewportSize(new Dimension(920, 480));//设置大小
-		table.setBounds(14, 35, 920, 480);
-		table.getTableHeader().setPreferredSize(new Dimension(920, 30));//设置表头大小
-		
-		DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer(){
-			public java.awt.Component getTableCellRendererComponent(JTable t, Object value,
-					boolean isSelected, boolean hasFocus, int row, int column) {
-				if (row % 2 == 0)
-					setBackground(new Color(235, 236, 231));
-				else
-					setBackground(new Color(251, 251, 251));
-
-				setForeground(UIUtil.nbaBlue);
-				return super.getTableCellRendererComponent(t, value, isSelected,
-						hasFocus, row, column);
-			}
-		};
-		table.getColumnModel().getColumn(1).setCellRenderer(defaultTableCellRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(defaultTableCellRenderer);
-		
-		table.addMouseMotionListener(new MouseMotionListener() {
-			
-			public void mouseMoved(MouseEvent e) {
-				int column = table.getColumnModel().getColumnIndexAtX(e.getX());
-				int row    = e.getY()/table.getRowHeight();
-
-				if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == 1 || column ==4)) {
-					table.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				}else{
-					table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-			
-			public void mouseDragged(MouseEvent e) {
-			}
-		});
-		
-		MouseAdapter mouseAdapter = new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				int column = table.getColumnModel().getColumnIndexAtX(e.getX());
-				int row    = e.getY()/table.getRowHeight();
-
-				TurnController turnController = new TurnController();
-				if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == 1)) {
-					String name = table.getValueAt(row, 1).toString();
-					StartUI.startUI.turn(turnController.turnToTeamDetials(name));
-				}else{
-					if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0 && (column == 4)) {
-						String date = table.getValueAt(row, 0).toString();
-						String name = table.getValueAt(row, 1).toString();
-						StartUI.startUI.turn(turnController.turnToMatchDetials(date, name));
-					}
-				}
-			}
-		};
-		table.addMouseListener(mouseAdapter);
+		table = new WebTable(header, data, rectangle, UIUtil.bgWhite);
+		table.setVisible(true);
+		this.add(table);
 	}
 	
 	@Override

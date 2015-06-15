@@ -4,13 +4,14 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import bussinesslogic.team.TeamLogic;
-import data.po.TeamDataPO;
+import data.po.teamData.TeamBaseInfo;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.TurnController;
@@ -25,28 +26,37 @@ public class TeamUI extends BgPanel{
 	private static String bg = "img/team/teamAllBg.png";
 	private GLabel[] team = new GLabel[30];
 	private TurnController turnController;
+	
+	private TeamLogic teamLogic;
+	private ArrayList<TeamBaseInfo> teamBaseInfo;
 
 	public TeamUI(){
 		super(bg);
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
+//		try {
+//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//		        if ("Nimbus".equals(info.getName())) {
+//		            UIManager.setLookAndFeel(info.getClassName());
+//		            break;
+//		        }
+//		    }
+//		} catch (Exception e) {}
 		
-		super.setVisible(false);
+		teamLogic = new TeamLogic();
+		try {
+			teamBaseInfo = teamLogic.GetAllBaseInfo();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
+		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
 		turnController = new TurnController();
 		init();
 	}
 
 	private void init(){
-		ArrayList<TeamDataPO> poList = getTeamDataPOs();
-		ArrayList<ArrayList<TeamDataPO>> teamDataPOArea = setTeamDataPOArea(poList);
+		ArrayList<ArrayList<TeamBaseInfo>> teamDataPOArea = setTeamDataPOArea(teamBaseInfo);
 
 		for(int i = 0; i<30; i++){
 			if(i>=0&&i<=4){
@@ -82,7 +92,7 @@ public class TeamUI extends BgPanel{
 			}
 			public void mousePressed(MouseEvent e) {
 				GLabel button = (GLabel)e.getSource();
-				StartUI.startUI.turn(turnController.turnToTeamDetials(button.po.getShortName()));
+				StartUI.startUI.turn(turnController.turnToTeamDetials(button.teamBaseInfo));
 			}
 		};
 
@@ -92,36 +102,32 @@ public class TeamUI extends BgPanel{
 
 	}
 
-	private ArrayList<TeamDataPO> getTeamDataPOs(){
-		TeamLogic t = new TeamLogic();
-		return t.GetInfoBySeason("13-14");
-	}
 
-	private ArrayList<ArrayList<TeamDataPO>> setTeamDataPOArea(ArrayList<TeamDataPO> poList){
-		ArrayList<TeamDataPO> Southeast = new ArrayList<TeamDataPO>();
-		ArrayList<TeamDataPO> Central = new ArrayList<TeamDataPO>();
-		ArrayList<TeamDataPO> Atlantic = new ArrayList<TeamDataPO>();
-		ArrayList<TeamDataPO> Southwest = new ArrayList<TeamDataPO>();
-		ArrayList<TeamDataPO> Northwest = new ArrayList<TeamDataPO>();
-		ArrayList<TeamDataPO> Pacific = new ArrayList<TeamDataPO>();
+	private ArrayList<ArrayList<TeamBaseInfo>> setTeamDataPOArea(ArrayList<TeamBaseInfo> teamBaseInfo){
+		ArrayList<TeamBaseInfo> Southeast = new ArrayList<TeamBaseInfo>();
+		ArrayList<TeamBaseInfo> Central = new ArrayList<TeamBaseInfo>();
+		ArrayList<TeamBaseInfo> Atlantic = new ArrayList<TeamBaseInfo>();
+		ArrayList<TeamBaseInfo> Southwest = new ArrayList<TeamBaseInfo>();
+		ArrayList<TeamBaseInfo> Northwest = new ArrayList<TeamBaseInfo>();
+		ArrayList<TeamBaseInfo> Pacific = new ArrayList<TeamBaseInfo>();
 		for(int i = 0; i<30; i++){
-			if(poList.get(i).getArea().equals("Southeast")){
-				Southeast.add(poList.get(i));
+			if(teamBaseInfo.get(i).getArea().equals("Southeast")){
+				Southeast.add(teamBaseInfo.get(i));
 			}else{
-				if(poList.get(i).getArea().equals("Central")){
-					Central.add(poList.get(i));
+				if(teamBaseInfo.get(i).getArea().equals("Central")){
+					Central.add(teamBaseInfo.get(i));
 				}else{
-					if(poList.get(i).getArea().equals("Atlantic")){
-						Atlantic.add(poList.get(i));
+					if(teamBaseInfo.get(i).getArea().equals("Atlantic")){
+						Atlantic.add(teamBaseInfo.get(i));
 					}else{
-						if(poList.get(i).getArea().equals("Southwest")){
-							Southwest.add(poList.get(i));
+						if(teamBaseInfo.get(i).getArea().equals("Southwest")){
+							Southwest.add(teamBaseInfo.get(i));
 						}else{
-							if(poList.get(i).getArea().equals("Northwest")){
-								Northwest.add(poList.get(i));
+							if(teamBaseInfo.get(i).getArea().equals("Northwest")){
+								Northwest.add(teamBaseInfo.get(i));
 							}else{
-								if(poList.get(i).getArea().equals("Pacific")){
-									Pacific.add(poList.get(i));
+								if(teamBaseInfo.get(i).getArea().equals("Pacific")){
+									Pacific.add(teamBaseInfo.get(i));
 								}
 							}
 						}
@@ -129,7 +135,7 @@ public class TeamUI extends BgPanel{
 				}
 			}
 		}
-		ArrayList<ArrayList<TeamDataPO>> setAera = new ArrayList<ArrayList<TeamDataPO>>();
+		ArrayList<ArrayList<TeamBaseInfo>> setAera = new ArrayList<ArrayList<TeamBaseInfo>>();
 		setAera.add(Southeast);
 		setAera.add(Central);
 		setAera.add(Atlantic);
@@ -143,8 +149,8 @@ public class TeamUI extends BgPanel{
 	 * data:
 	 * 球队的所有简称
 	 */
-	private String getFileAddress(TeamDataPO po){
-		String fileAddress = "img/teamName/"+po.getShortName()+".png";
+	private String getFileAddress(TeamBaseInfo teamBaseInfo){
+		String fileAddress = "img/teamName/"+teamBaseInfo.getShortName()+".png";
 		return fileAddress;
 	}
 	

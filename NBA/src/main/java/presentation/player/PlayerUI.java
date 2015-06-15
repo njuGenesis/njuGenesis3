@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -30,9 +31,11 @@ import javax.swing.table.TableModel;
 import com.sun.org.apache.xml.internal.security.Init;
 
 import bussinesslogic.player.PlayerLogic;
+import bussinesslogic.player.PlayerLogic_db;
 import bussinesslogic.team.TeamLogic;
 import data.po.PlayerDataPO;
 import data.po.TeamDataPO;
+import data.po.playerData.PlayerDetailInfo;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.component.ScrollPanel;
@@ -51,41 +54,36 @@ public class PlayerUI extends BgPanel{
 	private GLabel title, chooser, borderUp, borderDown;
 	private SelectLabel letter[];
 	private PlayerLogic playerLogic = new PlayerLogic();
-	private TeamLogic teamLogic = new TeamLogic();
 	private WebTable table;
-	private StyleScrollPane scrollPane;
 	private JComboBox<String> comboBoxTeam, comboBoxPosition;
 	private JTextField search;
 	private JCheckBox checkBox1, checkBox2;
 	private Vector<String> header = new Vector<String>();
 	private Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-	private TableModel tableModel;
 	private PlayerDataPO[] playList;
 	private TurnController turnController = new TurnController();
+	private PlayerLogic_db playerLogic_db;
+	private ArrayList<PlayerDetailInfo> playerDetailInfo;
 
 	public PlayerUI() {
 		super(file);
 
-//		try {
-//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//		        if ("Nimbus".equals(info.getName())) {
-//		            UIManager.setLookAndFeel(info.getClassName());
-//		            break;
-//		        }
-//		    }
-//		} catch (Exception e) {}
+		playerLogic_db = new PlayerLogic_db();
+		try {
+			playerDetailInfo = playerLogic_db.getAlldetail("14-15");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
-		//this.setBackground(UIUtil.bgWhite);
+		this.setBackground(UIUtil.bgWhite);
 		this.setOpaque(false);
 		
 		init();
 	}
 
 	private void init(){
-		playList = playerLogic.getAllInfo(playerLogic.getLatestSeason());
-		
 		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
 		borderUp.setOpaque(true);
 		borderUp.setBackground(UIUtil.nbaBlue);
@@ -243,36 +241,17 @@ public class PlayerUI extends BgPanel{
 	}
 	
 	private void infoInit(){
-//		header.removeAllElements();
-//		data.removeAllElements();
-//		header.addElement("姓名");header.addElement("球队");header.addElement("位置");header.addElement("号码");header.addElement("身高");
-//		header.addElement("体重");header.addElement("生日");header.addElement("球龄");
-//		for(int i=0;i<playList.length;i++){
-//			PlayerDataPO p = playList[i];
-//			Vector<Object> vector = new Vector<Object>();
-//			vector.addElement(p.getName());
-//			vector.addElement(TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName());
-//			vector.addElement(p.getPosition());
-//			vector.addElement(p.getNumber());
-//			vector.addElement(p.getHeight());
-//			vector.addElement(p.getWeight());
-//			vector.addElement(p.getBirth());
-//			vector.addElement(p.getExp());
-//			data.addElement(vector);
-//		}
-		
-		String h[] = {"姓名","球队","位置","号码","身高","体重","生日","球龄"};
-		Object[][] d = new Object[playList.length][h.length];
-		for(int i=0;i<playList.length;i++){
-			PlayerDataPO p = playList[i];
-			d[i][0] = p.getName()==null?"a":p.getName();
-			d[i][1] = TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName()==null?"a":TableUtility.getChTeam(p.getTeamName())+" "+p.getTeamName();
-			d[i][2] = p.getPosition()==null?"a":p.getPosition();
-			d[i][3] = p.getNumber()==null?"a":p.getNumber();
-			d[i][4] = p.getHeight()==null?"a":p.getHeight();
-			d[i][5] = p.getWeight();
-			d[i][6] = p.getBirth()==null?"a":p.getBirth();
-			d[i][7] = p.getExp();
+		String h[] = {"姓名","球队","位置","号码","身高","体重","生日","ID"};
+		Object[][] d = new Object[playerDetailInfo.size()][h.length];
+		for(int i=0;i<playerDetailInfo.size();i++){
+			d[i][0] = playerDetailInfo.get(i).getName();
+			d[i][1] = playerDetailInfo.get(i).getBorncity();
+			d[i][2] = playerDetailInfo.get(i).getPosition();
+			d[i][3] = playerDetailInfo.get(i).getNumber();
+			d[i][4] = playerDetailInfo.get(i).getHeight();
+			d[i][5] = playerDetailInfo.get(i).getWeight();
+			d[i][6] = playerDetailInfo.get(i).getBirth();
+			d[i][7] = playerDetailInfo.get(i).getId();
 		}
 		table = new WebTable(h, d, new Rectangle(0, 140, 940, 460), UIUtil.lightGrey);
 		table.setColumDataCenter(2);
@@ -284,23 +263,28 @@ public class PlayerUI extends BgPanel{
 		table.setColumForeground(1, UIUtil.nbaBlue);
 		table.setColumHand(0);
 		table.setColumHand(1);
+		table.setOrder(0, String.class);
 		
-		for(int i=0;i<playList.length;i++){
+		for(int i=0;i<playerDetailInfo.size();i++){
 			table.getColum(0)[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e){
 					JLabel label = (JLabel)e.getSource();
-					String playerName = label.getText();
-					ScrollPanel scrollPanel = new ScrollPanel(turnController.turnToPlayerDetials(playerName), 600);
-					WebFrame.frame.setPanel(scrollPanel, playerName);
+					String name = label.getText();
+					int id = 0;
+					try {
+						id = playerLogic_db.getIDbyName(name, "");
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}System.out.println(id);
+					ScrollPanel scrollPanel = new ScrollPanel(turnController.turnToPlayerDetials(id), 600);
+					WebFrame.frame.setPanel(scrollPanel, name);
 				}
 			});
 			table.getColum(1)[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e){
-					JLabel label = (JLabel)e.getSource();
-					String teamName = label.getText().split(" ")[1];
-					WebFrame.frame.setPanel(turnController.turnToPlayerDetials(teamName), teamName);
+					//WebFrame.frame.setPanel(turnController.turnToPlayerDetials(teamName), teamName);
 				}
 			});
 		}

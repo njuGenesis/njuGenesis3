@@ -1,39 +1,23 @@
 package presentation.player;
 
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import bussinesslogic.player.PlayerLogic;
+import java.rmi.RemoteException;
+import bussinesslogic.player.PlayerLogic_db;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.UIUtil;
-import presentation.hotspot.SelectLabel;
-import data.po.PlayerDataPO;
 
 public class PlayerDetials extends BgPanel{
 	private static final long serialVersionUID = 1L;
-	private GLabel title, borderUp, borderDown, borderMid;
-	private SelectLabel tdMenu[];
-	private PlayerDataPO po;
-	private BgPanel sonPanel;
-	private PlayerLogic playerLogic = new PlayerLogic();
-	private String name;
+	private GLabel title, borderUp;
+	private int id;
 	
-	public PlayerDetials(final String name){
+	public PlayerDetials(int id){
 		super("");
 		
-//		try {
-//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//		        if ("Nimbus".equals(info.getName())) {
-//		            UIManager.setLookAndFeel(info.getClassName());
-//		            break;
-//		        }
-//		    }
-//		} catch (Exception e) {}
+		this.id = id;
 		
-		//this.po = playerLogic.getInfo(name, playerLogic.getLatestSeason());
-		this.name = name;
-		this.setBounds(0, 0, 940, 2000);
+		this.setBounds(0, 0, 940, 3000);
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
 		this.setVisible(true);
@@ -52,95 +36,23 @@ public class PlayerDetials extends BgPanel{
 		borderUp.setOpaque(true);
 		borderUp.setBackground(UIUtil.nbaBlue);
 
-//		tdMenu = new SelectLabel[4];
-//		tdMenu[0] = new SelectLabel("资料", new Point(84, 56), new Point(60, 30), this, true, 0, 20);
-//		tdMenu[1] = new SelectLabel("数据", new Point(84+235+2, 56), new Point(60, 30), this, true, 0, 20);
-//		tdMenu[2] = new SelectLabel("比赛", new Point(84+(235+2)*2, 56), new Point(60, 30), this, true, 0, 20);
-//		tdMenu[3] = new SelectLabel("对比", new Point(84+(235+2)*3, 56), new Point(60, 30), this, true, 0, 20);
-//		
-//		borderDown = new GLabel("", new Point(0, 69), new Point(940, 4), this, true);
-//		borderDown.setOpaque(true);
-//		borderDown.setBackground(UIUtil.nbaBlue);
-//		
-//		tdMenu[0].setSelected(true);
-		PlayerDataPO[] pos = playerLogic.getAllSeasonInfo(name);
-		PlayerInfo info = new PlayerInfo("Aaron Brooks", "芝加哥公牛");
-		PlayerData data = new PlayerData(pos);
-		PlayerMatch match = new PlayerMatch(po);
-		PlayerCmp cmp = new PlayerCmp(po);
+		PlayerInfo info = new PlayerInfo(id);
+		PlayerData data = new PlayerData(id);
+		PlayerMatch match = new PlayerMatch(id);
+//		PlayerCmp cmp = new PlayerCmp(id);
+		PlayerCrosshairOverlay cross = new PlayerCrosshairOverlay(id);
+		
 		this.add(info);
 		this.add(data);
 		this.add(match);
-		this.add(cmp);
-//		
-//		tdMenu[0].addMouseListener(new MouseAdapter() {
-//			public void mousePressed(MouseEvent e) {
-//				for(int i=0;i<tdMenu.length;i++){
-//					tdMenu[i].setSelected(false);
-//				}
-//				tdMenu[0].setSelected(true);
-//				PlayerInfo info = new PlayerInfo(PlayerDetials.this.po);
-//				PlayerDetials.this.remove(sonPanel);
-//				sonPanel = info;
-//				PlayerDetials.this.add(sonPanel);
-//				repaint();
-//			}
-//		});
-//		tdMenu[1].addMouseListener(new MouseAdapter() {
-//			public void mousePressed(MouseEvent e) {
-//				for(int i=0;i<tdMenu.length;i++){
-//					tdMenu[i].setSelected(false);
-//				}
-//				tdMenu[1].setSelected(true);
-//				PlayerDataPO[] pos = playerLogic.getAllSeasonInfo(name);
-//				PlayerData playerData = new PlayerData(pos);
-//				PlayerDetials.this.remove(sonPanel);
-//				sonPanel = playerData;
-//				PlayerDetials.this.add(sonPanel);
-//				repaint();
-//			}
-//		});
-//		
-//		tdMenu[2].addMouseListener(new MouseAdapter() {
-//			public void mousePressed(MouseEvent e) {
-//				for(int i=0;i<tdMenu.length;i++){
-//					tdMenu[i].setSelected(false);
-//				}
-//				tdMenu[2].setSelected(true);
-//				PlayerDataPO[] pos = playerLogic.getAllSeasonInfo(name);
-//				PlayerMatch playerMatch = new PlayerMatch(po);
-//				PlayerDetials.this.remove(sonPanel);
-//				sonPanel = playerMatch;
-//				PlayerDetials.this.add(sonPanel);
-//				repaint();
-//			}
-//		});
-//		
-//		tdMenu[3].addMouseListener(new MouseAdapter() {
-//			public void mousePressed(MouseEvent e) {
-//				for(int i=0;i<tdMenu.length;i++){
-//					tdMenu[i].setSelected(false);
-//				}
-//				tdMenu[3].setSelected(true);
-//				PlayerCmp playerCmp = new PlayerCmp(PlayerDetials.this.po);
-//				PlayerDetials.this.remove(sonPanel);
-//				sonPanel = playerCmp;
-//				PlayerDetials.this.add(sonPanel);
-//				repaint();
-//			}
-//		});
-		
-		
+//		this.add(cmp);
+		this.add(cross);
 	}
 	
 	@Override
 	public void refreshUI(){
 		if(this!=null){
-			
-//			sonPanel.refreshUI();
-//			sonPanel.setVisible(true);
 			this.removeAll();
-			//this.add(sonPanel);
 			this.init();
 			
 		}

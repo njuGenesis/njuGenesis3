@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import data.po.TeamDataPO;
+import data.po.teamData.TeamBaseInfo;
 
 public class GLabel extends JLabel{
 	
@@ -20,7 +21,7 @@ public class GLabel extends JLabel{
 	private BufferedImage bi;
 	private BufferedImage sbi;
 	private int number;
-	public TeamDataPO po = null;
+	public TeamBaseInfo teamBaseInfo = null;
 	private BgPanel panel;
 	private boolean isSelected;
 	/**
@@ -39,9 +40,9 @@ public class GLabel extends JLabel{
 		}
 	}
 	
-	public GLabel(String file, Point location, Point size, Container container, boolean visible, TeamDataPO po){
+	public GLabel(String file, Point location, Point size, Container container, boolean visible, TeamBaseInfo teamBaseInfo){
 		this(file, location, size, container, visible);
-		this.po = po;
+		this.teamBaseInfo = teamBaseInfo;
 	}
 	
 	public GLabel(ImageIcon image, Point location, Point size, Container container, boolean visible){

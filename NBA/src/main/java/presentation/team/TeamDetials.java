@@ -10,6 +10,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.team.TeamLogic;
 import data.po.TeamDataPO;
+import data.po.teamData.TeamBaseInfo;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.TableUtility;
@@ -19,130 +20,49 @@ import presentation.hotspot.SelectLabel;
 public class TeamDetials extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
-	private GLabel title;
-	private SelectLabel tdMenu[];
-	private TeamDataPO po;
-	private BgPanel sonPanel;
-	private TeamLogic teamLogic = new TeamLogic();
-	private PlayerLogic playerLogic = new PlayerLogic();
+	private GLabel title, borderUp;
+	private TeamBaseInfo teamBaseInfo;
 	
-	public TeamDetials(String shortName){
+	public TeamDetials(TeamBaseInfo teamBaseInfo){
 		super("");
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
-
-		this.po = teamLogic.GetBySN(shortName, playerLogic.getLatestSeason());
+		this.teamBaseInfo = teamBaseInfo;
 		
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
-		this.setBounds(0, 0, 1000, 650);
+		this.setBounds(0, 0, 940, 2000);
 		this.setVisible(true);
 		
 		init();
 	}
 	
 	private void init(){
-		title = new GLabel("  "+TableUtility.getChTeam(po.getShortName()), new Point(26, 30), new Point(948, 52), this, true, 0, 25);
+		title = new GLabel("  "+"name"//po.getName()
+				, new Point(0, 4), new Point(940, 46), this, true, 0, 25);
 		title.setOpaque(true);
-		title.setBackground(UIUtil.nbaBlue);
-		title.setForeground(UIUtil.bgWhite);
+		title.setBackground(UIUtil.bgWhite);
+		title.setForeground(UIUtil.nbaBlue);
 		
-		tdMenu = new SelectLabel[5];
-		tdMenu[0] = new SelectLabel("资料", new Point(26, 83), new Point(188, 35), this, true, 0, 18);
-		tdMenu[1] = new SelectLabel("球员", new Point(26+188+2, 83), new Point(188, 35), this, true, 0, 18);
-		tdMenu[2] = new SelectLabel("比赛", new Point(26+(188+2)*2, 83), new Point(188, 35), this, true, 0, 18);
-		tdMenu[3] = new SelectLabel("数据", new Point(26+(188+2)*3, 83), new Point(188, 35), this, true, 0, 18);
-		tdMenu[4] = new SelectLabel("对比", new Point(26+(188+2)*4, 83), new Point(188, 35), this, true, 0, 18);
+		borderUp = new GLabel("", new Point(0, 0), new Point(940, 4), this, true);
+		borderUp.setOpaque(true);
+		borderUp.setBackground(UIUtil.nbaBlue);
 		
-		tdMenu[0].setSelected(true);
-		TeamInfo info = new TeamInfo(TeamDetials.this.po);
-		sonPanel = info;
-		TeamDetials.this.add(sonPanel);
+		TeamPlayer teamPlayer = new TeamPlayer(teamBaseInfo.getPlayers(), TableUtility.getChTeam(teamBaseInfo.getShortName()));
+		TeamInfo teamInfo = new TeamInfo(teamBaseInfo);
+		TeamData teamData = new TeamData(teamBaseInfo.getShortName());
+//		TeamMatch teamMatch = new TeamMatch(shortName);
+//		TeamCmp teamCmp = new TeamCmp(shortName);
 		
-		tdMenu[0].addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				for(int i=0;i<tdMenu.length;i++){
-					tdMenu[i].setSelected(false);
-				}
-				tdMenu[0].setSelected(true);
-				TeamInfo info = new TeamInfo(TeamDetials.this.po);
-				TeamDetials.this.remove(sonPanel);
-				sonPanel = info;
-				TeamDetials.this.add(sonPanel);
-				repaint();
-			}
-		});
-		tdMenu[1].addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				for(int i=0;i<tdMenu.length;i++){
-					tdMenu[i].setSelected(false);
-				}
-				tdMenu[1].setSelected(true);
-				TeamPlayer player = new TeamPlayer(TeamDetials.this.po);
-				TeamDetials.this.remove(sonPanel);
-				sonPanel = player;
-				TeamDetials.this.add(sonPanel);
-				repaint();
-			}
-		});
-		
-		tdMenu[2].addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				for(int i=0;i<tdMenu.length;i++){
-					tdMenu[i].setSelected(false);
-				}
-				tdMenu[2].setSelected(true);
-				TeamMatch match = new TeamMatch(TeamDetials.this.po);
-				TeamDetials.this.remove(sonPanel);
-				sonPanel = match;
-				TeamDetials.this.add(sonPanel);
-				repaint();
-			}
-		});
-		
-		tdMenu[3].addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				for(int i=0;i<tdMenu.length;i++){
-					tdMenu[i].setSelected(false);
-				}
-				tdMenu[3].setSelected(true);
-				TeamData data = new TeamData(TeamDetials.this.po);
-				TeamDetials.this.remove(sonPanel);
-				sonPanel = data;
-				TeamDetials.this.add(sonPanel);
-				repaint();
-			}
-		});
-		
-		tdMenu[4].addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				for(int i=0;i<tdMenu.length;i++){
-					tdMenu[i].setSelected(false);
-				}
-				tdMenu[4].setSelected(true);
-				TeamCmp teamCmp = new TeamCmp(TeamDetials.this.po);
-				TeamDetials.this.remove(sonPanel);
-				sonPanel = teamCmp;
-				TeamDetials.this.add(sonPanel);
-				repaint();
-			}
-		});
+		this.add(teamPlayer);
+		this.add(teamInfo);
+		this.add(teamData);
+//		this.add(teamMatch);
+//		this.add(teamCmp);
 	}
 	@Override
 	public void refreshUI(){
 		if(this!=null){
-			
-//			sonPanel.refreshUI();
-//			sonPanel.setVisible(true);
 			this.removeAll();
-//			this.add(sonPanel);
 			this.init();
 			
 		}

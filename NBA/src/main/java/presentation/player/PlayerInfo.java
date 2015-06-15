@@ -27,12 +27,12 @@ public class PlayerInfo extends BgPanel{
 	private PlayerDetailInfo playerDetailInfo;
 	private PlayerLogic_db playerLogic_db;
 
-	public PlayerInfo(String name, String team) {
+	public PlayerInfo(int id) {
 		super(file);
 		
 		playerLogic_db = new PlayerLogic_db();
 		try {
-			playerDetailInfo = playerLogic_db.getdetail(playerLogic_db.getIDbyName(name, team));
+			playerDetailInfo = playerLogic_db.getdetail(id);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -62,8 +62,7 @@ public class PlayerInfo extends BgPanel{
 			}
 		});
 		number = new GLabel(playerDetailInfo.getNumber(), new Point(163, 408), new Point(200, 25), this, true, 0, 18);
-		position = new GLabel(TableUtility.getChPosition(playerDetailInfo.getPosition())+" "+playerDetailInfo.getPosition(), 
-				new Point(160, 438), new Point(200, 25), this, true, 0, 18);
+		position = new GLabel(playerDetailInfo.getPosition(), new Point(160, 438), new Point(200, 25), this, true, 0, 18);
 		height = new GLabel(playerDetailInfo.getHeight(), new Point(718, 147), new Point(200, 25), this, true, 0, 18);
 		weight = new GLabel(String.valueOf(playerDetailInfo.getWeight()), new Point(718, 180), new Point(200, 25), this, true, 0, 18);
 		birthday = new GLabel(playerDetailInfo.getBirth(), new Point(718, 213), new Point(200, 25), this, true, 0, 18);
