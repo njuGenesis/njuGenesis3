@@ -39,10 +39,8 @@ public class TempStart {
 		
 //		}
 		try {
-			ArrayList<PlayerDescriptionStat> res = pd.getPlayerStat(3, true, false);
-			for(int i = 0;i<res.size();i++){
-				System.out.println(res.get(i).getType()+";"+res.get(i).getAvg()+";"+res.get(i).getMedian()+";"+res.get(i).getRange()+";"+res.get(i).getVar()+";"+res.get(i).getVarq()+";"+res.get(i).getC_v()+";"+res.get(i).getSkewness()+";"+res.get(i).getKurtosis());
-			}
+			ArrayList<Integer> t = pd.selectByTag("13-14", "detail", "a", "null", "null", "null");
+			System.out.println(t);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
