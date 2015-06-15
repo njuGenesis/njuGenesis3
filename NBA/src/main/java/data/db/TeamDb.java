@@ -17,9 +17,9 @@ import data.po.teamData.TeamLData;
 public class TeamDb extends DataBaseLink {
 
 	public static void main(String[] args) throws RemoteException {
-		TeamDb t = new TeamDb();
+		//TeamDb t = new TeamDb();
 		// t.initializeTeamTable();
-		//t.clearTeamTable();
+		// t.clearTeamTable();
 
 		/*
 		 * ArrayList<TeamData_Avg_PO> res = t.getted("SAS","unknown","unknown");
@@ -28,12 +28,13 @@ public class TeamDb extends DataBaseLink {
 		 * "  "+res.get(i).getAssistEff()); }
 		 */
 
-		/*TeamLData team3 = t.getLSeasonAvg("13-14", "yes");
-		System.out.println(team3.getPPG());
-		TeamLData team2 = t.getLSeasonAvg("13-14", "unknown");
-		System.out.println(team2.getPPG());
-		TeamLData team1 = t.getLSeasonAvg("13-14", "no");
-		System.out.println(team1.getPPG());*/
+		/*
+		 * TeamLData team3 = t.getLSeasonAvg("13-14", "yes");
+		 * System.out.println(team3.getPPG()); TeamLData team2 =
+		 * t.getLSeasonAvg("13-14", "unknown");
+		 * System.out.println(team2.getPPG()); TeamLData team1 =
+		 * t.getLSeasonAvg("13-14", "no"); System.out.println(team1.getPPG());
+		 */
 
 	}
 
@@ -134,19 +135,20 @@ public class TeamDb extends DataBaseLink {
 				+ newteam.getSeason() + "'");
 		addotd(newteam);
 
-		/*operation("update teambaseinfo set name = '" + newteam.getName()
-				+ "', shortname = '" + newteam.getShortName() + "', season = '"
-				+ newteam.getSeason() + "', isseason = '" + newteam.getIsSeason()
-				+ "', city = '" + newteam.getCity() + "', eorw = '" + newteam.getEorW()
-				+ "', area = '" + newteam.getArea() + "', mainposition = '"
-				+ newteam.getMainposition() + "', players = '" + newteam.getPlayers()
-				+ "', buildyear = '" + newteam.getBuildyear()
-				+ "'  where shortname = '" + newteam.getShortName()
-				+ "' and season = '" + newteam.getSeason() + "'");*/
+		/*
+		 * operation("update teambaseinfo set name = '" + newteam.getName() +
+		 * "', shortname = '" + newteam.getShortName() + "', season = '" +
+		 * newteam.getSeason() + "', isseason = '" + newteam.getIsSeason() +
+		 * "', city = '" + newteam.getCity() + "', eorw = '" + newteam.getEorW()
+		 * + "', area = '" + newteam.getArea() + "', mainposition = '" +
+		 * newteam.getMainposition() + "', players = '" + newteam.getPlayers() +
+		 * "', buildyear = '" + newteam.getBuildyear() +
+		 * "'  where shortname = '" + newteam.getShortName() +
+		 * "' and season = '" + newteam.getSeason() + "'");
+		 */
 
 	}
 
-	 
 	// 插入球队基本信息
 	public void addtbi(TeamData_Avg_PO t) {
 		try {
@@ -441,8 +443,9 @@ public class TeamDb extends DataBaseLink {
 		return temp;
 	}
 
-	// 查询低阶数据的联盟赛季平均数
-	public TeamLData getLSeasonAvg(String season, String isseason) {
+	// 查询低阶数据的赛季平均数
+	public TeamLData getLSeasonAvg(String shortname, String season,
+			String isseason) {
 		// TODO Auto-generated method stub
 		TeamLData res = new TeamLData();
 		try {
@@ -456,6 +459,11 @@ public class TeamDb extends DataBaseLink {
 							+ season
 							+ "' or "
 							+ season.equals("unknown")
+							+ " )"
+							+ "and( shortname = '"
+							+ shortname
+							+ "' or "
+							+ shortname.equals("unknown")
 							+ " )"
 							+ "and( isseason = '"
 							+ isseason
@@ -500,7 +508,7 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 查询高阶数据的联盟赛季平均数
-	public TeamHData getHSeasonAvg(String season, String isseason) {
+	public TeamHData getHSeasonAvg(String shortname,String season, String isseason) {
 		// TODO Auto-generated method stub
 		TeamHData res = new TeamHData();
 		try {
@@ -514,6 +522,11 @@ public class TeamDb extends DataBaseLink {
 							+ season
 							+ "' or "
 							+ season.equals("unknown")
+							+ " )"
+							+ "and( shortname = '"
+							+ shortname
+							+ "' or "
+							+ shortname.equals("unknown")
 							+ " )"
 							+ "and( isseason = '"
 							+ isseason
@@ -546,7 +559,7 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 查询对手数据的联盟赛季平均数
-	public OtherTeamData getOSeasonAvg(String season, String isseason) {
+	public OtherTeamData getOSeasonAvg(String shortname,String season, String isseason) {
 		// TODO Auto-generated method stub
 		OtherTeamData res = new OtherTeamData();
 		try {
@@ -560,6 +573,11 @@ public class TeamDb extends DataBaseLink {
 							+ season
 							+ "' or "
 							+ season.equals("unknown")
+							+ " )"
+							+ "and( shortname = '"
+							+ shortname
+							+ "' or "
+							+ shortname.equals("unknown")
 							+ " )"
 							+ "and( isseason = '"
 							+ isseason

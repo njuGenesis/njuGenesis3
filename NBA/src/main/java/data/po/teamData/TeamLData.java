@@ -34,7 +34,47 @@ public class TeamLData {
      double FoulPG;//场均犯规数
      
      
-     
+     public double getproperty(String property){
+    	 if(property.equals("TPEff")){
+    		 return getTPEff();
+    	 }
+    	 else if(property.equals("ShootEff")){
+    		 return getShootEff();
+    	 }
+    	 else if(property.equals("FTEff")){
+    		 return getFTEff();
+    	 }
+    	 else if(property.equals("BackBoardPG")){
+    		 return getBackBoardPG();
+    	 }
+    	 else if(property.equals("AssitNumberPG")){
+    		 return getAssitNumberPG();
+    	 }
+    	 else if(property.equals("StealNumberPG")){
+    		 return getStealNumberPG();
+    	 }
+    	 else if(property.equals("RejectionPG")){
+    		 return getRejectionPG();
+    	 }
+    	 else if(property.equals("ToPG")){
+    		 return getToPG();
+    	 }
+    	 else if(property.equals("FoulPG")){
+    		 return getFoulPG();
+    	 }
+    	 else if(property.equals("PPG")){
+    		 return getPPG();
+    	 }
+    	 else if(property.equals("Winrate")){
+    		 return getWinrate();
+    	 }
+    	 else if(property.equals("MatchNumber")){
+    		 return getMatchNumber();
+    	 }
+    	 
+    	 
+    	 return 0;
+     }
      
 	public String getIsseason() {
 		return isseason;

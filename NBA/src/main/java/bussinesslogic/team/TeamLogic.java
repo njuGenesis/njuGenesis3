@@ -11,6 +11,7 @@ import data.po.matchData.MatchTeam;
 import data.po.teamData.OtherTeamData;
 import data.po.teamData.TeamBaseInfo;
 import data.po.teamData.TeamCompleteInfo;
+import data.po.teamData.TeamDescriptionStat;
 import data.po.teamData.TeamHData;
 import data.po.teamData.TeamLData;
 
@@ -131,24 +132,77 @@ public class TeamLogic implements TeamInfoService {
 		return res;
 	}
 
-	// 赛季低阶数据的平均值
-	public TeamLData getLAvg(String season, String isseason) {
+	// 赛季低阶数据的平均值  (shortname为unknown时为全联盟)
+	public TeamLData getLAvg(String shortname,String season, String isseason) {
 		TeamDb t = new TeamDb();
-		return t.getLSeasonAvg(season, isseason);
+		return t.getLSeasonAvg(shortname,season, isseason);
 	}
 
 	// 赛季对手数据的平均值
-	public OtherTeamData getOtherAvg(String season, String isseason) {
+	public OtherTeamData getOtherAvg(String shortname,String season, String isseason) {
 		TeamDb t = new TeamDb();
-		return t.getOSeasonAvg(season, isseason);
+		return t.getOSeasonAvg(shortname,season, isseason);
 	}
 
 	// 赛季高阶数据的平均值
-	public TeamHData getHAvg(String season, String isseason) {
+	public TeamHData getHAvg(String shortname,String season, String isseason) {
 		TeamDb t = new TeamDb();
-		return t.getHSeasonAvg(season, isseason);
+		return t.getHSeasonAvg(shortname,season, isseason);
 	}
 
+	//描述统计值
+	public ArrayList<TeamDescriptionStat> getDescription(String shortname,String season,String isseason) throws RemoteException{
+		ArrayList<TeamDescriptionStat> res= new ArrayList<TeamDescriptionStat>();
+		TeamLogic t =new TeamLogic();
+		ArrayList<TeamLData> teams=t.GetPartLInfo(shortname, season, isseason);
+		TeamLData avg =t.getLAvg(shortname, season, isseason);
+		TeamDescriptionStat one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "PPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "TPEff");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "ShootEff");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "FTEff");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "BackBoardPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "AssitNumberPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "StealNumberPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "RejectionPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "ToPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "FoulPG");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "Winrate");
+		res.add(one);
+		one = new TeamDescriptionStat();
+		one.setvalue(teams,avg, "MatchNumber");
+		res.add(one);
+		for(int i=0;i<teams.size();i++){
+			res.get(i).setShortname(shortname);
+			res.get(i).setSeason(season);
+			res.get(i).setIsseason(isseason);
+		}
+		return res;
+	} 
+	
+	
+	
+	
 	public void PersonR() throws RemoteException {
 		TeamLogic t = new TeamLogic();
 		ArrayList<TeamLData> teamLdata = t.GetPartLInfo("unknown", "unknown",
@@ -164,8 +218,8 @@ public class TeamLogic implements TeamInfoService {
 		// ASSIS 队ppg的影响 r=0.5845 defback(0.40)影响远大于offback(0.08) shootnumber
 		// 0.558 tpnumber 0.5218
 		// shooteff 0.35 tpeff 0.46
-		double avg_x = t.getLAvg("unknown", "unknown").getPPG();
-		double avg_y = t.getOtherAvg("unknown", "unknown").getPPG();
+		double avg_x = t.getLAvg("unknown", "unknown",  "unknown").getPPG();
+		double avg_y = t.getOtherAvg("unknown", "unknown", "unknown").getPPG();
 		System.out.println(avg_x + "   " + avg_y);
 
 		double s_x = 0.0;
@@ -189,7 +243,6 @@ public class TeamLogic implements TeamInfoService {
 		r = r / (teamLdata.size() - 1);
 		System.out.println(r);
 	}
-
 	
 	//两只球队的单因素方差分析
 	public void Var_a(String team1, String team2, String isseason, String season)
@@ -316,21 +369,25 @@ public class TeamLogic implements TeamInfoService {
 		System.out.println(Fa);
 	}
 
+	
 	public void test() throws RemoteException{
 		TeamLogic t = new TeamLogic();
 		ArrayList<TeamLData> team = t.GetPartLInfo("unknown", "unknown", "yes");
-		ArrayList<TeamHData> team2=t.GetPartHInfo("unknown", "unknown", "yes");
+		//ArrayList<TeamHData> team2=t.GetPartHInfo("unknown", "unknown", "yes");
 		for(int i=0;i<team.size();i++){
 		System.out.println(team.get(i).getShootEff());
 		}
 	}
+
 	
 	
 	public static void main(String[] args) throws RemoteException {
 		TeamLogic t = new TeamLogic(); // GetAllCompleteInfo
 	   // t.Var_a("HOU", "SAS", "yes", "05-06");
-		t.test();
-		MatchLogic m = new MatchLogic();
+		//t.test();
+		ArrayList<TeamDescriptionStat>teams =t.getDescription("SAS", "unknown", "yes");
+		System.out.println(teams.get(2).getType()+"  "+teams.get(2).getC_v());
+	//	MatchLogic m = new MatchLogic();
 
 	}
 }
