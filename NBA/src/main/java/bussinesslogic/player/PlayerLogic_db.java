@@ -518,33 +518,121 @@ public class PlayerLogic_db {
 			if(isAvg){
 				ArrayList<PlayerDataSeason_Avg_Basic> temp = gets_a_b(id);
 				for(int i = 0;i<temp.size();i++){
+					try{
 					thper.add(Double.valueOf(temp.get(i).getThper().replaceAll("%", "")));
+					}catch(Exception e){
+						thper.add(0.0);
+					}
+					try{
 					shootper.add(Double.valueOf(temp.get(i).getShootper().replaceAll("%", "")));
+					}catch(Exception e){
+						shootper.add(0.0);
+					}
+					try{
 					ftper.add(Double.valueOf(temp.get(i).getFtper().replaceAll("%", "")));
+					}catch(Exception e){
+						ftper.add(0.0);
+					}
+					try{
 					assist.add(Double.valueOf(temp.get(i).getAssist()));
+					}catch(Exception e){
+						assist.add(0.0);
+					}
+					try{
 					steal.add(Double.valueOf(temp.get(i).getSteal()));
+					}catch(Exception e){
+						steal.add(0.0);
+					}
+					try{
 					rebound.add(Double.valueOf(temp.get(i).getBackbound()));
+					}catch(Exception e){
+						rebound.add(0.0);
+					}
+					try{
 					block.add(Double.valueOf(temp.get(i).getRejection()));
+					}catch(Exception e){
+						block.add(0.0);
+					}
+					try{
 					miss.add(Double.valueOf(temp.get(i).getMiss()));
+					}catch(Exception e){
+						miss.add(0.0);
+					}
+					try{
 					foul.add(Double.valueOf(temp.get(i).getFoul()));
+					}catch(Exception e){
+						foul.add(0.0);
+					}
+					try{
 					time.add(Double.valueOf(temp.get(i).getTime()));
+					}catch(Exception e){
+						time.add(0.0);
+					}
+					try{
 					pts.add(Double.valueOf(temp.get(i).getPts()));
+					}catch(Exception e){
+						pts.add(0.0);
+					}
 				}
 			}
 			else{
 				ArrayList<PlayerDataSeason_Tot_Basic> temp = gets_t_b(id);
 				for(int i = 0;i<temp.size();i++){
+					try{
 					thper.add(Double.valueOf(temp.get(i).getThper().replaceAll("%", "")));
+					}catch(Exception e){
+						thper.add(0.0);
+					}
+					try{
 					shootper.add(Double.valueOf(temp.get(i).getShootper().replaceAll("%", "")));
+					}catch(Exception e){
+						shootper.add(0.0);
+					}
+					try{
 					ftper.add(Double.valueOf(temp.get(i).getFtper().replaceAll("%", "")));
+					}catch(Exception e){
+						ftper.add(0.0);
+					}
+					try{
 					assist.add(Double.valueOf(temp.get(i).getAssist()));
+					}catch(Exception e){
+						assist.add(0.0);
+					}
+					try{
 					steal.add(Double.valueOf(temp.get(i).getSteal()));
+					}catch(Exception e){
+						steal.add(0.0);
+					}
+					try{
 					rebound.add(Double.valueOf(temp.get(i).getBackbound()));
+					}catch(Exception e){
+						rebound.add(0.0);
+					}
+					try{
 					block.add(Double.valueOf(temp.get(i).getRejection()));
+					}catch(Exception e){
+						block.add(0.0);
+					}
+					try{
 					miss.add(Double.valueOf(temp.get(i).getMiss()));
+					}catch(Exception e){
+						miss.add(0.0);
+					}
+					try{
 					foul.add(Double.valueOf(temp.get(i).getFoul()));
+					}catch(Exception e){
+						foul.add(0.0);
+					}
+					try{
 					time.add(Double.valueOf(temp.get(i).getTime()));
+					}catch(Exception e){
+						time.add(0.0);
+					}
+					try{
 					pts.add(Double.valueOf(temp.get(i).getPts()));
+					}catch(Exception e){
+						pts.add(0.0);
+					}
 				}
 			}
 		}
@@ -552,33 +640,121 @@ public class PlayerLogic_db {
 			if(isAvg){
 				ArrayList<PlayerDataPlayOff_Avg_Basic> temp = getp_a_b(id);
 				for(int i = 0;i<temp.size();i++){
+					try{
 					thper.add(Double.valueOf(temp.get(i).getThper().replaceAll("%", "")));
+					}catch(Exception e){
+						thper.add(0.0);
+					}
+					try{
 					shootper.add(Double.valueOf(temp.get(i).getShootper().replaceAll("%", "")));
+					}catch(Exception e){
+						shootper.add(0.0);
+					}
+					try{
 					ftper.add(Double.valueOf(temp.get(i).getFtper().replaceAll("%", "")));
+					}catch(Exception e){
+						ftper.add(0.0);
+					}
+					try{
 					assist.add(Double.valueOf(temp.get(i).getAssist()));
+					}catch(Exception e){
+						assist.add(0.0);
+					}
+					try{
 					steal.add(Double.valueOf(temp.get(i).getSteal()));
+					}catch(Exception e){
+						steal.add(0.0);
+					}
+					try{
 					rebound.add(Double.valueOf(temp.get(i).getBackbound()));
+					}catch(Exception e){
+						rebound.add(0.0);
+					}
+					try{
 					block.add(Double.valueOf(temp.get(i).getRejection()));
+					}catch(Exception e){
+						block.add(0.0);
+					}
+					try{
 					miss.add(Double.valueOf(temp.get(i).getMiss()));
+					}catch(Exception e){
+						miss.add(0.0);
+					}
+					try{
 					foul.add(Double.valueOf(temp.get(i).getFoul()));
+					}catch(Exception e){
+						foul.add(0.0);
+					}
+					try{
 					time.add(Double.valueOf(temp.get(i).getTime()));
+					}catch(Exception e){
+						time.add(0.0);
+					}
+					try{
 					pts.add(Double.valueOf(temp.get(i).getPts()));
+					}catch(Exception e){
+						pts.add(0.0);
+					}
 				}
 			}
 			else{
 				ArrayList<PlayerDataPlayOff_Tot_Basic> temp = getp_t_b(id);
 				for(int i = 0;i<temp.size();i++){
+					try{
 					thper.add(Double.valueOf(temp.get(i).getThper().replaceAll("%", "")));
+					}catch(Exception e){
+						thper.add(0.0);
+					}
+					try{
 					shootper.add(Double.valueOf(temp.get(i).getShootper().replaceAll("%", "")));
+					}catch(Exception e){
+						shootper.add(0.0);
+					}
+					try{
 					ftper.add(Double.valueOf(temp.get(i).getFtper().replaceAll("%", "")));
+					}catch(Exception e){
+						ftper.add(0.0);
+					}
+					try{
 					assist.add(Double.valueOf(temp.get(i).getAssist()));
+					}catch(Exception e){
+						assist.add(0.0);
+					}
+					try{
 					steal.add(Double.valueOf(temp.get(i).getSteal()));
+					}catch(Exception e){
+						steal.add(0.0);
+					}
+					try{
 					rebound.add(Double.valueOf(temp.get(i).getBackbound()));
+					}catch(Exception e){
+						rebound.add(0.0);
+					}
+					try{
 					block.add(Double.valueOf(temp.get(i).getRejection()));
+					}catch(Exception e){
+						block.add(0.0);
+					}
+					try{
 					miss.add(Double.valueOf(temp.get(i).getMiss()));
+					}catch(Exception e){
+						miss.add(0.0);
+					}
+					try{
 					foul.add(Double.valueOf(temp.get(i).getFoul()));
+					}catch(Exception e){
+						foul.add(0.0);
+					}
+					try{
 					time.add(Double.valueOf(temp.get(i).getTime()));
+					}catch(Exception e){
+						time.add(0.0);
+					}
+					try{
 					pts.add(Double.valueOf(temp.get(i).getPts()));
+					}catch(Exception e){
+						pts.add(0.0);
+					}
 				}
 			}
 			
@@ -658,10 +834,12 @@ public class PlayerLogic_db {
 	private Double calculateAvg(ArrayList<Double> orgin){
 		double res = 0;
 		double sum = 0;
+		if(orgin.size()!=0){
 		for(int i = 0;i<orgin.size();i++){
 			sum = sum + orgin.get(i);
 		}
 		res = sum/orgin.size();
+		}
 		return res;
 	}
 	private Double calculateMedian(ArrayList<Double> orgin){
@@ -682,44 +860,59 @@ public class PlayerLogic_db {
 	private Double calculateRange(ArrayList<Double> orgin){
 		double res = 0;
 		Collections.sort(orgin);
+		if(orgin.size()!=0){
 		res = orgin.get(orgin.size()-1)-orgin.get(0);
+		}
 		return res;
 	}
 	private Double calculateVar(ArrayList<Double> orgin,double avg){
 		double res = 0;
 		double sum = 0;
+		if(orgin.size()!=0){
 		for(int i = 0;i<orgin.size();i++){
 			sum = sum + Math.pow((orgin.get(i)-avg),2);
 		}
 		res = sum/orgin.size();
+		}
 		return res;
 	}
 	private Double calculateVarq(double var){
 		return Math.sqrt(var);
 	}
 	private Double calculatec_v(double avg,double varq){
-		double res = 100*varq/avg;
+		double res = 0;
+		if(avg!=0){
+			res  = 100*varq/avg;
+		}
 		return res;
 	}
 	private Double calculateSK(ArrayList<Double> orgin,double avg){
+		double res = 0;
 		double three_k = calculateK_Center(orgin,avg,3);
 		double two_k = calculateK_Center(orgin,avg,2);
-		double res = three_k/Math.pow(two_k, 1.5);
+		if(two_k!=0){
+		 res = three_k/Math.pow(two_k, 1.5);
+		}
 		return res;
 	}
 	private Double calculateKur(ArrayList<Double> orgin,double avg){
+		double res = 0;
 		double four_k = calculateK_Center(orgin,avg,4);
 		double two_k = calculateK_Center(orgin,avg,2);
-		double res =  four_k/Math.pow(two_k, 2);
-		return res;
+		if(res!=0){
+		 res =  four_k/Math.pow(two_k, 2);
+		}
+		 return res;
 	}
 	private Double calculateK_Center(ArrayList<Double> orgin,double avg,int k){
 		double res = 0;
 		double sum = 0;
+		if(orgin.size()!=0){
 		for(int i = 0;i<orgin.size();i++){
 			sum = sum + Math.pow(orgin.get(i)-avg, k);
 		}
 		res = sum/orgin.size();
+		}
 		return res;
 	}
 }
