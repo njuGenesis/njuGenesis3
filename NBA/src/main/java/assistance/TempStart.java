@@ -39,7 +39,8 @@ public class TempStart {
 		
 //		}
 		try {
-			ArrayList<Integer> t = pd.selectByTag("13-14", "detail", "a", "null", "null", "null");
+			ArrayList<Integer> t = pd.selectByTag("null", "detail", "a", "null", "null", "null");
+			
 			System.out.println(t);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

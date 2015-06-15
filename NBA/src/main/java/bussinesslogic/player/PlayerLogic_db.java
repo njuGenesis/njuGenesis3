@@ -310,8 +310,17 @@ public class PlayerLogic_db {
 		case "detail":
 			ArrayList<PlayerDetailInfo> temp8 = getAlldetail(season);
 			for(int i = 0;i<temp8.size();i++){
-				temp.add(temp8.get(i).getId());
+				if ((firstc(temp8.get(i), firstc)) && (namekeys(temp8.get(i), namekey))
+						&& (position(temp8.get(i), position))
+						&& (union(temp8.get(i).getId(), union, season))) {
+					
+							res.add(temp8.get(i).getId());
+						}
+					
+					
+				
 			}
+			return res;
 		}
 
 		PlayerDetailInfo tempinfo = new PlayerDetailInfo();
@@ -431,6 +440,7 @@ public class PlayerLogic_db {
 			//System.out.println(id+";"+temp.size());
 			for (int i = 0; i < temp.size(); i++) {
 				String teamname = temp.get(i).split(";")[1];
+				
 				try {
 
 					if (union.equals("Southeast")) {
