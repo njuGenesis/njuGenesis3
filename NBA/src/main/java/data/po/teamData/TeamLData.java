@@ -68,8 +68,8 @@ public class TeamLData {
     	 else if(property.equals("Winrate")){
     		 return getWinrate();
     	 }
-    	 else if(property.equals("MatchNumber")){
-    		 return getMatchNumber();
+    	 else if(property.equals("WinMatch")){
+    		 return getWinMatch();
     	 }
     	 
     	 

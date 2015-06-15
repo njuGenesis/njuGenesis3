@@ -234,7 +234,7 @@ public class TeamDb extends DataBaseLink {
 	}
 
 	// 查询球队基本信息
-	public ArrayList<TeamBaseInfo> getbaseinfo(String shortname)
+	public ArrayList<TeamBaseInfo> getbaseinfo(String shortname,String season)
 			throws RemoteException {
 		ArrayList<TeamBaseInfo> temp = new ArrayList<TeamBaseInfo>();
 		TeamBaseInfo res = new TeamBaseInfo();
@@ -247,6 +247,11 @@ public class TeamDb extends DataBaseLink {
 							+ shortname
 							+ "' or "
 							+ shortname.equals("unknown")
+							+ " )"
+							+ "and (season = '"
+							+ season
+							+ "' or "
+							+ season.equals("unknown")
 							+ " )");
 			while (rs.next()) {
 				res = new TeamBaseInfo();
@@ -397,7 +402,7 @@ public class TeamDb extends DataBaseLink {
 	public TeamCompleteInfo getAllTeamInfo(String shortname, String season,
 			String isseason) throws RemoteException {
 		TeamCompleteInfo temp = new TeamCompleteInfo();
-		temp.setBaseinfo(getbaseinfo(shortname).get(0));
+		temp.setBaseinfo(getbaseinfo(shortname,season).get(0));
 		temp.setLData(getLData(shortname, season, isseason).get(0));
 		temp.setHData(getHData(shortname, season, isseason).get(0));
 		temp.setOtherTeam(getOtherTeamData(shortname, season, isseason).get(0));
