@@ -2,6 +2,7 @@ package presentation.contenui;
 
 import java.util.ArrayList;
 
+import presentation.compare.PlayerCompare;
 import presentation.component.BgPanel;
 import presentation.hotspot.HotPlayerProgressPanel;
 import presentation.hotspot.HotPlayerSeasonPanel;
@@ -45,6 +46,8 @@ public class TurnController {
 		
 		case STATS_PLAYER:newPanel = new PlayerStatsPanelNew();break;
 		case STATS_TEAM:newPanel = new TeamStatsPanelNew();break;
+		
+		case COMPARE:newPanel = new PlayerCompare();break;
 		}
 		return newPanel;
 	}

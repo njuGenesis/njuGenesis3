@@ -160,7 +160,7 @@ public class PlayerUI extends BgPanel{
 						String team = comboBoxTeam.getSelectedItem().toString().split(" ")[1];
 						ArrayList<Integer> idList = new ArrayList<>();
 						try {
-							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", "null", "null","null");
+							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", "null", "null", team);
 						} catch (RemoteException e1) {
 							e1.printStackTrace();
 						}

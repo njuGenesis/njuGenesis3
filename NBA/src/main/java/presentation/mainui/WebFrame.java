@@ -125,7 +125,7 @@ public class WebFrame extends GFrame{
 		//			}
 		//		});
 
-		String buttonInfo[] = {"热点", "球员", "球队", "比赛", "统计", "分析"};
+		String buttonInfo[] = {"热点", "球员", "球队", "比赛", "数据", "比较"};
 		//String buttonIconInfo[] = {"☀︎︎", "♂", "♗", "⚔︎︎", "⧲︎︎", "✍"};
 
 		for(int i=0;i<menuButton.length;i++){
@@ -219,7 +219,7 @@ public class WebFrame extends GFrame{
 			@Override
 			public void mousePressed(MouseEvent e){
 				GLabel label = (GLabel) e.getSource();
-				WebFrame.this.setPanel(turnController.turn(PanelKind.STATS), label.getText());
+				WebFrame.this.setPanel(turnController.turn(PanelKind.COMPARE), label.getText());
 
 			}
 		});

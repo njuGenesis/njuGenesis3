@@ -18,4 +18,6 @@ public enum PanelKind {
 	STATS_TEAM,
 	
 	MATCH_DETAIL,
+	
+	COMPARE
 }
