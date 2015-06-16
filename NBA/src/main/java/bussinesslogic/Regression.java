@@ -17,7 +17,7 @@ public class Regression {
 
 	public static void main(String[] args) throws RemoteException {
 		Regression r = new Regression();
-		r.sqt(234);
+		r.sqt(195);
 		// r.getRelation(2222);
 
 	}
@@ -42,7 +42,7 @@ public class Regression {
 
 		for (int i = 0; i < res.size(); i++) {
 			// System.out.println(res.get(i).getPersonR());
-			if (res.get(i).getPersonR() < 0.4
+			if (res.get(i).getPersonR() < 0.6
 					|| (!(res.get(i).getPersonR() <= 1))) {
 				res.remove(i);
 				i--;
@@ -64,7 +64,7 @@ public class Regression {
 		PlayerLogic_db p = new PlayerLogic_db();
 		ArrayList<PlayerDataSeason_Avg_Basic> players = p.gets_a_b(id);
 		System.out.println(players.size());
-		if (players.size() <= 3) {
+		if (players.size() <= 2) {
 			System.out.println("数据太少无法分析");
 			return res;
 		}

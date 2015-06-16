@@ -24,7 +24,7 @@ public class TestMatchdataCrawer {
 		/*
 		 * for (int i = 37456; i <= 37459; i++) { m.getSeasonMatch(i); }
 		 */
-		m.update();
+		//m.update();
 	}
 
 	public void update() {
