@@ -129,7 +129,7 @@ public class WebFrame extends GFrame{
 		//String buttonIconInfo[] = {"☀︎︎", "♂", "♗", "⚔︎︎", "⧲︎︎", "✍"};
 
 		for(int i=0;i<menuButton.length;i++){
-			menuButton[i] = new GLabel("", new Point(0, 105+(50)*i), new Point(150, 30), menuPanel, true, 0, 20);
+			menuButton[i] = new GLabel("", new Point(0, 105+(40)*i), new Point(150, 30), menuPanel, true, 0, 20);
 			menuButton[i].setForeground(UIUtil.foreGrey);
 			menuButton[i].setBackground(bg.getBackground());
 			menuButton[i].setHorizontalAlignment(JLabel.CENTER);
@@ -253,9 +253,9 @@ public class WebFrame extends GFrame{
 
 		int d;
 		if(down){
-			d = 200;
+			d = 160;
 		}else{
-			d = -200;
+			d = -160;
 		}
 		for(int i=1;i<7;i++){
 			menuButton[i].setLocation(menuButton[i].getX(), menuButton[i].getY()+d);
@@ -267,7 +267,7 @@ public class WebFrame extends GFrame{
 
 		if(clicked_stats){
 			for(int i=0;i<statsButton.length;i++){
-				statsButton[i].setLocation(0, menuButton[4].getY()+50+50*i);
+				statsButton[i].setLocation(0, menuButton[4].getY()+40+40*i);
 			}
 		}
 
@@ -278,16 +278,16 @@ public class WebFrame extends GFrame{
 
 		int d;
 		if(down){
-			d = 100;
+			d = 80;
 		}else{
-			d = -100;
+			d = -80;
 		}
 		for(int i=5;i<7;i++){
 			menuButton[i].setLocation(menuButton[i].getX(), menuButton[i].getY()+d);
 		}
 
 		for(int i=0;i<statsButton.length;i++){
-			statsButton[i].setLocation(0, menuButton[4].getY()+50+50*i);
+			statsButton[i].setLocation(0, menuButton[4].getY()+40+40*i);
 			statsButton[i].setVisible(down);
 		}
 
@@ -298,7 +298,7 @@ public class WebFrame extends GFrame{
 	private void menuInit_hot(){
 
 		for(int i=0;i<4;i++){
-			hotButton[i] = new GLabel("", new Point(0, menuButton[0].getY()+50+(50)*i), new Point(150, 30), menuPanel, true, 0, 14);
+			hotButton[i] = new GLabel("", new Point(0, menuButton[0].getY()+40+(40)*i), new Point(150, 30), menuPanel, true, 0, 14);
 			hotButton[i].setForeground(UIUtil.foreGrey);
 			hotButton[i].setBackground(bg.getBackground());
 			hotButton[i].setHorizontalAlignment(JLabel.CENTER);
@@ -356,7 +356,7 @@ public class WebFrame extends GFrame{
 	private void menuInit_stats(){
 
 		for(int i=0;i<2;i++){
-			statsButton[i] = new GLabel("", new Point(0, menuButton[4].getY()+50+(50)*i), new Point(150, 30), menuPanel, true, 0, 14);
+			statsButton[i] = new GLabel("", new Point(0, menuButton[4].getY()+40+(40)*i), new Point(150, 30), menuPanel, true, 0, 14);
 			statsButton[i].setForeground(UIUtil.foreGrey);
 			statsButton[i].setBackground(bg.getBackground());
 			statsButton[i].setHorizontalAlignment(JLabel.CENTER);

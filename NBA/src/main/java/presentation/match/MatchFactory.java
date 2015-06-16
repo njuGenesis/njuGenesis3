@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
@@ -24,9 +25,9 @@ import presentation.component.TeamImageAssist;
 import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
-import presentation.mainui.StartUI;
 import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
+import bussinesslogic.player.PlayerLogic_db;
 import bussinesslogic.team.TeamLogic;
 import data.po.Match_PlayerPO;
 import data.po.matchData.MatchDataSeason;
@@ -44,7 +45,7 @@ public class MatchFactory {
 	private TeamImageAssist imgAssist = new TeamImageAssist();
 	private TeamLogic logic = new TeamLogic();
 	
-	
+	private PlayerLogic_db logicp = new PlayerLogic_db();
 
 
 	public JPanel getInfoPanel(MatchDataSeason po){
@@ -89,6 +90,31 @@ public class MatchFactory {
 
 		return jp;
 	}
+	
+	private void addNameListener(WebTable table){
+		table.setColumForeground(0,UIUtil.nbaBlue);
+		table.setColumHand(0);
+		for(int i=0;i<table.row;i++){
+			table.getColum(0)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String name = label.getText();
+					int id = 1;
+					try {
+						id = logicp.getIDbyName(name, "");
+						if(id!=0){
+							TurnController tc = new TurnController();
+							WebFrame.frame.setPanel(tc.turnToPlayerDetials(id), name);
+						}
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}System.out.println(id);
+					
+				}
+			});
+		}
+	}
 
 	public JPanel getTeamPanel(ArrayList<MatchPlayer> players){
 		JPanel jp = new JPanel();
@@ -112,6 +138,7 @@ public class MatchFactory {
 		for(int i=1;i<table.colum;i++){  //第一列名字不居中
 			table.setColumDataCenter(i);
 		}
+		addNameListener(table);
 		jp.add(table);
 		
 		return jp;
@@ -185,8 +212,8 @@ public class MatchFactory {
 		//		panel.setBounds(0, 0, 905, oneHeight*num);
 		panel.setLocation(0, 0);
 		panel.setLayout(null);
-		panel.setSize(new Dimension(905, oneHeight*num));
-//		panel.setPreferredSize(new Dimension(905, oneHeight*num));
+//		panel.setSize(new Dimension(905, oneHeight*num));
+		panel.setPreferredSize(new Dimension(905, oneHeight*num));
 
 		if(num>0){
 			

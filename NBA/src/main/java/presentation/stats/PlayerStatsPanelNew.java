@@ -492,6 +492,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
 		addNameListener(allTable1);
 		addTeamListener_fullName(allTable1);
+		setDefaultOrder(allTable1);
 		this.add(allTable1);
 		tables[0] = allTable1;
 
@@ -500,6 +501,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
 		addNameListener(allTable2);
 		addTeamListener_fullName(allTable2);
+		setDefaultOrder(allTable2);
 		this.add(allTable2);
 		tables[1] = allTable2;
 
@@ -508,6 +510,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
 		addNameListener(avgTable1);
 		addTeamListener_fullName(avgTable1);
+		setDefaultOrder(avgTable1);
 		this.add(avgTable1);
 		tables[2] = avgTable1;
 
@@ -516,6 +519,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
 		addNameListener(avgTable2);
 		addTeamListener_fullName(avgTable2);
+		setDefaultOrder(avgTable2);
 		this.add(avgTable2);
 		tables[3] = avgTable2;
 
@@ -524,6 +528,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
 		addNameListener(adBasicTable);
 		addTeamListener_shortName(adBasicTable);
+		setDefaultOrder(adBasicTable);
 		this.add(adBasicTable);
 		tables[4] = adBasicTable;
 
@@ -532,6 +537,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
 		addNameListener(adShootTable);
 		addTeamListener_shortName(adShootTable);
+		setDefaultOrder(adShootTable);
 		this.add(adShootTable);
 		tables[5] = adShootTable;
 
@@ -550,10 +556,9 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}
 	}
 
-	private void setDefaultOrder(){
-		for(int i=0;i<tables.length;i++){
-			tables[i].setOrder(0, String.class);
-		}
+	private void setDefaultOrder(WebTable table){
+		table.setOrder(0, String.class);
+		table.downOrder(0, String.class);
 	}
 
 
@@ -1421,6 +1426,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
 		addNameListener(allTable1);
 		addTeamListener_fullName(allTable1);
+		setDefaultOrder(allTable1);
 		PlayerStatsPanelNew.this.add(allTable1);
 		tables[0] = allTable1;
 
@@ -1428,6 +1434,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
 		addNameListener(allTable2);
 		addTeamListener_fullName(allTable2);
+		setDefaultOrder(allTable2);
 		PlayerStatsPanelNew.this.add(allTable2);
 		tables[1] = allTable2;
 
@@ -1435,6 +1442,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
 		addNameListener(avgTable1);
 		addTeamListener_fullName(avgTable1);
+		setDefaultOrder(avgTable1);
 		PlayerStatsPanelNew.this.add(avgTable1);
 		tables[2] = avgTable1;
 
@@ -1442,6 +1450,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
 		addNameListener(avgTable2);
 		addTeamListener_fullName(avgTable2);
+		setDefaultOrder(avgTable2);
 		PlayerStatsPanelNew.this.add(avgTable2);
 		tables[3] = avgTable2;
 
@@ -1449,6 +1458,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
 		addNameListener(adBasicTable);
 		addTeamListener_shortName(adBasicTable);
+		setDefaultOrder(adBasicTable);
 		PlayerStatsPanelNew.this.add(adBasicTable);
 		tables[4] = adBasicTable;
 
@@ -1456,6 +1466,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
 		addNameListener(adShootTable);
 		addTeamListener_shortName(adShootTable);
+		setDefaultOrder(adShootTable);
 		PlayerStatsPanelNew.this.add(adShootTable);
 		tables[5] = adShootTable;
 
@@ -1621,8 +1632,11 @@ public class PlayerStatsPanelNew extends BgPanel{
 					tables[i].setVisible(true);
 					selection[i] = true;
 				}else{
-					tables[i].setVisible(false);
-					selection[i] = false;
+					try{
+						tables[i].setVisible(false);
+						selection[i] = false;
+					}catch(Exception e){}
+
 				}
 			}
 		}
