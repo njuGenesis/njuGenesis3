@@ -39,14 +39,32 @@ public class MatchTeam {
    	 if(property.equals("TPShootEff")){
    		 return Double.valueOf(getTPShootEff().replaceAll("%", ""));
    	 }
-   	 if(property.equals("realEff")){
+   	else if(property.equals("TPShoot")){
+  		 return Double.valueOf(getTPShoot());
+  	 }
+   	else if(property.equals("TPShootEffNumber")){
+  		 return Double.valueOf(getTPShootEffNumber());
+  	 }
+   	 else if(property.equals("realEff")){
    		 return Double.valueOf(getRealEff().replaceAll("%", ""));
    	 }
    	 else if(property.equals("ShootEff")){
    		 return Double.valueOf(getShootEff().replaceAll("%", ""));
    	 }
+   	 else if(property.equals("Shoot")){
+   		 return Double.valueOf(getShoot());
+   	 }
+   	 else if(property.equals("ShootEffNumber")){
+   		 return Double.valueOf(getShootEffNumber());
+   	 }
    	 else if(property.equals("FTShootEff")){
    		 return Double.valueOf(getFTShootEff().replaceAll("%", ""));
+   	 }
+   	 else if(property.equals("FT")){
+   		 return Double.valueOf(getFT());
+   	 }
+   	 else if(property.equals("FTShootEffNumber")){
+   		 return Double.valueOf(getFTShootEffNumber());
    	 }
    	 else if(property.equals("Bank")){
    		 return Double.valueOf(getBank());

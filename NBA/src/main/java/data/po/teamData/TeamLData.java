@@ -38,11 +38,29 @@ public class TeamLData {
     	 if(property.equals("TPEff")){
     		 return getTPEff();
     	 }
+    	 if(property.equals("TPNumberPG")){
+    		 return getTPNumberPG();
+    	 }
+    	 if(property.equals("TPEffNumberPG")){
+    		 return getTPEffNumberPG();
+    	 }
     	 else if(property.equals("ShootEff")){
     		 return getShootEff();
     	 }
+    	 else if(property.equals("ShootNumberPG")){
+    		 return getShootNumberPG();
+    	 }
+    	 else if(property.equals("ShootEffNumberPG")){
+    		 return getShootEffNumberPG();
+    	 }
     	 else if(property.equals("FTEff")){
     		 return getFTEff();
+    	 }
+    	 else if(property.equals("FTNumberPG")){
+    		 return getFTNumberPG();
+    	 }
+    	 else if(property.equals("FTEffNumberPG")){
+    		 return getFTEffNumberPG();
     	 }
     	 else if(property.equals("BackBoardPG")){
     		 return getBackBoardPG();

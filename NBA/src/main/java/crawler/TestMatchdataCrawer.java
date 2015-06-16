@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.mysql.jdbc.UpdatableResultSet;
+
 import data.db.MatchDb;
 import data.db.PlayerDb;
 import data.po.matchData.MatchDataSeason;
@@ -19,10 +21,10 @@ public class TestMatchdataCrawer {
 	public static void main(String[] args) {
 		// 20637
 		TestMatchdataCrawer m = new TestMatchdataCrawer();
-		for (int i = 20637; i <= 37455; i++) {
-			m.getSeasonMatch(i);
-		}
-
+		/*
+		 * for (int i = 37456; i <= 37459; i++) { m.getSeasonMatch(i); }
+		 */
+		m.update();
 	}
 
 	public void update() {
@@ -32,7 +34,7 @@ public class TestMatchdataCrawer {
 		MatchDataSeason newmatch = new MatchDataSeason();
 		PlayerDb p = new PlayerDb();
 		boolean is;
-		for (int i = 20637; i <= 37455; i++) {
+		for (int i = 37456; i <= 37459; i++) {
 			newmatch = m.getSeasonMatch(i);
 			newmatches.add(newmatch);
 		}
@@ -64,7 +66,7 @@ public class TestMatchdataCrawer {
 					.connect("http://www.stat-nba.com/game/" + number + ".html")
 					.header("User-Agent",
 							"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:37.0) Gecko/20100101 Firefox/37.0")
-					.timeout(10000).get();
+					.timeout(20000).get();
 
 			if (doc.select("table").size() == 0) {
 				return match;

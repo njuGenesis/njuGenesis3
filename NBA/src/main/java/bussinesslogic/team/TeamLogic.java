@@ -18,9 +18,10 @@ import data.po.teamData.TeamLData;
 public class TeamLogic implements TeamInfoService {
 
 	// 返回所有球队的基本信息（场馆，建队年份等）
-	public ArrayList<TeamBaseInfo> GetAllBaseInfo(String season) throws RemoteException {
+	public ArrayList<TeamBaseInfo> GetAllBaseInfo(String season)
+			throws RemoteException {
 		TeamDb t = new TeamDb();
-		ArrayList<TeamBaseInfo> temp = t.getbaseinfo("unknown",season);
+		ArrayList<TeamBaseInfo> temp = t.getbaseinfo("unknown", season);
 		return temp;
 	}
 
@@ -154,6 +155,7 @@ public class TeamLogic implements TeamInfoService {
 	// 描述统计值
 	public ArrayList<TeamDescriptionStat> getDescription(String shortname,
 			String season, String isseason) throws RemoteException {
+
 		ArrayList<TeamDescriptionStat> res = new ArrayList<TeamDescriptionStat>();
 		TeamLogic t = new TeamLogic();
 		ArrayList<TeamLData> teams = t
@@ -192,10 +194,11 @@ public class TeamLogic implements TeamInfoService {
 		one = new TeamDescriptionStat();
 		one.setvalue(teams, avg, "Winrate");
 		res.add(one);
-		one = new TeamDescriptionStat();
-		one.setvalue(teams, avg, "MatchNumber");
-		res.add(one);
-		for (int i = 0; i < teams.size(); i++) {
+		/*one = new TeamDescriptionStat();
+		one.setvalue(teams, avg, "WinMatch");
+		res.add(one);*/
+
+		for (int i = 0; i < res.size(); i++) {
 			res.get(i).setShortname(shortname);
 			res.get(i).setSeason(season);
 			res.get(i).setIsseason(isseason);
@@ -203,7 +206,7 @@ public class TeamLogic implements TeamInfoService {
 		return res;
 	}
 
-	//t 0.025(22)=2.7039    
+	// t 0.025(22)=2.7039
 	public void PersonR(String property1, String property2, String team,
 			String season, String isseason) throws RemoteException {
 		TeamLogic t = new TeamLogic();
@@ -241,11 +244,14 @@ public class TeamLogic implements TeamInfoService {
 		}
 		r = r / (teamLdata.size() - 1);
 		System.out.println(r);
-		double t_value=r*Math.pow((teamLdata.size()-2)/(1-Math.pow(r,2)), 0.5);
+		double t_value = r
+				* Math.pow((teamLdata.size() - 2) / (1 - Math.pow(r, 2)), 0.5);
 		System.out.println(t_value);
 	}
 
-	// 两只球队的单因素方差分析    (在某项属性上是否存在存在显著性差异)
+	
+	//妈个鸡检验了半天都没什么数据符合正态分布还方差分析个卵！
+	// 两只球队的单因素方差分析 (在某项属性上是否存在存在显著性差异)
 	public void Var_a(String team1, String team2, String isseason,
 			String season, String property) throws RemoteException {
 		MatchLogic m = new MatchLogic();
@@ -276,23 +282,23 @@ public class TeamLogic implements TeamInfoService {
 		double Va = Sa / 1;
 		double Ve = (St - Sa) / (t1.size() + t2.size() - 2);
 		double Fa = Va / Ve;
-		if(Fa>2.7){
-			if(t1_avg>t2_avg){
+		if (Fa > 2.7) {
+			if (t1_avg > t2_avg) {
 				System.out.println(team1);
-			}
-			else{
+			} else {
 				System.out.println(team2);
 			}
 		}
-		/*System.out.println(C);
-		System.out.println(Va);
-		System.out.println(Ve);*/
+		/*
+		 * System.out.println(C); System.out.println(Va);
+		 * System.out.println(Ve);
+		 */
 		System.out.println(Fa);
 	}
 
 	// 主客场的单因素方差分析
-	public void Var_a(String team, String isseason, String season,String property)
-			throws RemoteException {
+	public void Var_a(String team, String isseason, String season,
+			String property) throws RemoteException {
 		MatchLogic m = new MatchLogic();
 		ArrayList<MatchTeam> t1 = m.GetTeamMatch(team, isseason, season);
 		ArrayList<MatchTeam> home = new ArrayList<MatchTeam>();
@@ -300,12 +306,6 @@ public class TeamLogic implements TeamInfoService {
 
 		System.out.println(t1.size());
 		for (int i = 0; i < t1.size(); i++) {
-			/*
-			 * if(t1.get(i).getResult().split("-")[0].compareTo(t1.get(i).getResult
-			 * ().split("-")[1])>0){ t1.get(i).setDate("2"); } else{
-			 * t1.get(i).setDate("1"); }
-			 */
-
 			if (t1.get(i).getTwoteam().startsWith(t1.get(i).getTeamShortName())) {
 				away.add(t1.get(i));
 			} else {
@@ -323,12 +323,18 @@ public class TeamLogic implements TeamInfoService {
 
 		for (int i = 0; i < home.size(); i++) {
 			t1_avg = t1_avg + Double.valueOf(home.get(i).getproperty(property));
-			Qt = Qt + Math.pow(Double.valueOf(home.get(i).getproperty(property)), 2);
+			Qt = Qt
+					+ Math.pow(
+							Double.valueOf(home.get(i).getproperty(property)),
+							2);
 		}
 
 		for (int i = 0; i < away.size(); i++) {
-			t2_avg = t2_avg + Double.valueOf(away.get(i).getFoul());
-			Qt = Qt + Math.pow(Double.valueOf(away.get(i).getFoul()), 2);
+			t2_avg = t2_avg + Double.valueOf(away.get(i).getproperty(property));
+			Qt = Qt
+					+ Math.pow(
+							Double.valueOf(away.get(i).getproperty(property)),
+							2);
 		}
 
 		double C = Math.pow(t1_avg + t2_avg, 2) / (home.size() + away.size());
@@ -336,6 +342,7 @@ public class TeamLogic implements TeamInfoService {
 		t1_avg = t1_avg / home.size();
 		t2_avg = t2_avg / away.size();
 
+		System.out.println(t1_avg + "   " + t2_avg);
 		double St = Qt - C;
 		double Sa = Qa - C;
 		double Va = Sa / 1;
@@ -345,15 +352,63 @@ public class TeamLogic implements TeamInfoService {
 		System.out.println(Fa);
 	}
 
-	public double[] ChangeIntoDouble(ArrayList<TeamLData> teams,String property){
-		double[] res=new double[teams.size()];
-		for(int i=0;i<res.length;i++){
-			res[i]=teams.get(i).getproperty(property);
+	// 将arraylist里面的某项属性存入double数组
+	public double[] ChangeIntoDouble(ArrayList<TeamLData> teams, String property) {
+		double[]  res = new double[teams.size()];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = teams.get(i).getproperty(property);
 		}
 		return res;
 	}
+
 	
 	
+	
+	//偏度还行峰度差的不是一点... 
+	// 峰度偏度检验
+	public void B3B4(String team, String isseason, String season,
+			String property) throws RemoteException {
+		ArrayList<TeamDescriptionStat> discription = getDescription(team,
+				season, isseason);
+		TeamDescriptionStat dis = new TeamDescriptionStat();
+		for (int i = 0; i < discription.size(); i++) {
+			if (discription.get(i).getType().equals(property)) {
+				dis = discription.get(i);
+				break;
+			}
+		}
+		ArrayList<TeamLData> teamdata = GetPartLInfo(team, season, isseason);
+		double up1 = 6 * (teamdata.size() - 2);
+		double down1 = ((teamdata.size() + 1) * (teamdata.size() + 3));
+		double a1 = Math.pow(up1 / down1, 0.5);
+
+		double up2 = 24 * (teamdata.size() - 2) * (teamdata.size() - 3);
+		double down2 = (teamdata.size() + 1) * (teamdata.size() + 1)
+				* (teamdata.size() + 5) * (teamdata.size() + 3);
+		double a2 = Math.pow(up2 / down2, 0.5);
+
+		double u2 = 3 - 6.0 / (teamdata.size() + 1);
+
+		System.out.println(dis.getSkewness() + "  " + a1);
+
+		double U1 = dis.getSkewness() / a1;
+		double U2 = (dis.getKurtosis() - u2) / a2;
+		System.out.println(U1 + "  " + U2);
+	}
+
+	// 一元线性回归方程 array 0是x系数，1是常数项，2是r2
+	public ArrayList<Double> LineCoefficient(String shortname, String season,
+			String property_x, String property_y) throws RemoteException {
+		double[] x = ChangeIntoDouble(GetPartLInfo(shortname, season, "yes"),
+				property_x);
+		double[] y = ChangeIntoDouble(GetPartLInfo(shortname, season, "yes"),
+				property_y);
+
+		ArrayList<Double> a = LineCoefficient.estimate(x, y);
+		System.out.println(a.get(0) + " x + " + a.get(1) + "  r2= " + a.get(2));
+		return a;
+	}
+
 	public void test() throws RemoteException {
 		TeamLogic t = new TeamLogic();
 		ArrayList<TeamLData> team = t.GetPartLInfo("unknown", "unknown", "yes");
@@ -366,15 +421,12 @@ public class TeamLogic implements TeamInfoService {
 
 	public static void main(String[] args) throws RemoteException {
 		TeamLogic t = new TeamLogic(); // GetAllCompleteInfo
-		t.Var_a("HOU", "SAS", "yes", "13-14", "Bank");
-		System.out.println("--------------------------------------------------");
-		//t.PersonR("PPG", "Winrate", "unknown", "13-14", "yes");
-		double[] x =t.ChangeIntoDouble(t.GetPartLInfo("unknown", "unknown", "yes"), "PPG");
-		double[] y = t.ChangeIntoDouble(t.GetPartLInfo("unknown", "unknown", "yes"), "WinMatch");
-
-		ArrayList<Double> a = LineCoefficient.estimate(x, y);
-		System.out.println(a.get(0) + "  " + a.get(1) + "  " + a.get(2));
-
+		// t.Var_a("HOU", "SAS", "yes", "13-14", "Bank");
+		System.out
+				.println("--------------------------------------------------");
+		t.PersonR("PPG", "Winrate", "unknown", "unknown", "yes");
+		//t.B3B4("unknown", "yes", "unknown", "Winrate");
+		// t.LineCoefficient("unknown", "13-14", "TPEff", "ShootEff");
 		// t.test();
 		// ArrayList<TeamDescriptionStat>teams =t.getDescription("SAS",
 		// "unknown", "yes");

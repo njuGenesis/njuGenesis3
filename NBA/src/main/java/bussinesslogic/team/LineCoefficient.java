@@ -35,7 +35,7 @@ public class LineCoefficient {
 		for (int i = 0; i < x.length; i++) {
 			up = up + Math.pow(a * x[i] + b - getavg(y), 2);
 			down = down + Math.pow(y[i] - getavg(y), 2);
-			System.out.println(up+"   "+down);
+			//System.out.println(up+"   "+down);
 		}
 		return up / down;
 	}

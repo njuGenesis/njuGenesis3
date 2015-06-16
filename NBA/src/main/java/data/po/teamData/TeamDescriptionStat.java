@@ -23,6 +23,7 @@ public class TeamDescriptionStat {
 		this.setType(property);
 		// 均值
 		this.setAvg(avg.getproperty(property));
+	
 		teams.sort(new Comparator<TeamLData>() {
 			public int compare(TeamLData o1, TeamLData o2) {
 				if (o1.getproperty(property) > o2.getproperty(property)) {
