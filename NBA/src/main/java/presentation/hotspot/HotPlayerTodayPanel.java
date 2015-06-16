@@ -114,12 +114,14 @@ public class HotPlayerTodayPanel extends BgPanel{
 		steal = new SelectLabel("抢断",new Point(752,70),new Point(187,35),this,true,0,16);
 		steal.addMouseListener(new MenuListener());
 		menuItem[4] = steal;
+		
+		this.repaint();
 
 		PlayerToday pt = new PlayerToday("得分");
 		Thread t = new Thread(pt);
 		t.start();
 
-		this.repaint();
+		
 	}
 
 	public synchronized void getRankingPanel(String type){

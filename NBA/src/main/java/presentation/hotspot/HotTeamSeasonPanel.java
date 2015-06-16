@@ -94,7 +94,7 @@ public class HotTeamSeasonPanel extends BgPanel{
 		borderDown.setOpaque(true);
 		borderDown.setBackground(UIUtil.nbaBlue);
 
-		title = new GLabel("   赛季热点球员",new Point(0,4),new Point(940,52),this,true,0,24);
+		title = new GLabel("   赛季热点球队",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
 		title.setForeground(UIUtil.nbaBlue);

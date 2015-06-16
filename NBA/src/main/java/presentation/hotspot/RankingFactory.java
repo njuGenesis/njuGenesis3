@@ -313,7 +313,7 @@ public class RankingFactory {
 		case 5:image = HotspotUtil.ranking_5;
 		}
 		
-		GLabel num = new GLabel(HotspotUtil.ranking_2,new Point(18,38),new Point(36,40),p,true);
+		GLabel num = new GLabel(image,new Point(18,38),new Point(36,40),p,true);
 		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+shortteam+".svg", 95, 75),new Point(68,23),new Point(95,75),p,true);
 		team.addMouseListener(new TeamListener(getTeamInfo(shortteam)));
 		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

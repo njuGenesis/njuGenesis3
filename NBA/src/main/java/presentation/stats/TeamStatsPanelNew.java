@@ -80,19 +80,19 @@ public class TeamStatsPanelNew extends BgPanel{
 	JRadioButton avg;  //场均
 	JRadioButton avg2;
 	JRadioButton ad;
-	
+
 	ButtonGroup group;
 	Boolean[] selection = new Boolean[3];
 	private Font radioBtFont  = new Font("微软雅黑",0,12);
 
-//	JCheckBox[] checkBoxes = new JCheckBox[3];
+	//	JCheckBox[] checkBoxes = new JCheckBox[3];
 
 	public WebTable avgTable1;
 	public WebTable avgTable2;
 	public WebTable adTable;
 
 	WebTable[] tables = new WebTable[3];
-	
+
 	int[] avgTable1_column = {0};
 	int[] avgTable1_width = {140};
 	int[] avgTable2_column = {0};
@@ -160,30 +160,30 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		//--------------------筛选条件end--------------------
 
-//		avg = new JCheckBox("场均一");
-//		avg.setBounds(0, 110, 70, 30);
-//		avg.setSelected(true);
-//		avg.setOpaque(false);
-//		avg.addMouseListener(new CheckListener(0));
-//		this.add(avg);
-//		checkBoxes[0] = avg;
-//
-//		avg2 = new JCheckBox("场均二");
-//		avg2.setBounds(100, 110, 70, 30);
-//		avg2.setOpaque(false);
-//		avg2.addMouseListener(new CheckListener(1));
-//		this.add(avg2);
-//		checkBoxes[1] = avg2;
-//
-//		ad = new JCheckBox("进阶");
-//		ad.setBounds(200, 110, 70, 30);
-//		ad.setOpaque(false);
-//		ad.addMouseListener(new CheckListener(2));
-//		this.add(ad);
-//		checkBoxes[2] = ad;
-		
+		//		avg = new JCheckBox("场均一");
+		//		avg.setBounds(0, 110, 70, 30);
+		//		avg.setSelected(true);
+		//		avg.setOpaque(false);
+		//		avg.addMouseListener(new CheckListener(0));
+		//		this.add(avg);
+		//		checkBoxes[0] = avg;
+		//
+		//		avg2 = new JCheckBox("场均二");
+		//		avg2.setBounds(100, 110, 70, 30);
+		//		avg2.setOpaque(false);
+		//		avg2.addMouseListener(new CheckListener(1));
+		//		this.add(avg2);
+		//		checkBoxes[1] = avg2;
+		//
+		//		ad = new JCheckBox("进阶");
+		//		ad.setBounds(200, 110, 70, 30);
+		//		ad.setOpaque(false);
+		//		ad.addMouseListener(new CheckListener(2));
+		//		this.add(ad);
+		//		checkBoxes[2] = ad;
+
 		group = new ButtonGroup();
-		
+
 		avg = new JRadioButton("场均一");
 		avg.setBounds(20, 110, 70, 30);
 		avg.setSelected(true);
@@ -213,33 +213,120 @@ public class TeamStatsPanelNew extends BgPanel{
 		selection[2] = ad.isSelected();
 
 
+		//		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		//		avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
+		//		addTeamListener_fullName(avgTable1);
+		//		this.add(avgTable1);
+		//		tables[0] = avgTable1;
+		//
+		//		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		//		avgTable2.setVisible(false);
+		//		avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
+		//		addTeamListener_fullName(avgTable2);
+		//		this.add(avgTable2);
+		//		tables[1] = avgTable2;
+		//
+		//		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		//		adTable.setVisible(false);
+		//		adTable.setColumnWidth(adTable_column, adTable_width);
+		//		addTeamListener_fullName(adTable);
+		//		this.add(adTable);
+		//		tables[2] = adTable;
+		//
+		//		setCenter();
+
+		//		TeamStats pt = new TeamStats(0);
+		//		Thread t = new Thread(pt);
+		//		t.start();
+
+		startDefault();
+
+		this.repaint();
+	}
+
+	private void setDefaultTable_avgTable1(){
 		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
 		addTeamListener_fullName(avgTable1);
-		this.add(avgTable1);
+		factory.setCenter(avgTable1, 0);
+		TeamStatsPanelNew.this.add(avgTable1);
 		tables[0] = avgTable1;
+
+		TeamStatsPanelNew.this.repaint();
+	}
+
+	private void setDefaultTable_avgTable2(){
+		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable2.setVisible(false);
+		avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
+		addTeamListener_fullName(avgTable2);
+		factory.setCenter(avgTable2, 0);
+		TeamStatsPanelNew.this.add(avgTable2);
+		tables[1] = avgTable2;
+
+		TeamStatsPanelNew.this.repaint();
+	}
+
+	private void setDefaultTable_adTable(){
+		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adTable.setVisible(false);
+		adTable.setColumnWidth(adTable_column, adTable_width);
+		addTeamListener_fullName(adTable);
+		factory.setCenter(adTable, 0);
+		TeamStatsPanelNew.this.add(adTable);
+		tables[2] = adTable;
+
+		TeamStatsPanelNew.this.repaint();
+	}
+
+	private void startDefault(){
+		DefaultData d1 = new DefaultData(0);
+		Thread t1 = new Thread(d1);
+		t1.start();
+
+		DefaultData d2 = new DefaultData(1);
+		Thread t2 = new Thread(d2);
+		t2.start();
+
+		DefaultData d3 = new DefaultData(2);
+		Thread t3 = new Thread(d3);
+		t3.start();
+
+	}
+
+	private synchronized void setDefaultTable(){
+		System.out.println("start default");
+
+		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
+		addTeamListener_fullName(avgTable1);
+		TeamStatsPanelNew.this.add(avgTable1);
+		tables[0] = avgTable1;
+
+		System.out.println("efault");
 
 		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable2.setVisible(false);
 		avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
 		addTeamListener_fullName(avgTable2);
-		this.add(avgTable2);
+		TeamStatsPanelNew.this.add(avgTable2);
 		tables[1] = avgTable2;
 
 		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		adTable.setVisible(false);
 		adTable.setColumnWidth(adTable_column, adTable_width);
 		addTeamListener_fullName(adTable);
-		this.add(adTable);
+		TeamStatsPanelNew.this.add(adTable);
 		tables[2] = adTable;
 
 		setCenter();
 
+		System.out.println("end default");
 
 		this.repaint();
 	}
-	
-	
+
+
 	private void addTeamListener_fullName(WebTable table){
 		table.setColumForeground(0,UIUtil.nbaBlue);
 		table.setColumHand(0);
@@ -256,11 +343,11 @@ public class TeamStatsPanelNew extends BgPanel{
 			});
 		}
 	}
-	
+
 	//根据球队中文全称得到TeamBaseInfo
 	private TeamBaseInfo getInfo_fullname(String fullName){
 		String en = TableUtility.checkNOH(TableUtility.getChTeam(fullName));
-		 try {
+		try {
 			ArrayList<TeamCompleteInfo> list = logic.GetPartCompleteInfo(en, "14-15", "yes");
 			if(list.size()!=0){
 				return list.get(0).getBaseinfo();
@@ -272,7 +359,7 @@ public class TeamStatsPanelNew extends BgPanel{
 			return new TeamBaseInfo();
 		}
 	}
-	
+
 	private void setCenter(){
 		for(int i=0;i<tables.length;i++){
 			factory.setCenter(tables[i], 0);
@@ -390,7 +477,7 @@ public class TeamStatsPanelNew extends BgPanel{
 
 			data[i][16] = temp.get(i).getToPG();
 			data[i][17] = temp.get(i).getFoulPG();
-//			data[i][18] = temp.get(i).getPPG();
+			//			data[i][18] = temp.get(i).getPPG();
 		}
 		return data;
 	}
@@ -455,6 +542,97 @@ public class TeamStatsPanelNew extends BgPanel{
 		return 0;
 	}
 
+	private void setSelectTable_avgTable1(){
+
+		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
+		addTeamListener_fullName(avgTable1);
+		factory.setCenter(avgTable1, 0);
+		TeamStatsPanelNew.this.add(avgTable1);
+		tables[0] = avgTable1;
+
+		TeamStatsPanelNew.this.repaint();
+	}
+
+	private void setSelectTable_avgTable2(){
+
+		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable2.setVisible(false);
+		avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
+		addTeamListener_fullName(avgTable2);
+		factory.setCenter(avgTable2, 0);
+		TeamStatsPanelNew.this.add(avgTable2);
+		tables[1] = avgTable2;
+
+		TeamStatsPanelNew.this.repaint();
+	}
+
+	private void setSelectTable_adTable(){
+
+		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adTable.setVisible(false);
+		adTable.setColumnWidth(adTable_column, adTable_width);
+		addTeamListener_fullName(adTable);
+		factory.setCenter(adTable, 0);
+		TeamStatsPanelNew.this.add(adTable);
+		tables[2] = adTable;
+
+		TeamStatsPanelNew.this.repaint();
+	}
+
+	
+
+	private synchronized void setSelectTable(){
+		int select = getSelectNumber();
+
+		for(int i=0;i<tables.length;i++){
+			TeamStatsPanelNew.this.remove(tables[i]);
+		}
+
+		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
+		addTeamListener_fullName(avgTable1);
+		factory.setCenter(avgTable1, 0);
+		TeamStatsPanelNew.this.add(avgTable1);
+		tables[0] = avgTable1;
+
+		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable2.setVisible(false);
+		avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
+		addTeamListener_fullName(avgTable2);
+		factory.setCenter(avgTable2, 0);
+		TeamStatsPanelNew.this.add(avgTable2);
+		tables[1] = avgTable2;
+
+		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adTable.setVisible(false);
+		adTable.setColumnWidth(adTable_column, adTable_width);
+		addTeamListener_fullName(adTable);
+		factory.setCenter(adTable, 0);
+		TeamStatsPanelNew.this.add(adTable);
+		tables[2] = adTable;
+
+		setCenter();
+
+		for(int i=0;i<tables.length;i++){
+			if(i==select){
+				tables[i].setVisible(true);
+			}else{
+				tables[i].setVisible(false);
+			}
+		}
+
+		for(int i=0;i<tables.length;i++){
+			if(i==select){
+				selection[i] = true;
+			}else{
+				selection[i] = false;
+			}
+		}
+
+		this.repaint();
+	}
+
 
 	class SubmitListener implements MouseListener{
 
@@ -466,46 +644,10 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			int select = getSelectNumber();
+			SelectData pt = new SelectData();
+			Thread t = new Thread(pt);
+			t.start();
 
-			for(int i=0;i<tables.length;i++){
-				TeamStatsPanelNew.this.remove(tables[i]);
-			}
-
-			avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
-			TeamStatsPanelNew.this.add(avgTable1);
-			tables[0] = avgTable1;
-
-			avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			avgTable2.setVisible(false);
-			avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
-			TeamStatsPanelNew.this.add(avgTable2);
-			tables[1] = avgTable2;
-
-			adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			adTable.setVisible(false);
-			adTable.setColumnWidth(adTable_column, adTable_width);
-			TeamStatsPanelNew.this.add(adTable);
-			tables[2] = adTable;
-			
-			setCenter();
-
-			for(int i=0;i<tables.length;i++){
-				if(i==select){
-					tables[i].setVisible(true);
-				}else{
-					tables[i].setVisible(false);
-				}
-			}
-			
-			for(int i=0;i<tables.length;i++){
-				if(i==select){
-					selection[i] = true;
-				}else{
-					selection[i] = false;
-				}
-			}
 		}
 
 		@Override
@@ -538,18 +680,18 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-//			if(checkBoxes[num].isSelected()){
-//				for(int i=0;i<checkBoxes.length;i++){
-//					if(i!=num){
-//						checkBoxes[i].setSelected(false);
-//						tables[i].setVisible(false);
-//					}else{
-//						tables[i].setVisible(true);
-//					}
-//				}
-//			}else{
-//				checkBoxes[num].setSelected(true);
-//			}
+			//			if(checkBoxes[num].isSelected()){
+			//				for(int i=0;i<checkBoxes.length;i++){
+			//					if(i!=num){
+			//						checkBoxes[i].setSelected(false);
+			//						tables[i].setVisible(false);
+			//					}else{
+			//						tables[i].setVisible(true);
+			//					}
+			//				}
+			//			}else{
+			//				checkBoxes[num].setSelected(true);
+			//			}
 		}
 
 		@Override
@@ -581,6 +723,60 @@ public class TeamStatsPanelNew extends BgPanel{
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
 
+		}
+
+	}
+
+	class DefaultData implements Runnable{
+
+		int type;  //0,1,2
+
+		public DefaultData(int type){
+			this.type = type;
+		}
+
+		@Override
+		public void run() {
+			if(type == 0){
+				TeamStatsPanelNew.this.setDefaultTable_avgTable1();
+			}else if(type == 1){
+				TeamStatsPanelNew.this.setDefaultTable_avgTable2();
+			}else{
+				TeamStatsPanelNew.this.setDefaultTable_adTable();
+			}
+
+		}
+	}
+
+	class SelectData implements Runnable{
+
+		public SelectData(){
+		}
+
+		@Override
+		public void run() {
+			TeamStatsPanelNew.this.setSelectTable();
+		}
+
+	}
+
+	class TeamStats implements Runnable{
+
+		int type;  //表示类型：0为默认表格；1为筛选表格
+
+		public TeamStats(int type){
+			this.type = type;
+		}
+
+
+		@Override
+		public void run() {
+			if(type==0){
+				TeamStatsPanelNew.this.setDefaultTable();
+			}else{
+				System.out.println("1111111");
+				TeamStatsPanelNew.this.setSelectTable();
+			}
 		}
 
 	}
