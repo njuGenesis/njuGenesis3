@@ -40,6 +40,8 @@ public class WebTable extends JLabel{
 	private Font font = new Font("黑体",0,12);
 	
 	public static void main(String[] args) {
+		
+		
 		GFrame f = new GFrame();
 		f.setBounds(0, 0, 1000, 600);
 		f.setLayout(null);
@@ -575,7 +577,7 @@ public class WebTable extends JLabel{
 			}
 		});
 	}
-	private void upOrder(int columNumber, Class<?> type){
+	public void upOrder(int columNumber, Class<?> type){
 		if(type == Double.class){
 			for(int k=0;k<row-1;k++){
 				for(int i=0;i<row-1;i++){
@@ -609,7 +611,7 @@ public class WebTable extends JLabel{
 		update();
 	}
 
-	private void downOrder(int columNumber, Class<?> type){
+	public void downOrder(int columNumber, Class<?> type){
 		if(type == Double.class){
 			for(int k=0;k<row-1;k++){
 				for(int i=0;i<row-1;i++){

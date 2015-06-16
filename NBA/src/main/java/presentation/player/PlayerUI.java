@@ -287,6 +287,7 @@ public class PlayerUI extends BgPanel implements Runnable{
 		table.setColumHand(0);
 		table.setColumHand(1);
 		table.setOrder(0, String.class);
+		table.upOrder(0, String.class);
 		
 		for(int i=0;i<playerDetailInfo.size();i++){
 			table.getColum(0)[i].addMouseListener(new MouseAdapter() {
