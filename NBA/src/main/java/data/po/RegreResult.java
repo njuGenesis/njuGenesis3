@@ -1,5 +1,6 @@
 package data.po;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class RegreResult {
@@ -12,9 +13,16 @@ public class RegreResult {
 	public int m;  //m值为自变量的个数
 	public int n;//n值为数据的组数
 	public double F;
+	public String equation;
 	
 	
 	
+	public String getEquation() {
+		return equation;
+	}
+	public void setEquation(String equation) {
+		this.equation = equation;
+	}
 	public double getF() {
 		return F;
 	}
@@ -37,12 +45,20 @@ public class RegreResult {
 		return a;
 	}
 	public void setA(double[] a) {
+		for(int i=0;i<a.length;i++){
+			BigDecimal bg = new BigDecimal(a[i]);
+			a[i] = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
 		this.a = a;
 	}
 	public double[] getV() {
 		return v;
 	}
 	public void setV(double[] v) {
+		for(int i=0;i<v.length;i++){
+			BigDecimal bg = new BigDecimal(v[i]);
+			v[i] = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
 		this.v = v;
 	}
 	public double[] getDt() {
@@ -52,6 +68,10 @@ public class RegreResult {
 		this.dt = dt;
 	}
 	public ArrayList<PersonR> getValue() {
+		for(int i=0;i<dt.length;i++){
+			BigDecimal bg = new BigDecimal(dt[i]);
+			dt[i] = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
 		return value;
 	}
 	public void setValue(ArrayList<PersonR> value) {

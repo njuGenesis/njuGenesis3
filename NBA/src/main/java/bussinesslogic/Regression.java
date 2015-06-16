@@ -202,6 +202,13 @@ public class Regression {
 					+ value.get(i).getType());
 		System.out.println("u=" + dt[3]);
 		System.out.println(res.F);
+		String equation="y= ";
+		for(int j=0;j<res.getValue().size();j++){
+			equation=equation+String.valueOf(res.getA()[j])+" X"+String.valueOf(j)+" + ";
+		}
+		equation=equation+res.getA()[res.getA().length-1];
+		res.setEquation(equation);
+		//System.out.println(equation);
 		return res;
 	}
 
