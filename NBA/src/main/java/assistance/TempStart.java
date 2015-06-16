@@ -39,9 +39,10 @@ public class TempStart {
 		
 //		}
 		try {
-			//ArrayList<Integer> t = pd.selectByTag("null", "detail", "a", "null", "null", "Northwest");
-			ArrayList<Double> res = pd.getAvgOfAll("70-71", true);
-			System.out.println(res);
+			ArrayList<Integer> t = pd.selectByTag("null", "detail", "null", "null", "null", "null","灰熊");
+			System.out.println(t);
+//			TestCrawlerByJsoup t = new TestCrawlerByJsoup();
+//			t.intializeData(1, 10);
 			//System.out.println(t);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

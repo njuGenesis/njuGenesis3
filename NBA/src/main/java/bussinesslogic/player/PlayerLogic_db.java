@@ -258,65 +258,15 @@ public class PlayerLogic_db {
 
 	// ----------筛选---
 	public ArrayList<Integer> selectByTag(String season, String tablename,
-			String firstc, String namekey, String position, String union)
+			String firstc, String namekey, String position, String union,String teamkey)
 			throws RemoteException {
 		ArrayList<Integer> res = new ArrayList<Integer>();
-		ArrayList<Integer> temp = new ArrayList<Integer>();
-		switch (tablename) {
-		case "s_a_b":
-			ArrayList<PlayerDataSeason_Avg_Basic> temp0 = getAlls_a_b(season);
-			for (int i = 0; i < temp0.size(); i++) {
-				temp.add(temp0.get(i).getId());
-			}
-			break;
-		case "s_t_b":
-			ArrayList<PlayerDataSeason_Tot_Basic> temp1 = getAlls_t_b(season);
-			for (int i = 0; i < temp1.size(); i++) {
-				temp.add(temp1.get(i).getId());
-			}
-			break;
-		case "s_ad_b":
-			ArrayList<PlayerDataSeason_Ad_Basic> temp2 = getAlls_ad_b(season);
-			for (int i = 0; i < temp2.size(); i++) {
-				temp.add(temp2.get(i).getId());
-			}
-			break;
-		case "s_ad_s":
-			ArrayList<PlayerDataSeason_Ad_Shoot> temp3 = getAlls_ad_s(season);
-			for (int i = 0; i < temp3.size(); i++) {
-				temp.add(temp3.get(i).getId());
-			}
-			break;
-		case "p_a_b":
-			ArrayList<PlayerDataPlayOff_Avg_Basic> temp4 = getAllp_a_b(season);
-			for (int i = 0; i < temp4.size(); i++) {
-				temp.add(temp4.get(i).getId());
-			}
-			break;
-		case "p_t_b":
-			ArrayList<PlayerDataPlayOff_Tot_Basic> temp5 = getAllp_t_b(season);
-			for (int i = 0; i < temp5.size(); i++) {
-				temp.add(temp5.get(i).getId());
-			}
-			break;
-		case "p_ad_b":
-			ArrayList<PlayerDataPlayOff_Ad_Basic> temp6 = getAllp_ad_b(season);
-			for (int i = 0; i < temp6.size(); i++) {
-				temp.add(temp6.get(i).getId());
-			}
-			break;
-		case "p_ad_s":
-			ArrayList<PlayerDataPlayOff_Ad_Shoot> temp7 = getAllp_ad_s(season);
-			for (int i = 0; i < temp7.size(); i++) {
-				temp.add(temp7.get(i).getId());
-			}
-			break;
-		case "detail":
+		
 			ArrayList<PlayerDetailInfo> temp8 = getAlldetail(season);
 			for(int i = 0;i<temp8.size();i++){
 				if ((firstc(temp8.get(i), firstc)) && (namekeys(temp8.get(i), namekey))
 						&& (position(temp8.get(i), position))
-						&& (union(temp8.get(i).getId(), union, season))) {
+						&& (union(temp8.get(i).getId(), union, season))&&(team(temp8.get(i),teamkey,season))) {
 					
 							res.add(temp8.get(i).getId());
 						}
@@ -325,36 +275,7 @@ public class PlayerLogic_db {
 				
 			}
 			return res;
-		}
 
-		PlayerDetailInfo tempinfo = new PlayerDetailInfo();
-		int laest = 0;
-		for (int i = 0; i < temp.size(); i++) {
-			
-			tempinfo = getdetail(temp.get(i));
-			
-			if ((firstc(tempinfo, firstc)) && (namekeys(tempinfo, namekey))
-					&& (position(tempinfo, position))
-					&& (union(tempinfo.getId(), union, season))) {
-				if(res.size()==0){
-					laest=temp.get(i);
-					res.add(temp.get(i));
-				}
-				else{
-					if(temp.get(i)==laest){
-						
-					}
-					else{
-						laest=temp.get(i);
-						res.add(temp.get(i));
-					}
-				}
-				
-			}
-			
-		}
-
-		return res;
 	}
 
 	// ------热点---
@@ -386,8 +307,31 @@ public class PlayerLogic_db {
 		return res;
 	}
 	// ===============筛选方法
+	private boolean team(PlayerDetailInfo p,String teamkey,String season){
+		if(teamkey.equals("null")){
+			return true;
+		}
+		else{
+			try{
+				ArrayList<String> temp = pdb.getTeambyId(p.getId(), season);
+				for(int i = 0;i<temp.size();i++){
+					System.out.println(temp.get(i));
+					if(temp.get(i).contains(teamkey)){
+						return true;
+					}
+					else{
+						return false;
+					}
+				}
+			}catch(Exception e){
+				return false;
+			}
+		}
+		return false;
+	}
+	
 	private boolean firstc(PlayerDetailInfo p, String firstc) {
-		if (firstc == "null") {
+		if (firstc.equals("null")) {
 			return true;
 		} else {
 			try {
@@ -403,7 +347,7 @@ public class PlayerLogic_db {
 	}
 
 	private boolean namekeys(PlayerDetailInfo p, String namekeys) {
-		if (namekeys == "null") {
+		if (namekeys.equals("null")) {
 			return true;
 		} else {
 			try {
@@ -419,7 +363,7 @@ public class PlayerLogic_db {
 	}
 
 	private boolean position(PlayerDetailInfo p, String position) {
-		if (position == "null") {
+		if (position.equals("null")) {
 			return true;
 		} else {
 			try {
@@ -437,7 +381,7 @@ public class PlayerLogic_db {
 
 	private boolean union(int id, String union, String season)
 			throws RemoteException {
-		if (union == "null") {
+		if (union .equals("null")) {
 			return true;
 		} else {
 			ArrayList<String> temp = getTeambyId(id, season);
