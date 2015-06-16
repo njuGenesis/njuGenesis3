@@ -24,6 +24,14 @@ public class TeamLogic implements TeamInfoService {
 		ArrayList<TeamBaseInfo> temp = t.getbaseinfo("unknown", season);
 		return temp;
 	}
+	
+	public ArrayList<TeamBaseInfo> GetAllBaseInfo(String season,String teamshortname)
+			throws RemoteException {
+		TeamDb t = new TeamDb();
+		ArrayList<TeamBaseInfo> temp = t.getbaseinfo(teamshortname, season);
+		return temp;
+	}
+
 
 	// 根据season，shortname，isseason（是否是常规赛）返回部分球队的完整信息，（若要取得所有赛季的，则将season设为"unknown",另外两个属性类似）
 	public ArrayList<TeamCompleteInfo> GetPartCompleteInfo(String shortName,
