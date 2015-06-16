@@ -277,6 +277,7 @@ public class MatchFactory {
 		GLabel pointall_2 = new GLabel(getPoint2(points[0]),new Point(764,27+pointIntervalUD),new Point(120,30),jp,true,0,26);
 		changeLabelColor(pointall_1,pointall_2);
 
+		//----------比赛详情跳转----------
 		MatchDetailLabel turn = new MatchDetailLabel(big,jp,po);
 
 		return jp;

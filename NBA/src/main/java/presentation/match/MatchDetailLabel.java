@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 
 import presentation.component.GLabel;
-import presentation.contenui.PanelKind;
+import presentation.contenui.TurnController;
 import presentation.mainui.WebFrame;
 import bussinesslogic.match.MatchLogic;
 import data.po.matchData.MatchDataSeason;
@@ -29,6 +29,8 @@ public class MatchDetailLabel extends GLabel{
 	private MatchUI big;
 	
 	private MatchLogic logic = new MatchLogic();
+	
+	private TurnController tc = new TurnController();
 
 	public MatchDetailLabel(Container big,Container container,MatchDataSeason po){
 		super(icon,commonLocation,new Point(16,30),container,true);
@@ -53,7 +55,8 @@ public class MatchDetailLabel extends GLabel{
 			po = logic.GetCompleteMatch(po.getMatchID());
 //			big.detail = new MatchDetailPanel(po);
 			
-			WebFrame.frame.setPanel(new MatchDetailPanel(po), "比赛详情");
+			
+			WebFrame.frame.setPanel(tc.turnToMatchDetials(po), "比赛详情");
 			
 //			big.add(big.detail);
 //			big.repaint();

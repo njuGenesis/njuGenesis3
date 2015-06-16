@@ -1,7 +1,5 @@
 package presentation.contenui;
 
-import java.util.ArrayList;
-
 import presentation.compare.PlayerCompare;
 import presentation.component.BgPanel;
 import presentation.hotspot.HotPlayerProgressPanel;
@@ -9,7 +7,6 @@ import presentation.hotspot.HotPlayerSeasonPanel;
 import presentation.hotspot.HotPlayerTodayPanel;
 import presentation.hotspot.HotTeamSeasonPanel;
 import presentation.hotspot.HotUI;
-import presentation.mainui.StartUI;
 import presentation.match.MatchDetailPanel;
 import presentation.match.MatchUI;
 import presentation.player.PlayerDetials;
@@ -19,8 +16,7 @@ import presentation.stats.StatsUI;
 import presentation.stats.TeamStatsPanelNew;
 import presentation.team.TeamDetials;
 import presentation.team.TeamUI;
-import bussinesslogic.match.MatchLogic;
-import data.po.MatchDataPO;
+import data.po.matchData.MatchDataSeason;
 import data.po.teamData.TeamBaseInfo;
 
 public class TurnController {
@@ -61,6 +57,11 @@ public class TurnController {
 	
 	public BgPanel turnToPlayerDetials(int id){
 		BgPanel newPanel = new PlayerDetials(id);
+		return newPanel;
+	}
+	
+	public BgPanel turnToMatchDetials(MatchDataSeason po){
+		BgPanel newPanel = new MatchDetailPanel(po);
 		return newPanel;
 	}
 	

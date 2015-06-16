@@ -760,25 +760,5 @@ public class TeamStatsPanelNew extends BgPanel{
 
 	}
 
-	class TeamStats implements Runnable{
-
-		int type;  //表示类型：0为默认表格；1为筛选表格
-
-		public TeamStats(int type){
-			this.type = type;
-		}
-
-
-		@Override
-		public void run() {
-			if(type==0){
-				TeamStatsPanelNew.this.setDefaultTable();
-			}else{
-				System.out.println("1111111");
-				TeamStatsPanelNew.this.setSelectTable();
-			}
-		}
-
-	}
 
 }
