@@ -185,7 +185,8 @@ public class MatchFactory {
 		//		panel.setBounds(0, 0, 905, oneHeight*num);
 		panel.setLocation(0, 0);
 		panel.setLayout(null);
-		panel.setPreferredSize(new Dimension(905, oneHeight*num));
+		panel.setSize(new Dimension(905, oneHeight*num));
+//		panel.setPreferredSize(new Dimension(905, oneHeight*num));
 
 		if(num>0){
 			
@@ -211,7 +212,7 @@ public class MatchFactory {
 	//返回显示一场比赛的panel
 	public JPanel getOneMatch(Container big,int num,MatchDataSeason po){
 		JPanel jp = new JPanel();
-		jp.setBounds(0,(num-1)*oneHeight,935,oneHeight);
+		jp.setBounds(0,(num)*oneHeight,935,oneHeight);
 		jp.setLayout(null);
 		jp.setOpaque(true);
 		if(num%2!=0){

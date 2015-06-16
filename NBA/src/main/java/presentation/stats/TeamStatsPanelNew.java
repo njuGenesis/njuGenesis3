@@ -11,14 +11,10 @@ import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
 import presentation.component.BgPanel;
 import presentation.component.GComboBox;
 import presentation.component.GLabel;
@@ -346,8 +342,10 @@ public class TeamStatsPanelNew extends BgPanel{
 
 	//根据球队中文全称得到TeamBaseInfo
 	private TeamBaseInfo getInfo_fullname(String fullName){
-		String en = TableUtility.checkNOH(TableUtility.getChTeam(fullName));
+		String en = TableUtility.getChTeam(fullName);System.out.println(en);
+//		String en = TableUtility.checkNOH(TableUtility.getChTeam(fullName));
 		try {
+			if(en.equals("PHX")){en = "PHO";}
 			ArrayList<TeamCompleteInfo> list = logic.GetPartCompleteInfo(en, "14-15", "yes");
 			if(list.size()!=0){
 				return list.get(0).getBaseinfo();

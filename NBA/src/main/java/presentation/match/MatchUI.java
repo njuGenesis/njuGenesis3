@@ -101,11 +101,15 @@ public class MatchUI extends BgPanel{
 	}
 
 	public void getMatchJSP(){
+		if(matchPane!=null){
+			MatchUI.this.remove(matchPane);
+		}
+		
 		String day = checkDay(dateChooser.getText());
 		String d = day.split("-")[0]+ "-" +day.split("-")[1] + "-" + day.split("-")[2];  
 
 
-		ArrayList<MatchDataSeason> matches = logic.GetDateMatch(d);
+		ArrayList<MatchDataSeason> matches = logic.GetDateMatch(day);
 		//		ArrayList<MatchDataPO> matches = logic.GetDateMatch(getSeason(day)+"_"+d, getSeason(day)+"_"+d);
 
 
@@ -165,7 +169,6 @@ public class MatchUI extends BgPanel{
 				System.out.println("remove");
 			}
 			getMatchJSP();
-			System.out.println(dateChooser.getText());
 			updateDate(dateChooser.getText());
 
 			MatchUI.this.repaint();
@@ -180,9 +183,7 @@ public class MatchUI extends BgPanel{
 			//				e1.printStackTrace();
 			//			} //返回文本框输入的内容 
 
-			if(matchPane!=null){
-				MatchUI.this.remove(matchPane);
-			}
+			
 			getMatchJSP();
 			System.out.println(dateChooser.getText());
 			updateDate(dateChooser.getText());
