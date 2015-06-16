@@ -585,8 +585,8 @@ public class WebTable extends JLabel{
 			for(int k=0;k<row-1;k++){
 				for(int i=0;i<row-1;i++){
 					String[] move;
-					double a = Double.valueOf(this.contentData[i][columNumber]);
-					double b = Double.valueOf(this.contentData[i+1][columNumber]);
+					double a = Double.valueOf(this.contentData[i][columNumber].equals("")?"0":this.contentData[i][columNumber]);
+					double b = Double.valueOf(this.contentData[i+1][columNumber].equals("")?"0":this.contentData[i+1][columNumber]);
 					if(a<b){
 						move = this.contentData[i];
 						this.contentData[i] = this.contentData[i+1];
@@ -619,8 +619,8 @@ public class WebTable extends JLabel{
 			for(int k=0;k<row-1;k++){
 				for(int i=0;i<row-1;i++){
 					String[] move;
-					double a = Double.valueOf(this.contentData[i][columNumber]);
-					double b = Double.valueOf(this.contentData[i+1][columNumber]);
+					double a = Double.valueOf(this.contentData[i][columNumber].equals("")?"0":this.contentData[i][columNumber]);
+					double b = Double.valueOf(this.contentData[i+1][columNumber].equals("")?"0":this.contentData[i+1][columNumber]);
 					if(a>b){
 						move = this.contentData[i];
 						this.contentData[i] = this.contentData[i+1];
