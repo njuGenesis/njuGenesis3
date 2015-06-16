@@ -35,16 +35,16 @@ public class PlayerDb  extends DataBaseLink implements PlayerDataService{
 	}
 	public void clearPlayerTableForUpdate(int id,boolean isseason){
 		if(isseason){
-		operation("delete from Table p_s_a_b where id = '"+id+"'");
-		operation("delete from Table p_s_t_b where id = '"+id+"'");
-		operation("delete from Table p_s_ad_b where id = '"+id+"'");
-		operation("delete from Table p_s_ad_s where id = '"+id+"'");
+		operation("delete from  p_s_a_b where id = '"+id+"'");
+		operation("delete from  p_s_t_b where id = '"+id+"'");
+		operation("delete from  p_s_ad_b where id = '"+id+"'");
+		operation("delete from  p_s_ad_s where id = '"+id+"'");
 		}
 		else{
-		operation("delete from Table p_s_a_b where id = '"+id+"'");
-		operation("delete from Table p_s_t_b where id = '"+id+"'");
-		operation("delete from Table p_s_ad_b where id = '"+id+"'");
-		operation("delete from Table p_s_ad_s where id = '"+id+"'");
+		operation("delete from  p_s_a_b where id = '"+id+"'");
+		operation("delete from  p_s_t_b where id = '"+id+"'");
+		operation("delete from  p_s_ad_b where id = '"+id+"'");
+		operation("delete from  p_s_ad_s where id = '"+id+"'");
 		}
 	}
 	public int updateClear(String name,boolean isseason,String season){
