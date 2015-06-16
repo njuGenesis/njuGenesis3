@@ -29,29 +29,29 @@ public class PlayerDataPlayOff_Ad_Shoot {
 	public String getProperty(String type){
 		String res = "";
 		switch(type){
-		case "name":res = name;
-		case "season":res = season;
-		case "team":res = team;
-		case "shootdis":res = shootdis;
-		case "bshootper":res = bshootper;
-		case "bshoot_in":res =bshoot_in;
-		case "bshoot_all":res = bshoot_all;
-		case "b_per":res = b_per;
-		case "closeshootper":res = closeshootper;
-		case "closeshoot_in":res = closeshoot_in;
-		case "closeshoot_all":res = closeshoot_all;
-		case "close_per":res = close_per;
-		case "midshootper":res = midshootper;
-		case "midshoot_in":res = midshoot_in;
-		case "midshoot_all":res = midshoot_all;
-		case "mid_per":res = mid_per;
-		case "farshootper":res = farshootper;
-		case "farshoot_in":res = farshoot_in;
-		case "farshoot_all":res = farshoot_all;
-		case "far_per":res = far_per;
-		case "trueshootper":res = trueshootper;
-		case "shooteff":res = shooteff;
-		case "nameCn":res = nameCn;
+		case "name":res = name;break;
+		case "season":res = season;break;
+		case "team":res = team;break;
+		case "shootdis":res = shootdis;break;
+		case "bshootper":res = bshootper;break;
+		case "bshoot_in":res =bshoot_in;break;
+		case "bshoot_all":res = bshoot_all;break;
+		case "b_per":res = b_per;break;
+		case "closeshootper":res = closeshootper;break;
+		case "closeshoot_in":res = closeshoot_in;break;
+		case "closeshoot_all":res = closeshoot_all;break;
+		case "close_per":res = close_per;break;
+		case "midshootper":res = midshootper;break;
+		case "midshoot_in":res = midshoot_in;break;
+		case "midshoot_all":res = midshoot_all;break;
+		case "mid_per":res = mid_per;break;
+		case "farshootper":res = farshootper;break;
+		case "farshoot_in":res = farshoot_in;break;
+		case "farshoot_all":res = farshoot_all;break;
+		case "far_per":res = far_per;break;
+		case "trueshootper":res = trueshootper;break;
+		case "shooteff":res = shooteff;break;
+		case "nameCn":res = nameCn;break;
 		}
 		return res;
 	}

@@ -27,27 +27,27 @@ public class PlayerDataPlayOff_Ad_Basic {
 	public String getProperty(String type){
 		String res = "";
 		switch(type){
-		case "name":res = name;
-		case "season":res = season;
-		case "team":res = team;
-		case "backeff":res = backeff;
-		case "offbeff":res = offbeff;
-		case "defbeff":res =defbeff;
-		case "assisteff":res = assisteff;
-		case "stealeff":res = stealeff;
-		case "rejeff":res = rejeff;
-		case "misseff":res = misseff;
-		case "useeff":res = useeff;
-		case "offeff":res = offeff;
-		case "defeff":res = defeff;
-		case "ws":res = ws;
-		case "offws":res = offws;
-		case "defws":res = defws;
-		case "per":res = per;
-		case "strshoot":res = strshoot;
-		case "kda":res = kda;
-		case "berej":res = berej;
-		case "nameCn":res = nameCn;
+		case "name":res = name;break;
+		case "season":res = season;break;
+		case "team":res = team;break;
+		case "backeff":res = backeff;break;
+		case "offbeff":res = offbeff;break;
+		case "defbeff":res =defbeff;break;
+		case "assisteff":res = assisteff;break;
+		case "stealeff":res = stealeff;break;
+		case "rejeff":res = rejeff;break;
+		case "misseff":res = misseff;break;
+		case "useeff":res = useeff;break;
+		case "offeff":res = offeff;break;
+		case "defeff":res = defeff;break;
+		case "ws":res = ws;break;
+		case "offws":res = offws;break;
+		case "defws":res = defws;break;
+		case "per":res = per;break;
+		case "strshoot":res = strshoot;break;
+		case "kda":res = kda;break;
+		case "berej":res = berej;break;
+		case "nameCn":res = nameCn;break;
 		}
 		return res;
 	}
