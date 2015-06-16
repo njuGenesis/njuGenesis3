@@ -39,10 +39,10 @@ public class TempStart {
 		
 //		}
 		try {
-			ArrayList<Integer> t = pd.selectByTag("null", "detail", "null", "null", "null", "null","灰熊");
-			System.out.println(t);
-//			TestCrawlerByJsoup t = new TestCrawlerByJsoup();
-//			t.intializeData(1, 10);
+			ArrayList<PlayerDescriptionStat> t = pd.getPlayerStat(9, true, true);
+			for(int i = 0;i<t.size();i++){
+				System.out.println(t.get(i).getType()+";"+t.get(i).getKurtosis());
+			}
 			//System.out.println(t);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -57,6 +57,6 @@ public class TempStart {
 //		}catch(Exception e){
 //			e.printStackTrace();
 //		}
-		pd.update("Kelenna Azubuike", true, "11-12");
+		//pd.update("Kelenna Azubuike", true, "11-12");
 	}
 }

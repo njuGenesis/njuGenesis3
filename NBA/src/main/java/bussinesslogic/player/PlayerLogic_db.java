@@ -860,7 +860,7 @@ public class PlayerLogic_db {
 		double res = 0;
 		double four_k = calculateK_Center(orgin,avg,4);
 		double two_k = calculateK_Center(orgin,avg,2);
-		if(res!=0){
+		if(two_k!=0){
 		 res =  four_k/Math.pow(two_k, 2);
 		}
 		 return res;
