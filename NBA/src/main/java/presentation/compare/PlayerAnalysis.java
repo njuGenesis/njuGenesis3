@@ -27,6 +27,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -391,6 +392,17 @@ class MyDemoPanel2{
 	}
 
 	private ChartPanel createChartPanel(XYDataset xyDataset){
+		//创建主题样式  
+		StandardChartTheme standardChartTheme=new StandardChartTheme("CN");  
+		//设置标题字体  
+		standardChartTheme.setExtraLargeFont(new Font("宋书",Font.BOLD,20));  
+		//设置图例的字体  
+		standardChartTheme.setRegularFont(new Font("宋书",Font.PLAIN,15));  
+		//设置轴向的字体  
+		standardChartTheme.setLargeFont(new Font("宋书",Font.PLAIN,15));  
+		//应用主题样式  
+		ChartFactory.setChartTheme(standardChartTheme);
+
 		JFreeChart localJFreeChart = ChartFactory.createScatterPlot("points analysis", "X", "points", xyDataset, PlotOrientation.VERTICAL, true, true, false);
 		XYPlot localXYPlot = (XYPlot)localJFreeChart.getPlot();
 		localXYPlot.setDomainCrosshairVisible(true);

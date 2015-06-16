@@ -2,6 +2,7 @@ package presentation.compare;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,9 +22,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -512,22 +515,33 @@ class MyDemoPanel{
   }
 
   private ChartPanel createChartPanel(XYDataset xyDataset){
-    NumberAxis localNumberAxis1 = new NumberAxis("season");
-    localNumberAxis1.setAutoRangeIncludesZero(false);
-    NumberAxis localNumberAxis2 = new NumberAxis("data");
-    localNumberAxis2.setAutoRangeIncludesZero(false);
-    XYLineAndShapeRenderer localXYLineAndShapeRenderer = new XYLineAndShapeRenderer();
-    XYPlot localXYPlot = new XYPlot(xyDataset, localNumberAxis1, localNumberAxis2, localXYLineAndShapeRenderer);
-    localXYPlot.setBackgroundPaint(Color.lightGray);
-    localXYPlot.setDomainGridlinePaint(Color.white);
-    localXYPlot.setRangeGridlinePaint(Color.white);
-    localXYPlot.setAxisOffset(new RectangleInsets(4.0D, 4.0D, 4.0D, 4.0D));
-    JFreeChart localJFreeChart = new JFreeChart("Data Line", JFreeChart.DEFAULT_TITLE_FONT, localXYPlot, true);
-    ChartUtilities.applyCurrentTheme(localJFreeChart);
-    ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
-    return localChartPanel;
+	  //创建主题样式  
+	  StandardChartTheme standardChartTheme=new StandardChartTheme("CN");  
+	  //设置标题字体  
+	  standardChartTheme.setExtraLargeFont(new Font("宋书",Font.BOLD,20));  
+	  //设置图例的字体  
+	  standardChartTheme.setRegularFont(new Font("宋书",Font.PLAIN,15));  
+	  //设置轴向的字体  
+	  standardChartTheme.setLargeFont(new Font("宋书",Font.PLAIN,15));  
+	  //应用主题样式  
+	  ChartFactory.setChartTheme(standardChartTheme); 
+
+	  NumberAxis localNumberAxis1 = new NumberAxis("season");
+	  localNumberAxis1.setAutoRangeIncludesZero(false);
+	  NumberAxis localNumberAxis2 = new NumberAxis("data");
+	  localNumberAxis2.setAutoRangeIncludesZero(false);
+	  XYLineAndShapeRenderer localXYLineAndShapeRenderer = new XYLineAndShapeRenderer();
+	  XYPlot localXYPlot = new XYPlot(xyDataset, localNumberAxis1, localNumberAxis2, localXYLineAndShapeRenderer);
+	  localXYPlot.setBackgroundPaint(Color.lightGray);
+	  localXYPlot.setDomainGridlinePaint(Color.white);
+	  localXYPlot.setRangeGridlinePaint(Color.white);
+	  localXYPlot.setAxisOffset(new RectangleInsets(4.0D, 4.0D, 4.0D, 4.0D));
+	  JFreeChart localJFreeChart = new JFreeChart("Data Line", JFreeChart.DEFAULT_TITLE_FONT, localXYPlot, true);
+	  ChartUtilities.applyCurrentTheme(localJFreeChart);
+	  ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
+	  return localChartPanel;
   }
-  
+
   public ChartPanel getPanel(){
 	  return this.panel;
   }

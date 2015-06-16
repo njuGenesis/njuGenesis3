@@ -2,6 +2,7 @@ package presentation.team;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,7 @@ import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
@@ -398,11 +400,22 @@ class LayeredBarChart{
 	}
 
 	private static JFreeChart createChart(CategoryDataset paramCategoryDataset){
+		//创建主题样式  
+		StandardChartTheme standardChartTheme=new StandardChartTheme("CN");  
+		//设置标题字体  
+		standardChartTheme.setExtraLargeFont(new Font("宋书",Font.BOLD,20));  
+		//设置图例的字体  
+		standardChartTheme.setRegularFont(new Font("宋书",Font.PLAIN,15));  
+		//设置轴向的字体  
+		standardChartTheme.setLargeFont(new Font("宋书",Font.PLAIN,15));  
+		//应用主题样式  
+		ChartFactory.setChartTheme(standardChartTheme);
+
 		JFreeChart localJFreeChart = ChartFactory.createBarChart("Team Members Data (Season Avg) ", "players", "data", paramCategoryDataset);
-	    CategoryPlot localCategoryPlot = (CategoryPlot)localJFreeChart.getPlot();
-	    localCategoryPlot.setDomainGridlinesVisible(true);
-	    localCategoryPlot.setRangeCrosshairVisible(true);
-	    localCategoryPlot.setRangeCrosshairPaint(Color.blue);
+		CategoryPlot localCategoryPlot = (CategoryPlot)localJFreeChart.getPlot();
+		localCategoryPlot.setDomainGridlinesVisible(true);
+		localCategoryPlot.setRangeCrosshairVisible(true);
+		localCategoryPlot.setRangeCrosshairPaint(Color.blue);
 	    NumberAxis localNumberAxis = (NumberAxis)localCategoryPlot.getRangeAxis();
 	    localNumberAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 	    BarRenderer localBarRenderer = (BarRenderer)localCategoryPlot.getRenderer();

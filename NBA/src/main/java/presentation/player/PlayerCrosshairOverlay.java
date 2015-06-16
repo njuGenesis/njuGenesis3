@@ -3,6 +3,7 @@ package presentation.player;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.panel.CrosshairOverlay;
 import org.jfree.chart.plot.Crosshair;
 import org.jfree.data.xy.XYDataset;
@@ -271,6 +273,17 @@ class CrosshairOverlayPanel extends JPanel implements ChartMouseListener{
 	public CrosshairOverlayPanel(XYDataset xyDataset){
 		super();
 
+		//创建主题样式  
+		StandardChartTheme standardChartTheme=new StandardChartTheme("CN");  
+		//设置标题字体  
+		standardChartTheme.setExtraLargeFont(new Font("宋书",Font.BOLD,20));  
+		//设置图例的字体  
+		standardChartTheme.setRegularFont(new Font("宋书",Font.PLAIN,15));  
+		//设置轴向的字体  
+		standardChartTheme.setLargeFont(new Font("宋书",Font.PLAIN,15));  
+		//应用主题样式  
+		ChartFactory.setChartTheme(standardChartTheme);
+
 		JFreeChart localJFreeChart = createChart(xyDataset);
 		this.chartPanel = new ChartPanel(localJFreeChart);
 		this.chartPanel.addChartMouseListener(this);
@@ -298,22 +311,6 @@ class CrosshairOverlayPanel extends JPanel implements ChartMouseListener{
 	private JFreeChart createChart(XYDataset paramXYDataset){
 		JFreeChart localJFreeChart = ChartFactory.createXYLineChart("Player Line", "season", "data", paramXYDataset);
 		return localJFreeChart;
-	}
-
-	private XYDataset createDataset(){
-		XYSeriesCollection localXYSeriesCollection = new XYSeriesCollection();
-
-		XYSeries XYSeries1 = new XYSeries("三分％");
-		XYSeries1.add(2, 19);XYSeries1.add(1, 9);XYSeries1.add(2, 9);XYSeries1.add(3, 9);XYSeries1.add(4, 9);XYSeries1.add(5, 9);XYSeries1.add(6, 9);
-		localXYSeriesCollection.addSeries(XYSeries1);
-		//		for (int i = 0; i < 5; i++){
-		//			XYSeries localXYSeries = new XYSeries("S" + i);
-		//			for (int j = 0; j < 10; j++){
-		//				localXYSeries.add(j, j + Math.random() * 4.0D);
-		//			}
-		//			localXYSeriesCollection.addSeries(localXYSeries);
-		//		}
-		return localXYSeriesCollection;
 	}
 
 	public void chartMouseClicked(ChartMouseEvent paramChartMouseEvent){

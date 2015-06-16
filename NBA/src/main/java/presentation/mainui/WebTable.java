@@ -40,7 +40,9 @@ public class WebTable extends JLabel{
 	private Font font = new Font("黑体",0,12);
 	
 	public static void main(String[] args) {
-		
+		String a = "acd";
+		String b = "abf";
+		System.out.println(a.compareTo(b));
 		
 		GFrame f = new GFrame();
 		f.setBounds(0, 0, 1000, 600);
@@ -563,6 +565,7 @@ public class WebTable extends JLabel{
 	//设置某列排序(列号，类型)
 	public void setOrder(final int columNumber, final Class<?> type){
 		this.header[columNumber].setCursor(new Cursor(Cursor.HAND_CURSOR));
+		this.header[columNumber].setForeground(UIUtil.nbaBlue);
 		this.header[columNumber].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
@@ -598,7 +601,7 @@ public class WebTable extends JLabel{
 						String[] move;
 						String a = this.contentData[i][columNumber];
 						String b = this.contentData[i+1][columNumber];
-						if(a.compareTo(b)<0){
+						if(a.compareTo(b)>0){
 							move = this.contentData[i];
 							this.contentData[i] = this.contentData[i+1];
 							this.contentData[i+1] = move;
@@ -630,9 +633,9 @@ public class WebTable extends JLabel{
 				for(int k=0;k<row-1;k++){
 					for(int i=0;i<row-1;i++){
 						String[] move;
-						char a = this.contentData[i][columNumber].charAt(0);
-						char b = this.contentData[i+1][columNumber].charAt(0);
-						if(a>b){
+						String a = this.contentData[i][columNumber];
+						String b = this.contentData[i+1][columNumber];
+						if(a.compareTo(b)<0){
 							move = this.contentData[i];
 							this.contentData[i] = this.contentData[i+1];
 							this.contentData[i+1] = move;
