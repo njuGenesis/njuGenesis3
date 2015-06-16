@@ -16,6 +16,7 @@ import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
+import presentation.hotspot.HotPlayerProgressPanel.PlayerProgress;
 import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
 
@@ -105,7 +106,7 @@ public class HotPlayerSeasonPanel extends BgPanel{
 		score.addMouseListener(new MenuListener());
 		menuItem[0] = score;
 
-		getRankingPanel("场均得分");
+//		getRankingPanel("场均得分");
 
 		backboard = new SelectLabel("场均篮板",new Point(118,70),new Point(117,35),this,true,0,16);
 		backboard.addMouseListener(new MenuListener());
@@ -135,6 +136,9 @@ public class HotPlayerSeasonPanel extends BgPanel{
 		free.addMouseListener(new MenuListener());
 		menuItem[7] = free;
 
+		PlayerSeason p = new PlayerSeason("场均得分");
+		Thread t = new Thread(p);
+		t.start();
 		
 		this.repaint();
 	}
@@ -162,15 +166,19 @@ public class HotPlayerSeasonPanel extends BgPanel{
 		}
 	}
 	
-	public void getRankingPanel(String type){
+	public synchronized void getRankingPanel(String type){
+		if(rankingPanel!=null){
+			HotPlayerSeasonPanel.this.remove(rankingPanel);
+		}
+		
 		String en = getType(type);
 		String[] str = logic_db.getHotPlayerSeason(en);
 //		PlayerDataPO[] players = logic.hotPlayerSeason(getSeasonStr(), type);
 		
 		JPanel p = factory.getPlayerSeason(str,isPercent(en),en+"_hotseason");
 		rankingPanel = p;
-		this.add(rankingPanel);
-		this.repaint();
+		HotPlayerSeasonPanel.this.add(rankingPanel);
+		HotPlayerSeasonPanel.this.repaint();
 	}
 	
 	private String getSeasonStr(){
@@ -189,12 +197,11 @@ public class HotPlayerSeasonPanel extends BgPanel{
 			}
 			sl.setSelected(true);
 
-			if(rankingPanel!=null){
-				HotPlayerSeasonPanel.this.remove(rankingPanel);
-			}
 
 			String type = sl.getText();
-			HotPlayerSeasonPanel.this.getRankingPanel(type);
+			PlayerSeason p = new PlayerSeason(type);
+			Thread t = new Thread(p);
+			t.start();
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -236,6 +243,20 @@ public class HotPlayerSeasonPanel extends BgPanel{
 			getRankingPanel("场均得分");
 		}
 		
+	}
+	
+	class PlayerSeason implements Runnable{
+
+		String typech;
+
+		public PlayerSeason(String typech){
+			this.typech = typech;
+		}
+
+		@Override
+		public void run() {
+			HotPlayerSeasonPanel.this.getRankingPanel(typech);
+		}
 	}
 
 }

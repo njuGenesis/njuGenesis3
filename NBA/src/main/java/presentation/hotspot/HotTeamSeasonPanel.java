@@ -20,6 +20,7 @@ import presentation.component.GLabel;
 import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
 import presentation.hotspot.HotPlayerProgressPanel.SeasonListener;
+import presentation.hotspot.HotPlayerSeasonPanel.PlayerSeason;
 import bussinesslogic.team.TeamLogic;
 import data.po.TeamDataPO;
 import data.po.teamData.TeamCompleteInfo;
@@ -103,7 +104,7 @@ public class HotTeamSeasonPanel extends BgPanel{
 		score.addMouseListener(new MenuListener());
 		menuItem[0] = score;
 
-		getRankingPanel("场均得分");
+//		getRankingPanel("场均得分");
 
 		backboard = new SelectLabel("场均篮板",new Point(118-this.getX(),83),new Point(117,35),this,true,0,16);
 		backboard.addMouseListener(new MenuListener());
@@ -132,6 +133,10 @@ public class HotTeamSeasonPanel extends BgPanel{
 		free = new SelectLabel("罚球命中率",new Point(826-this.getX(),83),new Point(117,35),this,true,0,16);
 		free.addMouseListener(new MenuListener());
 		menuItem[7] = free;
+		
+		TeamSeason p = new TeamSeason("场均得分");
+		Thread t = new Thread(p);
+		t.start();
 
 		this.repaint();
 	}
@@ -177,7 +182,11 @@ public class HotTeamSeasonPanel extends BgPanel{
 	//			String property, String isseason) throws RemoteException {
 	//	
 
-	public void getRankingPanel(String type){
+	public synchronized void getRankingPanel(String type){
+		if(rankingPanel!=null){
+			HotTeamSeasonPanel.this.remove(rankingPanel);
+		}
+		
 		String property = getType(type);
 
 		ArrayList<TeamCompleteInfo> teams;
@@ -189,8 +198,8 @@ public class HotTeamSeasonPanel extends BgPanel{
 			}
 			JPanel p = factory.getTeamSeason(info,property);
 			rankingPanel = p;
-			this.add(rankingPanel);
-			this.repaint();
+			HotTeamSeasonPanel.this.add(rankingPanel);
+			HotTeamSeasonPanel.this.repaint();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -234,12 +243,12 @@ public class HotTeamSeasonPanel extends BgPanel{
 			}
 			sl.setSelected(true);
 
-			if(rankingPanel!=null){
-				HotTeamSeasonPanel.this.remove(rankingPanel);
-			}
+			
 
 			String type = sl.getText();
-			HotTeamSeasonPanel.this.getRankingPanel(type);
+			TeamSeason p = new TeamSeason(type);
+			Thread t = new Thread(p);
+			t.start();
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -282,5 +291,19 @@ public class HotTeamSeasonPanel extends BgPanel{
 			getRankingPanel("场均得分");
 		}
 
+	}
+	
+	class TeamSeason implements Runnable{
+
+		String typech;
+
+		public TeamSeason(String typech){
+			this.typech = typech;
+		}
+
+		@Override
+		public void run() {
+			HotTeamSeasonPanel.this.getRankingPanel(typech);
+		}
 	}
 }

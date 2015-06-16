@@ -17,6 +17,7 @@ import presentation.component.TeamImageAssist;
 import presentation.contenui.PanelKind;
 import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
+import presentation.contenui.UIUtil;
 import presentation.mainui.StartUI;
 import presentation.mainui.WebFrame;
 import bussinesslogic.player.PlayerLogic_db;
@@ -397,7 +398,8 @@ public class RankingFactory {
 		JPanel p = new JPanel();
 		p.setBounds(0, 80, 940, 600);
 		p.setLayout(null);
-		p.setOpaque(false);
+		p.setOpaque(true);
+		p.setBackground(UIUtil.bgWhite);
 		return p;
 	}
 	

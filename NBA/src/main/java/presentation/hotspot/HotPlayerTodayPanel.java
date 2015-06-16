@@ -42,7 +42,7 @@ public class HotPlayerTodayPanel extends BgPanel{
 	SelectLabel block;  //盖帽
 	SelectLabel steal;  //抢断
 	SelectLabel[] menuItem = new SelectLabel[5];
-	
+
 	DatePanel date;
 
 	PlayerLogic logic = new PlayerLogic();
@@ -51,7 +51,7 @@ public class HotPlayerTodayPanel extends BgPanel{
 
 	RankingFactory factory = new RankingFactory();
 	JPanel rankingPanel;
-	
+
 	@Override
 	public void refreshUI() {
 		Component[] c = this.getComponents();
@@ -64,17 +64,17 @@ public class HotPlayerTodayPanel extends BgPanel{
 
 	public HotPlayerTodayPanel() {
 		super(bg);
-		
+
 
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
 		this.setOpaque(true);
 		this.setBackground(UIUtil.bgWhite);
-		
+
 		init();
 	}
 
-	
+
 	private void init(){
 
 		//--------------------标题--------------------
@@ -85,7 +85,7 @@ public class HotPlayerTodayPanel extends BgPanel{
 		borderDown = new GLabel("", new Point(0,56), new Point(940,4), this, true);
 		borderDown.setOpaque(true);
 		borderDown.setBackground(UIUtil.nbaBlue);
-		
+
 		title = new GLabel("   当天热点球员",new Point(0,4),new Point(940,52),this,true,0,24);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
@@ -97,7 +97,7 @@ public class HotPlayerTodayPanel extends BgPanel{
 		score.addMouseListener(new MenuListener());
 		menuItem[0] = score;
 
-		getRankingPanel("得分");
+		//		getRankingPanel("得分");
 
 		backboard = new SelectLabel("篮板",new Point(188,70),new Point(187,35),this,true,0,16);
 		backboard.addMouseListener(new MenuListener());
@@ -115,22 +115,29 @@ public class HotPlayerTodayPanel extends BgPanel{
 		steal.addMouseListener(new MenuListener());
 		menuItem[4] = steal;
 
+		PlayerToday pt = new PlayerToday("得分");
+		Thread t = new Thread(pt);
+		t.start();
+
 		this.repaint();
 	}
 
-	public void getRankingPanel(String type){
-//		String season = getSeason(date);  
-//		String day = date.substring(5);
-		
+	public synchronized void getRankingPanel(String type){
+		//		String season = getSeason(date);  
+		//		String day = date.substring(5);
+		if(rankingPanel!=null){
+			HotPlayerTodayPanel.this.remove(rankingPanel);
+		}
+
 		String en = getType(type);
 		String[] info = this.logic_db.getHotPlayerDaily(en);
 
 		JPanel p = factory.getPlayerDaily(info,en+"_hotdaily");
 		rankingPanel = p;
-		this.add(rankingPanel);
-		this.repaint();
+		HotPlayerTodayPanel.this.add(rankingPanel);
+		HotPlayerTodayPanel.this.repaint();
 	}
-	
+
 	private String getType(String ch){
 		switch(ch){
 		case "得分":return "points";
@@ -141,7 +148,7 @@ public class HotPlayerTodayPanel extends BgPanel{
 		default:return "";
 		}
 	}
-	
+
 	public String getSeason(String date){
 		String season = "13-14";
 
@@ -158,13 +165,13 @@ public class HotPlayerTodayPanel extends BgPanel{
 		}
 		return season;
 	}
-	
+
 	private String getToday(){
 		Date dateNow = new Date();  
 		SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy-MM-dd");  
 		return dateFormat.format(dateNow);
 	}
-	
+
 
 	class MenuListener implements MouseListener{
 
@@ -176,12 +183,11 @@ public class HotPlayerTodayPanel extends BgPanel{
 			}
 			sl.setSelected(true);
 
-			if(rankingPanel!=null){
-				HotPlayerTodayPanel.this.remove(rankingPanel);
-			}
 
 			String type = sl.getText();
-			HotPlayerTodayPanel.this.getRankingPanel(type);
+			PlayerToday pt = new PlayerToday(type);
+			Thread t = new Thread(pt);
+			t.start();
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -205,8 +211,8 @@ public class HotPlayerTodayPanel extends BgPanel{
 		}
 
 	}
-	
-	
+
+
 	class DateListener implements DocumentListener{
 
 		public void insertUpdate(DocumentEvent e) {
@@ -229,6 +235,19 @@ public class HotPlayerTodayPanel extends BgPanel{
 
 	}
 
+	class PlayerToday implements Runnable{
+
+		String typech;
+
+		public PlayerToday(String typech){
+			this.typech = typech;
+		}
+
+		@Override
+		public void run() {
+			HotPlayerTodayPanel.this.getRankingPanel(typech);
+		}
+	}
 
 
 }

@@ -17,6 +17,7 @@ import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.StatsUtil;
 import presentation.contenui.UIUtil;
+import presentation.hotspot.HotPlayerTodayPanel.PlayerToday;
 import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
 
@@ -99,7 +100,7 @@ public class HotPlayerProgressPanel extends BgPanel{
 		score.addMouseListener(new MenuListener());
 		menuItem[0] = score;
 
-		getRankingPanel("场均得分");
+//		getRankingPanel("场均得分");
 
 		backboard = new SelectLabel("场均篮板",new Point(313,70),new Point(313,35),this,true,0,16);
 //		backboard.setOpaque(true);
@@ -116,6 +117,10 @@ public class HotPlayerProgressPanel extends BgPanel{
 		assis.setHorizontalAlignment(JLabel.CENTER);
 		assis.addMouseListener(new MenuListener());
 		menuItem[2] = assis;
+		
+		PlayerProgress p = new PlayerProgress("场均得分");
+		Thread t = new Thread(p);
+		t.start();
 
 		this.repaint();
 	}
@@ -129,7 +134,11 @@ public class HotPlayerProgressPanel extends BgPanel{
 		}
 	}
 	
-	public void getRankingPanel(String type){
+	public synchronized void getRankingPanel(String type){
+		if(rankingPanel!=null){
+			HotPlayerProgressPanel.this.remove(rankingPanel);
+		}
+		
 		String en = getType(type);
 		String[] info = this.logic_db.getProgressPlayer(en);
 
@@ -137,8 +146,8 @@ public class HotPlayerProgressPanel extends BgPanel{
 //		JPanel p = factory.getPlayerProgress(players,type);
 		JPanel p = factory.getPlayerProgress(info,en+"_progress");
 		rankingPanel = p;
-		this.add(rankingPanel);
-		this.repaint();
+		HotPlayerProgressPanel.this.add(rankingPanel);
+		HotPlayerProgressPanel.this.repaint();
 	}
 
 	private String getSeasonStr(){
@@ -156,12 +165,10 @@ public class HotPlayerProgressPanel extends BgPanel{
 			}
 			sl.setSelected(true);
 
-			if(rankingPanel!=null){
-				HotPlayerProgressPanel.this.remove(rankingPanel);
-			}
-
 			String type = sl.getText();
-			HotPlayerProgressPanel.this.getRankingPanel(type);
+			PlayerProgress p = new PlayerProgress(type);
+			Thread t = new Thread(p);
+			t.start();
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -203,6 +210,20 @@ public class HotPlayerProgressPanel extends BgPanel{
 			getRankingPanel("场均得分");
 		}
 		
+	}
+	
+	class PlayerProgress implements Runnable{
+
+		String typech;
+
+		public PlayerProgress(String typech){
+			this.typech = typech;
+		}
+
+		@Override
+		public void run() {
+			HotPlayerProgressPanel.this.getRankingPanel(typech);
+		}
 	}
 	
 }
