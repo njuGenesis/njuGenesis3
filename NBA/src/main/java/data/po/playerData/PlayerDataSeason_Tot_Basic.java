@@ -30,6 +30,39 @@ public class PlayerDataSeason_Tot_Basic {
 	String lose;//负场
 	String nameCn;
 	
+	public String getProperty(String type){
+		String res = "";
+		switch(type){
+		case "name":res = name;
+		case "season":res = season;
+		case "team":res = team;
+		case "gp":res = gp;
+		case "gs":res = gs;
+		case "time":res =time;
+		case "shootper":res = shootper;
+		case "shoot_in":res = shoot_in;
+		case "shoot_all":res = shoot_all;
+		case "thper":res = thper;
+		case "th_in":res = th_in;
+		case "th_all":res = th_all;
+		case "ftper":res = ftper;
+		case "ft_in":res = ft_in;
+		case "ft_all":res = ft_all;
+		case "backbound":res = backbound;
+		case "offb":res = offb;
+		case "defb":res = defb;
+		case "assist":res = assist;
+		case "steal":res = steal;
+		case "rejection":res = rejection;
+		case "miss":res = miss;
+		case "foul":res = foul;
+		case "pts":res = pts;
+		case "win":res = win;
+		case "lose":res = lose;
+		case "nameCn":res = nameCn;
+		}
+		return res;
+	}
 	public String getNameCn(){
 		return nameCn;
 	}

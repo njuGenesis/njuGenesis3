@@ -26,6 +26,36 @@ public class PlayerDataSeason_Ad_Shoot {
 	String shooteff;//投篮效率
 	String nameCn;
 	
+	public String getProperty(String type){
+		String res = "";
+		switch(type){
+		case "name":res = name;
+		case "season":res = season;
+		case "team":res = team;
+		case "shootdis":res = shootdis;
+		case "bshootper":res = bshootper;
+		case "bshoot_in":res =bshoot_in;
+		case "bshoot_all":res = bshoot_all;
+		case "b_per":res = b_per;
+		case "closeshootper":res = closeshootper;
+		case "closeshoot_in":res = closeshoot_in;
+		case "closeshoot_all":res = closeshoot_all;
+		case "close_per":res = close_per;
+		case "midshootper":res = midshootper;
+		case "midshoot_in":res = midshoot_in;
+		case "midshoot_all":res = midshoot_all;
+		case "mid_per":res = mid_per;
+		case "farshootper":res = farshootper;
+		case "farshoot_in":res = farshoot_in;
+		case "farshoot_all":res = farshoot_all;
+		case "far_per":res = far_per;
+		case "trueshootper":res = trueshootper;
+		case "shooteff":res = shooteff;
+		case "nameCn":res = nameCn;
+		}
+		return res;
+	}
+	
 	public String getNameCn(){
 		return nameCn;
 	}
