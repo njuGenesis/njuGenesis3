@@ -25,7 +25,7 @@ public class TeamLogic implements TeamInfoService {
 		return temp;
 	}
 	
-	public ArrayList<TeamBaseInfo> GetAllBaseInfo(String season,String teamshortname)
+	public ArrayList<TeamBaseInfo> GetTeamBaseInfo(String season,String teamshortname)
 			throws RemoteException {
 		TeamDb t = new TeamDb();
 		ArrayList<TeamBaseInfo> temp = t.getbaseinfo(teamshortname, season);
