@@ -150,10 +150,10 @@ public class Regression {
 		m = value.size();
 		double[] res2 = new double[n];
 		double[][] res = new double[m][n];
-		System.out.println(m+"   "+n);
+		//System.out.println(m+"   "+n);
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				System.out.println(j+"  "+i);
+				//System.out.println(j+"  "+i);
 				res[i][j] = Double.valueOf(players.get(j)
 						.getProperty(value.get(i).getType())
 						.replaceAll("%", "").equals("")?"0":players.get(j)
