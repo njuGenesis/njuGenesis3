@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +30,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleAnchor;
 
+import data.po.playerData.PlayerDataPlayOff_Avg_Basic;
+import data.po.playerData.PlayerDataPlayOff_Tot_Basic;
 import data.po.playerData.PlayerDataSeason_Avg_Basic;
 import data.po.playerData.PlayerDataSeason_Tot_Basic;
 import bussinesslogic.player.PlayerLogic_db;
@@ -43,12 +46,18 @@ public class PlayerCrosshairOverlay extends BgPanel{
 	private PlayerLogic_db playerLogic_db;
 	private ArrayList<PlayerDataSeason_Avg_Basic> playerDataSeason_Avg_Basic;
 	private ArrayList<PlayerDataSeason_Tot_Basic> playerDataSeason_Tot_Basic;
+	private ArrayList<PlayerDataPlayOff_Tot_Basic> playerDataPlayOff_Tot_Basic;
+	private ArrayList<PlayerDataPlayOff_Avg_Basic> playerDataPlayOff_Avg_Basic;
 	private CrosshairOverlayPanel crosshairOverlayPanel;
 	private boolean[] select;
-	private GLabel selectButton, selectLabel;
+	private GLabel selectLabel;
 	private ChartCheckBox[] selectBox;
-	private boolean isFirst, isAvg;
+	private boolean isFirst, isAvg, isNormal;
 	private JCheckBox avg, total;
+	private JComboBox<String> comboBoxNormal, comboBoxAvg;
+	private String[] selectData = {"三分％", "命中％", "罚球％", "助攻", "抢断", "篮板", 
+			"盖帽", "失误", "犯规", "分钟", "得分"};
+	private String[] dataTypeFunction = {"thper","shootper","ftper","assist","steal","backbound","rejection","miss","foul","time","pts"};
 
 	public PlayerCrosshairOverlay(int id) {
 		super("");
@@ -57,6 +66,8 @@ public class PlayerCrosshairOverlay extends BgPanel{
 		try {
 			playerDataSeason_Avg_Basic = playerLogic_db.gets_a_b(id);
 			playerDataSeason_Tot_Basic = playerLogic_db.gets_t_b(id);
+			playerDataPlayOff_Avg_Basic = playerLogic_db.getp_a_b(id);
+			playerDataPlayOff_Tot_Basic = playerLogic_db.getp_t_b(id);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -74,72 +85,11 @@ public class PlayerCrosshairOverlay extends BgPanel{
 	private void init(){
 		isFirst = true;
 		isAvg = true;
+		isNormal = true;
 
-		avg = new JCheckBox("场均");
-		avg.setBounds(130, 0, 70, 25);
-		avg.setSelected(true);
-		avg.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				isFirst = false;
-
-				if(avg.isSelected()){
-					total.setSelected(false);
-					isAvg = true;
-					initCrosshairOverlay();
-				}else{
-					total.setSelected(true);
-					isAvg = false;
-					initCrosshairOverlay();
-				}
-			}
-		});
-		this.add(avg);
-		total = new JCheckBox("总数");
-		total.setBounds(200, 0, 70, 25);
-		total.setSelected(false);
-		total.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				isFirst = false;
-
-				if(total.isSelected()){
-					avg.setSelected(false);
-					isAvg = false;
-					initCrosshairOverlay();
-				}else{
-					avg.setSelected(true);
-					isAvg = true;
-					initCrosshairOverlay();
-				}
-			}
-		});
-		this.add(total);
-
-		selectButton = new GLabel("筛选", new Point(770, 0), new Point(40, 25), this, true, 0, 15);
-		selectButton.setHorizontalAlignment(JLabel.CENTER);
-		selectButton.setForeground(UIUtil.nbaBlue);
-		selectButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		selectButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(selectLabel.isVisible()){
-					selectLabel.setVisible(false);
-					crosshairOverlayPanel.setLocation(130, 25);
-				}else{
-					selectLabel.setVisible(true);
-					crosshairOverlayPanel.setLocation(130, 105);
-				}
-			}
-		});
-
-		selectLabel = new GLabel("", new Point(0, 25), new Point(940, 80), this, true);
-		selectLabel.setBackground(UIUtil.bgGrey);
+		selectLabel = new GLabel("", new Point(680, 25), new Point(260, 425), this, true);
+		selectLabel.setBackground(UIUtil.bgWhite);
 		selectLabel.setOpaque(true);
-		selectLabel.setVisible(false);
-
-		String[] selectData = {"三分％", "命中％", "罚球％", "助攻", "抢断", "篮板", 
-				"盖帽", "失误", "犯规", "分钟", "得分"};
 
 		select = new boolean[selectData.length];
 		selectBox = new ChartCheckBox[select.length];
@@ -148,14 +98,16 @@ public class PlayerCrosshairOverlay extends BgPanel{
 			
 			selectBox[i] = new ChartCheckBox(i);
 
-			if(i<6){
-				selectBox[i].setBounds(50+(150)*i, 10, 100, 25);
+			if(i%2==0){
+				selectBox[i].setBounds(30, 10+(i/2)*45, 100, 25);
 			}else{
-				selectBox[i].setBounds(50+(150)*(i-6), 45, 100, 25);
+				selectBox[i].setBounds(130, 10+(i/2)*45, 100, 25);
 			}
+			
+			selectBox[i].setOpaque(true);
+			selectBox[i].setBackground(UIUtil.bgWhite);
 
 			selectBox[i].setText(selectData[i]);
-			selectBox[i].setForeground(UIUtil.bgWhite);
 			selectBox[i].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -181,307 +133,97 @@ public class PlayerCrosshairOverlay extends BgPanel{
 		selectBox[2].setSelected(true);
 		selectBox[3].setSelected(true);
 		selectBox[5].setSelected(true);
+		
+		String []normal = {"常规赛", "季后赛"};
+		comboBoxNormal = new JComboBox<String>(normal);
+		comboBoxNormal.setBounds(30, 10+(selectBox.length/2)*45+selectBox[0].getSize().height+30, 200, 30);
+		comboBoxNormal.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(comboBoxNormal.getSelectedIndex() == 0){
+					isNormal = true;
+				}else{
+					isNormal = false;
+				}
+				initCrosshairOverlay();
+			}
+		});
+		selectLabel.add(comboBoxNormal);
+		
+		String []avg = {"场均", "总数"};
+		comboBoxAvg = new JComboBox<String>(avg);
+		comboBoxAvg.setBounds(30, 10+(selectBox.length/2)*45+selectBox[0].getSize().height+90, 200, 30);
+		comboBoxAvg.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(comboBoxAvg.getSelectedIndex() == 0){
+					isAvg = true;
+				}else{
+					isAvg = false;
+				}
+				initCrosshairOverlay();
+			}
+		});
+		selectLabel.add(comboBoxAvg);
 
 	}
 
 	private void initCrosshairOverlay(){
 		XYSeriesCollection localXYSeriesCollection = new XYSeriesCollection();
-
-		if(select[0]){
-			XYSeries XYSeries1 = new XYSeries("三分％");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries1.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getThper().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getThper().replaceAll("%", "")));
-						}else XYSeries1.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
+		
+		for(int i=0;i<select.length;i++){
+			if(select[i]){
+				XYSeries XYSeries1 = new XYSeries(selectData[i]);
+				if(isNormal){
+					if(isAvg){
+						for(int j=0;j<playerDataSeason_Avg_Basic.size();j++){
+							if((!playerDataSeason_Avg_Basic.get(j).getSeason().contains("年"))
+									&&(!playerDataSeason_Avg_Basic.get(j).getTeam().contains("总计"))){
+								XYSeries1.add(changeSeason(playerDataSeason_Avg_Basic.get(j).getSeason()), 
+										Double.valueOf(playerDataSeason_Avg_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "").
+												equals("")?"0":playerDataSeason_Avg_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "")));
+							}
+						}
+					}else{
+						for(int j=0;j<playerDataSeason_Tot_Basic.size();j++){
+							if((!playerDataSeason_Tot_Basic.get(j).getSeason().contains("年"))
+									&&(!playerDataSeason_Tot_Basic.get(j).getTeam().contains("总计"))){
+								XYSeries1.add(changeSeason(playerDataSeason_Tot_Basic.get(j).getSeason()), 
+										Double.valueOf(playerDataSeason_Tot_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "").
+												equals("")?"0":playerDataSeason_Tot_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "")));
+							}
+						}
+					}
+				}else{
+					if(isAvg){
+						for(int j=0;j<playerDataPlayOff_Avg_Basic.size();j++){
+							if((!playerDataPlayOff_Avg_Basic.get(j).getSeason().contains("年"))
+									&&(!playerDataPlayOff_Avg_Basic.get(j).getTeam().contains("总计"))){
+								XYSeries1.add(changeSeason(playerDataPlayOff_Avg_Basic.get(j).getSeason()), 
+										Double.valueOf(playerDataPlayOff_Avg_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "").
+												equals("")?"0":playerDataPlayOff_Avg_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "")));
+							}
+						}
+					}else{
+						for(int j=0;j<playerDataPlayOff_Tot_Basic.size();j++){
+							if((!playerDataPlayOff_Tot_Basic.get(j).getSeason().contains("年"))
+									&&(!playerDataPlayOff_Tot_Basic.get(j).getTeam().contains("总计"))){
+								XYSeries1.add(changeSeason(playerDataPlayOff_Tot_Basic.get(j).getSeason()), 
+										Double.valueOf(playerDataPlayOff_Tot_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "").
+												equals("")?"0":playerDataPlayOff_Tot_Basic.get(j).getProperty(dataTypeFunction[i]).replaceAll("%", "")));
+							}
+						}
 					}
 				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries1.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getThper().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getThper().replaceAll("%", "")));
-						}else XYSeries1.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
+				localXYSeriesCollection.addSeries(XYSeries1);
 			}
-			localXYSeriesCollection.addSeries(XYSeries1);
-		}
-
-		if(select[1]){
-			XYSeries XYSeries2 = new XYSeries("命中％");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries2.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getShootper().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getShootper().replaceAll("%", "")));
-						}else XYSeries2.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries2.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getShootper().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getShootper().replaceAll("%", "")));
-						}else XYSeries2.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries2);
-		}
-
-		if(select[2]){
-			XYSeries XYSeries3 = new XYSeries("罚球％");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries3.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getFtper().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getFtper().replaceAll("%", "")));
-						}else XYSeries3.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries3.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getFtper().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getFtper().replaceAll("%", "")));
-						}else XYSeries3.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries3);
-		}
-
-		if(select[3]){
-			XYSeries XYSeries4 = new XYSeries("助攻");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries4.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getAssist().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getAssist().replaceAll("%", "")));
-						}else XYSeries4.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries4.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getAssist().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getAssist().replaceAll("%", "")));
-						}else XYSeries4.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries4);
-		}
-
-		if(select[4]){
-			XYSeries XYSeries5 = new XYSeries("抢断");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries5.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getSteal().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getSteal().replaceAll("%", "")));
-						}else XYSeries5.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries5.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getSteal().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getSteal().replaceAll("%", "")));
-						}else XYSeries5.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries5);
-		}
-
-		if(select[5]){
-			XYSeries XYSeries6 = new XYSeries("篮板");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries6.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getBackbound().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getBackbound().replaceAll("%", "")));
-						}else XYSeries6.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries6.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getBackbound().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getBackbound().replaceAll("%", "")));
-						}else XYSeries6.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries6);
-		}
-
-		if(select[6]){
-			XYSeries XYSeries7 = new XYSeries("盖帽");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries7.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getRejection().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getRejection().replaceAll("%", "")));
-						}else XYSeries7.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries7.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getRejection().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getRejection().replaceAll("%", "")));
-						}else XYSeries7.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries7);
-		}
-
-		if(select[7]){
-			XYSeries XYSeries8 = new XYSeries("失误");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries8.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getMiss().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getMiss().replaceAll("%", "")));
-						}else XYSeries8.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries8.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getMiss().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getMiss().replaceAll("%", "")));
-						}else XYSeries8.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries8);
-		}
-
-		if(select[8]){
-			XYSeries XYSeries9 = new XYSeries("犯规");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries9.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getFoul().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getFoul().replaceAll("%", "")));
-						}else XYSeries9.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries9.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getFoul().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getFoul().replaceAll("%", "")));
-						}else XYSeries9.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries9);
-		}
-
-		if(select[9]){
-			XYSeries XYSeries10 = new XYSeries("分钟");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries10.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getTime().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getTime().replaceAll("%", "")));
-						}else XYSeries10.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries10.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getTime().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getTime().replaceAll("%", "")));
-						}else XYSeries10.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries10);
-		}
-
-		if(select[10]){
-			XYSeries XYSeries11 = new XYSeries("得分");
-			if(isAvg){
-				for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
-					if((!playerDataSeason_Avg_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
-							XYSeries11.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getPts().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getPts().replaceAll("%", "")));
-						}else XYSeries11.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}else{
-				for(int i=0;i<playerDataSeason_Tot_Basic.size();i++){
-					if((!playerDataSeason_Tot_Basic.get(i).getSeason().contains("年"))
-							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
-						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
-							XYSeries11.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getPts().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getPts().replaceAll("%", "")));
-						}else XYSeries11.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
-					}
-				}
-			}
-			localXYSeriesCollection.addSeries(XYSeries11);
 		}
 
 		if(!isFirst)this.remove(crosshairOverlayPanel);
 
 		crosshairOverlayPanel = new CrosshairOverlayPanel(localXYSeriesCollection);
 		crosshairOverlayPanel.setVisible(true);
-		if(selectLabel.isVisible()){
-			crosshairOverlayPanel.setBounds(130, 105, 680, 425);
-		}else{
-			crosshairOverlayPanel.setBounds(130, 25, 680, 425);
-		}
+		crosshairOverlayPanel.setBounds(0, 25, 680, 425);
 		this.add(crosshairOverlayPanel);
 
 		this.updateUI();
@@ -504,11 +246,11 @@ public class PlayerCrosshairOverlay extends BgPanel{
 			public void run()
 			{
 				JFrame frame = new JFrame();  
-				frame.setSize(940,560);
+				frame.setSize(940,600);
 				frame.setVisible(true); 
 
 				JLabel panel = new JLabel();
-				panel.setBounds(0, 0, 940, 560);
+				panel.setBounds(0, -100, 940, 700);
 				panel.setVisible(true);
 				panel.setLayout(null);
 
@@ -554,7 +296,7 @@ class CrosshairOverlayPanel extends JPanel implements ChartMouseListener{
 	}
 
 	private JFreeChart createChart(XYDataset paramXYDataset){
-		JFreeChart localJFreeChart = ChartFactory.createXYLineChart("球员场均数据折线统计", "赛季", "数值", paramXYDataset);
+		JFreeChart localJFreeChart = ChartFactory.createXYLineChart("Player Line", "season", "data", paramXYDataset);
 		return localJFreeChart;
 	}
 

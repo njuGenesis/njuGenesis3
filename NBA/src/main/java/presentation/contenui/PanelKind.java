@@ -19,5 +19,5 @@ public enum PanelKind {
 	
 	MATCH_DETAIL,
 	
-	COMPARE
+	COMPARE,
 }

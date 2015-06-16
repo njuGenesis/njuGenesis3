@@ -17,7 +17,7 @@ public class UIUtil {
 	
 	public static Color nbaBlue = new Color(0,110,185);
 	public static Color nbaRed = new Color(228,42,81);
-	public static Color bgWhite = new Color(251,251,251);
+	public static Color bgWhite = new Color(255,255,255);
 	public static Color bgGrey = new Color(83,83,83);
 	public static Color darkBlue = new Color(0,82,138);
 	public static Color tableGrey = new Color(238,238,238);

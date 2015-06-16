@@ -13,7 +13,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,9 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListDataListener;
 
-import org.apache.batik.anim.timing.SyncbaseTimingSpecifier;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -242,6 +239,8 @@ public class PlayerCompare extends BgPanel{
 			chartChekBox[i].setBounds(0, 25*i, 100, 25);
 
 			chartChekBox[i].setText(dataType[i]);
+			
+			chartChekBox[i].setBackground(UIUtil.bgWhite);
 			chartChekBox[i].addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -344,6 +343,7 @@ public class PlayerCompare extends BgPanel{
 			
 			players[i] = new GLabel("", new Point(i*520, 60), new Point(420, 200), this, true);
 			
+			GLabel pic = new GLabel("img/players/"+ids[i]+".jpg", new Point(20, 10), new Point(180, 180), players[i], true);
 			GLabel name = new GLabel(playerDetailInfos[i].getName(), new Point(220, 10), new Point(200, 30), players[i], true, 0, 15);
 			GLabel birth = new GLabel(playerDetailInfos[i].getBirth(), new Point(name.getLocation().x, name.getLocation().y+name.getSize().height+5), new Point(name.getSize().width, name.getSize().height), players[i], true, 0, 15);
 			GLabel height = new GLabel(playerDetailInfos[i].getHeight(), new Point(birth.getLocation().x, birth.getLocation().y+birth.getSize().height+5), new Point(name.getSize().width, name.getSize().height), players[i], true, 0, 15);
@@ -512,9 +512,9 @@ class MyDemoPanel{
   }
 
   private ChartPanel createChartPanel(XYDataset xyDataset){
-    NumberAxis localNumberAxis1 = new NumberAxis("赛季");
+    NumberAxis localNumberAxis1 = new NumberAxis("season");
     localNumberAxis1.setAutoRangeIncludesZero(false);
-    NumberAxis localNumberAxis2 = new NumberAxis("数据");
+    NumberAxis localNumberAxis2 = new NumberAxis("data");
     localNumberAxis2.setAutoRangeIncludesZero(false);
     XYLineAndShapeRenderer localXYLineAndShapeRenderer = new XYLineAndShapeRenderer();
     XYPlot localXYPlot = new XYPlot(xyDataset, localNumberAxis1, localNumberAxis2, localXYLineAndShapeRenderer);
@@ -522,7 +522,7 @@ class MyDemoPanel{
     localXYPlot.setDomainGridlinePaint(Color.white);
     localXYPlot.setRangeGridlinePaint(Color.white);
     localXYPlot.setAxisOffset(new RectangleInsets(4.0D, 4.0D, 4.0D, 4.0D));
-    JFreeChart localJFreeChart = new JFreeChart("数据折线分析", JFreeChart.DEFAULT_TITLE_FONT, localXYPlot, true);
+    JFreeChart localJFreeChart = new JFreeChart("Data Line", JFreeChart.DEFAULT_TITLE_FONT, localXYPlot, true);
     ChartUtilities.applyCurrentTheme(localJFreeChart);
     ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
     return localChartPanel;
