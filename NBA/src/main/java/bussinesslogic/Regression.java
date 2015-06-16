@@ -17,7 +17,7 @@ public class Regression {
 
 	public static void main(String[] args) throws RemoteException {
 		Regression r = new Regression();
-		r.sqt(333);
+		r.sqt(195);
 		// r.getRelation(2222);
 
 	}
@@ -154,9 +154,11 @@ public class Regression {
 			for (int j = 0; j < m; j++) {
 				res[j][i] = Double.valueOf(players.get(i)
 						.getProperty(value.get(j).getType())
-						.replaceAll("%", ""));
+						.replaceAll("%", "").equals("")?"0":players.get(i)
+								.getProperty(value.get(j).getType())
+								.replaceAll("%", ""));
 			}
-			res2[i] = Double.valueOf(players.get(i).getPts());
+			res2[i] = Double.valueOf(players.get(i).getPts().equals("")?"0":players.get(i).getPts());
 		}
 		x = res;
 		y = res2;
@@ -173,13 +175,15 @@ public class Regression {
 		double[] v = new double[value.size()];
 		double[] dt = new double[5];
 		sqtRgression.sqt2(x, y, m, n, a, dt, v);
-
+		res.setM(m);
+		res.setN(n);
 		res.setA(a);
 		res.setDt(dt);
 		res.setV(v);
 		res.setValue(value);
 		res.setX(x);
 		res.setY(y);
+		res.setF(dt[3]/(dt[0]/(n-2)));
 
 		int i;
 		// 输出系数方程
@@ -194,6 +198,7 @@ public class Regression {
 			System.out.println("v(" + i + ")=" + v[i] + "    type="
 					+ value.get(i).getType());
 		System.out.println("u=" + dt[3]);
+		System.out.println(res.F);
 		return res;
 	}
 
