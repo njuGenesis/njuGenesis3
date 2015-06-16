@@ -313,21 +313,19 @@ public class PlayerLogic_db {
 		}
 		else{
 			try{
-				ArrayList<String> temp = pdb.getTeambyId(p.getId(), season);
-				for(int i = 0;i<temp.size();i++){
-					System.out.println(temp.get(i));
-					if(temp.get(i).contains(teamkey)){
+				
+					if(p.getTeam().contains(teamkey)){
 						return true;
 					}
 					else{
 						return false;
 					}
-				}
+				
 			}catch(Exception e){
 				return false;
 			}
 		}
-		return false;
+		
 	}
 	
 	private boolean firstc(PlayerDetailInfo p, String firstc) {
