@@ -2,8 +2,6 @@ package presentation.team;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -11,9 +9,7 @@ import javax.swing.JLabel;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
-import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import bussinesslogic.player.PlayerLogic_db;
 import data.po.playerData.PlayerDetailInfo;
@@ -27,12 +23,10 @@ public class TeamPlayer extends BgPanel{
 	private Rectangle rectangle;
 	private PlayerLogic_db playerLogic_db;
 	private ArrayList<PlayerDetailInfo> playerDetailInfo;
-	private TurnController turnController;
 	
 	public TeamPlayer(String players, String team) {
 		super(file);
 		
-		turnController = new TurnController();
 		playerLogic_db = new PlayerLogic_db();
 		playerDetailInfo = new ArrayList<PlayerDetailInfo>();
 		String[] names = players.split(";");
@@ -93,23 +87,6 @@ public class TeamPlayer extends BgPanel{
 		tableBasic.setColumForeground(0, UIUtil.nbaBlue);
 		tableBasic.setColumHand(0);
 		this.add(tableBasic);
-		
-		for(int i=0;i<playerDetailInfo.size();i++){
-			tableBasic.getColum(0)[i].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent e){
-					JLabel label = (JLabel)e.getSource();
-					String name = label.getText();
-					int id = 0;
-					try {
-						id = playerLogic_db.getIDbyName(name, "");
-					} catch (RemoteException e1) {
-						e1.printStackTrace();
-					}System.out.println(id);
-					WebFrame.frame.setPanel(turnController.turnToPlayerDetials(id), name);
-				}
-			});
-		}
 	}
 	
 	@Override

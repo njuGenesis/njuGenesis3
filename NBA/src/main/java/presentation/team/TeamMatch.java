@@ -4,19 +4,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
-import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import bussinesslogic.match.MatchLogic;
 import data.po.matchData.MatchTeam;
@@ -33,7 +26,6 @@ public class TeamMatch extends BgPanel{
 	private JComboBox<String> comboBoxSeason, comboBoxNormal;
 	private boolean isFirst;
 	private GLabel border, label;
-	private TurnController turnController = new TurnController();
 	
 	public TeamMatch(String teamShortName) {
 		super(file);
@@ -148,17 +140,6 @@ public class TeamMatch extends BgPanel{
 		table.setColumForeground(5, UIUtil.nbaBlue);
 		table.setColumHand(5);
 		this.add(table);
-		
-		for(int i=0;i<matchTeam.size();i++){
-			table.getColum(5)[i].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent e){
-					JLabel label = (JLabel)e.getSource();
-					String matchID = label.getText();
-					WebFrame.frame.setPanel(turnController.turnToMatchDetials(matchLogic.GetCompleteMatch(matchID)), "比赛"+matchID);
-				}
-			});
-		}
 		
 		this.updateUI();
 	}

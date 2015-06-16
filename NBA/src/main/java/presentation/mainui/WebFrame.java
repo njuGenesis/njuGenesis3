@@ -30,7 +30,7 @@ public class WebFrame extends GFrame{
 	private JPanel currentPanel;
 
 	private GLabel menuPanel, menuTitle, menuLabel;
-	private GLabel[] menuButton = new GLabel[7];
+	private GLabel[] menuButton = new GLabel[6];
 	private GLabel[] menuButtonIcon = new GLabel[menuButton.length];
 
 	private GLabel[] hotButton = new GLabel[4];
@@ -125,7 +125,7 @@ public class WebFrame extends GFrame{
 		//			}
 		//		});
 
-		String buttonInfo[] = {"热点", "球员", "球队", "比赛", "数据", "比较","分析"};
+		String buttonInfo[] = {"热点", "球员", "球队", "比赛", "数据", "比较"};
 		//String buttonIconInfo[] = {"☀︎︎", "♂", "♗", "⚔︎︎", "⧲︎︎", "✍"};
 
 		for(int i=0;i<menuButton.length;i++){
@@ -223,14 +223,6 @@ public class WebFrame extends GFrame{
 
 			}
 		});
-		menuButton[6].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e){
-				GLabel label = (GLabel) e.getSource();
-				WebFrame.this.setPanel(turnController.turn(PanelKind.ANALYSIS), label.getText());
-
-			}
-		});
 
 //		close = new GLabel("X", new Point(0, 105+(80+2)*(menuButton.length)-2), new Point(250, this.getHeight()-30-(105+(80+2)*(menuButton.length))), menuPanel, true, 1, 50);
 //		close.setForeground(UIUtil.bgWhite);
@@ -257,7 +249,7 @@ public class WebFrame extends GFrame{
 		}else{
 			d = -200;
 		}
-		for(int i=1;i<7;i++){
+		for(int i=1;i<6;i++){
 			menuButton[i].setLocation(menuButton[i].getX(), menuButton[i].getY()+d);
 		}
 
@@ -282,7 +274,7 @@ public class WebFrame extends GFrame{
 		}else{
 			d = -100;
 		}
-		for(int i=5;i<7;i++){
+		for(int i=5;i<6;i++){
 			menuButton[i].setLocation(menuButton[i].getX(), menuButton[i].getY()+d);
 		}
 
@@ -457,7 +449,7 @@ public class WebFrame extends GFrame{
 			panelBg.add(currentPanel);
 
 
-			WebLabel gLabel = new WebLabel(message, new Point(labelVector.size()*130, 35), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
+			WebLabel gLabel = new WebLabel(" "+message, new Point(100+labelVector.size()*130, 35), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
 			labelVector.addElement(gLabel);
 			gLabel.setSelected();
 
@@ -491,14 +483,14 @@ public class WebFrame extends GFrame{
 			if(labelVector.size()!=0){
 				int size = labelVector.get(0).getSize().width;
 				for(int i = 0;i<labelVector.size();i++){
-					labelVector.get(i).setLocation(i*size, 35);
+					labelVector.get(i).setLocation(100+i*size, 35);
 				}
 				labelVector.get(labelVector.size()-1).setSelected();
 			}
 		}else{
 			int size = labelVector.get(0).getSize().width;
 			for(int i = 0;i<labelVector.size();i++){
-				labelVector.get(i).setLocation(i*size, 35);
+				labelVector.get(i).setLocation(100+i*size, 35);
 			}
 		}
 
@@ -514,28 +506,33 @@ public class WebFrame extends GFrame{
 		case 3:
 		case 4:
 		case 5:
-		case 6:
-		case 7:{
+		case 6:{
 			for(int i = 0;i<labelVector.size();i++){
 				labelVector.get(i).setSize(130, 25);
 			}
 			break;
 		}
-		case 8:{
+		case 7:{
 			for(int i = 0;i<labelVector.size();i++){
-				labelVector.get(i).setSize(120, 25);
+				labelVector.get(i).setSize(125, 25);
 			}
 			break;
 		}
-		case 9:{
+		case 8:{
 			for(int i = 0;i<labelVector.size();i++){
 				labelVector.get(i).setSize(110, 25);
 			}
 			break;
 		}
-		case 10:{
+		case 9:{
 			for(int i = 0;i<labelVector.size();i++){
 				labelVector.get(i).setSize(99, 25);
+			}
+			break;
+		}
+		case 10:{
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setSize(89, 25);
 			}
 			break;
 		}

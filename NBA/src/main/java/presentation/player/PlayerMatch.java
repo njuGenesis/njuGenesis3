@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -15,16 +13,11 @@ import javax.swing.JLabel;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.contenui.TableUtility;
-import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
-import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import bussinesslogic.match.MatchLogic;
 import bussinesslogic.player.PlayerLogic_db;
-import data.po.matchData.MatchDataSeason;
 import data.po.matchData.MatchPlayer;
-import data.po.teamData.TeamBaseInfo;
 
 public class PlayerMatch extends BgPanel{
 	
@@ -38,7 +31,6 @@ public class PlayerMatch extends BgPanel{
 	private JComboBox<String> comboBoxSeason, comboBoxNormal;
 	private String playerName;
 	private boolean isFirst;
-	private TurnController turnController = new TurnController();
 
 	public PlayerMatch(int id) {
 		super("");
@@ -161,22 +153,6 @@ public class PlayerMatch extends BgPanel{
 		basicTable.setColumForeground(20, UIUtil.nbaBlue);
 		basicTable.setColumHand(20);
 		this.add(basicTable);
-		
-		int columNumber[] = {0,1};
-		int width[] = {90,60};
-		basicTable.setColumnWidth(columNumber, width);
-		
-		for(int i=0;i<matchPlayer.size();i++){
-			basicTable.getColum(20)[i].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent e){
-					JLabel label = (JLabel)e.getSource();
-					String matchId = label.getText();
-					MatchDataSeason po = matchLogic.GetCompleteMatch(matchId);
-					WebFrame.frame.setPanel(turnController.turnToMatchDetials(po), "比赛"+matchId);
-				}
-			});
-		}
 		
 		this.updateUI();
 	}

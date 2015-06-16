@@ -1,6 +1,5 @@
 package presentation.contenui;
 
-import presentation.compare.PlayerAnalysis;
 import presentation.compare.PlayerCompare;
 import presentation.component.BgPanel;
 import presentation.hotspot.HotPlayerProgressPanel;
@@ -34,7 +33,7 @@ public class TurnController {
 		case PLAYER:newPanel = new PlayerUI();break;
 		case MATCH:newPanel = new MatchUI("img/Framebg/Match.png");break;
 		case STATS:newPanel = new StatsUI("img/Framebg/Stats.png");break;
-		case ANALYSIS:newPanel = new PlayerAnalysis();break;
+		case ANALYSIS:newPanel = new StatsUI("img/Framebg/Stats.png");break;
 		
 		case HOT_PLAYERTODAY:newPanel = new HotPlayerTodayPanel();break;
 		case HOT_PLAYERSEASON:newPanel = new HotPlayerSeasonPanel();break;

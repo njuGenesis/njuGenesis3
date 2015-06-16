@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -87,11 +86,8 @@ public class PlayerCmp extends BgPanel{
 		border.setBackground(UIUtil.nbaBlue);
 		border.setOpaque(true);
 		
-		try {
-			GLabel player = new GLabel(playerLogic_db.getdetail(id).getName(), new Point(115, 50), new Point(150, 40), this, true, 0, 20);
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
-		}
+		GLabel teamPic = new GLabel("img/portrait/"+//po.getName()+
+				".png", new Point(80, 20), new Point(172, 139), this, true);
 		GLabel vs = new GLabel("VS", new Point(454, 80), new Point(60, 60), this, true, 1, 40);
 		GLabel defaultPic = new GLabel("img/teamDetials/default.png", new Point(742, 15), new Point(61, 146), this, true);
 		GLabel defaultText = new GLabel("联盟平均", new Point(730, 171), new Point(200,30), this, true, 0, 20);

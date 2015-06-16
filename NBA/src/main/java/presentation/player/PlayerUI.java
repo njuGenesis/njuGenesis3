@@ -27,7 +27,7 @@ import presentation.hotspot.SelectLabel;
 import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 
-public class PlayerUI extends BgPanel implements Runnable{
+public class PlayerUI extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private static String file = "";
@@ -65,7 +65,7 @@ public class PlayerUI extends BgPanel implements Runnable{
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
-//		this.setOpaque(false);
+		this.setOpaque(false);
 
 		init();
 	}
@@ -157,7 +157,7 @@ public class PlayerUI extends BgPanel implements Runnable{
 					comboBoxPosition.setSelectedIndex(0);
 					search.setText("根据姓名查找");
 					if(comboBoxTeam.getSelectedIndex()!=0){
-						String team = comboBoxTeam.getSelectedItem().toString().split(" ")[0];
+						String team = comboBoxTeam.getSelectedItem().toString().split(" ")[1];
 						ArrayList<Integer> idList = new ArrayList<>();
 						try {
 							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", "null", "null", team);
@@ -262,7 +262,7 @@ public class PlayerUI extends BgPanel implements Runnable{
 		infoInit();
 	}
 
-	private synchronized void infoInit(){
+	private void infoInit(){
 		if(!isFirst)this.remove(table);
 		
 		String h[] = {"姓名","球队","位置","号码","身高","体重","生日"};
@@ -281,7 +281,7 @@ public class PlayerUI extends BgPanel implements Runnable{
 		table.setColumDataCenter(3);
 		table.setColumDataCenter(4);
 		table.setColumDataCenter(5);
-		table.setColumDataCenter(6);
+		table.setColumDataCenter(7);
 		table.setColumForeground(0, UIUtil.nbaBlue);
 		table.setColumForeground(1, UIUtil.nbaBlue);
 		table.setColumHand(0);
@@ -306,18 +306,7 @@ public class PlayerUI extends BgPanel implements Runnable{
 			table.getColum(1)[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e){
-					JLabel label = (JLabel)e.getSource();
-					String team = label.getText();
-					String shortName = TableUtility.getChTeam(team);
-					if(!shortName.equals("null")){
-						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
-						try {
-							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
-						} catch (RemoteException e1) {
-							e1.printStackTrace();
-						}
-						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
-					}
+					//WebFrame.frame.setPanel(turnController.turnToPlayerDetials(teamName), teamName);
 				}
 			});
 		}
@@ -331,11 +320,5 @@ public class PlayerUI extends BgPanel implements Runnable{
 			this.removeAll();
 			this.init();
 		}
-	}
-
-	
-	@Override
-	public void run() {
-		infoInit();
 	}
 }

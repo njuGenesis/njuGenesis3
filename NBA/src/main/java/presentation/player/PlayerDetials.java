@@ -3,10 +3,7 @@ package presentation.player;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.rmi.RemoteException;
-
 import javax.swing.JPanel;
-
 import bussinesslogic.player.PlayerLogic_db;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
@@ -20,7 +17,6 @@ public class PlayerDetials extends BgPanel{
 	private SelectLabel[] selectLabels;
 	private String[] functions = {"基本信息", "赛季数据", "比赛数据", "联盟对比", "统计分析"};
 	private JPanel[] panels;
-	private PlayerLogic_db playerLogic_db = new PlayerLogic_db();
  	
 	public PlayerDetials(int id){
 		super("");
@@ -36,11 +32,8 @@ public class PlayerDetials extends BgPanel{
 	}
 	
 	private void init(){
-		try {
-			title = new GLabel("  "+playerLogic_db.getdetail(id).getName(), new Point(0, 4), new Point(940, 42), this, true, 0, 25);
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
-		}
+		title = new GLabel("  "+"name"//po.getName()
+				, new Point(0, 4), new Point(940, 42), this, true, 0, 25);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
 		title.setForeground(UIUtil.nbaBlue);

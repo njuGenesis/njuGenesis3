@@ -41,7 +41,7 @@ public class TeamDetials extends BgPanel{
 	}
 	
 	private void init(){
-		title = new GLabel("  "+teamBaseInfo.getName()
+		title = new GLabel("  "+"name"//po.getName()
 				, new Point(0, 4), new Point(940, 42), this, true, 0, 25);
 		title.setOpaque(true);
 		title.setBackground(UIUtil.bgWhite);
