@@ -158,6 +158,9 @@ public class PlayerMatch extends BgPanel{
 		for(int i=2;i<header.length;i++){
 			basicTable.setColumDataCenter(i);
 		}
+		for(int i=3;i<header.length-1;i++){
+			basicTable.setOrder(i, Double.class);
+		}
 		basicTable.setColumForeground(20, UIUtil.nbaBlue);
 		basicTable.setColumHand(20);
 		this.add(basicTable);

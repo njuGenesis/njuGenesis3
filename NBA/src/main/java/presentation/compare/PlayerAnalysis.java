@@ -153,6 +153,7 @@ public class PlayerAnalysis extends BgPanel{
 		search.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
+				isFirst = true;
 				String name0 = search0.getEditor().getItem().toString();
 
 				try {
@@ -198,6 +199,7 @@ public class PlayerAnalysis extends BgPanel{
 		});
 
 		dataLebel = new GLabel("", new Point(520, 260), new Point(420, 340), this, false);
+		player = new GLabel("", new Point(520, 60), new Point(420, 200), this, true);
 
 		bg = new GLabel("img/analysis/bg.png", new Point(240, 100), new Point(500, 500), this, true);
 		warn = new GLabel("img/analysis/warn.png", new Point(220, 100), new Point(500, 500), this, false);
@@ -259,14 +261,12 @@ public class PlayerAnalysis extends BgPanel{
 	}
 
 	private void removeData(){
-		if(!isFirst){
-			dataLebel.removeAll();
-			player.removeAll();
-		}
+		dataLebel.removeAll();
+		player.removeAll();
 
 		this.updateUI();
 	}
-	
+
 	private void removeChart(){
 		if(!isFirst){
 			this.remove(panel);
@@ -283,8 +283,6 @@ public class PlayerAnalysis extends BgPanel{
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-
-		player = new GLabel("", new Point(520, 60), new Point(420, 200), this, true);
 
 		GLabel pic = new GLabel("img/players/"+id+".jpg", new Point(20, 10), new Point(180, 180), player, true);
 		GLabel name = new GLabel(playerDetailInfos.getName(), new Point(220, 10), new Point(200, 30), player, true, 0, 15);
@@ -328,6 +326,9 @@ public class PlayerAnalysis extends BgPanel{
 		ArrayList<PersonR> list = regreResult.getValue();System.out.println(list.size());
 
 		if(isFirst){
+			for(int i=0;i<chartChekBox.length;i++){
+				chartChekBox[i].setEnabled(false);
+			}
 			for(int i=0;i<list.size();i++){
 				for(int j=0;j<dataType.length;j++){
 					if(list.get(i).getType().equals(dataTypeFunction[j])){

@@ -178,6 +178,9 @@ public class TeamData extends BgPanel{
 		for(int i=0;i<header.length;i++){
 			table_total_normal.setColumDataCenter(i);
 		}
+		for(int i=1;i<header.length;i++){
+			table_total_normal.setOrder(i, Double.class);
+		}
 		this.add(table_total_normal);
 	}
 	
@@ -209,6 +212,9 @@ public class TeamData extends BgPanel{
 		table_avg_normal.setVisible(false);
 		for(int i=0;i<header.length;i++){
 			table_avg_normal.setColumDataCenter(i);
+		}
+		for(int i=1;i<header.length;i++){
+			table_avg_normal.setOrder(i, Double.class);
 		}
 		this.add(table_avg_normal);
 	}
@@ -242,6 +248,9 @@ public class TeamData extends BgPanel{
 		for(int i=0;i<header.length;i++){
 			table_avg_off.setColumDataCenter(i);
 		}
+		for(int i=1;i<header.length;i++){
+			table_avg_off.setOrder(i, Double.class);
+		}
 		this.add(table_avg_off);
 	}
 
@@ -268,6 +277,9 @@ public class TeamData extends BgPanel{
 		table_total_off.setVisible(false);
 		for(int i=0;i<header.length;i++){
 			table_total_off.setColumDataCenter(i);
+		}
+		for(int i=1;i<header.length;i++){
+			table_total_off.setOrder(i, Double.class);
 		}
 		this.add(table_total_off);
 	}

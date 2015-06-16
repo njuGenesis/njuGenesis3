@@ -312,6 +312,7 @@ public class PlayerData extends BgPanel{
 		total_basic_normal_table.setVisible(false);
 		for(int i=2;i<header.length;i++){
 			total_basic_normal_table.setColumDataCenter(i);
+			total_basic_normal_table.setOrder(i, Double.class);
 		}
 		total_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		total_basic_normal_table.setColumHand(1);
@@ -365,6 +366,7 @@ public class PlayerData extends BgPanel{
 		avg_basic_normal_table.setVisible(true);
 		for(int i=2;i<header.length;i++){
 			avg_basic_normal_table.setColumDataCenter(i);
+			avg_basic_normal_table.setOrder(i, Double.class);
 		}
 		avg_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		avg_basic_normal_table.setColumHand(1);
@@ -426,6 +428,7 @@ public class PlayerData extends BgPanel{
 		advance_basic_normal_table.setVisible(false);
 		for(int i=2;i<header.length;i++){
 			advance_basic_normal_table.setColumDataCenter(i);
+			advance_basic_normal_table.setOrder(i, Double.class);
 		}
 		advance_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_basic_normal_table.setColumHand(1);
@@ -492,6 +495,7 @@ public class PlayerData extends BgPanel{
 		advance_shoot_normal_table.setVisible(false);
 		for(int i=2;i<header.length;i++){
 			advance_shoot_normal_table.setColumDataCenter(i);
+			advance_shoot_normal_table.setOrder(i, Double.class);
 		}
 		advance_shoot_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_shoot_normal_table.setColumHand(1);
@@ -556,6 +560,7 @@ public class PlayerData extends BgPanel{
 		total_basic_off_table.setVisible(false);
 		for(int i=2;i<header.length;i++){
 			total_basic_off_table.setColumDataCenter(i);
+			total_basic_off_table.setOrder(i, Double.class);
 		}
 		total_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		total_basic_off_table.setColumHand(1);
@@ -609,6 +614,7 @@ public class PlayerData extends BgPanel{
 		avg_basic_off_table.setVisible(true);
 		for(int i=2;i<header.length;i++){
 			avg_basic_off_table.setColumDataCenter(i);
+			avg_basic_off_table.setOrder(i, Double.class);
 		}
 		avg_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		avg_basic_off_table.setColumHand(1);
@@ -670,6 +676,7 @@ public class PlayerData extends BgPanel{
 		advance_basic_off_table.setVisible(false);
 		for(int i=2;i<header.length;i++){
 			advance_basic_off_table.setColumDataCenter(i);
+			advance_basic_off_table.setOrder(i, Double.class);
 		}
 		advance_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_basic_off_table.setColumHand(1);
@@ -736,6 +743,7 @@ public class PlayerData extends BgPanel{
 		advance_shoot_off_table.setVisible(false);
 		for(int i=2;i<header.length;i++){
 			advance_shoot_off_table.setColumDataCenter(i);
+			advance_shoot_off_table.setOrder(i, Double.class);
 		}
 		advance_shoot_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_shoot_off_table.setColumHand(1);
