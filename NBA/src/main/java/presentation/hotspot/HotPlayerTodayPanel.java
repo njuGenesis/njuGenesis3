@@ -65,14 +65,6 @@ public class HotPlayerTodayPanel extends BgPanel{
 	public HotPlayerTodayPanel() {
 		super(bg);
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {}
 
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);

@@ -1,9 +1,9 @@
 package presentation.mainui;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,7 +26,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-
 import presentation.component.GFrame;
 import presentation.contenui.UIUtil;
 
@@ -47,6 +46,8 @@ public class WebTable extends JLabel{
 	private boolean isScroll;
 	public static Color bgColor;
 
+	private Font font = new Font("黑体",0,12);
+	
 	public static void main(String[] args) {
 		GFrame f = new GFrame();
 		f.setBounds(0, 0, 1000, 600);
@@ -152,7 +153,8 @@ public class WebTable extends JLabel{
 			this.header[i].setOpaque(true);
 			this.header[i].setHorizontalAlignment(JLabel.CENTER);
 			this.header[i].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
-
+			this.header[i].setFont(font);
+			
 			this.add(this.header[i]);
 		}
 
@@ -200,7 +202,9 @@ public class WebTable extends JLabel{
 				this.content[i][j].setLocation(j*cellWidth, i*cellHeight);
 				this.content[i][j].setOpaque(true);
 				this.content[i][j].setBorder(BorderFactory.createLineBorder(new Color(213, 213, 213), 1));
-
+				this.content[i][j].setFont(font);
+				
+				
 				this.content[i][j].addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e){

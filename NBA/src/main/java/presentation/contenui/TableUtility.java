@@ -165,6 +165,8 @@ public class TableUtility {
 			ch = "POR";
 		}else if(en.equals("俄克拉荷马城雷霆")){
 			ch = "OKC";
+		}else if(en.equals("俄克拉荷马雷霆")){
+			ch = "OKC";
 		}else if(en.equals("丹佛掘金")){
 			ch = "DEN";
 		}else if(en.equals("迈阿密热火")){
@@ -182,6 +184,8 @@ public class TableUtility {
 		}else if(en.equals("印第安纳步行者")){
 			ch = "IND";
 		}else if(en.equals("克利夫兰骑士")){
+			ch = "CLE";
+		}else if(en.equals("克里夫兰骑士")){
 			ch = "CLE";
 		}else if(en.equals("芝加哥公牛")){
 			ch = "CHI";
@@ -224,7 +228,7 @@ public class TableUtility {
 		}else if(en.equals("Trail Blazers")){
 			ch = "波特兰开拓者";
 		}else if(en.equals("Thunder")){
-			ch = "俄克拉荷马城雷霆";
+			ch = "俄克拉荷马雷霆";
 		}else if(en.equals("Nuggets")){
 			ch = "丹佛掘金";
 		}else if(en.equals("Heat")){
