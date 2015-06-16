@@ -418,6 +418,7 @@ public class WebFrame extends GFrame{
 			}
 			public void mousePressed(MouseEvent e){
 				WebFrame.this.dispose();
+				WebFrame.this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 		});
 

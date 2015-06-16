@@ -28,6 +28,7 @@ import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
+import presentation.stats.TeamStatsPanelNew.DefaultData;
 import assistance.NewFont;
 import bussinesslogic.player.PlayerLogic_db;
 import bussinesslogic.team.TeamLogic;
@@ -340,56 +341,60 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 
 		//--------------------默认表格内容--------------------
-		allTable1 = new WebTable(getBasicHeader(), getAllData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
-		addNameListener(allTable1);
-		addTeamListener_fullName(allTable1);
-		this.add(allTable1);
-		tables[0] = allTable1;
-
-		allTable2 = new WebTable(this.header_basic2, getAllData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-		allTable2.setVisible(false);
-		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
-		addNameListener(allTable2);
-		addTeamListener_fullName(allTable2);
-		this.add(allTable2);
-		tables[1] = allTable2;
-
-		avgTable1 = new WebTable(getBasicHeader(), getAvgData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-		avgTable1.setVisible(false);
-		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
-		addNameListener(avgTable1);
-		addTeamListener_fullName(avgTable1);
-		this.add(avgTable1);
-		tables[2] = avgTable1;
-
-		avgTable2 = new WebTable(this.header_basic2, getAvgData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-		avgTable2.setVisible(false);
-		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
-		addNameListener(avgTable2);
-		addTeamListener_fullName(avgTable2);
-		this.add(avgTable2);
-		tables[3] = avgTable2;
-
-		adBasicTable = new WebTable(header_ad_basic, getAdEff_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-		adBasicTable.setVisible(false);
-		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
-		addNameListener(adBasicTable);
-		addTeamListener_shortName(adBasicTable);
-		this.add(adBasicTable);
-		tables[4] = adBasicTable;
-
-		adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-		adShootTable.setVisible(false);
-		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
-		addNameListener(adShootTable);
-		addTeamListener_shortName(adShootTable);
-		this.add(adShootTable);
-		tables[5] = adShootTable;
+//		allTable1 = new WebTable(getBasicHeader(), getAllData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
+//		addNameListener(allTable1);
+//		addTeamListener_fullName(allTable1);
+//		this.add(allTable1);
+//		tables[0] = allTable1;
+//
+//		allTable2 = new WebTable(this.header_basic2, getAllData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//		allTable2.setVisible(false);
+//		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
+//		addNameListener(allTable2);
+//		addTeamListener_fullName(allTable2);
+//		this.add(allTable2);
+//		tables[1] = allTable2;
+//
+//		avgTable1 = new WebTable(getBasicHeader(), getAvgData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//		avgTable1.setVisible(false);
+//		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
+//		addNameListener(avgTable1);
+//		addTeamListener_fullName(avgTable1);
+//		this.add(avgTable1);
+//		tables[2] = avgTable1;
+//
+//		avgTable2 = new WebTable(this.header_basic2, getAvgData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//		avgTable2.setVisible(false);
+//		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
+//		addNameListener(avgTable2);
+//		addTeamListener_fullName(avgTable2);
+//		this.add(avgTable2);
+//		tables[3] = avgTable2;
+//
+//		adBasicTable = new WebTable(header_ad_basic, getAdEff_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//		adBasicTable.setVisible(false);
+//		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
+//		addNameListener(adBasicTable);
+//		addTeamListener_shortName(adBasicTable);
+//		this.add(adBasicTable);
+//		tables[4] = adBasicTable;
+//
+//		adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//		adShootTable.setVisible(false);
+//		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
+//		addNameListener(adShootTable);
+//		addTeamListener_shortName(adShootTable);
+//		this.add(adShootTable);
+//		tables[5] = adShootTable;
+//		
+//		setCenter();
 		
-		setCenter();
-		setDefaultOrder();
 
+		DefaultData d = new DefaultData();
+		Thread t = new Thread(d);
+		t.start();
+		
 		//--------------------默认表格内容end--------------------
 
 		this.repaint();
@@ -479,6 +484,65 @@ public class PlayerStatsPanelNew extends BgPanel{
 			return new TeamBaseInfo();
 		}
 	}
+	
+	
+	
+	private void setDefaultTable(){
+		allTable1 = new WebTable(getBasicHeader(), getAllData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
+		addNameListener(allTable1);
+		addTeamListener_fullName(allTable1);
+		this.add(allTable1);
+		tables[0] = allTable1;
+
+		allTable2 = new WebTable(this.header_basic2, getAllData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		allTable2.setVisible(false);
+		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
+		addNameListener(allTable2);
+		addTeamListener_fullName(allTable2);
+		this.add(allTable2);
+		tables[1] = allTable2;
+
+		avgTable1 = new WebTable(getBasicHeader(), getAvgData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable1.setVisible(false);
+		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
+		addNameListener(avgTable1);
+		addTeamListener_fullName(avgTable1);
+		this.add(avgTable1);
+		tables[2] = avgTable1;
+
+		avgTable2 = new WebTable(this.header_basic2, getAvgData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable2.setVisible(false);
+		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
+		addNameListener(avgTable2);
+		addTeamListener_fullName(avgTable2);
+		this.add(avgTable2);
+		tables[3] = avgTable2;
+
+		adBasicTable = new WebTable(header_ad_basic, getAdEff_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adBasicTable.setVisible(false);
+		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
+		addNameListener(adBasicTable);
+		addTeamListener_shortName(adBasicTable);
+		this.add(adBasicTable);
+		tables[4] = adBasicTable;
+
+		adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adShootTable.setVisible(false);
+		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
+		addNameListener(adShootTable);
+		addTeamListener_shortName(adShootTable);
+		this.add(adShootTable);
+		tables[5] = adShootTable;
+		
+		setCenter();
+		
+		PlayerStatsPanelNew.this.repaint();
+	}
+	
+	
+	
+	
 
 	private void setCenter(){
 		for(int i=0;i<tables.length;i++){
@@ -1345,6 +1409,77 @@ public class PlayerStatsPanelNew extends BgPanel{
 		return data;
 	}
 
+	private synchronized void setSelectTable(){
+		int select = getSelectNumber();
+		
+		for(int i=0;i<tables.length;i++){
+			PlayerStatsPanelNew.this.remove(tables[i]);
+		}
+
+		//--------------------表格内容--------------------
+		allTable1 = new WebTable(getBasicHeader(), getAllData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
+		addNameListener(allTable1);
+		addTeamListener_fullName(allTable1);
+		PlayerStatsPanelNew.this.add(allTable1);
+		tables[0] = allTable1;
+
+		allTable2 = new WebTable(header_basic2, getAllData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
+		addNameListener(allTable2);
+		addTeamListener_fullName(allTable2);
+		PlayerStatsPanelNew.this.add(allTable2);
+		tables[1] = allTable2;
+
+		avgTable1 = new WebTable(getBasicHeader(), getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
+		addNameListener(avgTable1);
+		addTeamListener_fullName(avgTable1);
+		PlayerStatsPanelNew.this.add(avgTable1);
+		tables[2] = avgTable1;
+
+		avgTable2 = new WebTable(header_basic2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
+		addNameListener(avgTable2);
+		addTeamListener_fullName(avgTable2);
+		PlayerStatsPanelNew.this.add(avgTable2);
+		tables[3] = avgTable2;
+
+		adBasicTable = new WebTable(header_ad_basic, getAdEff_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
+		addNameListener(adBasicTable);
+		addTeamListener_shortName(adBasicTable);
+		PlayerStatsPanelNew.this.add(adBasicTable);
+		tables[4] = adBasicTable;
+
+		adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
+		addNameListener(adShootTable);
+		addTeamListener_shortName(adShootTable);
+		PlayerStatsPanelNew.this.add(adShootTable);
+		tables[5] = adShootTable;
+		
+		setCenter();
+
+		for(int i=0;i<tables.length;i++){
+			if(i==select){
+				tables[i].setVisible(true);
+			}else{
+				tables[i].setVisible(false);
+			}
+		}
+
+		for(int i=0;i<selection.length;i++){
+			if(i==select){
+				selection[i] = true;
+			}else{
+				selection[i] = false;
+			}
+		}
+		
+		PlayerStatsPanelNew.this.repaint();
+	}
+	
 
 
 	class SubmitListener implements MouseListener{
@@ -1357,63 +1492,67 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-
-			int select = getSelectNumber();
 			
-			for(int i=0;i<tables.length;i++){
-				PlayerStatsPanelNew.this.remove(tables[i]);
-			}
+			SelectData d = new SelectData();
+			Thread t = new Thread(d);
+			t.start();
 
-			//--------------------表格内容--------------------
-			allTable1 = new WebTable(getBasicHeader(), getAllData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
-			PlayerStatsPanelNew.this.add(allTable1);
-			tables[0] = allTable1;
-
-			allTable2 = new WebTable(header_basic2, getAllData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
-			PlayerStatsPanelNew.this.add(allTable2);
-			tables[1] = allTable2;
-
-			avgTable1 = new WebTable(getBasicHeader(), getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
-			PlayerStatsPanelNew.this.add(avgTable1);
-			tables[2] = avgTable1;
-
-			avgTable2 = new WebTable(header_basic2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
-			PlayerStatsPanelNew.this.add(avgTable2);
-			tables[3] = avgTable2;
-
-			adBasicTable = new WebTable(header_ad_basic, getAdEff_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
-			PlayerStatsPanelNew.this.add(adBasicTable);
-			tables[4] = adBasicTable;
-
-			adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
-			adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
-			PlayerStatsPanelNew.this.add(adShootTable);
-			tables[5] = adShootTable;
-			
-			setCenter();
-
-			for(int i=0;i<tables.length;i++){
-				if(i==select){
-					tables[i].setVisible(true);
-				}else{
-					tables[i].setVisible(false);
-				}
-			}
-
-			for(int i=0;i<selection.length;i++){
-				if(i==select){
-					selection[i] = true;
-				}else{
-					selection[i] = false;
-				}
-			}
-			
-			PlayerStatsPanelNew.this.repaint();
+//			int select = getSelectNumber();
+//			
+//			for(int i=0;i<tables.length;i++){
+//				PlayerStatsPanelNew.this.remove(tables[i]);
+//			}
+//
+//			//--------------------表格内容--------------------
+//			allTable1 = new WebTable(getBasicHeader(), getAllData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//			allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
+//			PlayerStatsPanelNew.this.add(allTable1);
+//			tables[0] = allTable1;
+//
+//			allTable2 = new WebTable(header_basic2, getAllData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//			allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
+//			PlayerStatsPanelNew.this.add(allTable2);
+//			tables[1] = allTable2;
+//
+//			avgTable1 = new WebTable(getBasicHeader(), getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//			avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
+//			PlayerStatsPanelNew.this.add(avgTable1);
+//			tables[2] = avgTable1;
+//
+//			avgTable2 = new WebTable(header_basic2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//			avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
+//			PlayerStatsPanelNew.this.add(avgTable2);
+//			tables[3] = avgTable2;
+//
+//			adBasicTable = new WebTable(header_ad_basic, getAdEff_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//			adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
+//			PlayerStatsPanelNew.this.add(adBasicTable);
+//			tables[4] = adBasicTable;
+//
+//			adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
+//			adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
+//			PlayerStatsPanelNew.this.add(adShootTable);
+//			tables[5] = adShootTable;
+//			
+//			setCenter();
+//
+//			for(int i=0;i<tables.length;i++){
+//				if(i==select){
+//					tables[i].setVisible(true);
+//				}else{
+//					tables[i].setVisible(false);
+//				}
+//			}
+//
+//			for(int i=0;i<selection.length;i++){
+//				if(i==select){
+//					selection[i] = true;
+//				}else{
+//					selection[i] = false;
+//				}
+//			}
+//			
+//			PlayerStatsPanelNew.this.repaint();
 
 		}
 
@@ -1497,14 +1636,27 @@ public class PlayerStatsPanelNew extends BgPanel{
 	}
 	
 	class DefaultData implements Runnable{
+		
+		public DefaultData(){
+		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			PlayerStatsPanelNew.this.setDefaultTable();
+		}
+		
+	}
+	
+	class SelectData implements Runnable{
+
+		@Override
+		public void run() {
+			PlayerStatsPanelNew.this.setSelectTable();
 			
 		}
 		
 	}
+	
 
 
 
