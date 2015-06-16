@@ -34,7 +34,7 @@ public class WebLabel extends JLabel{
 			container.add(this);
 		}
 		text = new GLabel(message, new Point(30, 0), new Point(100, 25), this, true, bord, wordSize);
-		text.setHorizontalAlignment(JLabel.CENTER);
+		//text.setHorizontalAlignment(JLabel.CENTER);
 		text.setBackground(UIUtil.nbaBlue);
 		text.setForeground(UIUtil.bgWhite);
 		text.setOpaque(true);

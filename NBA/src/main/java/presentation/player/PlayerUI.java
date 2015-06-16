@@ -12,14 +12,19 @@ import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Vector;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import bussinesslogic.match.MatchLogic;
 import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
+import bussinesslogic.team.TeamLogic;
 import data.po.PlayerDataPO;
 import data.po.playerData.PlayerDetailInfo;
+import data.po.teamData.TeamBaseInfo;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
 import presentation.contenui.TableUtility;
@@ -33,34 +38,48 @@ public class PlayerUI extends BgPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private static String file = "";
-	private GLabel title, chooser, borderUp, borderDown;
+	private GLabel title, chooser, borderUp, borderDown, searchButton;
 	private SelectLabel letter[];
 	private WebTable table;
 	private JComboBox<String> comboBoxTeam, comboBoxPosition;
 	private JTextField search;
 	private TurnController turnController = new TurnController();
 	private PlayerLogic_db playerLogic_db;
+	private TeamLogic teamLogic;
+	private ArrayList<TeamBaseInfo> teamBaseInfo;
 	private ArrayList<PlayerDetailInfo> playerDetailInfo;
+	private boolean isFirst;
 
 	public PlayerUI() {
 		super(file);
 
 		playerLogic_db = new PlayerLogic_db();
+		ArrayList<Integer> idList = new ArrayList<>();
 		try {
-			playerDetailInfo = playerLogic_db.getAlldetail("14-15");
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			idList = playerLogic_db.selectByTag("14-15", "detail", "A", "null", "null", "null");
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
 		}
-		
+		playerDetailInfo = new ArrayList<>();
+		for(int i=0;i<idList.size();i++){
+			try {
+				playerDetailInfo.add(playerLogic_db.getdetail(idList.get(i)));
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+		}
+
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);
 		this.setBackground(UIUtil.bgWhite);
 		this.setOpaque(false);
-		
+
 		init();
 	}
 
 	private void init(){
+		isFirst = true;
+
 		borderUp = new GLabel("", new Point(0,0), new Point(940,4), this, true);
 		borderUp.setOpaque(true);
 		borderUp.setBackground(UIUtil.nbaBlue);
@@ -88,17 +107,21 @@ public class PlayerUI extends BgPanel{
 			letter[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
 			letter[i].addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
+					isFirst = false;
+					for(int i=0;i<letter.length;i++){
+						letter[i].setSelected(false);
+					}
 					SelectLabel Label = (SelectLabel)e.getSource();
 					Label.setSelected(true);
 					comboBoxTeam.setSelectedIndex(0);
 					comboBoxPosition.setSelectedIndex(0);
 					search.setText("根据姓名查找");
 					ArrayList<Integer> idList = new ArrayList<>();
-					try {System.out.println(letterString);
-						idList = playerLogic_db.selectByTag("null", "null", "A", "null", "null", "null");
+					try {
+						idList = playerLogic_db.selectByTag("14-15", "detail", letterString, "null", "null", "null");
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
-					}System.out.println(idList.size());
+					}
 					playerDetailInfo = new ArrayList<>();
 					for(int i=0;i<idList.size();i++){
 						try {
@@ -110,36 +133,30 @@ public class PlayerUI extends BgPanel{
 					infoInit();
 					table.updateUI();
 				}
-				public void mouseExited(MouseEvent e) {
-//					for(int i=0;i<letter.length;i++){
-//						letter[i].setForeground(UIUtil.nbaBlue);
-//					}
-				}
-				public void mouseEntered(MouseEvent e) {
-//					GLabel Label = (GLabel)e.getSource();
-//					for(int i=0;i<letter.length;i++){
-//						letter[i].setForeground(UIUtil.nbaBlue);
-//					}
-//					Label.setForeground(UIUtil.nbaRed);
-				}
 			});
 		}
+		letter[0].setSelected(true);
 		
-//		ArrayList<TeamDataPO> teamDataPOs = teamLogic.GetInfoBySeason("13-14");
-//		int boxHeaderTeamLength = teamDataPOs.size()+1;
-//		String[] boxHeaderTeam = new String[boxHeaderTeamLength];
-//		boxHeaderTeam[0] = "根据球队查找";
-//		for(int i=1;i<boxHeaderTeam.length;i++){
-//			boxHeaderTeam[i] = TableUtility.getChTeam(teamDataPOs.get(i-1).getShortName())+" "+
-//					teamDataPOs.get(i-1).getShortName();
-//		}
-		String[] boxHeaderTeam = {"a", "b"};
+		teamLogic = new TeamLogic();
+		try {
+			teamBaseInfo = teamLogic.GetAllBaseInfo("14-15");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		int boxHeaderTeamLength = teamBaseInfo.size()+1;
+		String[] boxHeaderTeam = new String[boxHeaderTeamLength];
+		boxHeaderTeam[0] = "根据球队查找";
+		for(int i=1;i<boxHeaderTeam.length;i++){
+			boxHeaderTeam[i] = TableUtility.getChTeam(teamBaseInfo.get(i-1).getShortName())+" "+
+					teamBaseInfo.get(i-1).getShortName();
+		}
 		comboBoxTeam = new JComboBox<String>(boxHeaderTeam);
 		comboBoxTeam.setBounds(10, 44, 200, 30);
 		chooser.add(comboBoxTeam);
 		comboBoxTeam.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				isFirst = false;
 				if(comboBoxTeam.getSelectedIndex()!=0){
 					for(int i=0;i<letter.length;i++){
 						letter[i].setSelected(false);
@@ -148,6 +165,20 @@ public class PlayerUI extends BgPanel{
 					search.setText("根据姓名查找");
 					if(comboBoxTeam.getSelectedIndex()!=0){
 						String team = comboBoxTeam.getSelectedItem().toString().split(" ")[1];
+						ArrayList<Integer> idList = new ArrayList<>();
+						try {
+							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", "null", "null");
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						playerDetailInfo = new ArrayList<>();
+						for(int i=0;i<idList.size();i++){
+							try {
+								playerDetailInfo.add(playerLogic_db.getdetail(idList.get(i)));
+							} catch (RemoteException e1) {
+								e1.printStackTrace();
+							}
+						}
 						infoInit();
 						table.updateUI();
 					}
@@ -162,6 +193,7 @@ public class PlayerUI extends BgPanel{
 		comboBoxPosition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				isFirst = false;
 				if(comboBoxPosition.getSelectedIndex()!=0){
 					for(int i=0;i<letter.length;i++){
 						letter[i].setSelected(false);
@@ -169,7 +201,21 @@ public class PlayerUI extends BgPanel{
 					comboBoxTeam.setSelectedIndex(0);
 					search.setText("根据姓名查找");
 					if(comboBoxPosition.getSelectedIndex()!=0){
-						String position = comboBoxPosition.getSelectedItem().toString().split(" ")[1];
+						String position = comboBoxPosition.getSelectedItem().toString().split(" ")[0];
+						ArrayList<Integer> idList = new ArrayList<>();
+						try {
+							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", position, "null");System.out.println(idList.size());
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						playerDetailInfo = new ArrayList<>();
+						for(int i=0;i<idList.size();i++){
+							try {
+								playerDetailInfo.add(playerLogic_db.getdetail(idList.get(i)));
+							} catch (RemoteException e1) {
+								e1.printStackTrace();
+							}
+						}
 						infoInit();
 						table.updateUI();
 					}
@@ -180,30 +226,43 @@ public class PlayerUI extends BgPanel{
 		search = new JTextField("根据姓名查找");
 		search.setBounds(430, 44, 200, 30);
 		chooser.add(search);
-		search.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
+		search.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				isFirst = false;
+				if(search.getText().equals("根据姓名查找")){
+					search.setText("");
+				}
 			}
+		});
+		searchButton = new GLabel("搜名字", new Point(630, 44), new Point(100, 30), chooser, true, 0, 15);
+		searchButton.setForeground(UIUtil.nbaBlue);
+		searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		searchButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void mousePressed(MouseEvent e){
+				isFirst = false;
 				for(int i=0;i<letter.length;i++){
 					letter[i].setSelected(false);
 				}
 				comboBoxPosition.setSelectedIndex(0);
 				comboBoxTeam.setSelectedIndex(0);
-				String name = search.getText();System.out.println(name);
+				String name = search.getText();
+				ArrayList<Integer> idList = new ArrayList<>();
+				try {
+					idList = playerLogic_db.selectByTag("14-15", "detail", "null", name, "null", "null");
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
+				playerDetailInfo = new ArrayList<>();
+				for(int i=0;i<idList.size();i++){
+					try {
+						playerDetailInfo.add(playerLogic_db.getdetail(idList.get(i)));
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+				}
 				infoInit();
 				table.updateUI();
-			}
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
-		search.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if(search.getText().equals("根据姓名查找")){
-					search.setText("");
-				}
 			}
 		});
 		
@@ -211,6 +270,8 @@ public class PlayerUI extends BgPanel{
 	}
 
 	private void infoInit(){
+		if(!isFirst)this.remove(table);
+		
 		String h[] = {"姓名","球队","位置","号码","身高","体重","生日"};
 		Object[][] d = new Object[playerDetailInfo.size()][h.length];
 		for(int i=0;i<playerDetailInfo.size();i++){

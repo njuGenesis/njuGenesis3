@@ -81,7 +81,7 @@ public class TableUtility {
 			ch = "休斯顿火箭";
 		}else if(en.equals("DAL")){
 			ch = "达拉斯小牛";
-		}else if(en.equals("NOP")){
+		}else if(en.equals("NOH")){
 			ch = "新奥尔良鹈鹕";
 		}else if(en.equals("SAC")){
 			ch = "萨克拉门托国王";
@@ -133,7 +133,7 @@ public class TableUtility {
 			ch = "布鲁克林篮网";
 		}else if(en.equals("TOR")){
 			ch = "多伦多猛龙";
-		}else if(en.equals("PHX")){
+		}else if(en.equals("PHO")){
 			ch = "菲尼克斯太阳";
 		}else if(en.equals("null")){
 			ch = "无";
@@ -146,7 +146,7 @@ public class TableUtility {
 		}else if(en.equals("达拉斯小牛")){
 			ch = "DAL";
 		}else if(en.equals("新奥尔良鹈鹕")){
-			ch = "NOP";
+			ch = "NOH";
 		}else if(en.equals("萨克拉门托国王")){
 			ch = "SAC";
 		}else if(en.equals("菲尼克斯太阳")){

@@ -5,9 +5,12 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
 import presentation.component.GFrame;
 import presentation.component.GLabel;
 import presentation.component.WebLabel;
@@ -18,7 +21,7 @@ import presentation.contenui.UIUtil;
 public class WebFrame extends GFrame{
 
 	private static final long serialVersionUID = 1L;
-	private GLabel title, panelBg, close, bg;
+	private GLabel title, panelBg, close, bg, warn;
 	public static WebFrame frame;
 	private Vector<WebLabel> labelVector = new Vector<WebLabel>();
 	private Vector<JPanel> panelVector = new Vector<JPanel>();
@@ -80,6 +83,10 @@ public class WebFrame extends GFrame{
 	private void menuInit(){
 		menuPanel = new GLabel("", new Point(0, 0), new Point(150, 700), bg, true);
 		menuLabel = new GLabel("", new Point(150, 0), new Point(1000, 70), bg, true);
+		
+		warn = new GLabel("页面已满:(", new Point(400, 2), new Point(200, 30), menuLabel, false, 0, 15);
+		warn.setForeground(UIUtil.nbaRed);
+		warn.setHorizontalAlignment(JLabel.CENTER);
 //		
 //		menuTitle = new GLabel("NBA", new Point(0, 0), new Point(250, 105), menuPanel, true, 1, 30);
 //		menuTitle.setBackground(menuTitleColor);
@@ -207,58 +214,120 @@ public class WebFrame extends GFrame{
 	}
 	
 	public void setPanel(JPanel newPanel, String message){
-		
-		for(int i=0;i<panelVector.size();i++){
-			panelVector.get(i).setVisible(false);
-		}
-		panelVector.addElement(newPanel);
-		currentPanel = newPanel;
-		currentPanel.setVisible(true);
-		panelBg.add(currentPanel);
-		
-		WebLabel gLabel = new WebLabel(" "+message, new Point(100+labelVector.size()*130, 35), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
-		gLabel.setSelected();
-		
-		labelVector.addElement(gLabel);
-		for(int i = 0;i<labelVector.size()-1;i++){
-			labelVector.get(i).setBackground(bg.getBackground());
-			labelVector.get(i).setForeground(UIUtil.foreGrey);
-			labelVector.get(i).getLabel().setForeground(UIUtil.foreGrey);
-			labelVector.get(i).isSelected = false;
-			labelVector.get(i).getLabel().setVisible(false);
-		}
+		if(labelVector.size()<10){
+			for(int i=0;i<panelVector.size();i++){
+				panelVector.get(i).setVisible(false);
+			}
+			panelVector.addElement(newPanel);
+			currentPanel = newPanel;
+			currentPanel.setVisible(true);
+			panelBg.add(currentPanel);
 
+
+			WebLabel gLabel = new WebLabel(" "+message, new Point(100+labelVector.size()*130, 35), new Point(130, 25), menuLabel, true, 0, 15, newPanel);
+			labelVector.addElement(gLabel);
+			gLabel.setSelected();
+			
+			setLabelLocation(false);
+			showWarn();
+
+//			for(int i = 0;i<labelVector.size()-1;i++){
+//				labelVector.get(i).setBackground(bg.getBackground());
+//				labelVector.get(i).setForeground(UIUtil.foreGrey);
+//				labelVector.get(i).getLabel().setForeground(UIUtil.foreGrey);
+//				labelVector.get(i).isSelected = false;
+//				labelVector.get(i).getLabel().setVisible(false);
+//			}
+		}
+		
 		this.repaint();
 	}
-	
+
 	public Vector<WebLabel> getLabel(){
 		return this.labelVector;
 	}
-	
+
 	public Vector<JPanel> getPanel(){
 		return this.panelVector;
 	}
 
 	public void setLabelLocation(boolean key){
+		setLabelSize();
+		
 		if(key){
 			if(labelVector.size()!=0){
+				int size = labelVector.get(0).getSize().width;
 				for(int i = 0;i<labelVector.size();i++){
-					labelVector.get(i).setLocation(100+i*130, 35);
+					labelVector.get(i).setLocation(100+i*size, 35);
 				}
 				labelVector.get(labelVector.size()-1).setSelected();
 			}
 		}else{
+			int size = labelVector.get(0).getSize().width;
 			for(int i = 0;i<labelVector.size();i++){
-				labelVector.get(i).setLocation(100+i*130, 35);
+				labelVector.get(i).setLocation(100+i*size, 35);
 			}
 		}
+		
+		showWarn();
 		this.repaint();
+	}
+	
+	public void setLabelSize(){
+		switch (labelVector.size()) {
+		case 0:break;
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:{
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setSize(130, 25);
+			}
+			break;
+		}
+		case 7:{
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setSize(125, 25);
+			}
+			break;
+		}
+		case 8:{
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setSize(110, 25);
+			}
+			break;
+		}
+		case 9:{
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setSize(99, 25);
+			}
+			break;
+		}
+		case 10:{
+			for(int i = 0;i<labelVector.size();i++){
+				labelVector.get(i).setSize(89, 25);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	
+	public void showWarn(){
+		if(labelVector.size() == 10){
+			warn.setVisible(true);
+		}else{
+			warn.setVisible(false);
+		}
 	}
 	
 	public GLabel getmenuLabel(){
 		return menuLabel;
 	}
-	
+
 	public GLabel getBg(){
 		return bg;
 	}

@@ -195,7 +195,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries1.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getThper().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getThper().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getThper().replaceAll("%", "")));
 						}else XYSeries1.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -205,7 +205,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries1.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getThper().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getThper().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getThper().replaceAll("%", "")));
 						}else XYSeries1.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -221,7 +221,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries2.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getShootper().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getShootper().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getShootper().replaceAll("%", "")));
 						}else XYSeries2.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -231,7 +231,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries2.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getShootper().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getShootper().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getShootper().replaceAll("%", "")));
 						}else XYSeries2.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -247,7 +247,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries3.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getFtper().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getFtper().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getFtper().replaceAll("%", "")));
 						}else XYSeries3.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -257,7 +257,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries3.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getFtper().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getFtper().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getFtper().replaceAll("%", "")));
 						}else XYSeries3.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -273,7 +273,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries4.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getAssist().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getAssist().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getAssist().replaceAll("%", "")));
 						}else XYSeries4.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -283,7 +283,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries4.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getAssist().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getAssist().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getAssist().replaceAll("%", "")));
 						}else XYSeries4.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -299,7 +299,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries5.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getSteal().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getSteal().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getSteal().replaceAll("%", "")));
 						}else XYSeries5.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -309,7 +309,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries5.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getSteal().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getSteal().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getSteal().replaceAll("%", "")));
 						}else XYSeries5.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -325,7 +325,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries6.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getBackbound().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getBackbound().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getBackbound().replaceAll("%", "")));
 						}else XYSeries6.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -335,7 +335,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries6.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getBackbound().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getBackbound().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getBackbound().replaceAll("%", "")));
 						}else XYSeries6.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -351,7 +351,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries7.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getRejection().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getRejection().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getRejection().replaceAll("%", "")));
 						}else XYSeries7.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -361,7 +361,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries7.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getRejection().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getRejection().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getRejection().replaceAll("%", "")));
 						}else XYSeries7.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -377,7 +377,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries8.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getMiss().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getMiss().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getMiss().replaceAll("%", "")));
 						}else XYSeries8.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -387,7 +387,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries8.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getMiss().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getMiss().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getMiss().replaceAll("%", "")));
 						}else XYSeries8.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -403,7 +403,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries9.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getFoul().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getFoul().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getFoul().replaceAll("%", "")));
 						}else XYSeries9.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -413,7 +413,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries9.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getFoul().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getFoul().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getFoul().replaceAll("%", "")));
 						}else XYSeries9.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -429,7 +429,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries10.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getTime().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getTime().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getTime().replaceAll("%", "")));
 						}else XYSeries10.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -439,7 +439,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries10.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getTime().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getTime().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getTime().replaceAll("%", "")));
 						}else XYSeries10.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -455,7 +455,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Avg_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Avg_Basic.get(i).getThper().equals("")){
 							XYSeries11.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getPts().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Avg_Basic.get(i).getPts().replaceAll("%", "").equals("")?"0":playerDataSeason_Avg_Basic.get(i).getPts().replaceAll("%", "")));
 						}else XYSeries11.add(changeSeason(playerDataSeason_Avg_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
@@ -465,7 +465,7 @@ public class PlayerCrosshairOverlay extends BgPanel{
 							&&(!playerDataSeason_Tot_Basic.get(i).getTeam().contains("总计"))){
 						if(!playerDataSeason_Tot_Basic.get(i).getThper().equals("")){
 							XYSeries11.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), 
-									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getPts().replaceAll("%", "")));
+									Double.valueOf(playerDataSeason_Tot_Basic.get(i).getPts().replaceAll("%", "").equals("")?"0":playerDataSeason_Tot_Basic.get(i).getPts().replaceAll("%", "")));
 						}else XYSeries11.add(changeSeason(playerDataSeason_Tot_Basic.get(i).getSeason()), new Double(0));
 					}
 				}
