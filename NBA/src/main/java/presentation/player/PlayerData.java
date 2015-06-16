@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -12,9 +14,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import bussinesslogic.player.PlayerLogic_db;
+import bussinesslogic.team.TeamLogic;
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
+import presentation.contenui.TableUtility;
+import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
+import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import data.po.playerData.PlayerDataPlayOff_Ad_Basic;
 import data.po.playerData.PlayerDataPlayOff_Ad_Shoot;
@@ -24,6 +30,7 @@ import data.po.playerData.PlayerDataSeason_Ad_Basic;
 import data.po.playerData.PlayerDataSeason_Ad_Shoot;
 import data.po.playerData.PlayerDataSeason_Avg_Basic;
 import data.po.playerData.PlayerDataSeason_Tot_Basic;
+import data.po.teamData.TeamBaseInfo;
 
 public class PlayerData extends BgPanel{
 	
@@ -34,6 +41,8 @@ public class PlayerData extends BgPanel{
 	private JComboBox<String> comboBox;
 	private Rectangle rectangle;
 	private GLabel label, border;
+	private TeamLogic teamLogic;
+	private TurnController turnController;
 	
 	private boolean isNormal;
 	
@@ -51,6 +60,8 @@ public class PlayerData extends BgPanel{
 	public PlayerData(int id) {
 		super("");System.out.println(id);
 		
+		teamLogic = new TeamLogic();
+		turnController = new TurnController();
 		playerLogic_db = new PlayerLogic_db();
 		try {
 			playerDataSeason_Avg_Basic = playerLogic_db.gets_a_b(id);
@@ -304,7 +315,30 @@ public class PlayerData extends BgPanel{
 		}
 		total_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		total_basic_normal_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		total_basic_normal_table.setColumnWidth(columNumber, width);
 		this.add(total_basic_normal_table);
+		
+		for(int i=0;i<playerDataSeason_Tot_Basics.size();i++){
+			total_basic_normal_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 
 	private void avg_basic_normal_setting(){
@@ -334,7 +368,30 @@ public class PlayerData extends BgPanel{
 		}
 		avg_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		avg_basic_normal_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		avg_basic_normal_table.setColumnWidth(columNumber, width);
 		this.add(avg_basic_normal_table);
+		
+		for(int i=0;i<playerDataSeason_Avg_Basic.size();i++){
+			avg_basic_normal_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 	
 	private void advance_basic_normal_setting(){
@@ -372,7 +429,30 @@ public class PlayerData extends BgPanel{
 		}
 		advance_basic_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_basic_normal_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		advance_basic_normal_table.setColumnWidth(columNumber, width);
 		this.add(advance_basic_normal_table);
+		
+		for(int i=0;i<playerDataSeason_Ad_Basics.size();i++){
+			advance_basic_normal_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 	
 	private void advance_shoot_normal_setting(){
@@ -415,7 +495,30 @@ public class PlayerData extends BgPanel{
 		}
 		advance_shoot_normal_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_shoot_normal_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		advance_shoot_normal_table.setColumnWidth(columNumber, width);
 		this.add(advance_shoot_normal_table);
+		
+		for(int i=0;i<playerDataSeason_Ad_Shoots.size();i++){
+			advance_shoot_normal_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 	
 	private void total_basic_off_setting(){
@@ -456,7 +559,30 @@ public class PlayerData extends BgPanel{
 		}
 		total_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		total_basic_off_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		total_basic_off_table.setColumnWidth(columNumber, width);
 		this.add(total_basic_off_table);
+		
+		for(int i=0;i<playerDataPlayOff_Tot_Basics.size();i++){
+			total_basic_off_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 
 	private void avg_basic_off_setting(){
@@ -486,7 +612,30 @@ public class PlayerData extends BgPanel{
 		}
 		avg_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		avg_basic_off_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		avg_basic_off_table.setColumnWidth(columNumber, width);
 		this.add(avg_basic_off_table);
+		
+		for(int i=0;i<playerDataPlayOff_Avg_Basics.size();i++){
+			avg_basic_off_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 	
 	private void advance_basic_off_setting(){
@@ -524,7 +673,30 @@ public class PlayerData extends BgPanel{
 		}
 		advance_basic_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_basic_off_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		advance_basic_off_table.setColumnWidth(columNumber, width);
 		this.add(advance_basic_off_table);
+		
+		for(int i=0;i<playerDataPlayOff_Ad_Basics.size();i++){
+			advance_basic_off_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 	
 	private void advance_shoot_off_setting(){
@@ -567,7 +739,30 @@ public class PlayerData extends BgPanel{
 		}
 		advance_shoot_off_table.setColumForeground(1, UIUtil.nbaBlue);
 		advance_shoot_off_table.setColumHand(1);
+		int columNumber[] = {0,1};
+		int width[] = {60,100};
+		advance_shoot_off_table.setColumnWidth(columNumber, width);
 		this.add(advance_shoot_off_table);
+		
+		for(int i=0;i<playerDataPlayOff_Ad_Shoots.size();i++){
+			advance_shoot_off_table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String team = label.getText();
+					String shortName = TableUtility.getChTeam(team);
+					if(!shortName.equals("null")){
+						TeamBaseInfo teamBaseInfo = new TeamBaseInfo();
+						try {
+							teamBaseInfo = teamLogic.GetTeamBaseInfo("14-15", shortName).get(0);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+						WebFrame.frame.setPanel(turnController.turnToTeamDetials(teamBaseInfo), shortName);
+					}
+				}
+			});
+		}
 	}
 
 	private void setFalse(){
