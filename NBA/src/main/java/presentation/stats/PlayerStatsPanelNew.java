@@ -10,15 +10,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
 import presentation.component.BgPanel;
 import presentation.component.GComboBox;
 import presentation.component.GLabel;
@@ -64,7 +59,6 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 	public String[] positionItem = {"全部位置","后卫","前锋","中锋"}; 
 	public String[] leagueItem = {"全部联盟","东-大西洋分区","东-中央分区","东-东南分区","西-西北分区","西-太平洋分区","西-西南分区"};
-	//	public String[] statsItem = {"得分","篮板","助攻","得分/篮板/助攻","盖帽","抢断","犯规","失误","分钟","效率","投篮","三分","罚球","两双"};
 	public String[] seasonItem = StatsUtil.seasons;
 	public String[] typeItem = {"常规赛","季后赛"};
 
@@ -86,14 +80,6 @@ public class PlayerStatsPanelNew extends BgPanel{
 			"篮板","前场","后场",
 			"助攻","抢断","盖帽","失误","犯规",
 			"得分","胜","负",};
-
-//	String[] header_basic_off = {"姓名","球队","出场","时间",   //季后赛，无首发属性
-//			"投篮","命中","出手",
-//			"三分","命中","出手",
-//			"罚球","命中","出手",
-//			"篮板","前场","后场",
-//			"助攻","抢断","盖帽","失误","犯规",
-//			"得分","胜","负",};
 
 	String[] header_ad_basic = {"姓名","球队",
 			"篮板","进攻板","防守板",
@@ -400,7 +386,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 			try {
 				System.out.println(s+"  "+pos+"  "+un);
 
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_t_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_t_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_t_b(ints.get(i),s));
 				}
@@ -413,7 +399,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}else{  //季后赛
 			ArrayList<PlayerDataPlayOff_Tot_Basic> temp = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_t_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_t_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.getp_t_b(ints.get(i),s));
 				}
@@ -437,7 +423,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		if(isRegular()){
 			ArrayList<PlayerDataSeason_Tot_Basic> temp = new ArrayList<PlayerDataSeason_Tot_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_t_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_t_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_t_b(ints.get(i),s));
 				}
@@ -450,7 +436,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}else{
 			ArrayList<PlayerDataPlayOff_Tot_Basic> temp = new ArrayList<PlayerDataPlayOff_Tot_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_t_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_t_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.getp_t_b(ints.get(i),s));
 				}
@@ -474,7 +460,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		if(isRegular()){  //常规赛
 			ArrayList<PlayerDataSeason_Avg_Basic> temp = new ArrayList<PlayerDataSeason_Avg_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_a_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_a_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_a_b(ints.get(i),s));
 				}
@@ -487,7 +473,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}else{  //季后赛
 			ArrayList<PlayerDataPlayOff_Avg_Basic> temp = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_a_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_a_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.getp_a_b(ints.get(i),s));
 				}
@@ -513,7 +499,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		if(isRegular()){
 			ArrayList<PlayerDataSeason_Avg_Basic> temp = new ArrayList<PlayerDataSeason_Avg_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_a_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_a_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_a_b(ints.get(i),s));
 				}
@@ -526,7 +512,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}else{
 			ArrayList<PlayerDataPlayOff_Avg_Basic> temp = new ArrayList<PlayerDataPlayOff_Avg_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_a_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_a_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.getp_a_b(ints.get(i),s));
 				}
@@ -552,7 +538,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		if(isRegular()){
 			ArrayList<PlayerDataSeason_Ad_Basic> temp = new ArrayList<PlayerDataSeason_Ad_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_ad_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_ad_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_ad_b(ints.get(i),s));
 				}
@@ -566,7 +552,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}else{
 			ArrayList<PlayerDataPlayOff_Ad_Basic> temp = new ArrayList<PlayerDataPlayOff_Ad_Basic>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_ad_b","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_ad_b","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.getp_ad_b(ints.get(i),s));
 				}
@@ -592,7 +578,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 			ArrayList<PlayerDataSeason_Ad_Shoot> temp = new ArrayList<PlayerDataSeason_Ad_Shoot>();
 			try {
 
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_ad_s","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"s_ad_s","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.gets_ad_s(ints.get(i),s));
 				}
@@ -606,7 +592,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}else{
 			ArrayList<PlayerDataPlayOff_Ad_Shoot> temp = new ArrayList<PlayerDataPlayOff_Ad_Shoot>();
 			try {
-				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_ad_s","null", "null", pos, un);
+				ArrayList<Integer> ints = logic_db.selectByTag(s,"p_ad_s","null", "null", pos, un,"null");
 				for(int i=0;i<ints.size();i++){
 					temp.addAll(logic_db.getp_ad_s(ints.get(i),s));
 				}

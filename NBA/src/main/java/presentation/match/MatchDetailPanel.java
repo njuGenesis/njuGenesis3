@@ -62,14 +62,6 @@ public class MatchDetailPanel extends BgPanel{
 		super(bg);
 		this.po = po;
 
-		try {
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (Exception e) {}
 
 		this.setSize(940, 600);
 		this.setLocation(0, 0);

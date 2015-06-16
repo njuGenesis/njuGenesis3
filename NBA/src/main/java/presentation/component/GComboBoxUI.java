@@ -96,7 +96,7 @@ public class GComboBoxUI extends BasicComboBoxUI{
 						ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 				sp.setHorizontalScrollBar(null);
 				JScrollBar jsb = new JScrollBar();
-				jsb.setUI(new GScrollBarUI());
+				jsb.setUI(new IScrollBarUI());
 				sp.setHorizontalScrollBar(jsb);
 				return sp;
 			}

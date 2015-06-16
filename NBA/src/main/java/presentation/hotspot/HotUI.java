@@ -1,4 +1,4 @@
-package presentation.contenui;
+package presentation.hotspot;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -7,13 +7,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
-import presentation.hotspot.HotspotUtil;
+import presentation.contenui.PanelKind;
+import presentation.contenui.TurnController;
 import presentation.mainui.WebFrame;
 
 public class HotUI extends BgPanel{

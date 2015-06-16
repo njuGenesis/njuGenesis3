@@ -83,9 +83,11 @@ public class TableUtility {
 			ch = "达拉斯小牛";
 		}else if(en.equals("NOH")){
 			ch = "新奥尔良鹈鹕";
+		}else if(en.equals("NOP")){
+			ch = "新奥尔良鹈鹕";
 		}else if(en.equals("SAC")){
 			ch = "萨克拉门托国王";
-		}else if(en.equals("PHO")){
+		}else if(en.equals("PHX")){
 			ch = "菲尼克斯太阳";
 		}else if(en.equals("GSW")){
 			ch = "金州勇士";
@@ -100,7 +102,7 @@ public class TableUtility {
 		}else if(en.equals("POR")){
 			ch = "波特兰开拓者";
 		}else if(en.equals("OKC")){
-			ch = "俄克拉荷马城雷霆";
+			ch = "俄克拉荷马雷霆";
 		}else if(en.equals("DEN")){
 			ch = "丹佛掘金";
 		}else if(en.equals("MIA")){
@@ -150,7 +152,7 @@ public class TableUtility {
 		}else if(en.equals("萨克拉门托国王")){
 			ch = "SAC";
 		}else if(en.equals("菲尼克斯太阳")){
-			ch = "PHO";
+			ch = "PHX";
 		}else if(en.equals("金州勇士")){
 			ch = "GSW";
 		}else if(en.equals("洛杉矶快船")){

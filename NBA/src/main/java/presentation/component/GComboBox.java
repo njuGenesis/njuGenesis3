@@ -6,7 +6,6 @@ import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.SwingConstants;
 
 @SuppressWarnings("rawtypes")
 public class GComboBox extends JComboBox{
@@ -37,7 +36,9 @@ public class GComboBox extends JComboBox{
 		setUI(new GComboBoxUI());
 		setRenderer(new GComboBoxRenderer());
 		setBackground(new Color(250,250,250));
-		
+
+		//		this.getComponentPopupMenu()
+
 	}
 	public Dimension getPreferredSize(){
 		return super.getPreferredSize();

@@ -1,4 +1,4 @@
-package presentation.contenui;
+package presentation.stats;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -14,9 +14,10 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import presentation.component.BgPanel;
 import presentation.component.GLabel;
+import presentation.contenui.PanelKind;
+import presentation.contenui.StatsUtil;
+import presentation.contenui.TurnController;
 import presentation.mainui.WebFrame;
-import presentation.stats.PlayerStatsPanelNew;
-import presentation.stats.TeamStatsPanelNew;
 
 public class StatsUI extends BgPanel{
 
@@ -56,14 +57,6 @@ public class StatsUI extends BgPanel{
 	public StatsUI(String s) {
 		super(bgStr);
 
-//		try {
-//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//		        if ("Nimbus".equals(info.getName())) {
-//		            UIManager.setLookAndFeel(info.getClassName());
-//		            break;
-//		        }
-//		    }
-//		} catch (Exception e) {}
 		
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);

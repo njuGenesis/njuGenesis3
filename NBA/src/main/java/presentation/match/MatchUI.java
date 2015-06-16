@@ -1,4 +1,4 @@
-package presentation.contenui;
+package presentation.match;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -17,8 +17,7 @@ import javax.swing.event.DocumentListener;
 import presentation.component.BgPanel;
 import presentation.component.DatePanel;
 import presentation.component.GLabel;
-import presentation.match.MatchDetailPanel;
-import presentation.match.MatchFactory;
+import presentation.contenui.UIUtil;
 import bussinesslogic.match.MatchLogic;
 import data.po.matchData.MatchDataSeason;
 
@@ -59,14 +58,6 @@ public class MatchUI extends BgPanel{
 	public MatchUI(String s) {
 		super(bgStr);
 
-//		try {
-//			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//				if ("Nimbus".equals(info.getName())) {
-//					UIManager.setLookAndFeel(info.getClassName());
-//					break;
-//				}
-//			}
-//		} catch (Exception e) {}
 
 		this.setBounds(0, 0, 940, 600);
 		this.setLayout(null);

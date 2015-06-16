@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 
 import presentation.component.GLabel;
-import presentation.contenui.MatchUI;
 import presentation.contenui.PanelKind;
 import presentation.mainui.WebFrame;
 import bussinesslogic.match.MatchLogic;

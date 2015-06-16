@@ -1,8 +1,8 @@
 package presentation.component;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,6 +21,9 @@ public class WebLabel extends JLabel{
 	private WebLabel label = null;
 	private GLabel text = null;
 	public boolean isSelected;
+	
+	private Font unchosen = new Font("微软雅黑",0,15);
+	private Font chosen = new Font("微软雅黑",1,15);
 
 	public WebLabel(String message, Point location, Point size, Container container, 
 			boolean visible, int bord, int wordSize, 
@@ -57,7 +60,7 @@ public class WebLabel extends JLabel{
 	}
 	
 	private void setClose(){
-		label = new WebLabel("✕︎", new Point(10, 0), new Point(20, 25), true, 0, 15, null);
+		label = new WebLabel("X", new Point(10, 0), new Point(20, 25), true, 0, 15, null);
 		label.setForeground(UIUtil.bgWhite);
 		label.setLabel(this);
 		
@@ -66,10 +69,10 @@ public class WebLabel extends JLabel{
 			public void mouseEntered(MouseEvent e){
 				label.setVisible(true);
 				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				label.setText("✖︎");
+				label.setFont(chosen);
 			}
 			public void mouseExited(MouseEvent e){
-				label.setText("✕︎");
+				label.setFont(unchosen);
 				if(WebLabel.this.isSelected == false){
 					label.setVisible(false);
 				}

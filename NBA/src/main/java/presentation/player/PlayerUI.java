@@ -5,24 +5,17 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import bussinesslogic.match.MatchLogic;
-import bussinesslogic.player.PlayerLogic;
 import bussinesslogic.player.PlayerLogic_db;
 import bussinesslogic.team.TeamLogic;
-import data.po.PlayerDataPO;
 import data.po.playerData.PlayerDetailInfo;
 import data.po.teamData.TeamBaseInfo;
 import presentation.component.BgPanel;
@@ -56,7 +49,7 @@ public class PlayerUI extends BgPanel{
 		playerLogic_db = new PlayerLogic_db();
 		ArrayList<Integer> idList = new ArrayList<>();
 		try {
-			idList = playerLogic_db.selectByTag("14-15", "detail", "A", "null", "null", "null");
+			idList = playerLogic_db.selectByTag("14-15", "detail", "A", "null", "null", "null","null");
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}
@@ -118,7 +111,7 @@ public class PlayerUI extends BgPanel{
 					search.setText("根据姓名查找");
 					ArrayList<Integer> idList = new ArrayList<>();
 					try {
-						idList = playerLogic_db.selectByTag("14-15", "detail", letterString, "null", "null", "null");
+						idList = playerLogic_db.selectByTag("14-15", "detail", letterString, "null", "null", "null","null");
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
@@ -167,7 +160,7 @@ public class PlayerUI extends BgPanel{
 						String team = comboBoxTeam.getSelectedItem().toString().split(" ")[1];
 						ArrayList<Integer> idList = new ArrayList<>();
 						try {
-							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", "null", "null");
+							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", "null", "null","null");
 						} catch (RemoteException e1) {
 							e1.printStackTrace();
 						}
@@ -204,7 +197,7 @@ public class PlayerUI extends BgPanel{
 						String position = comboBoxPosition.getSelectedItem().toString().split(" ")[0];
 						ArrayList<Integer> idList = new ArrayList<>();
 						try {
-							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", position, "null");System.out.println(idList.size());
+							idList = playerLogic_db.selectByTag("14-15", "detail", "null", "null", position, "null","null");System.out.println(idList.size());
 						} catch (RemoteException e1) {
 							e1.printStackTrace();
 						}
@@ -249,7 +242,7 @@ public class PlayerUI extends BgPanel{
 				String name = search.getText();
 				ArrayList<Integer> idList = new ArrayList<>();
 				try {
-					idList = playerLogic_db.selectByTag("14-15", "detail", "null", name, "null", "null");
+					idList = playerLogic_db.selectByTag("14-15", "detail", "null", name, "null", "null","null");
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}
