@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+
 import presentation.component.BgPanel;
 import presentation.component.GComboBox;
 import presentation.component.GLabel;
@@ -180,8 +181,8 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		group = new ButtonGroup();
 
-		avg = new JRadioButton("场均一");
-		avg.setBounds(20, 110, 70, 30);
+		avg = new JRadioButton("场均数据");
+		avg.setBounds(20, 110, 90, 30);
 		avg.setSelected(true);
 		avg.setOpaque(false);
 		avg.setFont(radioBtFont);
@@ -190,8 +191,8 @@ public class TeamStatsPanelNew extends BgPanel{
 		group.add(avg);
 		selection[0] = avg.isSelected();
 
-		avg2 = new JRadioButton("场均二");
-		avg2.setBounds(120, 110, 70, 30);
+		avg2 = new JRadioButton("场均数据");
+		avg2.setBounds(120, 110, 90, 30);
 		avg2.setOpaque(false);
 		avg2.setFont(radioBtFont);
 		avg2.addMouseListener(new CheckListener(1));
@@ -199,8 +200,8 @@ public class TeamStatsPanelNew extends BgPanel{
 		group.add(avg2);
 		selection[1] = avg2.isSelected();
 
-		ad = new JRadioButton("进阶");
-		ad.setBounds(220, 110, 70, 30);
+		ad = new JRadioButton("进阶数据");
+		ad.setBounds(220, 110, 90, 30);
 		ad.setOpaque(false);
 		ad.setFont(radioBtFont);
 		ad.addMouseListener(new CheckListener(2));
@@ -235,7 +236,10 @@ public class TeamStatsPanelNew extends BgPanel{
 		//		Thread t = new Thread(pt);
 		//		t.start();
 
-		startDefault();
+//		startDefault();
+		DefData d1 = new DefData();
+		Thread t1 = new Thread(d1);
+		t1.start();
 
 		this.repaint();
 	}
@@ -287,10 +291,12 @@ public class TeamStatsPanelNew extends BgPanel{
 		DefaultData d3 = new DefaultData(2);
 		Thread t3 = new Thread(d3);
 		t3.start();
+		
+		setOrder();
 
 	}
 
-	private synchronized void setDefaultTable(){
+	private void setDefaultTable(){
 		System.out.println("start default");
 
 		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
@@ -316,10 +322,9 @@ public class TeamStatsPanelNew extends BgPanel{
 		tables[2] = adTable;
 
 		setCenter();
+		setOrder();
 
-		System.out.println("end default");
-
-		this.repaint();
+		TeamStatsPanelNew.this.repaint();
 	}
 
 
@@ -526,6 +531,13 @@ public class TeamStatsPanelNew extends BgPanel{
 		return data;
 	}
 
+	private void setOrder(){
+		for(int i=0;i<tables.length;i++){
+			for(int j=1;j<tables[i].colum;j++){
+				tables[i].setOrder(j, Double.class);
+			}
+		}
+	}
 
 	private String getSeasonStr(String s){
 		return s.substring(0, 5);
@@ -611,6 +623,7 @@ public class TeamStatsPanelNew extends BgPanel{
 		tables[2] = adTable;
 
 		setCenter();
+		setOrder();
 
 		for(int i=0;i<tables.length;i++){
 			if(i==select){
@@ -723,6 +736,15 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		}
 
+	}
+	
+	class DefData implements Runnable{
+
+		@Override
+		public void run() {
+			TeamStatsPanelNew.this.setDefaultTable();
+		}
+		
 	}
 
 	class DefaultData implements Runnable{

@@ -74,15 +74,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 	public JButton submit;
 
 	String[] header_basic = {"姓名","球队","出场","首发","时间",
-			"投篮","命中","出手",
-			"三分","命中","出手",
-			"罚球","命中","出手",
+			"投篮%","命中","出手",
+			"三分%","命中","出手",
+			"罚球%","命中","出手",
 	};
 
 	String[] header_basic_off = {"姓名","球队","出场","时间",
-			"投篮","命中","出手",
-			"三分","命中","出手",
-			"罚球","命中","出手",
+			"投篮%","命中","出手",
+			"三分%","命中","出手",
+			"罚球%","命中","出手",
 	};
 
 	String[] header_basic2 = {"姓名","球队",
@@ -91,18 +91,18 @@ public class PlayerStatsPanelNew extends BgPanel{
 			"得分","胜","负",};
 
 	String[] header_ad_basic = {"姓名","球队",
-			"篮板","进攻板","防守板",
-			"助攻","抢断","盖帽","失误","使用",
+			"篮板%","进攻板%","防守板%",
+			"助攻%","抢断%","盖帽%","失误%","使用%",
 			"<html>进攻<br>效率<html>","<html>防守<br>效率<html>",
 			"WS","<html>进攻<br>WS<html>","<html>防守<br>WS<html>",  //胜利贡献率
 			"PER","扣篮","2/3+1","被帽",  //PER为效率
 	};
 	String[] header_ad_shoot = {"姓名","球队","<html>出手<br>距离<html>",
-			"<html> 篮下<br>命中率<html>","命中","出手","占比",
-			"<html>近距<br>两分<html>","命中","出手","占比",
-			"<html>中距<br>两分<html>","命中","出手","占比",
-			"<html>远距<br>两分<html>","命中","出手","占比",
-			"<html> 真实<br>命中率<html>","<html>投篮<br>效率<html>",
+			"<html> 篮下<br>命中%<html>","命中","出手","占比",
+			"<html>近距<br>两分%<html>","命中","出手","占比",
+			"<html>中距<br>两分%<html>","命中","出手","占比",
+			"<html>远距<br>两分%<html>","命中","出手","占比",
+			"<html> 真实<br>命中%<html>","<html>投篮<br>效率<html>",
 	};
 
 
@@ -276,7 +276,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 		group = new ButtonGroup();
 
-		all = new JRadioButton("总数");
+		all = new JRadioButton("总数据");
 		all.setBounds(20, 110, 90, 30);
 		all.setSelected(true);
 		all.setOpaque(false);
@@ -287,7 +287,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		group.add(all);
 		selection[0] = all.isSelected();
 
-		all2 = new JRadioButton("总数二");
+		all2 = new JRadioButton("总数据");
 		all2.setBounds(120, 110, 90, 30);
 		all2.setOpaque(false);
 		all2.setFont(radioBtFont);
@@ -296,7 +296,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		group.add(all2);
 		selection[1] = all2.isSelected();
 
-		avg = new JRadioButton("场均");
+		avg = new JRadioButton("场均数据");
 		avg.setBounds(220, 110, 90, 30);
 		avg.setOpaque(false);
 		avg.setFont(radioBtFont);
@@ -305,7 +305,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		group.add(avg);
 		selection[2] = avg.isSelected();
 
-		avg2 = new JRadioButton("场均二");
+		avg2 = new JRadioButton("场均数据");
 		avg2.setBounds(320, 110, 90, 30);
 		avg2.setOpaque(false);
 		avg2.setFont(radioBtFont);
@@ -542,6 +542,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		tables[5] = adShootTable;
 
 		setCenter();
+		setOrder();
 
 		PlayerStatsPanelNew.this.repaint();
 	}
@@ -559,6 +560,14 @@ public class PlayerStatsPanelNew extends BgPanel{
 	private void setDefaultOrder(WebTable table){
 		table.setOrder(0, String.class);
 		table.downOrder(0, String.class);
+	}
+	
+	private void setOrder(){
+		for(int i=0;i<tables.length;i++){
+			for(int j=2;j<tables[i].colum;j++){
+				tables[i].setOrder(j, Double.class);
+			}
+		}
 	}
 
 
@@ -1089,15 +1098,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][3] = temp.get(i).getGp();
 			data[i][4] = temp.get(i).getTime();
 
-			data[i][5] = temp.get(i).getShootper();
+			data[i][5] = temp.get(i).getShootper().replace("%", "");
 			data[i][6] = temp.get(i).getShoot_in();
 			data[i][7] = temp.get(i).getShoot_all();
 
-			data[i][8] = temp.get(i).getThper();
+			data[i][8] = temp.get(i).getThper().replace("%", "");
 			data[i][9] = temp.get(i).getTh_in();
 			data[i][10] = temp.get(i).getTh_all();
 
-			data[i][11] = temp.get(i).getFtper();
+			data[i][11] = temp.get(i).getFtper().replace("%", "");
 			data[i][12] = temp.get(i).getFt_in();
 			data[i][13] = temp.get(i).getFt_all();
 		}
@@ -1114,15 +1123,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][2] = temp.get(i).getGp();
 			data[i][3] = temp.get(i).getTime();
 
-			data[i][4] = temp.get(i).getShootper();
+			data[i][4] = temp.get(i).getShootper().replace("%", "");
 			data[i][5] = temp.get(i).getShoot_in();
 			data[i][6] = temp.get(i).getShoot_all();
 
-			data[i][7] = temp.get(i).getThper();
+			data[i][7] = temp.get(i).getThper().replace("%", "");
 			data[i][8] = temp.get(i).getTh_in();
 			data[i][9] = temp.get(i).getTh_all();
 
-			data[i][10] = temp.get(i).getFtper();
+			data[i][10] = temp.get(i).getFtper().replace("%", "");
 			data[i][11] = temp.get(i).getFt_in();
 			data[i][12] = temp.get(i).getFt_all();
 		}
@@ -1187,15 +1196,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][3] = temp.get(i).getGp();
 			data[i][4] = temp.get(i).getTime();
 
-			data[i][5] = temp.get(i).getShootper();
+			data[i][5] = temp.get(i).getShootper().replace("%", "");
 			data[i][6] = temp.get(i).getShoot_in();
 			data[i][7] = temp.get(i).getShoot_all();
 
-			data[i][8] = temp.get(i).getThper();
+			data[i][8] = temp.get(i).getThper().replace("%", "");
 			data[i][9] = temp.get(i).getTh_in();
 			data[i][10] = temp.get(i).getTh_all();
 
-			data[i][11] = temp.get(i).getFtper();
+			data[i][11] = temp.get(i).getFtper().replace("%", "");
 			data[i][12] = temp.get(i).getFt_in();
 			data[i][13] = temp.get(i).getFt_all();
 		}
@@ -1211,15 +1220,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][2] = temp.get(i).getGp();
 			data[i][3] = temp.get(i).getTime();
 
-			data[i][4] = temp.get(i).getShootper();
+			data[i][4] = temp.get(i).getShootper().replace("%", "");
 			data[i][5] = temp.get(i).getShoot_in();
 			data[i][6] = temp.get(i).getShoot_all();
 
-			data[i][7] = temp.get(i).getThper();
+			data[i][7] = temp.get(i).getThper().replace("%", "");
 			data[i][8] = temp.get(i).getTh_in();
 			data[i][9] = temp.get(i).getTh_all();
 
-			data[i][10] = temp.get(i).getFtper();
+			data[i][10] = temp.get(i).getFtper().replace("%", "");
 			data[i][11] = temp.get(i).getFt_in();
 			data[i][12] = temp.get(i).getFt_all();
 		}
@@ -1281,15 +1290,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][0] = temp.get(i).getName();
 			data[i][1] = TableUtility.getShortChTeam(TableUtility.getChTeam(temp.get(i).getTeam()));
 
-			data[i][2] = temp.get(i).getBackeff();
-			data[i][3] = temp.get(i).getOffbeff();
-			data[i][4] = temp.get(i).getDefbeff();
+			data[i][2] = temp.get(i).getBackeff().replace("%", "");
+			data[i][3] = temp.get(i).getOffbeff().replace("%", "");
+			data[i][4] = temp.get(i).getDefbeff().replace("%", "");
 
-			data[i][5] = temp.get(i).getAssisteff();
-			data[i][6] = temp.get(i).getStealeff();
-			data[i][7] = temp.get(i).getRejeff();
-			data[i][8] = temp.get(i).getMisseff();
-			data[i][9] = temp.get(i).getUseeff();
+			data[i][5] = temp.get(i).getAssisteff().replace("%", "");
+			data[i][6] = temp.get(i).getStealeff().replace("%", "");
+			data[i][7] = temp.get(i).getRejeff().replace("%", "");
+			data[i][8] = temp.get(i).getMisseff().replace("%", "");
+			data[i][9] = temp.get(i).getUseeff().replace("%", "");
 
 			data[i][10] = temp.get(i).getOffeff();
 			data[i][11] = temp.get(i).getDefeff();
@@ -1316,15 +1325,15 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][0] = temp.get(i).getName();
 			data[i][1] = TableUtility.getShortChTeam(TableUtility.getChTeam(temp.get(i).getTeam()));
 
-			data[i][2] = temp.get(i).getBackeff();
-			data[i][3] = temp.get(i).getOffbeff();
-			data[i][4] = temp.get(i).getDefbeff();
+			data[i][2] = temp.get(i).getBackeff().replace("%", "");
+			data[i][3] = temp.get(i).getOffbeff().replace("%", "");
+			data[i][4] = temp.get(i).getDefbeff().replace("%", "");
 
-			data[i][5] = temp.get(i).getAssisteff();
-			data[i][6] = temp.get(i).getStealeff();
-			data[i][7] = temp.get(i).getRejeff();
-			data[i][8] = temp.get(i).getMisseff();
-			data[i][9] = temp.get(i).getUseeff();
+			data[i][5] = temp.get(i).getAssisteff().replace("%", "");
+			data[i][6] = temp.get(i).getStealeff().replace("%", "");
+			data[i][7] = temp.get(i).getRejeff().replace("%", "");
+			data[i][8] = temp.get(i).getMisseff().replace("%", "");
+			data[i][9] = temp.get(i).getUseeff().replace("%", "");
 
 			data[i][10] = temp.get(i).getOffeff();
 			data[i][11] = temp.get(i).getDefeff();
@@ -1352,29 +1361,29 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][1] = TableUtility.getShortChTeam(TableUtility.getChTeam(temp.get(i).getTeam()));
 			data[i][2] = temp.get(i).getShootdis();
 
-			data[i][3] = temp.get(i).getBshootper();
+			data[i][3] = temp.get(i).getBshootper().replace("%", "");
 			data[i][4] = temp.get(i).getBshoot_in();
 			data[i][5] = temp.get(i).getBshoot_all();
-			data[i][6] = temp.get(i).getB_per();
+			data[i][6] = temp.get(i).getB_per().replace("%", "");
 
-			data[i][7] = temp.get(i).getCloseshootper();
+			data[i][7] = temp.get(i).getCloseshootper().replace("%", "");
 			data[i][8] = temp.get(i).getCloseshoot_in();
 			data[i][9] = temp.get(i).getCloseshoot_all();
-			data[i][10] = temp.get(i).getClose_per();
+			data[i][10] = temp.get(i).getClose_per().replace("%", "");
 
-			data[i][11] = temp.get(i).getMidshootper();
+			data[i][11] = temp.get(i).getMidshootper().replace("%", "");
 			data[i][12] = temp.get(i).getMidshoot_in();
 			data[i][13] = temp.get(i).getMidshoot_all();
-			data[i][14] = temp.get(i).getMid_per();
+			data[i][14] = temp.get(i).getMid_per().replace("%", "");
 
-			data[i][15] = temp.get(i).getFarshootper();
+			data[i][15] = temp.get(i).getFarshootper().replace("%", "");
 			data[i][16] = temp.get(i).getFarshoot_in();
 			data[i][17] = temp.get(i).getFarshoot_all();
-			data[i][18] = temp.get(i).getFar_per();
+			data[i][18] = temp.get(i).getFar_per().replace("%", "");
 
 
-			data[i][19] = temp.get(i).getTrueshootper();
-			data[i][20] = temp.get(i).getShooteff();
+			data[i][19] = temp.get(i).getTrueshootper().replace("%", "");
+			data[i][20] = temp.get(i).getShooteff().replace("%", "");
 		}
 		return data;
 	}
@@ -1387,29 +1396,29 @@ public class PlayerStatsPanelNew extends BgPanel{
 			data[i][1] = TableUtility.getShortChTeam(TableUtility.getChTeam(temp.get(i).getTeam()));
 			data[i][2] = temp.get(i).getShootdis();
 
-			data[i][3] = temp.get(i).getBshootper();
+			data[i][3] = temp.get(i).getBshootper().replace("%", "");
 			data[i][4] = temp.get(i).getBshoot_in();
 			data[i][5] = temp.get(i).getBshoot_all();
-			data[i][6] = temp.get(i).getB_per();
+			data[i][6] = temp.get(i).getB_per().replace("%", "");
 
-			data[i][7] = temp.get(i).getCloseshootper();
+			data[i][7] = temp.get(i).getCloseshootper().replace("%", "");
 			data[i][8] = temp.get(i).getCloseshoot_in();
 			data[i][9] = temp.get(i).getCloseshoot_all();
-			data[i][10] = temp.get(i).getClose_per();
+			data[i][10] = temp.get(i).getClose_per().replace("%", "");
 
-			data[i][11] = temp.get(i).getMidshootper();
+			data[i][11] = temp.get(i).getMidshootper().replace("%", "");
 			data[i][12] = temp.get(i).getMidshoot_in();
 			data[i][13] = temp.get(i).getMidshoot_all();
-			data[i][14] = temp.get(i).getMid_per();
+			data[i][14] = temp.get(i).getMid_per().replace("%", "");
 
-			data[i][15] = temp.get(i).getFarshootper();
+			data[i][15] = temp.get(i).getFarshootper().replace("%", "");
 			data[i][16] = temp.get(i).getFarshoot_in();
 			data[i][17] = temp.get(i).getFarshoot_all();
-			data[i][18] = temp.get(i).getFar_per();
+			data[i][18] = temp.get(i).getFar_per().replace("%", "");
 
 
-			data[i][19] = temp.get(i).getTrueshootper();
-			data[i][20] = temp.get(i).getShooteff();
+			data[i][19] = temp.get(i).getTrueshootper().replace("%", "");
+			data[i][20] = temp.get(i).getShooteff().replace("%", "");
 		}
 		return data;
 	}
@@ -1471,6 +1480,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 		tables[5] = adShootTable;
 
 		setCenter();
+		setOrder();
 
 		for(int i=0;i<tables.length;i++){
 			if(i==select){
