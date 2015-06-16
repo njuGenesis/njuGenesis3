@@ -187,7 +187,9 @@ public class Regression {
 		res.setX(x);
 		res.setY(y);
 		res.setF(dt[3]/(dt[0]/(n-2)));
-
+		dt=res.getDt();
+		 v=res.getV();
+		 a=res.getA();
 		int i;
 		// 输出系数方程
 		for (i = 0; i <= value.size(); i++) {

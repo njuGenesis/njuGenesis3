@@ -27,12 +27,15 @@ public class RegreResult {
 		return F;
 	}
 	public void setF(double f) {
+		BigDecimal bg = new BigDecimal(f);
+		f= bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
 		F = f;
 	}
 	public int getM() {
 		return m;
 	}
 	public void setM(int m) {
+		
 		this.m = m;
 	}
 	public int getN() {
@@ -65,13 +68,14 @@ public class RegreResult {
 		return dt;
 	}
 	public void setDt(double[] dt) {
-		this.dt = dt;
-	}
-	public ArrayList<PersonR> getValue() {
 		for(int i=0;i<dt.length;i++){
 			BigDecimal bg = new BigDecimal(dt[i]);
 			dt[i] = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
+		this.dt = dt;
+	}
+	public ArrayList<PersonR> getValue() {
+		
 		return value;
 	}
 	public void setValue(ArrayList<PersonR> value) {
