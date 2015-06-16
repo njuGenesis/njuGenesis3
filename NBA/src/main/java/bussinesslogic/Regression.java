@@ -17,7 +17,7 @@ public class Regression {
 
 	public static void main(String[] args) throws RemoteException {
 		Regression r = new Regression();
-		r.sqt(1862);
+		r.sqt(234);
 		// r.getRelation(2222);
 
 	}
