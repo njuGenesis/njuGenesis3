@@ -17,7 +17,7 @@ public class Regression {
 
 	public static void main(String[] args) throws RemoteException {
 		Regression r = new Regression();
-		r.sqt(195);
+		r.sqt(1862);
 		// r.getRelation(2222);
 
 	}
@@ -150,15 +150,18 @@ public class Regression {
 		m = value.size();
 		double[] res2 = new double[n];
 		double[][] res = new double[m][n];
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				res[j][i] = Double.valueOf(players.get(i)
-						.getProperty(value.get(j).getType())
-						.replaceAll("%", "").equals("")?"0":players.get(i)
-								.getProperty(value.get(j).getType())
+		System.out.println(m+"   "+n);
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				System.out.println(j+"  "+i);
+				res[i][j] = Double.valueOf(players.get(j)
+						.getProperty(value.get(i).getType())
+						.replaceAll("%", "").equals("")?"0":players.get(j)
+								.getProperty(value.get(i).getType())
 								.replaceAll("%", ""));
+				res2[j] = Double.valueOf(players.get(i).getPts().equals("")?"0":players.get(j).getPts());
 			}
-			res2[i] = Double.valueOf(players.get(i).getPts().equals("")?"0":players.get(i).getPts());
+			
 		}
 		x = res;
 		y = res2;
