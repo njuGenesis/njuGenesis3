@@ -1,7 +1,9 @@
 package presentation.stats;
 
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
@@ -11,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
@@ -21,10 +24,14 @@ import presentation.component.GComboBox;
 import presentation.component.GLabel;
 import presentation.contenui.StatsUtil;
 import presentation.contenui.TableUtility;
+import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
+import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import assistance.NewFont;
 import bussinesslogic.team.TeamLogic;
+import data.po.teamData.TeamBaseInfo;
+import data.po.teamData.TeamCompleteInfo;
 import data.po.teamData.TeamHData;
 import data.po.teamData.TeamLData;
 
@@ -76,6 +83,7 @@ public class TeamStatsPanelNew extends BgPanel{
 	
 	ButtonGroup group;
 	Boolean[] selection = new Boolean[3];
+	private Font radioBtFont  = new Font("微软雅黑",0,12);
 
 //	JCheckBox[] checkBoxes = new JCheckBox[3];
 
@@ -136,12 +144,12 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		//--------------------筛选条件--------------------
 		season = new GComboBox(seasonItem);
-		season.setBounds(0, 70, 150, 30);
+		season.setBounds(20, 70, 150, 30);
 		season.setFont(NewFont.ComboBoxFont);
 		this.add(season);
 
 		type = new GComboBox(typeItem);
-		type.setBounds(180, 70, 150, 30);
+		type.setBounds(200, 70, 150, 30);
 		type.setFont(NewFont.ComboBoxFont);
 		this.add(type);
 
@@ -177,25 +185,28 @@ public class TeamStatsPanelNew extends BgPanel{
 		group = new ButtonGroup();
 		
 		avg = new JRadioButton("场均一");
-		avg.setBounds(0, 110, 70, 30);
+		avg.setBounds(20, 110, 70, 30);
 		avg.setSelected(true);
 		avg.setOpaque(false);
+		avg.setFont(radioBtFont);
 		avg.addMouseListener(new CheckListener(0));
 		this.add(avg);
 		group.add(avg);
 		selection[0] = avg.isSelected();
 
 		avg2 = new JRadioButton("场均二");
-		avg2.setBounds(100, 110, 70, 30);
+		avg2.setBounds(120, 110, 70, 30);
 		avg2.setOpaque(false);
+		avg2.setFont(radioBtFont);
 		avg2.addMouseListener(new CheckListener(1));
 		this.add(avg2);
 		group.add(avg2);
 		selection[1] = avg2.isSelected();
 
 		ad = new JRadioButton("进阶");
-		ad.setBounds(200, 110, 70, 30);
+		ad.setBounds(220, 110, 70, 30);
 		ad.setOpaque(false);
+		ad.setFont(radioBtFont);
 		ad.addMouseListener(new CheckListener(2));
 		this.add(ad);
 		group.add(ad);
@@ -204,24 +215,68 @@ public class TeamStatsPanelNew extends BgPanel{
 
 		avgTable1 = new WebTable(header_avg1, getAvgData1_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable1.setColumnWidth(avgTable1_column, avgTable1_width);
+		addTeamListener_fullName(avgTable1);
 		this.add(avgTable1);
 		tables[0] = avgTable1;
 
 		avgTable2 = new WebTable(header_avg2, getAvgData2_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable2.setVisible(false);
 		avgTable2.setColumnWidth(avgTable2_column, avgTable2_width);
+		addTeamListener_fullName(avgTable2);
 		this.add(avgTable2);
 		tables[1] = avgTable2;
 
 		adTable = new WebTable(header_ad, getAdData_select(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		adTable.setVisible(false);
 		adTable.setColumnWidth(adTable_column, adTable_width);
+		addTeamListener_fullName(adTable);
 		this.add(adTable);
 		tables[2] = adTable;
 
+		setCenter();
 
 
 		this.repaint();
+	}
+	
+	
+	private void addTeamListener_fullName(WebTable table){
+		table.setColumForeground(0,UIUtil.nbaBlue);
+		table.setColumHand(0);
+		for(int i=0;i<table.row;i++){
+			table.getColum(0)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String fullName = label.getText();
+					TeamBaseInfo info = getInfo_fullname(fullName);
+					TurnController tc = new TurnController();
+					WebFrame.frame.setPanel(tc.turnToTeamDetials(info), info.getName());	
+				}
+			});
+		}
+	}
+	
+	//根据球队中文全称得到TeamBaseInfo
+	private TeamBaseInfo getInfo_fullname(String fullName){
+		String en = TableUtility.checkNOH(TableUtility.getChTeam(fullName));
+		 try {
+			ArrayList<TeamCompleteInfo> list = logic.GetPartCompleteInfo(en, "14-15", "yes");
+			if(list.size()!=0){
+				return list.get(0).getBaseinfo();
+			}else{
+				return new TeamBaseInfo();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return new TeamBaseInfo();
+		}
+	}
+	
+	private void setCenter(){
+		for(int i=0;i<tables.length;i++){
+			factory.setCenter(tables[i], 0);
+		}
 	}
 
 	private Object[][] getAvgData1_select(){
@@ -433,6 +488,8 @@ public class TeamStatsPanelNew extends BgPanel{
 			adTable.setColumnWidth(adTable_column, adTable_width);
 			TeamStatsPanelNew.this.add(adTable);
 			tables[2] = adTable;
+			
+			setCenter();
 
 			for(int i=0;i<tables.length;i++){
 				if(i==select){

@@ -2,6 +2,7 @@ package presentation.component;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
@@ -11,6 +12,8 @@ import javax.swing.JComboBox;
 public class GComboBox extends JComboBox{
 
 	private static final long serialVersionUID = 1L;
+	
+	private Font font = new Font("微软雅黑",0,12);
 
 	public GComboBox(){
 		super();
@@ -37,7 +40,7 @@ public class GComboBox extends JComboBox{
 		setRenderer(new GComboBoxRenderer());
 		setBackground(new Color(250,250,250));
 
-		//		this.getComponentPopupMenu()
+		setFont(font);
 
 	}
 	public Dimension getPreferredSize(){

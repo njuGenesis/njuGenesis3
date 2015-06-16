@@ -14,9 +14,11 @@ import javax.swing.JPanel;
 
 import presentation.component.GLabel;
 import presentation.component.TeamImageAssist;
+import presentation.contenui.PanelKind;
 import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
 import presentation.mainui.StartUI;
+import presentation.mainui.WebFrame;
 import bussinesslogic.player.PlayerLogic_db;
 import bussinesslogic.team.TeamLogic;
 import data.po.teamData.TeamBaseInfo;
@@ -29,16 +31,16 @@ public class RankingFactory {
 	private PlayerLogic_db logic = new PlayerLogic_db();
 	private TeamLogic logict = new TeamLogic();
 	
-	private int getID(String name){
-		int id = 1;
-		try {
-			id = logic.getIDbyName(name, "");
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return id;
-	}
+//	private int getID(String name){
+//		int id = 1;
+//		try {
+//			id = logic.getIDbyName(name, "");
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return id;
+//	}
 	
 
 	private String[] getDetailInfo_progress(String str){
@@ -53,8 +55,9 @@ public class RankingFactory {
 		String detail = temp[2] + " / " + temp[3] + " / " + temp[4] + temp[5];
 		String data = temp[6] + "/" + temp[7].substring(0, 4) + "%";
 		String team = temp[5];
+		String id = temp[8];
 		
-		String[] info =  {name,detail,data,team};
+		String[] info =  {name,detail,data,team,id};
 		return info;
 	}
 	
@@ -84,8 +87,9 @@ public class RankingFactory {
 		String detail = temp[2] + " / " + temp[3] + " / " + temp[4] + temp[5];
 		String data = temp[6];
 		String team = temp[5];
+		String id = temp[7];
 		
-		String[] info =  {name,detail,data,team};
+		String[] info =  {name,detail,data,team,id};
 		return info;
 	}
 	
@@ -97,8 +101,9 @@ public class RankingFactory {
 		String detail = temp[2] + " / " + temp[3] + " / " + temp[4] + temp[5];
 		String data = temp[6] + "%";
 		String team = temp[5];
+		String id = temp[7];
 		
-		String[] info =  {name,detail,data,team};
+		String[] info =  {name,detail,data,team,id};
 		return info;
 	}
 	
@@ -176,9 +181,11 @@ public class RankingFactory {
 		String data = info[2];
 		String teamstr = info[3];
 		
+		int id = Integer.parseInt(info[4]);
+		
 		GLabel num = new GLabel(HotspotUtil.ranking_1,new Point(20,45),new Point(36,40),p,true);
 		GLabel player = new GLabel(getBigPlayer(1,type),new Point(80,130),new Point(230,185),p,true);
-		player.addMouseListener(new PlayerListener(getID(namestr)));
+		player.addMouseListener(new PlayerListener(id,namestr));
 		player.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+TableUtility.checkNOH(TableUtility.getShortChTeam(teamstr))+".svg", 95, 75),
 				new Point(145,375),new Point(95,75),p,true);
@@ -204,10 +211,11 @@ public class RankingFactory {
 		String data = info[2];
 		String teamstr = info[3];
 		
+		int id = Integer.parseInt(info[4]);
 		
 		GLabel num = new GLabel(HotspotUtil.ranking_1,new Point(20,45),new Point(36,40),p,true);
 		GLabel player = new GLabel(getBigPlayer(1,type),new Point(0,102),new Point(207,329),p,true);
-		player.addMouseListener(new PlayerListener(getID(namestr)));
+		player.addMouseListener(new PlayerListener(id,namestr));
 		player.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+TableUtility.checkNOH(TableUtility.getShortChTeam(teamstr))+".svg", 95, 75),
 				new Point(205,316),new Point(95,75),p,true);
@@ -233,6 +241,8 @@ public class RankingFactory {
 		String data = info[2];
 		String teamstr = info[3];
 		
+		int id = Integer.parseInt(info[4]);
+		
 		ImageIcon image = new ImageIcon();
 		switch(number){
 		case 2:image = HotspotUtil.ranking_2;break;
@@ -243,7 +253,7 @@ public class RankingFactory {
 		
 		GLabel num = new GLabel(image,new Point(18,38),new Point(36,40),p,true);
 		GLabel player = new GLabel(getPlayer(number,type),new Point(75,23),new Point(66,66),p,true);
-		player.addMouseListener(new PlayerListener(getID(namestr)));
+		player.addMouseListener(new PlayerListener(id,namestr));
 		player.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+TableUtility.checkNOH(TableUtility.getShortChTeam(teamstr))+".svg", 95, 75),
 				new Point(460,23),new Point(95,75),p,true);
@@ -272,7 +282,7 @@ public class RankingFactory {
 		
 		GLabel num = new GLabel(HotspotUtil.ranking_1,new Point(20,45),new Point(36,40),p,true);
 		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+shortteam+".svg", 200, 300),new Point(80,110),new Point(200,300),p,true);
-		team.addMouseListener(new TeamListener(getInfo(teamstr)));
+		team.addMouseListener(new TeamListener(getTeamInfo(shortteam)));
 		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		GLabel name = new GLabel(teamstr,new Point(160,40),new Point(200,30),p,true,0,20);
@@ -304,7 +314,7 @@ public class RankingFactory {
 		
 		GLabel num = new GLabel(HotspotUtil.ranking_2,new Point(18,38),new Point(36,40),p,true);
 		GLabel team = new GLabel(imgAssist.loadImageIcon("迭代一数据/teams/"+shortteam+".svg", 95, 75),new Point(68,23),new Point(95,75),p,true);
-		team.addMouseListener(new TeamListener(getInfo(teamstr)));
+		team.addMouseListener(new TeamListener(getTeamInfo(shortteam)));
 		team.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		GLabel name = new GLabel(teamstr,new Point(170,30),new Point(180,30),p,true,0,20);
@@ -316,8 +326,9 @@ public class RankingFactory {
 	
 	
 	private TeamBaseInfo getInfo(String shortName){
+		String en = TableUtility.checkNOH(TableUtility.getShortChTeam(shortName));
 		 try {
-			ArrayList<TeamCompleteInfo> list = logict.GetPartCompleteInfo(shortName, "14-15", "yes");
+			ArrayList<TeamCompleteInfo> list = logict.GetPartCompleteInfo(en, "14-15", "yes");
 			if(list.size()!=0){
 				return list.get(0).getBaseinfo();
 			}else{
@@ -329,6 +340,19 @@ public class RankingFactory {
 		}
 	}
 	
+	private TeamBaseInfo getTeamInfo(String shortNameEn){
+		 try {
+			ArrayList<TeamCompleteInfo> list = logict.GetPartCompleteInfo(shortNameEn, "14-15", "yes");
+			if(list.size()!=0){
+				return list.get(0).getBaseinfo();
+			}else{
+				return new TeamBaseInfo();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return new TeamBaseInfo();
+		}
+	}
 	
 	private String getSeason(String date){
 		String[] temp = date.split("-");
@@ -414,7 +438,8 @@ public class RankingFactory {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			TurnController tc = new TurnController();
-			StartUI.startUI.turn(tc.turnToTeamDetials(info));
+			String team = info.getName();
+			WebFrame.frame.setPanel(tc.turnToTeamDetials(info), team);	
 		}
 
 		@Override
@@ -448,14 +473,15 @@ public class RankingFactory {
 		String name;
 		int id;
 		
-		public PlayerListener(int id){
+		public PlayerListener(int id,String name){
 			this.id = id;
+			this.name = name;
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			TurnController tc = new TurnController();
-			StartUI.startUI.turn(tc.turnToPlayerDetials(id));
+			WebFrame.frame.setPanel(tc.turnToPlayerDetials(id), name);	
 		}
 
 		@Override

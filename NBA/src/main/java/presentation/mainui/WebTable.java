@@ -31,7 +31,7 @@ public class WebTable extends JLabel{
 
 	private Rectangle tableRectangle;
 
-	private int colum, row, cellHeight, cellWidth, headerHeight;
+	public int colum, row, cellHeight, cellWidth, headerHeight;
 
 	private JScrollPane scrollPane;
 	private boolean isScroll;

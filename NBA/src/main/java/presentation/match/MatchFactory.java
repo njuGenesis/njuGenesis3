@@ -25,6 +25,7 @@ import presentation.contenui.TableUtility;
 import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
 import presentation.mainui.StartUI;
+import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import bussinesslogic.team.TeamLogic;
 import data.po.Match_PlayerPO;
@@ -105,30 +106,17 @@ public class MatchFactory {
 //		Vector<Vector<Object>> data = getTableDataV(players);
 		
 		WebTable table = new WebTable(headerStr, getTableData(players), new Rectangle(0, 60, 940, 420), UIUtil.bgWhite);
+		int[] c = {0};
+		int[] w = {150};
+		table.setColumnWidth(c, w);  //设置姓名列宽
+		for(int i=1;i<table.colum;i++){  //第一列名字不居中
+			table.setColumDataCenter(i);
+		}
 		jp.add(table);
-//		StyleTable table = new StyleTable();
-//		StyleScrollPane pane = new StyleScrollPane(table);
-//		table.tableSetting(table, header, data, pane, new Rectangle(0, 60, 940, 420));
-		
-//		DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer(){
-//			public java.awt.Component getTableCellRendererComponent(JTable t, Object value,
-//					boolean isSelected, boolean hasFocus, int row, int column) {
-//				if (row % 2 == 0)
-//					setBackground(new Color(235, 236, 231));
-//				else
-//					setBackground(new Color(251, 251, 251));
-//
-//				setForeground(UIUtil.nbaBlue);
-//				return super.getTableCellRendererComponent(t, value, isSelected,
-//						hasFocus, row, column);
-//			}
-//		};
-//		table.getColumnModel().getColumn(0).setCellRenderer(defaultTableCellRenderer);
-		
-//		jp.add(pane);
 		
 		return jp;
 	}
+	
 
 	public JPanel getComparePanel(MatchDataSeason po){
 		JPanel jp = new JPanel();
@@ -549,7 +537,8 @@ public class MatchFactory {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			TurnController tc = new TurnController();
-			StartUI.startUI.turn(tc.turnToTeamDetials(info));
+			String team = info.getName();
+			WebFrame.frame.setPanel(tc.turnToTeamDetials(info), team);
 		}
 
 		@Override

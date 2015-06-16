@@ -11,8 +11,6 @@ import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -20,6 +18,7 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 
 import presentation.contenui.UIUtil;
+import presentation.mainui.IScrollBarUI;
 
 public class GComboBoxUI extends BasicComboBoxUI{
 
@@ -94,10 +93,13 @@ public class GComboBoxUI extends BasicComboBoxUI{
 				JScrollPane sp = new JScrollPane(list,
 						ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 						ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				sp.setSize(sp.getWidth()+7, sp.getHeight());
 				sp.setHorizontalScrollBar(null);
-				JScrollBar jsb = new JScrollBar();
-				jsb.setUI(new IScrollBarUI());
-				sp.setHorizontalScrollBar(jsb);
+//				sp.getVerticalScrollBar().setSize(sp.getVerticalScrollBar().getWidth()+9, sp.getVerticalScrollBar().getHeight());
+				sp.getVerticalScrollBar().setUI(new IScrollBarUI());
+//				JScrollBar jsb = new JScrollBar();
+//				jsb.setUI(new IScrollBarUI());
+//				sp.setVerticalScrollBar(jsb);
 				return sp;
 			}
 			//重载paintBorder方法 来画出我们想要的边框..

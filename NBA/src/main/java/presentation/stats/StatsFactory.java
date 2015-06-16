@@ -1,27 +1,18 @@
 package presentation.stats;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Vector;
-
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
-import data.po.playerData.PlayerDataSeason_Tot_Basic;
-import presentation.component.StyleScrollPane;
-import presentation.component.StyleTable;
-import presentation.contenui.TableUtility;
-import presentation.contenui.TurnController;
-import presentation.contenui.UIUtil;
-import presentation.mainui.StartUI;
+import presentation.mainui.WebTable;
 
 public class StatsFactory {
 	
+	
+	//设置表格内容居中：not这一列及前面不居中
+	public void setCenter(WebTable table,int not){
+		for(int i=0;i<table.colum;i++){
+			if(i>not){
+				table.setColumDataCenter(i);
+			}
+		}
+	}
 
 	
 	

@@ -2,8 +2,10 @@ package presentation.stats;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
@@ -13,17 +15,22 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+
 import presentation.component.BgPanel;
 import presentation.component.GComboBox;
 import presentation.component.GLabel;
 import presentation.component.StyleScrollPane;
 import presentation.contenui.StatsUtil;
 import presentation.contenui.TableUtility;
+import presentation.contenui.TurnController;
 import presentation.contenui.UIUtil;
+import presentation.mainui.WebFrame;
 import presentation.mainui.WebTable;
 import assistance.NewFont;
 import bussinesslogic.player.PlayerLogic_db;
+import bussinesslogic.team.TeamLogic;
 import data.po.playerData.PlayerDataPlayOff_Ad_Basic;
 import data.po.playerData.PlayerDataPlayOff_Ad_Shoot;
 import data.po.playerData.PlayerDataPlayOff_Avg_Basic;
@@ -32,6 +39,8 @@ import data.po.playerData.PlayerDataSeason_Ad_Basic;
 import data.po.playerData.PlayerDataSeason_Ad_Shoot;
 import data.po.playerData.PlayerDataSeason_Avg_Basic;
 import data.po.playerData.PlayerDataSeason_Tot_Basic;
+import data.po.teamData.TeamBaseInfo;
+import data.po.teamData.TeamCompleteInfo;
 
 public class PlayerStatsPanelNew extends BgPanel{
 
@@ -49,6 +58,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 	private static String bg = "";
 
 	private PlayerLogic_db logic_db = new PlayerLogic_db();
+	private TeamLogic logict = new TeamLogic();
 
 	private GLabel title, borderUp, borderDown;
 
@@ -89,11 +99,11 @@ public class PlayerStatsPanelNew extends BgPanel{
 			"PER","扣篮","2/3+1","被帽",  //PER为效率
 	};
 	String[] header_ad_shoot = {"姓名","球队","<html>出手<br>距离<html>",
-			"<html>篮下<br>命中率<html>","命中","出手","占比",
+			"<html> 篮下<br>命中率<html>","命中","出手","占比",
 			"<html>近距<br>两分<html>","命中","出手","占比",
 			"<html>中距<br>两分<html>","命中","出手","占比",
 			"<html>远距<br>两分<html>","命中","出手","占比",
-			"<html>真实<br>命中率<html>","<html>投篮<br>效率<html>",
+			"<html> 真实<br>命中率<html>","<html>投篮<br>效率<html>",
 	};
 
 
@@ -117,6 +127,7 @@ public class PlayerStatsPanelNew extends BgPanel{
 	
 	ButtonGroup group;
 	Boolean[] selection = new Boolean[6];
+	private Font radioBtFont  = new Font("微软雅黑",0,12);
 
 //	JCheckBox[] checkBoxes = new JCheckBox[6];
 
@@ -192,23 +203,23 @@ public class PlayerStatsPanelNew extends BgPanel{
 
 		//--------------------筛选条件--------------------
 		position = new GComboBox(positionItem);
-		position.setBounds(0, 70, 150, 30);
+		position.setBounds(20, 70, 150, 30);
 		position.setFont(NewFont.ComboBoxFont);
 		this.add(position);
 
 		league = new GComboBox(leagueItem);
-		league.setBounds(180, 70, 150, 30);
+		league.setBounds(200, 70, 150, 30);
 		league.setBackground(new Color(250,250,250));
 		league.setFont(NewFont.ComboBoxFont);
 		this.add(league);
 
 		season = new GComboBox(seasonItem);
-		season.setBounds(360, 70, 150, 30);
+		season.setBounds(380, 70, 150, 30);
 		season.setFont(NewFont.ComboBoxFont);
 		this.add(season);
 
 		type = new GComboBox(typeItem);
-		type.setBounds(540, 70, 150, 30);
+		type.setBounds(560, 70, 150, 30);
 		type.setFont(NewFont.ComboBoxFont);
 		this.add(type);
 
@@ -267,9 +278,10 @@ public class PlayerStatsPanelNew extends BgPanel{
 		group = new ButtonGroup();
 		
 		all = new JRadioButton("总数");
-		all.setBounds(0, 110, 70, 30);
+		all.setBounds(20, 110, 90, 30);
 		all.setSelected(true);
 		all.setOpaque(false);
+		all.setFont(radioBtFont);
 		all.addMouseListener(new CheckListener(0));
 		all.setSelected(true);
 		this.add(all);
@@ -277,40 +289,45 @@ public class PlayerStatsPanelNew extends BgPanel{
 		selection[0] = all.isSelected();
 
 		all2 = new JRadioButton("总数二");
-		all2.setBounds(100, 110, 70, 30);
+		all2.setBounds(120, 110, 90, 30);
 		all2.setOpaque(false);
+		all2.setFont(radioBtFont);
 		all2.addMouseListener(new CheckListener(1));
 		this.add(all2);
 		group.add(all2);
 		selection[1] = all2.isSelected();
 
 		avg = new JRadioButton("场均");
-		avg.setBounds(200, 110, 70, 30);
+		avg.setBounds(220, 110, 90, 30);
 		avg.setOpaque(false);
+		avg.setFont(radioBtFont);
 		avg.addMouseListener(new CheckListener(2));
 		this.add(avg);
 		group.add(avg);
 		selection[2] = avg.isSelected();
 
 		avg2 = new JRadioButton("场均二");
-		avg2.setBounds(300, 110, 70, 30);
+		avg2.setBounds(320, 110, 90, 30);
 		avg2.setOpaque(false);
+		avg2.setFont(radioBtFont);
 		avg2.addMouseListener(new CheckListener(3));
 		this.add(avg2);
 		group.add(avg2);
 		selection[3] = avg2.isSelected();
 
 		ad_eff = new JRadioButton("进阶数据");
-		ad_eff.setBounds(400, 110, 70, 30);
+		ad_eff.setBounds(420, 110, 90, 30);
 		ad_eff.setOpaque(false);
+		ad_eff.setFont(radioBtFont);
 		ad_eff.addMouseListener(new CheckListener(4));
 		this.add(ad_eff);
 		group.add(ad_eff);
 		selection[4] = ad_eff.isSelected();
 
 		ad_shooteff = new JRadioButton("投篮进阶");
-		ad_shooteff.setBounds(500, 110, 70, 30);
+		ad_shooteff.setBounds(520, 110, 90, 30);
 		ad_shooteff.setOpaque(false);
+		ad_shooteff.setFont(radioBtFont);
 		ad_shooteff.addMouseListener(new CheckListener(5));
 		this.add(ad_shooteff);
 		group.add(ad_shooteff);
@@ -325,44 +342,156 @@ public class PlayerStatsPanelNew extends BgPanel{
 		//--------------------默认表格内容--------------------
 		allTable1 = new WebTable(getBasicHeader(), getAllData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		allTable1.setColumnWidth(allTable1_coloum, allTable1_width);
+		addNameListener(allTable1);
+		addTeamListener_fullName(allTable1);
 		this.add(allTable1);
 		tables[0] = allTable1;
 
 		allTable2 = new WebTable(this.header_basic2, getAllData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		allTable2.setVisible(false);
 		allTable2.setColumnWidth(allTable2_coloum, allTable2_width);
+		addNameListener(allTable2);
+		addTeamListener_fullName(allTable2);
 		this.add(allTable2);
 		tables[1] = allTable2;
 
 		avgTable1 = new WebTable(getBasicHeader(), getAvgData1_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable1.setVisible(false);
 		avgTable1.setColumnWidth(avgTable1_coloum, avgTable1_width);
+		addNameListener(avgTable1);
+		addTeamListener_fullName(avgTable1);
 		this.add(avgTable1);
 		tables[2] = avgTable1;
 
 		avgTable2 = new WebTable(this.header_basic2, getAvgData2_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		avgTable2.setVisible(false);
 		avgTable2.setColumnWidth(avgTable2_coloum, avgTable2_width);
+		addNameListener(avgTable2);
+		addTeamListener_fullName(avgTable2);
 		this.add(avgTable2);
 		tables[3] = avgTable2;
 
 		adBasicTable = new WebTable(header_ad_basic, getAdEff_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		adBasicTable.setVisible(false);
 		adBasicTable.setColumnWidth(adBasicTable_coloum, adBasicTable_width);
+		addNameListener(adBasicTable);
+		addTeamListener_shortName(adBasicTable);
 		this.add(adBasicTable);
 		tables[4] = adBasicTable;
 
 		adShootTable = new WebTable(header_ad_shoot, getAdEffShoot_default(), new Rectangle(0, 140, 940, 460), UIUtil.bgWhite);
 		adShootTable.setVisible(false);
 		adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
+		addNameListener(adShootTable);
+		addTeamListener_shortName(adShootTable);
 		this.add(adShootTable);
 		tables[5] = adShootTable;
+		
+		setCenter();
+		setDefaultOrder();
 
 		//--------------------默认表格内容end--------------------
 
 		this.repaint();
 	}
+	
+	private void addNameListener(WebTable table){
+		table.setColumForeground(0,UIUtil.nbaBlue);
+		table.setColumHand(0);
+		for(int i=0;i<table.row;i++){
+			table.getColum(0)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String name = label.getText();
+					int id = 1;
+					try {
+						id = logic_db.getIDbyName(name, "");
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}System.out.println(id);
+					TurnController tc = new TurnController();
+					WebFrame.frame.setPanel(tc.turnToPlayerDetials(id), name);
+				}
+			});
+		}
+	}
+	private void addTeamListener_shortName(WebTable table){
+		table.setColumForeground(1,UIUtil.nbaBlue);
+		table.setColumHand(1);
+		for(int i=0;i<table.row;i++){
+			table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String shortName = label.getText();
+					TeamBaseInfo info = getInfo_shortname(shortName);
+					TurnController tc = new TurnController();
+					WebFrame.frame.setPanel(tc.turnToTeamDetials(info), info.getName());	
+				}
+			});
+		}
+	}
+	private void addTeamListener_fullName(WebTable table){
+		table.setColumForeground(1,UIUtil.nbaBlue);
+		table.setColumHand(1);
+		for(int i=0;i<table.row;i++){
+			table.getColum(1)[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e){
+					JLabel label = (JLabel)e.getSource();
+					String fullName = label.getText();
+					TeamBaseInfo info = getInfo_fullname(fullName);
+					TurnController tc = new TurnController();
+					WebFrame.frame.setPanel(tc.turnToTeamDetials(info), info.getName());	
+				}
+			});
+		}
+	}
+	
+	//根据球队中文全称得到TeamBaseInfo
+	private TeamBaseInfo getInfo_fullname(String fullName){
+		String en = TableUtility.checkNOH(TableUtility.getChTeam(fullName));
+		 try {
+			ArrayList<TeamCompleteInfo> list = logict.GetPartCompleteInfo(en, "14-15", "yes");
+			if(list.size()!=0){
+				return list.get(0).getBaseinfo();
+			}else{
+				return new TeamBaseInfo();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return new TeamBaseInfo();
+		}
+	}
+	//根据球队中文简称得到TeamBaseInfo
+	private TeamBaseInfo getInfo_shortname(String shortName){
+		String en = TableUtility.checkNOH(TableUtility.getShortChTeam(shortName));
+		 try {
+			ArrayList<TeamCompleteInfo> list = logict.GetPartCompleteInfo(en, "14-15", "yes");
+			if(list.size()!=0){
+				return list.get(0).getBaseinfo();
+			}else{
+				return new TeamBaseInfo();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return new TeamBaseInfo();
+		}
+	}
 
+	private void setCenter(){
+		for(int i=0;i<tables.length;i++){
+			factory.setCenter(tables[i], 1);
+		}
+	}
+	
+	private void setDefaultOrder(){
+		for(int i=0;i<tables.length;i++){
+			tables[i].setOrder(0, String.class);
+		}
+	}
+	
 
 	private String[] getBasicHeader(){
 		if(isRegular()){
@@ -1265,6 +1394,8 @@ public class PlayerStatsPanelNew extends BgPanel{
 			adShootTable.setColumnWidth(adShootTable_coloum, adShootTable_width);
 			PlayerStatsPanelNew.this.add(adShootTable);
 			tables[5] = adShootTable;
+			
+			setCenter();
 
 			for(int i=0;i<tables.length;i++){
 				if(i==select){
@@ -1364,17 +1495,17 @@ public class PlayerStatsPanelNew extends BgPanel{
 		}
 
 	}
+	
+	class DefaultData implements Runnable{
 
-
-
-	public static void main(String[] args){
-		JFrame f = new JFrame();
-		f.setSize(1000, 650);
-		f.setLayout(null);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.add(new PlayerStatsPanelNew());
-		f.setVisible(true);
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
+
 
 
 }
