@@ -565,7 +565,7 @@ public class WebTable extends JLabel{
 	//设置某列排序(列号，类型)
 	public void setOrder(final int columNumber, final Class<?> type){
 		this.header[columNumber].setCursor(new Cursor(Cursor.HAND_CURSOR));
-		this.header[columNumber].setForeground(UIUtil.nbaBlue);
+//		this.header[columNumber].setForeground(UIUtil.nbaBlue);
 		this.header[columNumber].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
